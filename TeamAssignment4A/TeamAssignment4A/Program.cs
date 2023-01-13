@@ -1,8 +1,26 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System;
+using TeamAssignment4A.Data;
+
 namespace TeamAssignment4A {
     public class Program {
         public static void Main(string[] args) {
             var builder = WebApplication.CreateBuilder(args);
 
+
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+
+            var optionsBuilder = new DbContextOptionsBuilder<WebAppDbContext>();
+
+            optionsBuilder.UseSqlServer(connectionString);
+            var dbContext = new WebAppDbContext(optionsBuilder.Options);
+            builder.Services.AddDbContext<WebAppDbContext>(options =>
+                options.UseSqlServer(connectionString));
+            dbContext.Database.Migrate();
+            //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+            
             // Add services to the container.
             builder.Services.AddRazorPages();
 

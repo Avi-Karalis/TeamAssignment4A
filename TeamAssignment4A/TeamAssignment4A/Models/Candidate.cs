@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
-using TeamAssignment4A.Models.JointTables;
+//using TeamAssignment4A.Models.JointTables;
 
 namespace TeamAssignment4A.Models
 {
@@ -85,6 +85,6 @@ namespace TeamAssignment4A.Models
 
         //Navigation Property
         
-        public virtual ICollection<CandidateCertificates> CandidateCertificates { get; set; }
+        public virtual ICollection<Certificate> Certificates { get; set; }
     }
 }

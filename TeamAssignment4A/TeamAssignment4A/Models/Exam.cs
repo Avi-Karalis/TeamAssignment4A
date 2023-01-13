@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using System.Xml.Linq;
-using TeamAssignment4A.Models.JointTables;
+//using TeamAssignment4A.Models.JointTables;
 
 namespace TeamAssignment4A.Models
 {
@@ -35,7 +35,7 @@ namespace TeamAssignment4A.Models
 
 
         //navigation property
-        public virtual ICollection<ExamStem> ExamStems { get; set; }
-        public virtual ICollection<ExamTopic> ExamTopcs { get; set; }
+        public virtual ICollection<Stem> Stems { get; set; }
+        public virtual ICollection<Topic> Topcs { get; set; }
     }
 }
