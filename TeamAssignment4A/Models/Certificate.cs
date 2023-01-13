@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using TeamAssignment4A.Models.JointTables;
 //using TeamAssignment4A.Models.JointTables;
 
 namespace TeamAssignment4A.Models
@@ -29,11 +30,14 @@ namespace TeamAssignment4A.Models
 
 
         // Navigation Property
-        public virtual ICollection<Topic> Topics { get; set; }
+        public virtual Topic Topic { get; set; }
+        public virtual Exam Exam { get; set; }
         
         // Navigation Property
 
-        public virtual ICollection<Candidate> Candidates { get; set; }
+        public virtual ICollection<ExamTopic> ExamTopics { get; set; }
+        
+
 
     }
 }

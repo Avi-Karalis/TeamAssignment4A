@@ -1,14 +1,21 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using Microsoft.EntityFrameworkCore;
+using System.Data.SqlTypes;
+using TeamAssignment4A.Models.JointTables;
 //using TeamAssignment4A.Models.JointTables;
 
 namespace TeamAssignment4A.Models
 {
-
-    [Table("Candidates")]
     public class Candidate {
         //Basic properties for each Candidate
+
+        [Key]
+        [Required]
+        [Display(Name = "Candidate Number")]
+        public int CandidateNumber { get; set; }
+
         [Display(Name = "First Name")]
         [Required]
         public string FirstName { get; set; }
@@ -19,11 +26,6 @@ namespace TeamAssignment4A.Models
         [Display(Name = "Last Name")]
         [Required]
         public string LastName { get; set; }
-
-        [Key]
-        [Required]
-        [Display(Name = "Candidate Number")]
-        public int CandidateNumber { get; set; }
 
         [Required]
         [Display(Name = "Gender")]
@@ -39,6 +41,7 @@ namespace TeamAssignment4A.Models
 
         [Required]
         [Display(Name = "Birthdate")]
+        [Column(TypeName = "Date")]
         public DateTime Birthdate { get; set; }
 
         [Required]
@@ -81,10 +84,11 @@ namespace TeamAssignment4A.Models
 
         [Required]
         [Display(Name = "Photo Id Date")]
+        [Column(TypeName = "Date")]
         public DateTime PhotoIdDate { get; set; }
 
         //Navigation Property
         
-        public virtual ICollection<Certificate> Certificates { get; set; }
+        public virtual ICollection<CandidateExam> CandidateExams { get; set; }
     }
 }

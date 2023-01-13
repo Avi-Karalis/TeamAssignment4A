@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using TeamAssignment4A.Data;
+using Microsoft.AspNetCore.Identity;
+
 
 namespace TeamAssignment4A {
     public class Program {
@@ -9,7 +11,7 @@ namespace TeamAssignment4A {
             var builder = WebApplication.CreateBuilder(args);
 
 
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            var connectionString = builder.Configuration.GetConnectionString("OnLineServer") ?? throw new InvalidOperationException("Connection string 'OnLineServer' not found.");
 
 
             var optionsBuilder = new DbContextOptionsBuilder<WebAppDbContext>();
@@ -18,7 +20,8 @@ namespace TeamAssignment4A {
             var dbContext = new WebAppDbContext(optionsBuilder.Options);
             builder.Services.AddDbContext<WebAppDbContext>(options =>
                 options.UseSqlServer(connectionString));
-            dbContext.Database.Migrate();
+
+            //dbContext.Database.Migrate();
             //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
             
             // Add services to the container.
@@ -33,10 +36,11 @@ namespace TeamAssignment4A {
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseAuthentication();;
 
             app.UseAuthorization();
 
