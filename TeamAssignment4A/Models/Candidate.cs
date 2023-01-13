@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using TeamAssignment4A.Models.JointTables;
 
-namespace TeamAssignment4A.Models {
+namespace TeamAssignment4A.Models
+{
 
     [Table("Candidates")]
     public class Candidate {
@@ -81,7 +83,8 @@ namespace TeamAssignment4A.Models {
         [Display(Name = "Photo Id Date")]
         public DateTime PhotoIdDate { get; set; }
 
-        [ForeignKey("Certificate")]
-        public virtual ICollection<Certificate> Certificates { get; set; }
+        //Navigation Property
+        
+        public virtual ICollection<CandidateCertificates> CandidateCertificates { get; set; }
     }
 }

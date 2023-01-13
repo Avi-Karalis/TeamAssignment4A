@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using TeamAssignment4A.Models.JointTables;
 
-namespace TeamAssignment4A.Models {
+namespace TeamAssignment4A.Models
+{
     public class Certificate {
         //Basic Info for Certificate
         [Key]
@@ -16,43 +18,25 @@ namespace TeamAssignment4A.Models {
         public string TitleOfCertificate { get; set; }
 
         [Required]
-        [Display(Name = "Candidate Number")]
-        public int CandidateNumber { get; set; }
+        [StringLength(3)]
+        [Display(Name = "Passing Grade")]
+        public int PassingGrade { get; set; }
 
         [Required]
-        [Display(Name = "Assessment Test Code")]
-        public int AssessmentTestCode { get; set; }
-
-        [Required]
-        [Display(Name = "Examination Date")]
-        public DateTime ExaminationDate { get; set; }
-
-        [Required]
-        [Display(Name = "Score Report Date")]
-        public DateTime ScoreReportDate { get; set; }
-
-        [Required]
-        [Display(Name = "Candidate Score")]
-        public int CandidateScore { get; set; }
-
-        [Required]
+        [StringLength(3)]
         [Display(Name = "Maximum Score")]
         public int MaximumScore { get; set; }
 
-        [Required]
-        [Display(Name = "Assessment Result Label")]
-        public string AssessmentResultLabel { get; set; }
 
-        [Required]
-        [Display(Name = "Percentage Score")]
-        public string PercentageScore { get; set; }
-
-
-        //Navigation Property
-        [ForeignKey("Candidate")]
-        public virtual Candidate Candidate { get; set; }
-
-        [ForeignKey("Topic")]
+        // Navigation Property
         public virtual ICollection<Topic> Topics { get; set; }
+        
+        // Navigation Property
+
+        public virtual ICollection<CandidateCertificates> CandidateCertificates { get; set; }
+
+        // Navigation Property
+
+        public virtual ICollection<CertificateTopics> CertificateTopics { get; set; }
     }
 }

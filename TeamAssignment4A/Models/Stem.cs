@@ -1,7 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
+using TeamAssignment4A.Models.JointTables;
 
-namespace TeamAssignment4A.Models {
+namespace TeamAssignment4A.Models
+{
     public class Stem {
         [Key]
         [Required]
@@ -31,5 +34,15 @@ namespace TeamAssignment4A.Models {
         [Required]
         [Display(Name = "Correct Answer")]
         public char CorrectAnswer { get; set; }
+
+
+
+        //navigation property
+        
+        public virtual ICollection<TopicStem> TopicStems { get; set; }
+
+        //navigation property
+       
+        public virtual ICollection<ExamStem> ExamStems { get; set; }
     }
 }
