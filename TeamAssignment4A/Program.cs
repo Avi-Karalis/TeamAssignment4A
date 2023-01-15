@@ -15,15 +15,14 @@ namespace TeamAssignment4A {
 
             var connectionString = builder.Configuration.GetConnectionString("OnLineServer") ?? throw new InvalidOperationException("Connection string 'OnLineServer' not found.");
 
-
-            var optionsBuilder = new DbContextOptionsBuilder<WebAppDbContext>();
-            optionsBuilder.UseSqlServer(connectionString);
-            var dbContext = new WebAppDbContext(optionsBuilder.Options);
             builder.Services.AddDbContext<WebAppDbContext>(options =>
                 options.UseSqlServer(connectionString));
+                            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+            //builder.Services.AddDbContext<WebAppDbContext>(options =>
+            //    options.UseSqlServer(connectionString));
 
             
-            builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<WebAppDbContext>();
             
 
@@ -32,8 +31,8 @@ namespace TeamAssignment4A {
 
             // Add services to the container.
             builder.Services.AddRazorPages();
-            builder.Services.AddMvc();
-            builder.Services.AddControllersWithViews();
+            //builder.Services.AddMvc();
+            //builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
 
@@ -53,9 +52,9 @@ namespace TeamAssignment4A {
             app.UseAuthentication(); ;
             app.UseAuthorization();
 
-            app.MapControllerRoute(
-                name:"default",
-                pattern:"{ controller=Home}/{action=Index}/{id?}");
+            //app.MapControllerRoute(
+            //    name:"default",
+            //    pattern:"{ controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
 
             app.Run();
