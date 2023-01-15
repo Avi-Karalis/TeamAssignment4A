@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TeamAssignment4A.Migrations
 {
-    public partial class FUCKYOUDATABASE : Migration
+    public partial class test2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -76,24 +76,6 @@ namespace TeamAssignment4A.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Candidates", x => x.CandidateNumber);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Stems",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Question = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OptionA = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OptionB = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OptionC = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OptionD = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CorrectAnswer = table.Column<string>(type: "nvarchar(1)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Stems", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -237,27 +219,27 @@ namespace TeamAssignment4A.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "StemTopic",
+                name: "Stems",
                 columns: table => new
                 {
-                    StemsId = table.Column<int>(type: "int", nullable: false),
-                    TopicsId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Question = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OptionA = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OptionB = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OptionC = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OptionD = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CorrectAnswer = table.Column<string>(type: "nvarchar(1)", nullable: false),
+                    TopicId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StemTopic", x => new { x.StemsId, x.TopicsId });
+                    table.PrimaryKey("PK_Stems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_StemTopic_Stems_StemsId",
-                        column: x => x.StemsId,
-                        principalTable: "Stems",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_StemTopic_Topics_TopicsId",
-                        column: x => x.TopicsId,
+                        name: "FK_Stems_Topics_TopicId",
+                        column: x => x.TopicId,
                         principalTable: "Topics",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -340,13 +322,13 @@ namespace TeamAssignment4A.Migrations
                         column: x => x.ExamsId,
                         principalTable: "Exams",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ExamTopic_Topics_TopicsId",
                         column: x => x.TopicsId,
                         principalTable: "Topics",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -367,13 +349,13 @@ namespace TeamAssignment4A.Migrations
                         column: x => x.ExamStemsId,
                         principalTable: "ExamStem",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Score_ExamTopic_ExamTopicsExamTopicId",
                         column: x => x.ExamTopicsExamTopicId,
                         principalTable: "ExamTopic",
                         principalColumn: "ExamTopicId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -520,9 +502,9 @@ namespace TeamAssignment4A.Migrations
                 column: "ExamTopicsExamTopicId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StemTopic_TopicsId",
-                table: "StemTopic",
-                column: "TopicsId");
+                name: "IX_Stems_TopicId",
+                table: "Stems",
+                column: "TopicId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -544,9 +526,6 @@ namespace TeamAssignment4A.Migrations
 
             migrationBuilder.DropTable(
                 name: "CandidateExam");
-
-            migrationBuilder.DropTable(
-                name: "StemTopic");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

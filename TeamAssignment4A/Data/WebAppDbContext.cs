@@ -21,6 +21,7 @@ namespace TeamAssignment4A.Data {
         public virtual DbSet<Exam> Exams { get; set; }
         public virtual DbSet<Stem> Stems { get; set; }
         public virtual DbSet<Topic> Topics { get; set; }
+        public DbSet<TeamAssignment4A.Models.JointTables.ExamStem> ExamStem { get; set; }
         //public virtual DbSet<CandidateCertificate> CandidateCertificates { get; set; }
         //public virtual DbSet<ExamStem> ExamStems { get; set; }
         //public virtual DbSet<ExamTopic> ExamTopics { get; set; }

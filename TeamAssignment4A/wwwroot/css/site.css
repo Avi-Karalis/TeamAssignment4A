@@ -16,3 +16,13 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.linknolineandwhite > button > a {
+    text-decoration: none;
+    color: white;
+}
+
+
+button > a {
+    color: aliceblue !important;
+}

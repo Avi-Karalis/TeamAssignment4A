@@ -17,7 +17,7 @@ namespace TeamAssignment4A.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.8")
+                .HasAnnotation("ProductVersion", "6.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -157,21 +157,6 @@ namespace TeamAssignment4A.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("StemTopic", b =>
-                {
-                    b.Property<int>("StemsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TopicsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("StemsId", "TopicsId");
-
-                    b.HasIndex("TopicsId");
-
-                    b.ToTable("StemTopic");
                 });
 
             modelBuilder.Entity("TeamAssignment4A.Models.Candidate", b =>
@@ -541,7 +526,12 @@ namespace TeamAssignment4A.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("TopicId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TopicId");
 
                     b.ToTable("Stems");
                 });
@@ -620,21 +610,6 @@ namespace TeamAssignment4A.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("StemTopic", b =>
-                {
-                    b.HasOne("TeamAssignment4A.Models.Stem", null)
-                        .WithMany()
-                        .HasForeignKey("StemsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TeamAssignment4A.Models.Topic", null)
-                        .WithMany()
-                        .HasForeignKey("TopicsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("TeamAssignment4A.Models.Certificate", b =>
                 {
                     b.HasOne("TeamAssignment4A.Models.Exam", "Exam")
@@ -697,7 +672,7 @@ namespace TeamAssignment4A.Migrations
                         .IsRequired();
 
                     b.HasOne("TeamAssignment4A.Models.Stem", "Stems")
-                        .WithMany("ExamStems")
+                        .WithMany()
                         .HasForeignKey("StemsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -749,6 +724,13 @@ namespace TeamAssignment4A.Migrations
                     b.Navigation("ExamTopics");
                 });
 
+            modelBuilder.Entity("TeamAssignment4A.Models.Stem", b =>
+                {
+                    b.HasOne("TeamAssignment4A.Models.Topic", null)
+                        .WithMany("Stems")
+                        .HasForeignKey("TopicId");
+                });
+
             modelBuilder.Entity("TeamAssignment4A.Models.Candidate", b =>
                 {
                     b.Navigation("CandidateExams");
@@ -770,16 +752,13 @@ namespace TeamAssignment4A.Migrations
                     b.Navigation("ExamTopics");
                 });
 
-            modelBuilder.Entity("TeamAssignment4A.Models.Stem", b =>
-                {
-                    b.Navigation("ExamStems");
-                });
-
             modelBuilder.Entity("TeamAssignment4A.Models.Topic", b =>
                 {
                     b.Navigation("Certificates");
 
                     b.Navigation("Exams");
+
+                    b.Navigation("Stems");
                 });
 #pragma warning restore 612, 618
         }

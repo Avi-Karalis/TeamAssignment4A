@@ -41,9 +41,9 @@ namespace TeamAssignment4A.Models
 
 
         //navigation property
-       
-        public virtual ICollection<ExamStem> ExamStems { get; set; }
-        public virtual ICollection<Topic> Topics { get; set; }
+
+        //public virtual ICollection<ExamStem> ExamStems { get; set; }
+        public virtual Topic Topic { get; set; }
 
     }
 }
