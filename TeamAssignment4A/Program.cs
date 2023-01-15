@@ -23,7 +23,7 @@ namespace TeamAssignment4A {
                 options.UseSqlServer(connectionString));
 
             
-            builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<WebAppDbContext>();
             
 
@@ -53,8 +53,10 @@ namespace TeamAssignment4A {
             app.UseAuthentication(); ;
             app.UseAuthorization();
 
+            app.MapControllerRoute(
+                name:"default",
+                pattern:"{ controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
-            app.MapDefaultControllerRoute();
 
             app.Run();
         }
