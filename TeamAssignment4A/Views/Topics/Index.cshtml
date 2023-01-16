@@ -19,7 +19,7 @@
                 @Html.DisplayNameFor(model => model.NumberOfPossibleMarks)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CertificateID)
+                @Html.DisplayNameFor(model => model.Certificate.TitleOfCertificate)
             </th>
             <th></th>
         </tr>
@@ -34,7 +34,7 @@
                 @Html.DisplayFor(modelItem => item.NumberOfPossibleMarks)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CertificateID)
+                    @Html.DisplayFor(modelItem => item.Certificate.TitleOfCertificate)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

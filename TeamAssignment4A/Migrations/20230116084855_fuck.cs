@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TeamAssignment4A.Migrations
 {
-    public partial class gamoththxhmou : Migration
+    public partial class fuck : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -91,21 +91,6 @@ namespace TeamAssignment4A.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Certificates", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Topics",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NumberOfPossibleMarks = table.Column<int>(type: "int", nullable: false),
-                    CertificateID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Topics", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -235,6 +220,53 @@ namespace TeamAssignment4A.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Topics",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NumberOfPossibleMarks = table.Column<int>(type: "int", nullable: false),
+                    CertificateId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Topics", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Topics_Certificates_CertificateId",
+                        column: x => x.CertificateId,
+                        principalTable: "Certificates",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ExamTopic",
+                columns: table => new
+                {
+                    ExamTopicId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ExamsId = table.Column<int>(type: "int", nullable: false),
+                    TopicsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExamTopic", x => x.ExamTopicId);
+                    table.ForeignKey(
+                        name: "FK_ExamTopic_Exams_ExamsId",
+                        column: x => x.ExamsId,
+                        principalTable: "Exams",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_ExamTopic_Topics_TopicsId",
+                        column: x => x.TopicsId,
+                        principalTable: "Topics",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Stems",
                 columns: table => new
                 {
@@ -260,32 +292,6 @@ namespace TeamAssignment4A.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ExamTopic",
-                columns: table => new
-                {
-                    ExamTopicId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ExamsId = table.Column<int>(type: "int", nullable: false),
-                    TopicsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ExamTopic", x => x.ExamTopicId);
-                    table.ForeignKey(
-                        name: "FK_ExamTopic_Exams_ExamsId",
-                        column: x => x.ExamsId,
-                        principalTable: "Exams",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ExamTopic_Topics_TopicsId",
-                        column: x => x.TopicsId,
-                        principalTable: "Topics",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ExamStem",
                 columns: table => new
                 {
@@ -304,13 +310,13 @@ namespace TeamAssignment4A.Migrations
                         column: x => x.ExamsId,
                         principalTable: "Exams",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_ExamStem_Stems_StemsId",
                         column: x => x.StemsId,
                         principalTable: "Stems",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -331,13 +337,13 @@ namespace TeamAssignment4A.Migrations
                         column: x => x.ExamStemsId,
                         principalTable: "ExamStem",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Score_ExamTopic_ExamTopicsExamTopicId",
                         column: x => x.ExamTopicsExamTopicId,
                         principalTable: "ExamTopic",
                         principalColumn: "ExamTopicId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -472,6 +478,11 @@ namespace TeamAssignment4A.Migrations
                 name: "IX_Stems_TopicId",
                 table: "Stems",
                 column: "TopicId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Topics_CertificateId",
+                table: "Topics",
+                column: "CertificateId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

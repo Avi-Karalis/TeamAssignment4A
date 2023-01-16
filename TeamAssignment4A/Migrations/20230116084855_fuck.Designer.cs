@@ -12,8 +12,8 @@ using TeamAssignment4A.Data;
 namespace TeamAssignment4A.Migrations
 {
     [DbContext(typeof(WebAppDbContext))]
-    [Migration("20230116075152_gamoththxhmou")]
-    partial class gamoththxhmou
+    [Migration("20230116084855_fuck")]
+    partial class fuck
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -529,7 +529,7 @@ namespace TeamAssignment4A.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CertificateID")
+                    b.Property<int>("CertificateId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -540,6 +540,8 @@ namespace TeamAssignment4A.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CertificateId");
 
                     b.ToTable("Topics");
                 });
@@ -699,6 +701,17 @@ namespace TeamAssignment4A.Migrations
                         .IsRequired();
 
                     b.Navigation("Topic");
+                });
+
+            modelBuilder.Entity("TeamAssignment4A.Models.Topic", b =>
+                {
+                    b.HasOne("TeamAssignment4A.Models.Certificate", "Certificate")
+                        .WithMany()
+                        .HasForeignKey("CertificateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Certificate");
                 });
 
             modelBuilder.Entity("TeamAssignment4A.Models.Candidate", b =>

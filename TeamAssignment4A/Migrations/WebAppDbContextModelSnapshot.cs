@@ -527,7 +527,7 @@ namespace TeamAssignment4A.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CertificateID")
+                    b.Property<int>("CertificateId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -538,6 +538,8 @@ namespace TeamAssignment4A.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CertificateId");
 
                     b.ToTable("Topics");
                 });
@@ -697,6 +699,17 @@ namespace TeamAssignment4A.Migrations
                         .IsRequired();
 
                     b.Navigation("Topic");
+                });
+
+            modelBuilder.Entity("TeamAssignment4A.Models.Topic", b =>
+                {
+                    b.HasOne("TeamAssignment4A.Models.Certificate", "Certificate")
+                        .WithMany()
+                        .HasForeignKey("CertificateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Certificate");
                 });
 
             modelBuilder.Entity("TeamAssignment4A.Models.Candidate", b =>
