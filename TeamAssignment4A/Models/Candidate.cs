@@ -14,7 +14,7 @@ namespace TeamAssignment4A.Models
         [Key]
         [Required]
         [Display(Name = "Candidate Number")]
-        public int CandidateNumber { get; set; }
+        public int Id { get; set; }
 
         [Display(Name = "First Name")]
         [Required]
