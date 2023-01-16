@@ -28,7 +28,7 @@ namespace TeamAssignment4A.Models
 
 
         // Navigation Property
-        //public virtual Topic Topic { get; set; }
+        public virtual ICollection<Topic>? Topic { get; set; }
         //public virtual Exam Exam { get; set; }
 
         // Navigation Property

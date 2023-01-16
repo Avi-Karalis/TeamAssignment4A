@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TeamAssignment4A.Migrations
 {
-    public partial class fuck : Migration
+    public partial class skatoules : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

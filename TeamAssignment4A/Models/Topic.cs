@@ -18,8 +18,11 @@ namespace TeamAssignment4A.Models
         [Display(Name = "Number Of Possible Marks")]
         public int NumberOfPossibleMarks { get; set; }
 
-       
+
+        //[ForeignKey("Certificates")]
+        //[Required]
         //Navigation Property
+        
         public virtual Certificate Certificate { get; set; }
 
         //public virtual ICollection<Certificate> Certificates { get; set; }

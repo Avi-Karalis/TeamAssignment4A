@@ -1,15 +1,13 @@
 ﻿@model TeamAssignment4A.Models.Topic
 
 @{
-    ViewData["Title"] = "Create Topic";
-   
+    ViewData["Title"] = "Create";
 }
 
 <h1>Create</h1>
 
 <h4>Topic</h4>
 <hr />
-
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -21,16 +19,17 @@
             </div>
             <div class="form-group">
                 <label asp-for="NumberOfPossibleMarks" class="control-label"></label>
-                <input asp-for="NumberOfPossibleMarks" class="form-control" type="number"/>
+                <input asp-for="NumberOfPossibleMarks" class="form-control" />
                 <span asp-validation-for="NumberOfPossibleMarks" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Certificate.TitleOfCertificate" class="control-label"></label>
-                <select asp-for="Certificate.TitleOfCertificate" class="form-control" asp-items="@ViewBag.Certificates"></select>
-                <span asp-validation-for="Certificate.TitleOfCertificate" class="text-danger"></span>
+                <select asp-for="Certificate.Id" class="form-control" asp-items="@ViewBag.Certificates"></select>
+                <span asp-validation-for="Certificate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <Button type="submit" class="btn btn-primary">Create a Topic</Button>
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>

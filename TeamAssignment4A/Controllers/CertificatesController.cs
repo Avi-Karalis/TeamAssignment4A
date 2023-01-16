@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using TeamAssignment4A.Data;
 using TeamAssignment4A.Models;
 
-namespace TeamAssignment4A
+namespace TeamAssignment4A.Controllers
 {
     public class CertificatesController : Controller
     {
@@ -22,7 +22,7 @@ namespace TeamAssignment4A
         // GET: Certificates
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Certificates.ToListAsync());
+            return View(await _context.Certificates.ToListAsync());
         }
 
         // GET: Certificates/Details/5
@@ -46,6 +46,7 @@ namespace TeamAssignment4A
         // GET: Certificates/Create
         public IActionResult Create()
         {
+
             return View();
         }
 
@@ -54,7 +55,7 @@ namespace TeamAssignment4A
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
+        public async Task<IActionResult> Create([Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
         {
             if (ModelState.IsValid)
             {
@@ -148,14 +149,14 @@ namespace TeamAssignment4A
             {
                 _context.Certificates.Remove(certificate);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CertificateExists(int id)
         {
-          return _context.Certificates.Any(e => e.Id == id);
+            return _context.Certificates.Any(e => e.Id == id);
         }
     }
 }

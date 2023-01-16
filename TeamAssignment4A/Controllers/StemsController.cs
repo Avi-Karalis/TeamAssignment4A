@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using TeamAssignment4A.Data;
 using TeamAssignment4A.Models;
 
-namespace TeamAssignment4A
+namespace TeamAssignment4A.Controllers
 {
     public class StemsController : Controller
     {
@@ -22,7 +22,7 @@ namespace TeamAssignment4A
         // GET: Stems
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Stems.ToListAsync());
+            return View(await _context.Stems.ToListAsync());
         }
 
         // GET: Stems/Details/5
@@ -148,14 +148,14 @@ namespace TeamAssignment4A
             {
                 _context.Stems.Remove(stem);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool StemExists(int id)
         {
-          return _context.Stems.Any(e => e.Id == id);
+            return _context.Stems.Any(e => e.Id == id);
         }
     }
 }

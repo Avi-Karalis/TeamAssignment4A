@@ -5,14 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using TeamAssignment4A.Data;
 using TeamAssignment4A.Models;
 
-namespace TeamAssignment4A
+namespace TeamAssignment4A.Controllers
 {
     public class TopicsController : Controller
     {
-        private WebAppDbContext _context;
+        private readonly WebAppDbContext _context;
 
         public TopicsController(WebAppDbContext context)
         {
@@ -22,7 +23,7 @@ namespace TeamAssignment4A
         // GET: Topics
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Topics.ToListAsync());
+            return View(await _context.Topics.ToListAsync());
         }
 
         // GET: Topics/Details/5
@@ -46,8 +47,9 @@ namespace TeamAssignment4A
         // GET: Topics/Create
         public IActionResult Create()
         {
-            var certificates = _context.Certificates.ToList();
+
             ViewBag.Certificates = new SelectList(_context.Certificates, "Id", "TitleOfCertificate");
+
             return View();
         }
 
@@ -56,13 +58,13 @@ namespace TeamAssignment4A
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Description,NumberOfPossibleMarks,CertificateID")] Topic topic)
+        public async Task<IActionResult> Create([Bind("Id,Description,NumberOfPossibleMarks")] Topic topic)//<- theleiDTO
         {
             if (ModelState.IsValid)
             {
+                //topic.Certificate = certificate;
                 _context.Add(topic);
                 await _context.SaveChangesAsync();
-                ViewBag.Certificates = new SelectList(_context.Certificates, "Id", "TitleOfCertificate");
                 return RedirectToAction(nameof(Index));
             }
             return View(topic);
@@ -89,7 +91,7 @@ namespace TeamAssignment4A
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Description,NumberOfPossibleMarks,CertificateID")] Topic topic)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Description,NumberOfPossibleMarks")] Topic topic)
         {
             if (id != topic.Id)
             {
@@ -151,14 +153,14 @@ namespace TeamAssignment4A
             {
                 _context.Topics.Remove(topic);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TopicExists(int id)
         {
-          return _context.Topics.Any(e => e.Id == id);
+            return _context.Topics.Any(e => e.Id == id);
         }
     }
 }
