@@ -41,8 +41,8 @@ namespace TeamAssignment4A.Models.JointTables {
         [Display(Name = "Percentage Score")]
         public string PercentageScore { get; set; }
 
-        public virtual Candidate Candidates { get; set; }
-        public virtual Exam Exams { get; set; }
-        public virtual Score Scores { get; set; }
+        public virtual Candidate Candidate { get; set; }
+        public virtual Exam Exam { get; set; }
+        public virtual Score Score { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using TeamAssignment4A.Models.JointTables;
-//using TeamAssignment4A.Models.JointTables;
+
 
 namespace TeamAssignment4A.Models
 {
@@ -40,10 +40,10 @@ namespace TeamAssignment4A.Models
 
 
 
-        //navigation property
+        // Navigation Properties
 
-        //public virtual ICollection<ExamStem> ExamStems { get; set; }
         public virtual Topic Topic { get; set; }
+        public virtual ICollection<ExamStem>? ExamStems { get; set; }
 
     }
 }

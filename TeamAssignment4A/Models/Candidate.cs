@@ -4,7 +4,7 @@ using System.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 using System.Data.SqlTypes;
 using TeamAssignment4A.Models.JointTables;
-//using TeamAssignment4A.Models.JointTables;
+
 
 namespace TeamAssignment4A.Models
 {
@@ -45,12 +45,12 @@ namespace TeamAssignment4A.Models
         public DateTime Birthdate { get; set; }
 
         [Required]
-        [Display(Name = "E-mail adress")]
+        [Display(Name = "E-mail address")]
         public string Email { get; set; }
 
         [Required]
-        [Display(Name = "Land Line Phone Number")]
-        public string LandLineNumber { get; set; }
+        [Display(Name = "Landline Phone Number")]
+        public string LandlineNumber { get; set; }
 
         [Required]
         [Display(Name = "Mobile Phone Number")]
@@ -87,8 +87,8 @@ namespace TeamAssignment4A.Models
         [Column(TypeName = "Date")]
         public DateTime PhotoIdDate { get; set; }
 
-        //Navigation Property
         
-        public virtual ICollection<CandidateExam> CandidateExams { get; set; }
+        // Navigation Property        
+        public virtual ICollection<CandidateExam>? CandidateExams { get; set; }
     }
 }

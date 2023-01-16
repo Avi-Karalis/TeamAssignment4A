@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using TeamAssignment4A.Models.JointTables;
-//using TeamAssignment4A.Models.JointTables;
+
 
 namespace TeamAssignment4A.Models
 {
@@ -27,15 +27,8 @@ namespace TeamAssignment4A.Models
         public int MaximumScore { get; set; }
 
 
-        // Navigation Property
-        public virtual ICollection<Topic>? Topic { get; set; }
-        //public virtual Exam Exam { get; set; }
-
-        // Navigation Property
-
-        //public virtual ICollection<ExamTopic> ExamTopics { get; set; }
-
-
-
+        // Navigation Properties
+        public virtual ICollection<Topic>? Topics { get; set; }
+        public virtual ICollection<Exam>? Exams { get; set; }
     }
 }
