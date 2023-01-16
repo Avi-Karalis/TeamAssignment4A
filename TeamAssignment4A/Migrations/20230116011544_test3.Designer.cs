@@ -12,8 +12,8 @@ using TeamAssignment4A.Data;
 namespace TeamAssignment4A.Migrations
 {
     [DbContext(typeof(WebAppDbContext))]
-    [Migration("20230115213450_test2")]
-    partial class test2
+    [Migration("20230116011544_test3")]
+    partial class test3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -249,15 +249,10 @@ namespace TeamAssignment4A.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ExamId")
-                        .HasColumnType("int");
-
                     b.Property<int>("MaximumScore")
-                        .HasMaxLength(3)
                         .HasColumnType("int");
 
                     b.Property<int>("PassingGrade")
-                        .HasMaxLength(3)
                         .HasColumnType("int");
 
                     b.Property<string>("TitleOfCertificate")
@@ -265,14 +260,7 @@ namespace TeamAssignment4A.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<int>("TopicId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ExamId");
-
-                    b.HasIndex("TopicId");
 
                     b.ToTable("Certificates");
                 });
@@ -289,12 +277,7 @@ namespace TeamAssignment4A.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TopicId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("TopicId");
 
                     b.ToTable("Exams");
                 });
@@ -450,9 +433,6 @@ namespace TeamAssignment4A.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExamTopicId"), 1L, 1);
 
-                    b.Property<int?>("CertificateId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ExamsId")
                         .HasColumnType("int");
 
@@ -460,8 +440,6 @@ namespace TeamAssignment4A.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ExamTopicId");
-
-                    b.HasIndex("CertificateId");
 
                     b.HasIndex("ExamsId");
 
@@ -528,7 +506,7 @@ namespace TeamAssignment4A.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TopicId")
+                    b.Property<int>("TopicId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -612,32 +590,6 @@ namespace TeamAssignment4A.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TeamAssignment4A.Models.Certificate", b =>
-                {
-                    b.HasOne("TeamAssignment4A.Models.Exam", "Exam")
-                        .WithMany("Certificates")
-                        .HasForeignKey("ExamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TeamAssignment4A.Models.Topic", "Topic")
-                        .WithMany("Certificates")
-                        .HasForeignKey("TopicId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Exam");
-
-                    b.Navigation("Topic");
-                });
-
-            modelBuilder.Entity("TeamAssignment4A.Models.Exam", b =>
-                {
-                    b.HasOne("TeamAssignment4A.Models.Topic", null)
-                        .WithMany("Exams")
-                        .HasForeignKey("TopicId");
-                });
-
             modelBuilder.Entity("TeamAssignment4A.Models.JointTables.CandidateExam", b =>
                 {
                     b.HasOne("TeamAssignment4A.Models.Candidate", "Candidates")
@@ -686,10 +638,6 @@ namespace TeamAssignment4A.Migrations
 
             modelBuilder.Entity("TeamAssignment4A.Models.JointTables.ExamTopic", b =>
                 {
-                    b.HasOne("TeamAssignment4A.Models.Certificate", null)
-                        .WithMany("ExamTopics")
-                        .HasForeignKey("CertificateId");
-
                     b.HasOne("TeamAssignment4A.Models.Exam", "Exams")
                         .WithMany("ExamTopics")
                         .HasForeignKey("ExamsId")
@@ -728,9 +676,13 @@ namespace TeamAssignment4A.Migrations
 
             modelBuilder.Entity("TeamAssignment4A.Models.Stem", b =>
                 {
-                    b.HasOne("TeamAssignment4A.Models.Topic", null)
-                        .WithMany("Stems")
-                        .HasForeignKey("TopicId");
+                    b.HasOne("TeamAssignment4A.Models.Topic", "Topic")
+                        .WithMany()
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Topic");
                 });
 
             modelBuilder.Entity("TeamAssignment4A.Models.Candidate", b =>
@@ -738,29 +690,13 @@ namespace TeamAssignment4A.Migrations
                     b.Navigation("CandidateExams");
                 });
 
-            modelBuilder.Entity("TeamAssignment4A.Models.Certificate", b =>
-                {
-                    b.Navigation("ExamTopics");
-                });
-
             modelBuilder.Entity("TeamAssignment4A.Models.Exam", b =>
                 {
                     b.Navigation("CandidateExams");
 
-                    b.Navigation("Certificates");
-
                     b.Navigation("ExamStems");
 
                     b.Navigation("ExamTopics");
-                });
-
-            modelBuilder.Entity("TeamAssignment4A.Models.Topic", b =>
-                {
-                    b.Navigation("Certificates");
-
-                    b.Navigation("Exams");
-
-                    b.Navigation("Stems");
                 });
 #pragma warning restore 612, 618
         }

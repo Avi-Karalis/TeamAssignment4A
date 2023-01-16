@@ -19,24 +19,22 @@ namespace TeamAssignment4A.Models
         public string TitleOfCertificate { get; set; }
 
         [Required]
-        [StringLength(3)]
         [Display(Name = "Passing Grade")]
         public int PassingGrade { get; set; }
 
         [Required]
-        [StringLength(3)]
         [Display(Name = "Maximum Score")]
         public int MaximumScore { get; set; }
 
 
         // Navigation Property
-        public virtual Topic Topic { get; set; }
-        public virtual Exam Exam { get; set; }
-        
+        //public virtual Topic Topic { get; set; }
+        //public virtual Exam Exam { get; set; }
+
         // Navigation Property
 
-        public virtual ICollection<ExamTopic> ExamTopics { get; set; }
-        
+        //public virtual ICollection<ExamTopic> ExamTopics { get; set; }
+
 
 
     }

@@ -54,7 +54,7 @@ namespace TeamAssignment4A
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
+        public async Task<IActionResult> Create([Bind("TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
         {
             if (ModelState.IsValid)
             {

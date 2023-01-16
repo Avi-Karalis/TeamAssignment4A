@@ -24,8 +24,8 @@ namespace TeamAssignment4A.Models
 
         //Navigation Property
         
-        public virtual ICollection<Certificate> Certificates { get; set; }
-        public virtual ICollection<Exam> Exams { get; set; }
-        public virtual ICollection<Stem> Stems { get; set; }
+        //public virtual ICollection<Certificate> Certificates { get; set; }
+        //public virtual ICollection<Exam> Exams { get; set; }
+        //public virtual ICollection<Stem> Stems { get; set; }
     }
 }

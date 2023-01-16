@@ -12,7 +12,7 @@ namespace TeamAssignment4A
 {
     public class TopicsController : Controller
     {
-        private readonly WebAppDbContext _context;
+        private WebAppDbContext _context;
 
         public TopicsController(WebAppDbContext context)
         {
@@ -46,6 +46,8 @@ namespace TeamAssignment4A
         // GET: Topics/Create
         public IActionResult Create()
         {
+            var certificates = _context.Certificates.ToList();
+            ViewBag.Certificates = new SelectList(_context.Certificates, "Id", "TitleOfCertificate");
             return View();
         }
 
@@ -54,12 +56,13 @@ namespace TeamAssignment4A
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Description,NumberOfPossibleMarks,CertificateID")] Topic topic)
+        public async Task<IActionResult> Create([Bind("Description,NumberOfPossibleMarks,CertificateID")] Topic topic)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(topic);
                 await _context.SaveChangesAsync();
+                ViewBag.Certificates = new SelectList(_context.Certificates, "Id", "TitleOfCertificate");
                 return RedirectToAction(nameof(Index));
             }
             return View(topic);
