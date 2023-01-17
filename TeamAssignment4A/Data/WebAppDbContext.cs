@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TeamAssignment4A.Models;
 using TeamAssignment4A.Models.JointTables;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using TeamAssignment4A.Models.IdentityUsers;
-using Microsoft.AspNetCore.Identity;
+
 
 namespace TeamAssignment4A.Data
 {

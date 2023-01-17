@@ -6,50 +6,47 @@ namespace TeamAssignment4A.Data.Repositories
 {
     public class CandidateRepository : IGenericRepository<Candidate>
     {
-        private WebAppDbContext _db;
+        private readonly WebAppDbContext _db;
         public CandidateRepository(WebAppDbContext context)
         {
             _db = context;
         }
-        public async Task<Candidate> Get(int? id)
+        public async Task<Candidate?> GetAsync(int? id)
         {
-            return await _db.Candidates.FindAsync(id);
+            return await _db.Candidates.FirstOrDefaultAsync(candidate => candidate.Id == id);
         }
 
-        public async Task<ICollection<Candidate>> GetAll()
+        public async Task<ICollection<Candidate?>> GetAllAsync()
         {
             return await _db.Candidates.ToListAsync<Candidate>();
         }
 
-        public async Task<Candidate> Add(Candidate? candidate)
-        {            
-            await _db.Candidates.AddAsync(candidate);
-            await _db.SaveChangesAsync();
-            return candidate;
-        }
-
-        public async Task<Candidate> Update(Candidate? candidate)
+        public async Task<int> AddOrUpdateAsync(Candidate? candidate)
         {
-            if(await _db.Candidates.FindAsync(candidate.Id) != null)
+            _db.Candidates.Update(candidate);
+            try
             {
-                _db.Candidates.Update(candidate);
-                //_db.Entry(candidate).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
-                return candidate;
             }
-            return null;
+            catch (Exception)
+            {
+
+                return -1;
+            }
+            return candidate.Id;
         }
 
-        public async Task<int> Delete(int? id)
+        public async Task<int> DeleteAsync(int? id)
         {
-            int result = 0;
-            if (await _db.Candidates.FindAsync(id) != null)
+            try
             {
                 _db.Candidates.Remove(await _db.Candidates.FindAsync(id));
-                await _db.SaveChangesAsync();
-                result = 1;
+                return await _db.SaveChangesAsync();
             }
-            return result;
+            catch (Exception)
+            {
+                return -1;
+            }
         }
     }
 }

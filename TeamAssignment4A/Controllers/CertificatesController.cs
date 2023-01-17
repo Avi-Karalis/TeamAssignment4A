@@ -7,39 +7,44 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TeamAssignment4A.Data;
 using TeamAssignment4A.Models;
+using TeamAssignment4A.Services;
 
 namespace TeamAssignment4A.Controllers
 {
     public class CertificatesController : Controller
-    {
-        private readonly WebAppDbContext _context;
-
-        public CertificatesController(WebAppDbContext context)
+    {        
+        private UnitOfWork _unit;
+        public CertificatesController(UnitOfWork unit)
+        {            
+            _unit = unit; 
+        }
+        private bool CertificateExists(int id)
         {
-            _context = context;
+            return _context.Certificates.Any(e => e.Id == id);
+        }
+        private bool CertificateDeleted(int id)
+        {
+            return _context.Certificates.Any(e => e.Id == id);
         }
 
         // GET: Certificates
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Certificates.ToListAsync());
+            return View(await _unit.Certificate.GetAllAsync());
         }
 
         // GET: Certificates/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Certificates == null)
+            if (id == null || _unit.Certificate == null)
             {
                 return NotFound();
             }
-
-            var certificate = await _context.Certificates
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var certificate = await _unit.Certificate.GetAsync(id);                
             if (certificate == null)
             {
                 return NotFound();
             }
-
             return View(certificate);
         }
 
@@ -59,8 +64,15 @@ namespace TeamAssignment4A.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(certificate);
-                await _context.SaveChangesAsync();
+                _unit.Certificate.AddOrUpdateAsync(certificate);
+                try
+                {
+                    _unit.SaveAsync();                    
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
                 return RedirectToAction(nameof(Index));
             }
             return View(certificate);
@@ -69,12 +81,12 @@ namespace TeamAssignment4A.Controllers
         // GET: Certificates/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Certificates == null)
+            if (id == null || _unit.Certificate == null)
             {
                 return NotFound();
             }
 
-            var certificate = await _context.Certificates.FindAsync(id);
+            var certificate = await _unit.Certificate.GetAsync(id);
             if (certificate == null)
             {
                 return NotFound();
@@ -96,10 +108,10 @@ namespace TeamAssignment4A.Controllers
 
             if (ModelState.IsValid)
             {
+                _unit.Certificate.AddOrUpdateAsync(certificate);
                 try
                 {
-                    _context.Update(certificate);
-                    await _context.SaveChangesAsync();
+                    _unit.SaveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -120,13 +132,12 @@ namespace TeamAssignment4A.Controllers
         // GET: Certificates/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Certificates == null)
+            if (id == null || _unit.Certificate == null)
             {
                 return NotFound();
             }
 
-            var certificate = await _context.Certificates
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var certificate = await _unit.Certificate.GetAsync(id);                
             if (certificate == null)
             {
                 return NotFound();
@@ -140,23 +151,20 @@ namespace TeamAssignment4A.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Certificates == null)
+            if (_unit.Certificate == null)
             {
                 return Problem("Entity set 'WebAppDbContext.Certificates'  is null.");
-            }
-            var certificate = await _context.Certificates.FindAsync(id);
-            if (certificate != null)
+            }            
+            if(await _unit.Certificate.DeleteAsync(id))
             {
-                _context.Certificates.Remove(certificate);
+                _unit.SaveAsync();
+                certificateDeleted = true;
             }
-
-            await _context.SaveChangesAsync();
+            else
+            {
+                certificateDeleted = false;                
+            }            
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool CertificateExists(int id)
-        {
-            return _context.Certificates.Any(e => e.Id == id);
-        }
+        }        
     }
 }
