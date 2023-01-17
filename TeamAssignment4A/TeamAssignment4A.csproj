@@ -8,9 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\uploader\**" />
+    <Content Remove="wwwroot\uploader\**" />
+    <EmbeddedResource Remove="wwwroot\uploader\**" />
+    <None Remove="wwwroot\uploader\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
-    <PackageReference Include="CKEditor" Version="3.6.4" />
-    <PackageReference Include="CKeditor.Mvc" Version="3.6.5" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.8" />

@@ -14,9 +14,12 @@ namespace TeamAssignment4A.Controllers
     {
         private readonly WebAppDbContext _context;
 
-        public StemsController(WebAppDbContext context)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public StemsController(WebAppDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Stems
@@ -157,5 +160,6 @@ namespace TeamAssignment4A.Controllers
         {
             return _context.Stems.Any(e => e.Id == id);
         }
+        
     }
 }
