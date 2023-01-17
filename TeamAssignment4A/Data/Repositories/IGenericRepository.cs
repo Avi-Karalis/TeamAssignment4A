@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace TeamAssignment4A.Repositories
+namespace TeamAssignment4A.Data.Repositories
 {
     public interface IGenericRepository<T> where T : class
     {

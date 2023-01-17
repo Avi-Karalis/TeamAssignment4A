@@ -2,7 +2,7 @@
 using TeamAssignment4A.Data;
 using TeamAssignment4A.Models;
 
-namespace TeamAssignment4A.Repositories
+namespace TeamAssignment4A.Data.Repositories
 {
     public class CertificateRepository : IGenericRepository<Certificate>
     {
