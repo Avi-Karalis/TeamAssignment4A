@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using TeamAssignment4A.Data;
+using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models;
 
 namespace TeamAssignment4A.Controllers
@@ -14,10 +16,21 @@ namespace TeamAssignment4A.Controllers
     public class TopicsController : Controller
     {
         private readonly WebAppDbContext _context;
+        private readonly IMapper _mapper;
 
-        public TopicsController(WebAppDbContext context)
+        public TopicsController(WebAppDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(TopicDto), 200)]
+        public IActionResult GetAllTopics() 
+        {
+            var topics = _context.Topics.ToList();
+            var topicDtos = _mapper.Map<List<TopicDto>>(topics);
+            return Ok(topicDtos); 
         }
 
         // GET: Topics

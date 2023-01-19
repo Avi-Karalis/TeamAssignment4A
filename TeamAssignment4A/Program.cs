@@ -18,6 +18,9 @@ namespace TeamAssignment4A {
                 .AddEntityFrameworkStores<WebAppDbContext>();
             builder.Services.AddControllersWithViews();
 
+            //Add AutoMapper
+            builder.Services.AddAutoMapper(typeof(Program));
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
