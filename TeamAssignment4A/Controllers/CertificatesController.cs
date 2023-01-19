@@ -20,11 +20,11 @@ namespace TeamAssignment4A.Controllers
             _unit = unit;
             _service = service;
         }
-        private bool CertificateExists(int id)
+        private bool CertificateExists(int Id)
         {
             return true; //_context.Certificates.Any(e => e.Id == id);
         }
-        private bool CertificateDeleted(int id)
+        private bool CertificateDeleted(int Id)
         {
             return true;//_context.Certificates.Any(e => e.Id == id);
         }
@@ -36,15 +36,14 @@ namespace TeamAssignment4A.Controllers
         }
 
         // GET: Certificates/Details/5
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int Id)
         {
-            return View($"{_service.GetCertificate(id)}");           
+            return View($"{await _service.GetCertificate(Id)}");           
         }
 
         // GET: Certificates/Create
         public IActionResult Create()
         {
-
             return View();
         }
 
@@ -53,10 +52,9 @@ namespace TeamAssignment4A.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
-        {
-            
-            return RedirectToAction($"{service.}");            
+        public async Task<IActionResult> Create(int Id, [Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
+        {            
+            return View($"{await _service.AddOrUpdate(Id, certificate)}");            
         }
 
         // GET: Certificates/Edit/5

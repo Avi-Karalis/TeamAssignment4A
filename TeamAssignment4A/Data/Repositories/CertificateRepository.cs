@@ -22,7 +22,7 @@ namespace TeamAssignment4A.Data.Repositories
             return await _db.Certificates.ToListAsync<Certificate>();
         }        
 
-        public async Task<EntityState> AddOrUpdate(Certificate certificate)
+        public EntityState AddOrUpdate(Certificate certificate)
         {                      
             _db.Certificates.Update(certificate);
             return _db.Entry(certificate).State;                                     

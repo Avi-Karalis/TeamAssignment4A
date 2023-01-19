@@ -16,9 +16,9 @@ namespace TeamAssignment4A.Services
             Certificate = new CertificateRepository(db);
         }
 
-        public async void SaveAsync() 
+        public async Task<int> SaveAsync() 
         {
-            await _db.SaveChangesAsync();
+            return await _db.SaveChangesAsync();
         }
 
         private bool disposed = false;

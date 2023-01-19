@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TeamAssignment4A.Models;
 
 namespace TeamAssignment4A.Services
@@ -12,7 +13,7 @@ namespace TeamAssignment4A.Services
         }
         public async Task<string> GetCertificate(int id)
         {
-            Task<Certificate> certificate = _unit.Certificate.GetAsync(id);
+            Certificate? certificate = await _unit.Certificate.GetAsync(id);
             if(certificate == null)
             {
                 return "Index" ;
@@ -22,12 +23,27 @@ namespace TeamAssignment4A.Services
 
         public async Task<string> GetAllCertificates()
         {
-            throw new NotImplementedException();
+            ICollection<Certificate>? certificates = await _unit.Certificate.GetAllAsync();
+            if(certificates == null)
+            {
+                return "Index" ;
+            }
+            return "Details, certificates";            
         }
 
-        public async Task<string> AddOrUpdate(int id, Certificate certificate)
+        public async Task<string> AddOrUpdate(Certificate certificate)
         {
-            throw new NotImplementedException();
+            EntityState state =  _unit.Certificate.AddOrUpdate(certificate);
+            await _unit.SaveAsync();
+            if (state == EntityState.Added)
+            {
+                return "Index";
+            }
+            else if(state == EntityState.Modified)
+            {
+                return "Index";
+            }
+            return "";
         }
 
         public async Task<string> Delete(int id)

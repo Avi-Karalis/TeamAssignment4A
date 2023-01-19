@@ -8,7 +8,7 @@ namespace TeamAssignment4A.Data.Repositories
     {
         Task<T?> GetAsync(int id);
         Task<ICollection<T>?> GetAllAsync();
-        Task<EntityState> AddOrUpdate(T item);        
+        EntityState AddOrUpdate(T item);        
         void Delete(T item);
     }
 }
