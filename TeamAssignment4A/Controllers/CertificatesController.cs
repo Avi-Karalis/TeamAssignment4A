@@ -14,38 +14,31 @@ namespace TeamAssignment4A.Controllers
     public class CertificatesController : Controller
     {        
         private UnitOfWork _unit;
-        public CertificatesController(UnitOfWork unit)
+        private CertificateService _service;
+        public CertificatesController(UnitOfWork unit, CertificateService service)
         {            
-            _unit = unit; 
+            _unit = unit;
+            _service = service;
         }
         private bool CertificateExists(int id)
         {
-            return _context.Certificates.Any(e => e.Id == id);
+            return true; //_context.Certificates.Any(e => e.Id == id);
         }
         private bool CertificateDeleted(int id)
         {
-            return _context.Certificates.Any(e => e.Id == id);
+            return true;//_context.Certificates.Any(e => e.Id == id);
         }
 
         // GET: Certificates
         public async Task<IActionResult> Index()
         {
-            return View(await _unit.Certificate.GetAllAsync());
+            return View(await _service.GetAllCertificates());
         }
 
         // GET: Certificates/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null || _unit.Certificate == null)
-            {
-                return NotFound();
-            }
-            var certificate = await _unit.Certificate.GetAsync(id);                
-            if (certificate == null)
-            {
-                return NotFound();
-            }
-            return View(certificate);
+            return View($"{_service.GetCertificate(id)}");           
         }
 
         // GET: Certificates/Create
@@ -62,20 +55,8 @@ namespace TeamAssignment4A.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
         {
-            if (ModelState.IsValid)
-            {
-                _unit.Certificate.AddOrUpdateAsync(certificate);
-                try
-                {
-                    _unit.SaveAsync();                    
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(certificate);
+            
+            return RedirectToAction($"{service.}");            
         }
 
         // GET: Certificates/Edit/5

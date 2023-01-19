@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using TeamAssignment4A.Data;
 using TeamAssignment4A.Models;
 
@@ -11,40 +12,25 @@ namespace TeamAssignment4A.Data.Repositories
         {
             _db = context;
         }
-        public async Task<Certificate?> GetAsync(int? id)
+        public async Task<Certificate?> GetAsync(int id)
         {            
             return await _db.Certificates.FirstOrDefaultAsync(x => x.Id == id);            
         }
 
-        public async Task<ICollection<Certificate?>> GetAllAsync()
+        public async Task<ICollection<Certificate>?> GetAllAsync()
         {
             return await _db.Certificates.ToListAsync<Certificate>();
         }        
 
-        public async Task<int> AddOrUpdateAsync(Certificate? certificate)
-        {            
+        public async Task<EntityState> AddOrUpdate(Certificate certificate)
+        {                      
             _db.Certificates.Update(certificate);
-            try
-            {                
-                return certificate.Id;
-            }
-            catch (Exception)
-            {
-                return -1;
-            }                        
+            return _db.Entry(certificate).State;                                     
         }
 
-        public async Task<bool> DeleteAsync(int? id)
-        {            
-            try
-            {
-                _db.Certificates.Remove(await _db.Certificates.FirstOrDefaultAsync(x => x.Id == id));                
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }            
+        public void Delete(Certificate certificate)
+        {           
+            _db.Certificates.Remove(certificate);                                        
         }
     }
 }
