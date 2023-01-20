@@ -3,7 +3,7 @@ using System.Xml.Linq;
 
 namespace TeamAssignment4A.Dtos
 {
-    public class StemTopicDto
+    public class StemDto
     {
         [Required]
         public int Id { get; set; }
@@ -25,5 +25,7 @@ namespace TeamAssignment4A.Dtos
 
         [Required]
         public char CorrectAnswer { get; set; }
+
+        public string TopicDescription { get; set; }
     }
 }

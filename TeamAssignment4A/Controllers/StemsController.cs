@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TeamAssignment4A.Data;
+using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models;
 
 namespace TeamAssignment4A.Controllers
@@ -16,11 +18,27 @@ namespace TeamAssignment4A.Controllers
 
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public StemsController(WebAppDbContext context, IWebHostEnvironment webHostEnvironment)
+        private readonly IMapper _mapper;
+
+        public StemsController(WebAppDbContext context, IWebHostEnvironment webHostEnvironment, IMapper mapper)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _mapper = mapper;
         }
+
+
+        //AutoMapper
+        [HttpGet]
+        [ProducesResponseType(typeof(StemDto), 200)]
+        public IActionResult GetAllStems()
+        {
+            var stems = _context.Stems.ToList();
+            var stemDtos = _mapper.Map<List<StemDto>>(stems);
+            return Ok (stemDtos);
+        }
+
+
 
         // GET: Stems
         public async Task<IActionResult> Index()

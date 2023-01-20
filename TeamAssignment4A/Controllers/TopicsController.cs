@@ -24,6 +24,7 @@ namespace TeamAssignment4A.Controllers
             _mapper = mapper;
         }
 
+        //AutoMapper
         [HttpGet]
         [ProducesResponseType(typeof(TopicDto), 200)]
         public IActionResult GetAllTopics() 
@@ -71,16 +72,17 @@ namespace TeamAssignment4A.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Description,NumberOfPossibleMarks")] Topic topic)//<- theleiDTO
+        public async Task<IActionResult> Create([Bind("Id,Description,NumberOfPossibleMarks,TitleOfCertificate")] TopicDto topicDto, Topic topic)//<- theleiDTO
         {
             if (ModelState.IsValid)
             {
                 //topic.Certificate = certificate;
-                _context.Add(topic);
+                _context.Topics.ToList().ForEach(m => m.Certificate.TitleOfCertificate = topicDto.TitleOfCertificate);
+                _context.Topics.Add(topic);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(topic);
+            return View (topic);
         }
 
         // GET: Topics/Edit/5

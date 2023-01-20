@@ -15,8 +15,7 @@ namespace TeamAssignment4A.Dtos
         [Required]
         public int NumberOfPossibleMarks { get; set; }
 
-        public virtual Certificate Certificate { get; set; }
-        public virtual ICollection<StemTopicDto>? Stems { get; set; }
-        public virtual ICollection<ExamTopic>? ExamTopics { get; set; }
+        public string TitleOfCertificate { get; set; }
+
     }
 }
