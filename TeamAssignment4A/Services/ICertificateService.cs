@@ -6,7 +6,9 @@ namespace TeamAssignment4A.Services
     {
         Task<MyCertificateDTO> GetCertificate(int id);
         Task<ICollection<Certificate>?> GetAllCertificates();
-        Task<MyCertificateDTO> AddOrUpdate(int id, Certificate certificate);
+        Task<MyCertificateDTO> AddOrUpdateCertificate(int id, Certificate certificate);
         Task<MyCertificateDTO> Delete(int id);
+        Task<MyCertificateDTO> GetForUpdate(int id);
+        Task<MyCertificateDTO> GetForDelete(int id);
     }
 }

@@ -32,5 +32,10 @@ namespace TeamAssignment4A.Data.Repositories
         {           
             _db.Certificates.Remove(certificate);                                        
         }
+
+        public async Task<bool> Exists(int id)
+        {
+            return await _db.Certificates.AnyAsync(e => e.Id == id);
+        }        
     }
 }

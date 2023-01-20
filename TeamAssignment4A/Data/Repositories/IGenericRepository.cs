@@ -10,5 +10,6 @@ namespace TeamAssignment4A.Data.Repositories
         Task<ICollection<T>?> GetAllAsync();
         EntityState AddOrUpdate(T item);        
         void Delete(T item);
+        Task<bool> Exists(int id);
     }
 }

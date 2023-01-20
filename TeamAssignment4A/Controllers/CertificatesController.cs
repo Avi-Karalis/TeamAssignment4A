@@ -12,22 +12,12 @@ using TeamAssignment4A.Services;
 namespace TeamAssignment4A.Controllers
 {
     public class CertificatesController : Controller
-    {        
-        //private UnitOfWork _unit;
+    {       
         private CertificateService _service;
         public CertificatesController(CertificateService service)
         {            
-            //_unit = unit;
-            _service = service;
-        }
-        private bool CertificateExists(int Id)
-        {
-            return true; //_context.Certificates.Any(e => e.Id == id);
-        }
-        private bool CertificateDeleted(int Id)
-        {
-            return true;//_context.Certificates.Any(e => e.Id == id);
-        }
+            _service = service;        
+        }        
 
         // GET: Certificates
         public async Task<IActionResult> Index()
@@ -39,7 +29,8 @@ namespace TeamAssignment4A.Controllers
         public async Task<IActionResult> Details(int Id)
         {
             MyCertificateDTO myDTO = await _service.GetCertificate(Id);
-            return View($"{myDTO.View}, {myDTO.Certificate}");           
+            ViewBag.Message = myDTO.Message;
+            return View($"{myDTO.View}", myDTO.Certificate);           
         }
 
         // GET: Certificates/Create
@@ -48,100 +39,50 @@ namespace TeamAssignment4A.Controllers
             return View();
         }
 
-        // POST: Certificates/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Certificates/Create        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int Id, [Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
-        {            
-            return View($"{await _service.AddOrUpdate(Id, certificate)}");            
+        {
+            MyCertificateDTO myDTO = await _service.AddOrUpdateCertificate(Id, certificate);
+            ViewBag.Message = myDTO.Message;
+            return View($"{myDTO.View}", myDTO.Certificate);
         }
 
         // GET: Certificates/Edit/5
         public async Task<IActionResult> Edit(int Id)
         {
-            //if (Id == null || _unit.Certificate == null)
-            //{
-            //    return NotFound();
-            //}
-
-            var certificate = await _service.GetCertificate(Id);
-            if (certificate == null)
-            {
-                return NotFound();
-            }
-            return View(certificate);
+            MyCertificateDTO myDTO = await _service.GetForUpdate(Id);
+            ViewBag.Message = myDTO.Message;
+            return View($"{myDTO.View}", myDTO.Certificate);
         }
 
-        // POST: Certificates/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Certificates/Edit/5        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int Id, [Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
-        {           
-
-            if (ModelState .IsValid)
-            {
-                _service.AddOrUpdate(Id, certificate);
-                try
-                {
-                    //_unit.SaveAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CertificateExists(certificate.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View($"{await _service.AddOrUpdate(Id, certificate)}");
+        {
+            MyCertificateDTO myDTO = await _service.AddOrUpdateCertificate(Id, certificate);
+            ViewBag.Message = myDTO.Message;
+            return View($"{myDTO.View}", myDTO.Certificate);          
         }
 
         // GET: Certificates/Delete/5
         public async Task<IActionResult> Delete(int Id)
         {
-            //if (id == null || _unit.Certificate == null)
-            //{
-            //    return NotFound();
-            //}
-
-            var certificate = await _service.GetCertificate(Id);                
-            if (certificate == null)
-            {
-                return NotFound();
-            }
-
-            return View(certificate);
+            MyCertificateDTO myDTO = await _service.GetForDelete(Id);
+            ViewBag.Message = myDTO.Message;
+            return View($"{myDTO.View}", myDTO.Certificate);
         }
 
         // POST: Certificates/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int Id)
         {
-            //if (_unit.Certificate == null)
-            //{
-            //    return Problem("Entity set 'WebAppDbContext.Certificates'  is null.");
-            //}
-            return View();
-            //if(await _unit.Certificate.Delete(id))
-            //{
-            //    _unit.SaveAsync();
-            //    //certificateDeleted = true;
-            //}
-            //else
-            //{
-            //    //certificateDeleted = false;                
-            //}            
-            //return RedirectToAction(nameof(Index));
+            MyCertificateDTO myDTO = await _service.Delete(Id);
+            ViewBag.Message = myDTO.Message;
+            return View($"{myDTO.View}", myDTO.Certificate);
         }        
     }
 }

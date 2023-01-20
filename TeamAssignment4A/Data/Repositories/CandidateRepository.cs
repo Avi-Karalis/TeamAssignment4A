@@ -48,5 +48,10 @@ namespace TeamAssignment4A.Data.Repositories
                
             }
         }
+
+        public async Task<bool> Exists(int id)
+        {
+            return await _db.Candidates.AnyAsync(e => e.Id == id);
+        }
     }
 }
