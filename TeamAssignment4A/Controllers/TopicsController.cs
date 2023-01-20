@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using TeamAssignment4A.Data;
+using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace TeamAssignment4A.Controllers
 {
@@ -23,6 +27,13 @@ namespace TeamAssignment4A.Controllers
         // GET: Topics
         public async Task<IActionResult> Index()
         {
+            List<Topic> ListOfTopics = _context.Topics.ToList();
+            List<TopicCertificateDTO> topicCertificateDTOs = new List<TopicCertificateDTO>();
+            foreach (var topic in ListOfTopics) {
+               
+               Certificate certificate = _context.Certificates.Find(topic.CertificateID);
+
+            }
             return View(await _context.Topics.ToListAsync());
         }
 
@@ -58,10 +69,12 @@ namespace TeamAssignment4A.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Description,NumberOfPossibleMarks")] Topic topic)//<- theleiDTO
+        public async Task<IActionResult> Create([Bind("Id,Description,NumberOfPossibleMarks, CertificateID")] Topic topic)//<- theleiDTO
         {
+
             if (ModelState.IsValid)
             {
+
                 //topic.Certificate = certificate;
                 _context.Add(topic);
                 await _context.SaveChangesAsync();
