@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models.JointTables;
 
 
@@ -23,6 +24,16 @@ namespace TeamAssignment4A.Models
         [Display(Name = "Certificate ID")]
         public int CertificateID { get; set; }
 
+        public Topic() {
+
+        }
+
+        public Topic(TopicCreateDto topicDto) {
+            this.Id = topicDto.Id;
+            this.Description = topicDto.Description;
+            this.NumberOfPossibleMarks = topicDto.NumberOfPossibleMarks;
+            this.CertificateID = topicDto.CertificateID;
+        }
         // Navigation Properties
 
         public virtual Certificate? Certificate { get; set; }
