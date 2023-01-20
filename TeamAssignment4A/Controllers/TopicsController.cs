@@ -27,13 +27,8 @@ namespace TeamAssignment4A.Controllers
         // GET: Topics
         public async Task<IActionResult> Index()
         {
-            List<Topic> ListOfTopics = _context.Topics.ToList();
-            List<TopicCertificateDTO> topicCertificateDTOs = new List<TopicCertificateDTO>();
-            foreach (var topic in ListOfTopics) {
-               
-               Certificate certificate = _context.Certificates.Find(topic.CertificateID);
-
-            }
+            List<Topic> ListOfTopics = _context.Topics.Include(c=>c.Certificate).ToList();
+            
             return View(await _context.Topics.ToListAsync());
         }
 
