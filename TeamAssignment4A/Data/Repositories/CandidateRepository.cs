@@ -11,7 +11,7 @@ namespace TeamAssignment4A.Data.Repositories
         {
             _db = context;
         }
-        public async Task<Candidate?> GetAsync(int? id)
+        public async Task<Candidate?> GetAsync(int id)
         {
             return await _db.Candidates.FirstOrDefaultAsync(candidate => candidate.Id == id);
         }
@@ -21,31 +21,31 @@ namespace TeamAssignment4A.Data.Repositories
             return await _db.Candidates.ToListAsync<Candidate>();
         }
 
-        public async Task<int> AddOrUpdateAsync(Candidate? candidate)
+        public EntityState AddOrUpdate(Candidate candidate)
         {
             _db.Candidates.Update(candidate);
             try
             {
-                await _db.SaveChangesAsync();
+                _db.SaveChangesAsync();
             }
             catch (Exception)
             {
 
-                return -1;
+                return EntityState.Added;
             }
-            return candidate.Id;
+            return EntityState.Added;
         }
 
-        public async Task<int> DeleteAsync(int? id)
+        public async void Delete(Candidate candidate)
         {
             try
             {
-                _db.Candidates.Remove(await _db.Candidates.FindAsync(id));
-                return await _db.SaveChangesAsync();
+                _db.Candidates.Remove(await _db.Candidates.FindAsync(candidate.Id));
+                 await _db.SaveChangesAsync();
             }
             catch (Exception)
             {
-                return -1;
+               
             }
         }
     }

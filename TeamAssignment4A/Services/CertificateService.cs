@@ -1,54 +1,63 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
+using TeamAssignment4A.Data;
 using TeamAssignment4A.Models;
 
 namespace TeamAssignment4A.Services
 {
-    public class CertificateService : ICertificateService
+    public class CertificateService : ControllerBase, ICertificateService
     {
         private UnitOfWork _unit;
-        public CertificateService(UnitOfWork unit)
+        private WebAppDbContext _db;
+        private MyCertificateDTO _myDTO;
+        public CertificateService(UnitOfWork unit, WebAppDbContext db)
         {
             _unit= unit;
+            _db = db;
+            _myDTO = new MyCertificateDTO();
         }
-        public async Task<string> GetCertificate(int id)
+        public async Task<MyCertificateDTO> GetCertificate(int id)
         {
-            Certificate? certificate = await _unit.Certificate.GetAsync(id);
-            if(certificate == null)
+            if((id == null || _db.Certificates == null) || await _unit.Certificate.GetAsync(id) == null)
             {
-                return "Index" ;
+                _myDTO.View = "Index";
+                _myDTO.Message = "The requested certificate was not found. Please try again.";
             }
-            return "Details, certificate";
+            else
+            {
+                _myDTO.View = "Details";
+                _myDTO.Certificate = await _unit.Certificate.GetAsync(id);
+            }             
+            return _myDTO;
         }
 
-        public async Task<string> GetAllCertificates()
+        public async Task<ICollection<Certificate>?> GetAllCertificates()
         {
-            ICollection<Certificate>? certificates = await _unit.Certificate.GetAllAsync();
-            if(certificates == null)
-            {
-                return "Index" ;
-            }
-            return "Details, certificates";            
+            return await _unit.Certificate.GetAllAsync();                       
         }
 
-        public async Task<string> AddOrUpdate(Certificate certificate)
-        {
-            EntityState state =  _unit.Certificate.AddOrUpdate(certificate);
-            await _unit.SaveAsync();
-            if (state == EntityState.Added)
+        public async Task<MyCertificateDTO> AddOrUpdate(int id, [Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
+        {            
+            if(ModelState.IsValid)
             {
-                return "Index";
+                EntityState state =  _unit.Certificate.AddOrUpdate(certificate);
+                await _unit.SaveAsync();
+                if (state == EntityState.Added || state == EntityState.Modified)
+                {
+                    _myDTO.View = "Index";
+                }                
             }
-            else if(state == EntityState.Modified)
-            {
-                return "Index";
-            }
-            return "";
+            
+            
+                return _myDTO;
+            
         }
 
-        public async Task<string> Delete(int id)
+        public Task<MyCertificateDTO> Delete(int id)
         {
             throw new NotImplementedException();
         }
-    }
+    }   
 }

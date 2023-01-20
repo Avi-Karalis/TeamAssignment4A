@@ -1,7 +1,12 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol.Core.Types;
 using TeamAssignment4A.Data;
+using TeamAssignment4A.Data.Repositories;
+using TeamAssignment4A.Models;
 using TeamAssignment4A.Models.IdentityUsers;
+using TeamAssignment4A.Services;
 
 namespace TeamAssignment4A {
     public class Program {
@@ -17,6 +22,9 @@ namespace TeamAssignment4A {
             builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<WebAppDbContext>();
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<IdentityDbContext<AppUser>, WebAppDbContext>();
+            builder.Services.AddScoped<UnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<ICertificateService, CertificateService>();
 
             var app = builder.Build();
 

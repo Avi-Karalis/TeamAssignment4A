@@ -4,9 +4,9 @@ namespace TeamAssignment4A.Services
 {
     public interface ICertificateService
     {
-        Task<string> GetCertificate(int id);
-        Task<string> GetAllCertificates();
-        Task<string> AddOrUpdate(int id, Certificate certificate);
-        Task<string> Delete(int id);
+        Task<MyCertificateDTO> GetCertificate(int id);
+        Task<ICollection<Certificate>?> GetAllCertificates();
+        Task<MyCertificateDTO> AddOrUpdate(int id, Certificate certificate);
+        Task<MyCertificateDTO> Delete(int id);
     }
 }

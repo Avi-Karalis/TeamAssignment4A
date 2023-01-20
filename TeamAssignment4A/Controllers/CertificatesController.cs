@@ -13,11 +13,11 @@ namespace TeamAssignment4A.Controllers
 {
     public class CertificatesController : Controller
     {        
-        private UnitOfWork _unit;
+        //private UnitOfWork _unit;
         private CertificateService _service;
-        public CertificatesController(UnitOfWork unit, CertificateService service)
+        public CertificatesController(CertificateService service)
         {            
-            _unit = unit;
+            //_unit = unit;
             _service = service;
         }
         private bool CertificateExists(int Id)
@@ -38,7 +38,8 @@ namespace TeamAssignment4A.Controllers
         // GET: Certificates/Details/5
         public async Task<IActionResult> Details(int Id)
         {
-            return View($"{await _service.GetCertificate(Id)}");           
+            MyCertificateDTO myDTO = await _service.GetCertificate(Id);
+            return View($"{myDTO.View}, {myDTO.Certificate}");           
         }
 
         // GET: Certificates/Create
@@ -58,14 +59,14 @@ namespace TeamAssignment4A.Controllers
         }
 
         // GET: Certificates/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int Id)
         {
-            if (id == null || _unit.Certificate == null)
-            {
-                return NotFound();
-            }
+            //if (Id == null || _unit.Certificate == null)
+            //{
+            //    return NotFound();
+            //}
 
-            var certificate = await _unit.Certificate.GetAsync(id);
+            var certificate = await _service.GetCertificate(Id);
             if (certificate == null)
             {
                 return NotFound();
@@ -78,19 +79,15 @@ namespace TeamAssignment4A.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
-        {
-            if (id != certificate.Id)
-            {
-                return NotFound();
-            }
+        public async Task<IActionResult> Edit(int Id, [Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
+        {           
 
-            if (ModelState.IsValid)
+            if (ModelState .IsValid)
             {
-                _unit.Certificate.AddOrUpdateAsync(certificate);
+                _service.AddOrUpdate(Id, certificate);
                 try
                 {
-                    _unit.SaveAsync();
+                    //_unit.SaveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -105,18 +102,18 @@ namespace TeamAssignment4A.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(certificate);
+            return View($"{await _service.AddOrUpdate(Id, certificate)}");
         }
 
         // GET: Certificates/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int Id)
         {
-            if (id == null || _unit.Certificate == null)
-            {
-                return NotFound();
-            }
+            //if (id == null || _unit.Certificate == null)
+            //{
+            //    return NotFound();
+            //}
 
-            var certificate = await _unit.Certificate.GetAsync(id);                
+            var certificate = await _service.GetCertificate(Id);                
             if (certificate == null)
             {
                 return NotFound();
@@ -130,20 +127,21 @@ namespace TeamAssignment4A.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_unit.Certificate == null)
-            {
-                return Problem("Entity set 'WebAppDbContext.Certificates'  is null.");
-            }            
-            if(await _unit.Certificate.DeleteAsync(id))
-            {
-                _unit.SaveAsync();
-                certificateDeleted = true;
-            }
-            else
-            {
-                certificateDeleted = false;                
-            }            
-            return RedirectToAction(nameof(Index));
+            //if (_unit.Certificate == null)
+            //{
+            //    return Problem("Entity set 'WebAppDbContext.Certificates'  is null.");
+            //}
+            return View();
+            //if(await _unit.Certificate.Delete(id))
+            //{
+            //    _unit.SaveAsync();
+            //    //certificateDeleted = true;
+            //}
+            //else
+            //{
+            //    //certificateDeleted = false;                
+            //}            
+            //return RedirectToAction(nameof(Index));
         }        
     }
 }
