@@ -10,86 +10,86 @@ using TeamAssignment4A.Models;
 
 namespace TeamAssignment4A.Controllers
 {
-    public class CertificatesController : Controller
+    public class CandidatesController : Controller
     {
         private readonly WebAppDbContext _context;
 
-        public CertificatesController(WebAppDbContext context)
+        public CandidatesController(WebAppDbContext context)
         {
             _context = context;
         }
 
-        // GET: Certificates
+        // GET: Candidates
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Certificates.ToListAsync());
+            return View(await _context.Candidates.ToListAsync());
         }
 
-        // GET: Certificates/Details/5
+        // GET: Candidates/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Certificates == null)
+            if (id == null || _context.Candidates == null)
             {
                 return NotFound();
             }
 
-            var certificate = await _context.Certificates
+            var candidate = await _context.Candidates
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (certificate == null)
+            if (candidate == null)
             {
                 return NotFound();
             }
 
-            return View(certificate);
+            return View(candidate);
         }
 
-        // GET: Certificates/Create
+        // GET: Candidates/Create
         public IActionResult Create()
         {
-
             return View();
         }
 
-        // POST: Certificates/Create
+        // POST: Candidates/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,MiddleName,LastName,Gender,NativeLanguage,CountryOfResidence,Birthdate,Email,LandlineNumber,MobileNumber,Address1,Address2,PostalCode,Town,Province,PhotoIdType,PhotoIdNumber,PhotoIdDate")] Candidate candidate)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(certificate);
+                _context.Add(candidate);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(certificate);
+            return View(candidate);
         }
 
-        // GET: Certificates/Edit/5
+        // GET: Candidates/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Certificates == null)
+            if (id == null || _context.Candidates == null)
             {
                 return NotFound();
             }
 
-            var certificate = await _context.Certificates.FindAsync(id);
-            if (certificate == null)
+            var candidate = await _context.Candidates.FindAsync(id);
+            if (candidate == null)
             {
                 return NotFound();
             }
-            return View(certificate);
+            return View(candidate);
         }
 
-        // POST: Certificates/Edit/5
+        // POST: Candidates/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int Id, [Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,Gender,NativeLanguage,CountryOfResidence,Birthdate,Email,LandlineNumber,MobileNumber,Address1,Address2,PostalCode,Town,Province,PhotoIdType,PhotoIdNumber,PhotoIdDate")] Candidate candidate)
         {
-            if (Id != certificate.Id) {
+            if (id != candidate.Id)
+            {
                 return NotFound();
             }
 
@@ -97,12 +97,12 @@ namespace TeamAssignment4A.Controllers
             {
                 try
                 {
-                    _context.Update(certificate);
+                    _context.Update(candidate);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CertificateExists(certificate.Id))
+                    if (!CandidateExists(candidate.Id))
                     {
                         return NotFound();
                     }
@@ -113,49 +113,49 @@ namespace TeamAssignment4A.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(certificate);
+            return View(candidate);
         }
 
-        // GET: Certificates/Delete/5
+        // GET: Candidates/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Certificates == null)
+            if (id == null || _context.Candidates == null)
             {
                 return NotFound();
             }
 
-            var certificate = await _context.Certificates
+            var candidate = await _context.Candidates
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (certificate == null)
+            if (candidate == null)
             {
                 return NotFound();
             }
 
-            return View(certificate);
+            return View(candidate);
         }
 
-        // POST: Certificates/Delete/5
+        // POST: Candidates/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Certificates == null)
+            if (_context.Candidates == null)
             {
-                return Problem("Entity set 'WebAppDbContext.Certificates'  is null.");
+                return Problem("Entity set 'WebAppDbContext.Candidates'  is null.");
             }
-            var certificate = await _context.Certificates.FindAsync(id);
-            if (certificate != null)
+            var candidate = await _context.Candidates.FindAsync(id);
+            if (candidate != null)
             {
-                _context.Certificates.Remove(certificate);
+                _context.Candidates.Remove(candidate);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CertificateExists(int id)
+        private bool CandidateExists(int id)
         {
-            return _context.Certificates.Any(e => e.Id == id);
+            return _context.Candidates.Any(e => e.Id == id);
         }
     }
 }

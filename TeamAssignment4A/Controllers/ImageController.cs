@@ -19,7 +19,7 @@ namespace TeamAssignment4A.Controllers {
             if (upload == null || upload.Length == 0) {
                 return BadRequest("File not provided");
             }
-            var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "img", upload.FileName);
+            var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "img", upload.FileName);  // new Guid
             using (var stream = new FileStream(filePath, FileMode.Create)) {
                 await upload.CopyToAsync(stream);
             }
