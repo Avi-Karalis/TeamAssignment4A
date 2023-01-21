@@ -30,6 +30,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.CorrectAnswer)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Topic)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -51,8 +54,11 @@
             <td>
                 @Html.DisplayFor(modelItem => item.OptionD)
             </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CorrectAnswer)
+                </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CorrectAnswer)
+                @Html.DisplayFor(modelItem => item.Topic.Description)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

@@ -1,112 +1,94 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using TeamAssignment4A.Data;
-using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace TeamAssignment4A.Controllers
 {
-    public class TopicsController : Controller
+    public class CandidatesController : Controller
     {
         private readonly WebAppDbContext _context;
 
-        public TopicsController(WebAppDbContext context)
+        public CandidatesController(WebAppDbContext context)
         {
             _context = context;
         }
 
-        // GET: Topics
+        // GET: Candidates
         public async Task<IActionResult> Index()
         {
-            List<Topic> ListOfTopics = _context.Topics.Include(c=>c.Certificate).ToList();
-            List<TopicIndexDto> ListOfTopicIndexDtos = new List<TopicIndexDto>();
-            foreach(Topic topic in ListOfTopics) {
-                TopicIndexDto topicIndexDto = new TopicIndexDto(topic);
-                ListOfTopicIndexDtos.Add(topicIndexDto);
-            }
-            return View(ListOfTopicIndexDtos);
+            return View(await _context.Candidates.ToListAsync());
         }
 
-        // GET: Topics/Details/5
+        // GET: Candidates/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Topics == null)
+            if (id == null || _context.Candidates == null)
             {
                 return NotFound();
             }
 
-            var topic = await _context.Topics
+            var candidate = await _context.Candidates
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (topic == null)
+            if (candidate == null)
             {
                 return NotFound();
             }
 
-            return View(topic);
+            return View(candidate);
         }
 
-        // GET: Topics/Create
+        // GET: Candidates/Create
         public IActionResult Create()
         {
-
-            ViewBag.Certificates = new SelectList(_context.Certificates, "Id", "TitleOfCertificate");
-
             return View();
         }
 
-        // POST: Topics/Create
+        // POST: Candidates/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Description,NumberOfPossibleMarks, CertificateID")] TopicCreateDto topicDto)//<- theleiDTO
+        public async Task<IActionResult> Create([Bind("Id,FirstName,MiddleName,LastName,Gender,NativeLanguage,CountryOfResidence,Birthdate,Email,LandlineNumber,MobileNumber,Address1,Address2,PostalCode,Town,Province,PhotoIdType,PhotoIdNumber,PhotoIdDate")] Candidate candidate)
         {
-
             if (ModelState.IsValid)
             {
-                Topic topic = new Topic(topicDto);
-                //topic.Certificate = certificate;
-                _context.Add(topic);
+                _context.Add(candidate);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View();
+            return View(candidate);
         }
 
-        // GET: Topics/Edit/5
+        // GET: Candidates/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Topics == null)
+            if (id == null || _context.Candidates == null)
             {
                 return NotFound();
             }
 
-            var topic = await _context.Topics.FindAsync(id);
-            ViewBag.Certificates = new SelectList(_context.Certificates, "Id", "TitleOfCertificate");
-            if (topic == null)
+            var candidate = await _context.Candidates.FindAsync(id);
+            if (candidate == null)
             {
                 return NotFound();
             }
-            return View(topic);
+            return View(candidate);
         }
 
-        // POST: Topics/Edit/5
+        // POST: Candidates/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Description,NumberOfPossibleMarks")] Topic topic)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,Gender,NativeLanguage,CountryOfResidence,Birthdate,Email,LandlineNumber,MobileNumber,Address1,Address2,PostalCode,Town,Province,PhotoIdType,PhotoIdNumber,PhotoIdDate")] Candidate candidate)
         {
-            if (id != topic.Id)
+            if (id != candidate.Id)
             {
                 return NotFound();
             }
@@ -115,12 +97,12 @@ namespace TeamAssignment4A.Controllers
             {
                 try
                 {
-                    _context.Update(topic);
+                    _context.Update(candidate);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TopicExists(topic.Id))
+                    if (!CandidateExists(candidate.Id))
                     {
                         return NotFound();
                     }
@@ -131,49 +113,49 @@ namespace TeamAssignment4A.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(topic);
+            return View(candidate);
         }
 
-        // GET: Topics/Delete/5
+        // GET: Candidates/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Topics == null)
+            if (id == null || _context.Candidates == null)
             {
                 return NotFound();
             }
 
-            var topic = await _context.Topics
+            var candidate = await _context.Candidates
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (topic == null)
+            if (candidate == null)
             {
                 return NotFound();
             }
 
-            return View(topic);
+            return View(candidate);
         }
 
-        // POST: Topics/Delete/5
+        // POST: Candidates/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Topics == null)
+            if (_context.Candidates == null)
             {
-                return Problem("Entity set 'WebAppDbContext.Topics'  is null.");
+                return Problem("Entity set 'WebAppDbContext.Candidates'  is null.");
             }
-            var topic = await _context.Topics.FindAsync(id);
-            if (topic != null)
+            var candidate = await _context.Candidates.FindAsync(id);
+            if (candidate != null)
             {
-                _context.Topics.Remove(topic);
+                _context.Candidates.Remove(candidate);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TopicExists(int id)
+        private bool CandidateExists(int id)
         {
-            return _context.Topics.Any(e => e.Id == id);
+            return _context.Candidates.Any(e => e.Id == id);
         }
     }
 }

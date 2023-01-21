@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TeamAssignment4A.Models.Certificate>
+﻿@model IEnumerable<TeamAssignment4A.Dtos.ExamIndexDto>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,13 +13,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TitleOfCertificate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PassingGrade)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaximumScore)
+                @Html.DisplayNameFor(model => model.ExamDescription)
             </th>
             <th></th>
         </tr>
@@ -27,15 +21,8 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-
             <td>
-                @Html.DisplayFor(modelItem => item.TitleOfCertificate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PassingGrade)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaximumScore)
+                @Html.DisplayFor(modelItem => item.ExamDescription)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

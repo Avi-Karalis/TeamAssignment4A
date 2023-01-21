@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TeamAssignment4A.Models.Topic>
+﻿@model IEnumerable<TeamAssignment4A.Dtos.TopicIndexDto>
 
 @{
     ViewData["Title"] = "Index";
@@ -20,7 +20,7 @@
             </th>
 
             <th>
-                @Html.DisplayNameFor(model => model.Certificate.TitleOfCertificate)
+                @Html.DisplayNameFor(model => model.CertificateTitle)
             </th>
 
             <th>
@@ -39,7 +39,7 @@
             </td>
 
                 <th>
-                    @Html.DisplayNameFor(model => model.Certificate.TitleOfCertificate)
+                    @Html.DisplayFor(modelItem => item.CertificateTitle)
                 </th>
 
             <td>
