@@ -1,0 +1,54 @@
+﻿@model TeamAssignment4A.Models.Exam
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Exam</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AssessmentTestCode)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AssessmentTestCode)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ExaminationDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ExaminationDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ScoreReportDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ScoreReportDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CandidateScore)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CandidateScore)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PercentageScore)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PercentageScore)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AssessmentResultLabel)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AssessmentResultLabel)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

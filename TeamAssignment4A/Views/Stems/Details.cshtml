@@ -1,0 +1,54 @@
+﻿@model TeamAssignment4A.Models.Stem
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Stem</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Question)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Question)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.OptionA)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.OptionA)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.OptionB)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.OptionB)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.OptionC)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.OptionC)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.OptionD)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.OptionD)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CorrectAnswer)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CorrectAnswer)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

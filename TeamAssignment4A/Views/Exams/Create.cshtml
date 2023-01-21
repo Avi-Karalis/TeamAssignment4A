@@ -1,0 +1,58 @@
+﻿@model TeamAssignment4A.Models.Exam
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Exam</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="AssessmentTestCode" class="control-label"></label>
+                <input asp-for="AssessmentTestCode" class="form-control" />
+                <span asp-validation-for="AssessmentTestCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExaminationDate" class="control-label"></label>
+                <input asp-for="ExaminationDate" class="form-control" />
+                <span asp-validation-for="ExaminationDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ScoreReportDate" class="control-label"></label>
+                <input asp-for="ScoreReportDate" class="form-control" />
+                <span asp-validation-for="ScoreReportDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CandidateScore" class="control-label"></label>
+                <input asp-for="CandidateScore" class="form-control" />
+                <span asp-validation-for="CandidateScore" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PercentageScore" class="control-label"></label>
+                <input asp-for="PercentageScore" class="form-control" />
+                <span asp-validation-for="PercentageScore" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AssessmentResultLabel" class="control-label"></label>
+                <input asp-for="AssessmentResultLabel" class="form-control" />
+                <span asp-validation-for="AssessmentResultLabel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
