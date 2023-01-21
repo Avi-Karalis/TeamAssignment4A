@@ -7,6 +7,7 @@ namespace TeamAssignment4A.Dtos
 {
     public class TopicCreateDto
     {
+        //TODO Remove this property
         [Required]
         [Display(Name = "Topic Id")]
         public int Id { get; set; }
