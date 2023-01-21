@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using TeamAssignment4A.Models.IdentityUsers;
 using Microsoft.AspNetCore.Identity;
+using TeamAssignment4A.Dtos;
 
 namespace TeamAssignment4A.Data
 {
@@ -26,6 +27,7 @@ namespace TeamAssignment4A.Data
         public virtual DbSet<ExamStem> ExamStems { get; set; }
         public virtual DbSet<Score> Scores { get; set; }
         public virtual DbSet<CandidateExam> CandidateCertificates { get; set; }
+        public DbSet<TopicDto> TopicDto { get; set; }
     }
 }
 

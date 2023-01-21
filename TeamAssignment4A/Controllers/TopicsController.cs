@@ -24,81 +24,94 @@ namespace TeamAssignment4A.Controllers
             _mapper = mapper;
         }
 
-        //AutoMapper
+        // GET: Topics
         [HttpGet]
         [ProducesResponseType(typeof(TopicDto), 200)]
-        public IActionResult GetAllTopics() 
+        public async Task<IActionResult> Index() // index
         {
-            var topics = _context.Topics.ToList();
+            var topics = await _context.Topics.Include(top => top.Certificate).ToListAsync();
             var topicDtos = _mapper.Map<List<TopicDto>>(topics);
-            return Ok(topicDtos); 
+            return View(topicDtos);
         }
 
-        // GET: Topics
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Topics.ToListAsync());
-        }
+
+
 
         // GET: Topics/Details/5
-        public async Task<IActionResult> Details(int? id)
+        [HttpGet]
+        [ProducesResponseType(typeof(TopicDto), 200)]
+        public async Task<IActionResult> Details(int id)
         {
             if (id == null || _context.Topics == null)
             {
                 return NotFound();
             }
 
-            var topic = await _context.Topics
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var topic = await _context.Topics.FirstOrDefaultAsync(m => m.Id == id);
+
+            TopicDto topicDto = _mapper.Map<TopicDto>(topic);
             if (topic == null)
             {
                 return NotFound();
             }
 
-            return View(topic);
+            return View(topicDto);
         }
 
+
+        
         // GET: Topics/Create
+        [HttpGet]
+        [ProducesResponseType(typeof(TopicDto), 200)]
         public IActionResult Create()
         {
-
-            ViewBag.Certificates = new SelectList(_context.Certificates, "Id", "TitleOfCertificate");
 
             return View();
         }
 
-        // POST: Topics/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+       // POST: Topics/Create
+       
         [HttpPost]
+        [ProducesResponseType(typeof(TopicDto), 200)]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Description,NumberOfPossibleMarks,TitleOfCertificate")] TopicDto topicDto, Topic topic)//<- theleiDTO
+        public async Task<ActionResult<TopicDto>> Create([Bind("Id,Description,NumberOfPossibleMarks,TitleOfCertificate")] TopicDto topicDto)
         {
-            if (ModelState.IsValid)
+            Certificate cert = _context.Certificates.FirstOrDefault(cert => cert.TitleOfCertificate == topicDto.TitleOfCertificate);
+            Topic topic = new Topic
             {
-                //topic.Certificate = certificate;
-                _context.Topics.ToList().ForEach(m => m.Certificate.TitleOfCertificate = topicDto.TitleOfCertificate);
-                _context.Topics.Add(topic);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View (topic);
+                Id = topicDto.Id,
+                Description = topicDto.Description,
+                NumberOfPossibleMarks = topicDto.NumberOfPossibleMarks,
+                Certificate = cert 
+            };
+            _context.Topics.Add(topic);
+            await _context.SaveChangesAsync();
+            
+            
+            var topics = await _context.Topics.Include(top => top.Certificate).ToListAsync();
+            var topicDtos = _mapper.Map<List<TopicDto>>(topics);
+
+            return View("Index", topicDtos);
+            
         }
 
         // GET: Topics/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        [HttpGet]
+        [ProducesResponseType(typeof(TopicDto), 200)]
+        public async Task<IActionResult> Edit(int id)
         {
             if (id == null || _context.Topics == null)
             {
                 return NotFound();
             }
 
-            var topic = await _context.Topics.FindAsync(id);
+            var topic = await _context.Topics.Include(top => top.Certificate).FirstOrDefaultAsync(top => top.Id == id);
+            TopicDto topicDto = _mapper.Map<TopicDto>(topic);
             if (topic == null)
             {
                 return NotFound();
             }
-            return View(topic);
+            return View(topicDto);
         }
 
         // POST: Topics/Edit/5
@@ -106,9 +119,11 @@ namespace TeamAssignment4A.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Description,NumberOfPossibleMarks")] Topic topic)
+        [HttpPost]
+        [ProducesResponseType(typeof(TopicDto), 200)]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Description,NumberOfPossibleMarks,TitleOfCertificate")] TopicDto topicDto)
         {
-            if (id != topic.Id)
+            if (id != topicDto.Id)
             {
                 return NotFound();
             }
@@ -117,12 +132,14 @@ namespace TeamAssignment4A.Controllers
             {
                 try
                 {
+                    
+                    Topic topic = _mapper.Map<Topic>(topicDto);
                     _context.Update(topic);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TopicExists(topic.Id))
+                    if (!TopicExists(topicDto.Id))
                     {
                         return NotFound();
                     }
@@ -133,44 +150,52 @@ namespace TeamAssignment4A.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(topic);
+            return View(topicDto);
         }
 
         // GET: Topics/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        [HttpGet]
+        [ProducesResponseType(typeof(TopicDto), 200)]
+        public async Task<IActionResult> Delete(int id)
         {
             if (id == null || _context.Topics == null)
             {
                 return NotFound();
             }
 
-            var topic = await _context.Topics
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var topic = await _context.Topics.Include(top => top.Certificate).FirstOrDefaultAsync(top => top.Id == id);
+            TopicDto topicDto = _mapper.Map<TopicDto>(topic);
+            
             if (topic == null)
             {
                 return NotFound();
             }
 
-            return View(topic);
+            return View(topicDto);
         }
 
         // POST: Topics/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]        
+        [ProducesResponseType(typeof(TopicDto), 200)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Topics == null)
             {
                 return Problem("Entity set 'WebAppDbContext.Topics'  is null.");
             }
-            var topic = await _context.Topics.FindAsync(id);
+            var topic = await _context.Topics.Include(top => top.Certificate).FirstOrDefaultAsync(top => top.Id == id);
+            //TopicDto topicDto = _mapper.Map<TopicDto>(topic);
+            
             if (topic != null)
             {
                 _context.Topics.Remove(topic);
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var topics = await _context.Topics.Include(top => top.Certificate).ToListAsync();
+            var topicDtos = _mapper.Map<List<TopicDto>>(topics);
+            return View("Index", topicDtos);
         }
 
         private bool TopicExists(int id)
