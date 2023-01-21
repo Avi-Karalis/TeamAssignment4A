@@ -102,11 +102,8 @@ namespace TeamAssignment4A.Controllers
         {
             MyDTO myDTO = await _service.Delete(Id);
             ViewBag.Message = myDTO.Message;
-            if (myDTO.View == "Index")
-            {
-                return View($"{myDTO.View}", myDTO.Certificates);
-            }
-            return View($"{myDTO.View}", myDTO.Certificate);
+
+            return View($"{myDTO.View}", myDTO.Certificates);
         }        
     }
 }
