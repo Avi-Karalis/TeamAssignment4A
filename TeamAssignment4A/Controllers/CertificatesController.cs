@@ -101,11 +101,7 @@ namespace TeamAssignment4A.Controllers
         public async Task<IActionResult> DeleteConfirmed(int Id)
         {
             MyDTO myDTO = await _service.Delete(Id);
-            ViewBag.Message = myDTO.Message;
-            //if (myDTO.View == "Index")
-            //{
-            //    return View($"{myDTO.View}", myDTO.Certificates);
-            //}
+            ViewBag.Message = myDTO.Message;            
             return View($"{myDTO.View}", myDTO.Certificates);
         }        
     }
