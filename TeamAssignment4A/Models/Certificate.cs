@@ -14,11 +14,11 @@ namespace TeamAssignment4A.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(128)]
+        [StringLength(20)]
         [Display(Name = "Title Of Certificate")]
         public string TitleOfCertificate { get; set; }
 
-        [Required]
+        [Required]        
         [Display(Name = "Passing Grade")]
         public int PassingGrade { get; set; }
 

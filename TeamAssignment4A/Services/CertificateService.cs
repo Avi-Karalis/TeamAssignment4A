@@ -12,14 +12,14 @@ namespace TeamAssignment4A.Services
     {
         private UnitOfWork _unit;
         private WebAppDbContext _db;
-        private MyCertificateDTO _myDTO;
+        private MyDTO _myDTO;
         public CertificateService(UnitOfWork unit, WebAppDbContext db)
         {
             _unit= unit;
             _db = db;
-            _myDTO = new MyCertificateDTO();
+            _myDTO = new MyDTO();
         }
-        public async Task<MyCertificateDTO> GetCertificate(int id)
+        public async Task<MyDTO> GetCertificate(int id)
         {
             if((id == null || _db.Certificates == null) || await _unit.Certificate.GetAsync(id) == null)
             {
@@ -39,7 +39,7 @@ namespace TeamAssignment4A.Services
             return await _unit.Certificate.GetAllAsync();                       
         }
 
-        public async Task<MyCertificateDTO> GetForUpdate(int id)
+        public async Task<MyDTO> GetForUpdate(int id)
         {
             _myDTO.View = "Edit";
             if (id == null || _db.Certificates == null)
@@ -57,7 +57,7 @@ namespace TeamAssignment4A.Services
             return _myDTO;
         }        
 
-        public async Task<MyCertificateDTO> AddOrUpdateCertificate(int id, [Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
+        public async Task<MyDTO> AddOrUpdateCertificate(int id, [Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
         {
             EntityState state = _unit.Certificate.AddOrUpdate(certificate);
             if (id != certificate.Id) 
@@ -106,7 +106,7 @@ namespace TeamAssignment4A.Services
             return _myDTO;            
         }
 
-        public async Task<MyCertificateDTO> GetForDelete(int id)
+        public async Task<MyDTO> GetForDelete(int id)
         {
             _myDTO.View = "Delete";
             if (id == null || _db.Certificates == null)
@@ -124,7 +124,7 @@ namespace TeamAssignment4A.Services
             return _myDTO;
         }
 
-        public async Task<MyCertificateDTO> Delete(int id)
+        public async Task<MyDTO> Delete(int id)
         {
             _myDTO.View = "Index";
             _myDTO.Message = "The requested certificate has been deleted successfully.";

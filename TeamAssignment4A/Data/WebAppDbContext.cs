@@ -20,11 +20,9 @@ namespace TeamAssignment4A.Data
         public virtual DbSet<Certificate> Certificates { get; set; } = default!;
         public virtual DbSet<Exam> Exams { get; set; } = default!;
         public virtual DbSet<Topic> Topics { get; set; } = default!;
-        public virtual DbSet<Stem> Stems { get; set; } = default!;
-        public virtual DbSet<ExamTopic> ExamTopics { get; set; } = default!;
-        public virtual DbSet<ExamStem> ExamStems { get; set; } = default!;
-        public virtual DbSet<Score> Scores { get; set; } = default!;
-        public virtual DbSet<CandidateExam> CandidateCertificates { get; set; } = default!;
+        public virtual DbSet<Stem> Stems { get; set; } = default!;        
+        public virtual DbSet<ExamStem> ExamStems { get; set; } = default!;        
+        public virtual DbSet<CandidateExam> CandidateExams { get; set; } = default!;
     }
 }
 

@@ -11,15 +11,37 @@ namespace TeamAssignment4A.Models
 {
     public class Exam {
         public int Id { get; set; }
+        [Required]
+        [Display(Name = "Assessment Test Code")]
+        public int AssessmentTestCode { get; set; }
 
-        public string ExamDescription { get; set; }
+        [Required]
+        [Display(Name = "Examination Date")]
+        [Column(TypeName = "Date")]
+        public DateTime ExaminationDate { get; set; }
+
+        [Required]
+        [Display(Name = "Score Report Date")]
+        [Column(TypeName = "Date")]
+        public DateTime ScoreReportDate { get; set; }
+
+        [Required]
+        [Display(Name = "Candidate Score")]
+        public int CandidateScore { get; set; }
+
+        [Required]
+        [Display(Name = "Percentage Score")]
+        public string PercentageScore { get; set; }
+
+        [Required]
+        [Display(Name = "Assessment Result Label")]
+        public string AssessmentResultLabel { get; set; }
 
 
         // Navigation Properties
-        
+
         public virtual Certificate Certificate { get; set; }
-        public virtual ICollection<CandidateExam>? CandidateExams { get; set; }
-        public virtual ICollection<ExamTopic>? ExamTopics { get; set; }
+        public virtual ICollection<CandidateExam>? CandidateExams { get; set; }        
         public virtual ICollection<ExamStem>? ExamStems { get; set; }
     }
    

@@ -27,7 +27,7 @@ namespace TeamAssignment4A.Migrations
                 name: "Candidates",
                 columns: table => new
                 {
-                    CandidateNumber = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -50,7 +50,7 @@ namespace TeamAssignment4A.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Candidates", x => x.CandidateNumber);
+                    table.PrimaryKey("PK_Candidates", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -59,7 +59,7 @@ namespace TeamAssignment4A.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TitleOfCertificate = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    TitleOfCertificate = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     PassingGrade = table.Column<int>(type: "int", nullable: false),
                     MaximumScore = table.Column<int>(type: "int", nullable: false)
                 },
@@ -94,7 +94,7 @@ namespace TeamAssignment4A.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CandidateNumber = table.Column<int>(type: "int", nullable: false),
+                    CandidateId = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -114,10 +114,10 @@ namespace TeamAssignment4A.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUsers_Candidates_CandidateNumber",
-                        column: x => x.CandidateNumber,
+                        name: "FK_AspNetUsers_Candidates_CandidateId",
+                        column: x => x.CandidateId,
                         principalTable: "Candidates",
-                        principalColumn: "CandidateNumber",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -127,7 +127,12 @@ namespace TeamAssignment4A.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ExamDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AssessmentTestCode = table.Column<int>(type: "int", nullable: false),
+                    ExaminationDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    ScoreReportDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    CandidateScore = table.Column<int>(type: "int", nullable: false),
+                    PercentageScore = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AssessmentResultLabel = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CertificateId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -248,29 +253,29 @@ namespace TeamAssignment4A.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ExamTopic",
+                name: "CandidateExams",
                 columns: table => new
                 {
-                    ExamTopicId = table.Column<int>(type: "int", nullable: false)
+                    CandidateExamId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ExamId = table.Column<int>(type: "int", nullable: false),
-                    TopicId = table.Column<int>(type: "int", nullable: false)
+                    CandidateId = table.Column<int>(type: "int", nullable: false),
+                    ExamId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ExamTopic", x => x.ExamTopicId);
+                    table.PrimaryKey("PK_CandidateExams", x => x.CandidateExamId);
                     table.ForeignKey(
-                        name: "FK_ExamTopic_Exams_ExamId",
+                        name: "FK_CandidateExams_Candidates_CandidateId",
+                        column: x => x.CandidateId,
+                        principalTable: "Candidates",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CandidateExams_Exams_ExamId",
                         column: x => x.ExamId,
                         principalTable: "Exams",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ExamTopic_Topics_TopicId",
-                        column: x => x.TopicId,
-                        principalTable: "Topics",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -299,7 +304,7 @@ namespace TeamAssignment4A.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ExamStem",
+                name: "ExamStems",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -311,83 +316,17 @@ namespace TeamAssignment4A.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ExamStem", x => x.Id);
+                    table.PrimaryKey("PK_ExamStems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ExamStem_Exams_ExamsId",
+                        name: "FK_ExamStems_Exams_ExamsId",
                         column: x => x.ExamsId,
                         principalTable: "Exams",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ExamStem_Stems_StemsId",
+                        name: "FK_ExamStems_Stems_StemsId",
                         column: x => x.StemsId,
                         principalTable: "Stems",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Score",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ScorePerTopic = table.Column<int>(type: "int", nullable: false),
-                    ExamTopicId = table.Column<int>(type: "int", nullable: false),
-                    ExamStemId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Score", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Score_ExamStem_ExamStemId",
-                        column: x => x.ExamStemId,
-                        principalTable: "ExamStem",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Score_ExamTopic_ExamTopicId",
-                        column: x => x.ExamTopicId,
-                        principalTable: "ExamTopic",
-                        principalColumn: "ExamTopicId",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CandidateExam",
-                columns: table => new
-                {
-                    CandidateExamId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AssessmentTestCode = table.Column<int>(type: "int", nullable: false),
-                    ExaminationDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    ScoreReportDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    CandidateScore = table.Column<int>(type: "int", nullable: false),
-                    AssessmentResultLabel = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PercentageScore = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CandidateNumber = table.Column<int>(type: "int", nullable: false),
-                    ExamId = table.Column<int>(type: "int", nullable: false),
-                    ScoreId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CandidateExam", x => x.CandidateExamId);
-                    table.ForeignKey(
-                        name: "FK_CandidateExam_Candidates_CandidateNumber",
-                        column: x => x.CandidateNumber,
-                        principalTable: "Candidates",
-                        principalColumn: "CandidateNumber",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CandidateExam_Exams_ExamId",
-                        column: x => x.ExamId,
-                        principalTable: "Exams",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CandidateExam_Score_ScoreId",
-                        column: x => x.ScoreId,
-                        principalTable: "Score",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                 });
@@ -425,9 +364,9 @@ namespace TeamAssignment4A.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_CandidateNumber",
+                name: "IX_AspNetUsers_CandidateId",
                 table: "AspNetUsers",
-                column: "CandidateNumber");
+                column: "CandidateId");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
@@ -437,19 +376,14 @@ namespace TeamAssignment4A.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CandidateExam_CandidateNumber",
-                table: "CandidateExam",
-                column: "CandidateNumber");
+                name: "IX_CandidateExams_CandidateId",
+                table: "CandidateExams",
+                column: "CandidateId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CandidateExam_ExamId",
-                table: "CandidateExam",
+                name: "IX_CandidateExams_ExamId",
+                table: "CandidateExams",
                 column: "ExamId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CandidateExam_ScoreId",
-                table: "CandidateExam",
-                column: "ScoreId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Exams_CertificateId",
@@ -457,34 +391,14 @@ namespace TeamAssignment4A.Migrations
                 column: "CertificateId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ExamStem_ExamsId",
-                table: "ExamStem",
+                name: "IX_ExamStems_ExamsId",
+                table: "ExamStems",
                 column: "ExamsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ExamStem_StemsId",
-                table: "ExamStem",
+                name: "IX_ExamStems_StemsId",
+                table: "ExamStems",
                 column: "StemsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ExamTopic_ExamId",
-                table: "ExamTopic",
-                column: "ExamId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ExamTopic_TopicId",
-                table: "ExamTopic",
-                column: "TopicId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Score_ExamStemId",
-                table: "Score",
-                column: "ExamStemId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Score_ExamTopicId",
-                table: "Score",
-                column: "ExamTopicId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Stems_TopicId",
@@ -515,7 +429,10 @@ namespace TeamAssignment4A.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CandidateExam");
+                name: "CandidateExams");
+
+            migrationBuilder.DropTable(
+                name: "ExamStems");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -524,22 +441,13 @@ namespace TeamAssignment4A.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Score");
-
-            migrationBuilder.DropTable(
-                name: "Candidates");
-
-            migrationBuilder.DropTable(
-                name: "ExamStem");
-
-            migrationBuilder.DropTable(
-                name: "ExamTopic");
+                name: "Exams");
 
             migrationBuilder.DropTable(
                 name: "Stems");
 
             migrationBuilder.DropTable(
-                name: "Exams");
+                name: "Candidates");
 
             migrationBuilder.DropTable(
                 name: "Topics");
