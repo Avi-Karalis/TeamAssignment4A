@@ -91,6 +91,7 @@ namespace TeamAssignment4A.Controllers
             }
 
             var topic = await _context.Topics.FindAsync(id);
+            ViewBag.Certificates = new SelectList(_context.Certificates, "Id", "TitleOfCertificate");
             if (topic == null)
             {
                 return NotFound();

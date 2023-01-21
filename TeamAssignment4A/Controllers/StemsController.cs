@@ -21,12 +21,12 @@ namespace TeamAssignment4A.Controllers {
 
         // GET: Stems
         public async Task<IActionResult> Index() {
-            List<Stem> ListOfStems = _context.Stems.Include(s=>s.Topic).ToList();
+            List<Stem> ListOfStems = _context.Stems.Include(s => s.Topic).ToList();
             //foreach (var topic in ListOfTopics) {
 
             //    Stem stem = _context.Stems.Find(TopicID);
             //}
-           
+
             return View(await _context.Stems.ToListAsync());
         }
 
@@ -47,13 +47,12 @@ namespace TeamAssignment4A.Controllers {
 
         // GET: Stems/Create
         public IActionResult Create() {
-            var options = new List<SelectListItem>
-   {
-        new SelectListItem { Value = "A", Text = "A" },
-        new SelectListItem { Value = "B", Text = "B" },
-        new SelectListItem { Value = "C", Text = "C" },
-        new SelectListItem { Value = "D", Text = "D" }
-    };
+            var options = new List<SelectListItem>{
+                new SelectListItem { Value = "A", Text = "A" },
+                new SelectListItem { Value = "B", Text = "B" },
+                new SelectListItem { Value = "C", Text = "C" },
+                new SelectListItem { Value = "D", Text = "D" }
+            };
             ViewBag.Options = options;
             ViewBag.Topics = new SelectList(_context.Topics, "Id", "Description");
             return View();
