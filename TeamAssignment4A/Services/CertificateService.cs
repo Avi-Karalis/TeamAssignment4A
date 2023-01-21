@@ -87,7 +87,7 @@ namespace TeamAssignment4A.Services
                 }                
                 await _unit.SaveAsync();
                 _myDTO.View = "Index";
-                _myDTO.Certificate = certificate;
+                _myDTO.Certificates = await _unit.Certificate.GetAllAsync();
                 return _myDTO;
             }
             else
@@ -136,6 +136,7 @@ namespace TeamAssignment4A.Services
             _myDTO.Certificate = await _unit.Certificate.GetAsync(id);
             _unit.Certificate.Delete(_myDTO.Certificate);
             await _unit.SaveAsync();
+            _myDTO.Certificates = await _unit.Certificate.GetAllAsync();
             return _myDTO;
         }        
     }   
