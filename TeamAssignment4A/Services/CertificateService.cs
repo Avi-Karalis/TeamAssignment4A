@@ -58,6 +58,7 @@ namespace TeamAssignment4A.Services
         }        
 
         public async Task<MyDTO> AddOrUpdateCertificate(int id, [Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
+        public async Task<MyDTO> AddOrUpdateCertificate(int id, Certificate certificate)
         {
             EntityState state = _unit.Certificate.AddOrUpdate(certificate);
             if (id != certificate.Id) 
