@@ -7,155 +7,106 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TeamAssignment4A.Data;
 using TeamAssignment4A.Models;
+using TeamAssignment4A.Services;
 
 namespace TeamAssignment4A.Controllers
 {
     public class CertificatesController : Controller
-    {
-        private readonly WebAppDbContext _context;
-
-        public CertificatesController(WebAppDbContext context)
-        {
-            _context = context;
-        }
+    {       
+        private CertificateService _service;
+        public CertificatesController(CertificateService service)
+        {            
+            _service = service;        
+        }        
 
         // GET: Certificates
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Certificates.ToListAsync());
+            return View(await _service.GetAllCertificates());
         }
 
         // GET: Certificates/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int Id)
         {
-            if (id == null || _context.Certificates == null)
+            MyDTO myDTO = await _service.GetCertificate(Id);
+            ViewBag.Message = myDTO.Message;
+            if(myDTO.View == "Index")
             {
-                return NotFound();
+                return View($"{myDTO.View}", myDTO.Certificates);
             }
-
-            var certificate = await _context.Certificates
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (certificate == null)
-            {
-                return NotFound();
-            }
-
-            return View(certificate);
+            return View($"{myDTO.View}", myDTO.Certificate);           
         }
 
         // GET: Certificates/Create
         public IActionResult Create()
         {
-
             return View();
         }
 
-        // POST: Certificates/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Certificates/Create        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
+        public async Task<IActionResult> Create(int Id, [Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
         {
-            if (ModelState.IsValid)
+            MyDTO myDTO = await _service.AddOrUpdateCertificate(Id, certificate);
+            ViewBag.Message = myDTO.Message;
+            if (myDTO.View == "Index")
             {
-                _context.Add(certificate);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View($"{myDTO.View}", myDTO.Certificates);
             }
-            return View(certificate);
+            return View($"{myDTO.View}", myDTO.Certificate);
         }
 
         // GET: Certificates/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int Id)
         {
-            if (id == null || _context.Certificates == null)
+            MyDTO myDTO = await _service.GetForUpdate(Id);
+            ViewBag.Message = myDTO.Message;
+            if (myDTO.View == "Index")
             {
-                return NotFound();
+                return View($"{myDTO.View}", myDTO.Certificates);
             }
-
-            var certificate = await _context.Certificates.FindAsync(id);
-            if (certificate == null)
-            {
-                return NotFound();
-            }
-            return View(certificate);
+            return View($"{myDTO.View}", myDTO.Certificate);
         }
 
-        // POST: Certificates/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Certificates/Edit/5        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int Id, [Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
         {
-            if (Id != certificate.Id) {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
+            MyDTO myDTO = await _service.AddOrUpdateCertificate(Id, certificate);
+            ViewBag.Message = myDTO.Message;
+            if (myDTO.View == "Index")
             {
-                try
-                {
-                    _context.Update(certificate);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CertificateExists(certificate.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return View($"{myDTO.View}", myDTO.Certificates);
             }
-            return View(certificate);
+            return View($"{myDTO.View}", myDTO.Certificate);          
         }
 
         // GET: Certificates/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int Id)
         {
-            if (id == null || _context.Certificates == null)
+            MyDTO myDTO = await _service.GetForDelete(Id);
+            ViewBag.Message = myDTO.Message;
+            if (myDTO.View == "Index")
             {
-                return NotFound();
+                return View($"{myDTO.View}", myDTO.Certificates);
             }
-
-            var certificate = await _context.Certificates
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (certificate == null)
-            {
-                return NotFound();
-            }
-
-            return View(certificate);
+            return View($"{myDTO.View}", myDTO.Certificate);
         }
 
         // POST: Certificates/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int Id)
         {
-            if (_context.Certificates == null)
+            MyDTO myDTO = await _service.Delete(Id);
+            ViewBag.Message = myDTO.Message;
+            if (myDTO.View == "Index")
             {
-                return Problem("Entity set 'WebAppDbContext.Certificates'  is null.");
+                return View($"{myDTO.View}", myDTO.Certificates);
             }
-            var certificate = await _context.Certificates.FindAsync(id);
-            if (certificate != null)
-            {
-                _context.Certificates.Remove(certificate);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool CertificateExists(int id)
-        {
-            return _context.Certificates.Any(e => e.Id == id);
-        }
+            return View($"{myDTO.View}", myDTO.Certificate);
+        }        
     }
 }
