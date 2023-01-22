@@ -36,11 +36,6 @@ namespace TeamAssignment4A.Models
         [Display(Name = "Correct Answer")]
         public char CorrectAnswer { get; set; }
 
-        //[Required]
-        //[Display(Name = "Topic ID")]
-        //public int TopicID { get; set; }
-
-
 
         // Navigation Properties
 

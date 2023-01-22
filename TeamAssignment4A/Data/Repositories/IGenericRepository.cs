@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using TeamAssignment4A.Models;
 
 namespace TeamAssignment4A.Data.Repositories
 {
@@ -11,5 +12,6 @@ namespace TeamAssignment4A.Data.Repositories
         EntityState AddOrUpdate(T item);        
         void Delete(T item);
         Task<bool> Exists(int id);
+        //Task<Topic> GetAsyncByDesc(string topicDescription);
     }
 }

@@ -85,7 +85,8 @@ namespace TeamAssignment4A.Controllers {
                 new SelectListItem { Value = "D", Text = "D" }
             };
             ViewBag.Options = options;
-            var topics = await _db.Topics.ToListAsync();
+            var topics = await _db.Topics.Include(top => top.Certificate).ToListAsync<Topic>();
+                               //_db.Topics.Include(topic => topic.Certificate).ToListAsync<Topic>();
             var topicDtos = _mapper.Map<List<TopicDto>>(topics);
 
             var options2 = new SelectList(topicDtos, "Id", "Description");

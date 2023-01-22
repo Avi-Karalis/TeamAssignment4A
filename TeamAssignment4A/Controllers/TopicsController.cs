@@ -47,7 +47,7 @@ namespace TeamAssignment4A.Controllers
                 return NotFound();
             }
 
-            var topic = await _context.Topics.FirstOrDefaultAsync(m => m.Id == id);
+            var topic = await _context.Topics.Include(top => top.Certificate).FirstOrDefaultAsync(m => m.Id == id);
 
             TopicDto topicDto = _mapper.Map<TopicDto>(topic);
             if (topic == null)
