@@ -69,7 +69,8 @@ namespace TeamAssignment4A.Controllers
                 exam.ExaminationDate = DateTime.Now;
                 _context.Update(exam);
                 _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                
+                return RedirectToAction("Index", "Home");
             }
             return View();
         }
