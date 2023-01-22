@@ -9,11 +9,13 @@ namespace TeamAssignment4A.Services
         private WebAppDbContext _db;
         public IGenericRepository<Candidate> Candidate { get; set; }
         public IGenericRepository<Certificate> Certificate { get; set; }
+        public IGenericRepository<Stem> Stem { get; set; }
         public UnitOfWork(WebAppDbContext db)
         {
             _db = db;
             Candidate = new CandidateRepository(db);
             Certificate = new CertificateRepository(db);
+            Stem = new StemRepository(db);
         }
 
         public async Task<int> SaveAsync() 

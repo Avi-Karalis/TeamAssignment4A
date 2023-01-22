@@ -57,7 +57,7 @@ namespace TeamAssignment4A.Services
             return _myDTO;
         }        
 
-        public async Task<MyDTO> AddOrUpdateCertificate(int id, Certificate certificate)
+        public async Task<MyDTO> AddOrUpdateCertificate(int id, [Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
         {
             EntityState state = _unit.Certificate.AddOrUpdate(certificate);
             if (id != certificate.Id) 
@@ -70,7 +70,7 @@ namespace TeamAssignment4A.Services
                 {
                     _myDTO.View = "Edit";
                 }
-                _myDTO.Message = "The certificate Id was compromised. The request could not be completed for security reasons. Please try again later.";
+                _myDTO.Message = "The certificate Id was compromised. The request could not be completed due to security reasons. Please try again later.";
                 _myDTO.Certificate = certificate;
                 return _myDTO;
             }

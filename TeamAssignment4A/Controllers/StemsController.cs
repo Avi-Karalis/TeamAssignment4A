@@ -2,25 +2,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TeamAssignment4A.Data;
 using TeamAssignment4A.Models;
+using TeamAssignment4A.Services;
 
 namespace TeamAssignment4A.Controllers {
     public class StemsController : Controller {
         private readonly WebAppDbContext _context;
 
         private readonly IWebHostEnvironment _webHostEnvironment;
-
-        public StemsController(WebAppDbContext context, IWebHostEnvironment webHostEnvironment) {
+        private readonly IMapper _mapper;
+        private CertificateService _service;
+        public StemsController(WebAppDbContext context, IWebHostEnvironment webHostEnvironment,IMapper mapper) 
+        {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _mapper = mapper;
         }
 
         // GET: Stems
-        public async Task<IActionResult> Index() {
+        public async Task<IActionResult> Index() 
+        {
             List<Stem> ListOfStems = _context.Stems.Include(s => s.Topic).ToList();
             //foreach (var topic in ListOfTopics) {
 
@@ -46,7 +52,8 @@ namespace TeamAssignment4A.Controllers {
         }
 
         // GET: Stems/Create
-        public IActionResult Create() {
+        public IActionResult Create() 
+        {
             var options = new List<SelectListItem>{
                 new SelectListItem { Value = "A", Text = "A" },
                 new SelectListItem { Value = "B", Text = "B" },
@@ -63,7 +70,8 @@ namespace TeamAssignment4A.Controllers {
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer, TopicID")] Stem stem) {
+        public async Task<IActionResult> Create(int id, [Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer, TopicID")] Stem stem) 
+        {
             if (ModelState.IsValid) {
                 _context.Add(stem);
                 await _context.SaveChangesAsync();
