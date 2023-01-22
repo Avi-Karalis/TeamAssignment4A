@@ -1,4 +1,4 @@
-﻿@model TeamAssignment4A.Models.Exam
+﻿@model TeamAssignment4A.Dtos.ExamCreateDTO
 
 @{
     ViewData["Title"] = "Create";
@@ -13,44 +13,29 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="AssessmentTestCode" class="control-label"></label>
-                <input asp-for="AssessmentTestCode" class="form-control" />
-                <span asp-validation-for="AssessmentTestCode" class="text-danger"></span>
+                <label asp-for="assessmentTestCode" class="control-label"></label>
+                <input asp-for="assessmentTestCode" class="form-control" />
+                <span asp-validation-for="assessmentTestCode" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ExaminationDate" class="control-label"></label>
-                <input asp-for="ExaminationDate" class="form-control" />
-                <span asp-validation-for="ExaminationDate" class="text-danger"></span>
+                <label asp-for="CertificateId" class="control-label"></label>
+                <select asp-for="CertificateId" class="form-control" asp-items="@ViewBag.Certificates"></select>
+                <span asp-validation-for="CertificateId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ScoreReportDate" class="control-label"></label>
-                <input asp-for="ScoreReportDate" class="form-control" />
-                <span asp-validation-for="ScoreReportDate" class="text-danger"></span>
+                <label asp-for="CandidateId" class="control-label"></label>
+                <select asp-for="CandidateId" class="form-control" asp-items="@ViewBag.Candidates"></select>
+                <span asp-validation-for="CandidateId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CandidateScore" class="control-label"></label>
-                <input asp-for="CandidateScore" class="form-control" />
-                <span asp-validation-for="CandidateScore" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PercentageScore" class="control-label"></label>
-                <input asp-for="PercentageScore" class="form-control" />
-                <span asp-validation-for="PercentageScore" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AssessmentResultLabel" class="control-label"></label>
-                <input asp-for="AssessmentResultLabel" class="form-control" />
-                <span asp-validation-for="AssessmentResultLabel" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Proceed to Exam(with caution)" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
 </div>
 
 @section Scripts {

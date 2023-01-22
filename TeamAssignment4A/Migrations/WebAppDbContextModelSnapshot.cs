@@ -272,29 +272,33 @@ namespace TeamAssignment4A.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("AssessmentResultLabel")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AssessmentTestCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("AssessmentTestCode")
+                    b.Property<int>("CandidateId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CandidateScore")
+                    b.Property<int?>("CandidateScore")
                         .HasColumnType("int");
 
                     b.Property<int>("CertificateId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("ExaminationDate")
+                    b.Property<DateTime?>("ExaminationDate")
                         .HasColumnType("Date");
 
                     b.Property<string>("PercentageScore")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ScoreReportDate")
+                    b.Property<DateTime?>("ScoreReportDate")
                         .HasColumnType("Date");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CandidateId");
 
                     b.HasIndex("CertificateId");
 
@@ -402,13 +406,13 @@ namespace TeamAssignment4A.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ExamsId")
+                    b.Property<int>("ExamId")
                         .HasColumnType("int");
 
                     b.Property<int>("Score")
                         .HasColumnType("int");
 
-                    b.Property<int>("StemsId")
+                    b.Property<int>("StemId")
                         .HasColumnType("int");
 
                     b.Property<string>("SubmittedAnswer")
@@ -544,11 +548,19 @@ namespace TeamAssignment4A.Migrations
 
             modelBuilder.Entity("TeamAssignment4A.Models.Exam", b =>
                 {
+                    b.HasOne("TeamAssignment4A.Models.Candidate", "Candidate")
+                        .WithMany()
+                        .HasForeignKey("CandidateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("TeamAssignment4A.Models.Certificate", "Certificate")
                         .WithMany("Exams")
                         .HasForeignKey("CertificateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Candidate");
 
                     b.Navigation("Certificate");
                 });
@@ -573,7 +585,7 @@ namespace TeamAssignment4A.Migrations
                         .IsRequired();
 
                     b.HasOne("TeamAssignment4A.Models.Exam", "Exam")
-                        .WithMany("CandidateExams")
+                        .WithMany()
                         .HasForeignKey("ExamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -638,8 +650,6 @@ namespace TeamAssignment4A.Migrations
 
             modelBuilder.Entity("TeamAssignment4A.Models.Exam", b =>
                 {
-                    b.Navigation("CandidateExams");
-
                     b.Navigation("ExamStems");
                 });
 

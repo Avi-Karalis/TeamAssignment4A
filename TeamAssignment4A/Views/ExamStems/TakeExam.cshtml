@@ -1,0 +1,117 @@
+﻿@model TeamAssignment4A.Dtos.ExamSubmissionDTO
+
+@{
+    ViewData["Title"] = "TakeExam";
+}
+
+<h1>TakeExam</h1>
+
+@*<p>
+    <a asp-action="Create">Take Exam</a>
+</p>*@
+<form asp-action="ExamSubmit">
+@*    @for (var i = 10; i < 21; i++) {
+        <p>Line @i</p>
+    }*@
+    @for (var i = 0; i < Model.ExamQuestions.Count; i++) {
+        <div>
+            @Html.HiddenFor(m => m.ExamQuestions[i].ExamId)
+            @Html.HiddenFor(m => m.ExamQuestions[i].StemId)
+            <div>
+                @Html.DisplayNameFor(m => Model.ExamQuestions[i].Question)
+            <br>
+                @Html.Raw(Model.ExamQuestions[i].Question)
+                @Html.HiddenFor(m => m.ExamQuestions[i].Question)
+            </div>
+            <div>
+                @Html.DisplayNameFor(m => Model.ExamQuestions[i].OptionA)
+                <br>
+                @Html.Raw(Model.ExamQuestions[i].OptionA)
+                @Html.HiddenFor(m => m.ExamQuestions[i].OptionA)
+            </div>
+            <div>
+                @Html.DisplayNameFor(m => Model.ExamQuestions[i].OptionB)
+                <br>
+                @Html.Raw(Model.ExamQuestions[i].OptionB)
+                @Html.HiddenFor(m => m.ExamQuestions[i].OptionB)
+            </div>
+            <div>
+                @Html.DisplayNameFor(m => Model.ExamQuestions[i].OptionC)
+                <br>
+                @Html.Raw(Model.ExamQuestions[i].OptionC)
+                @Html.HiddenFor(m => m.ExamQuestions[i].OptionC)
+            </div>
+            <div>
+                @Html.DisplayNameFor(m => Model.ExamQuestions[i].OptionD)
+                <br>
+                @Html.Raw(Model.ExamQuestions[i].OptionD)
+                @Html.HiddenFor(m => m.ExamQuestions[i].OptionD)
+            </div>
+            <div>
+                @Html.DisplayNameFor(m => Model.ExamQuestions[i].Answer)
+                <br>
+
+                @Html.DropDownListFor(m => m.ExamQuestions[i].Answer,@ViewBag.Selections as SelectList, "Select Answer")
+               @* @Html.TextBoxFor(m => Model.ExamQuestions[i].Answer)*@
+            </div>
+ @*
+            <div>@Html.TextBoxFor(m => Model.ExamQuestions[i].Question, new { @readonly = true })</div>
+            <br>
+            <div>@Html.TextBoxFor(m => Model.ExamQuestions[i].OptionA, new { @readonly = true })</div>
+            <br>
+            <div>@Html.TextBoxFor(m => Model.ExamQuestions[i].OptionB, new { @readonly = true })</div>
+            <br>
+            <div>@Html.TextBoxFor(m => Model.ExamQuestions[i].OptionC, new { @readonly = true })</div>
+            <br>
+            <div>@Html.TextBoxFor(m => Model.ExamQuestions[i].OptionD, new { @readonly = true })</div>
+            <br>
+            <div>@Html.TextBoxFor(m => Model.ExamQuestions[i].Answer)</div>*@
+            <br><br><br>
+        </div>
+    }
+ @*   @for(int i = 0; i < Model.ExamQuestions.Count; i++)
+    {
+        <div class="card-body">
+            <div class="form-group">
+            @Html.HiddenFor(m => m.ExamQuestions[@i].Id)
+            <label for="exampleInputPassword1">@Model.ExamQuestions[@i].Question</label>
+            @Html.EditorFor(m => m.ExamQuestions[@i].Value,
+            new { htmlAttributes = new { @class = "form-control"} })
+            @Html.ValidationMessageFor(m => m.ExamQuestions[@i].Value,
+            new { @class = "text-danger" })
+            </div>
+        </div>
+    }*@
+    @*@foreach (var item in Model.ExamQuestions)
+    {
+        <div>
+            <label for="@item.Id">@item.Id</label>
+            <input type="text" id="@item.Id" name="Id" value="@item.Id" />
+        </div>
+        <div>
+            <label for="@item.Question">@item.Question</label>
+            <input type="text" id="@item.Question" name="Question" value="@item.Question" />
+        </div>
+        <div>
+            <label for="@item.OptionA">@item.OptionA</label>
+            <input type="text" id="@item.OptionA" name="OptionA" value="@item.OptionA" />
+        </div>
+        <div>
+            <label for="@item.OptionB">@item.OptionB</label>
+            <input type="text" id="@item.OptionB" name="OptionB" value="@item.OptionB" />
+        </div>
+        <div>
+            <label for="@item.OptionC">@item.OptionC</label>
+            <input type="text" id="@item.OptionC" name="OptionC" value="@item.OptionC" />
+        </div>
+        <div>
+            <label for="@item.OptionD">@item.OptionD</label>
+            <input type="text" id="@item.OptionD" name="OptionD" value="@item.OptionD" />
+        </div>
+        <div>
+            <label for="@item.Answer">@item.Answer</label>
+            <input type="text" id="@item.Answer" name="Answer" value="@item.Answer" />
+        </div>
+    }*@
+    <input type="submit" value="Submit" class="btn btn-warning" />
+</form>
