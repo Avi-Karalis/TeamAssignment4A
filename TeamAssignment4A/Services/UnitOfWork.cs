@@ -6,7 +6,7 @@ namespace TeamAssignment4A.Services
 {
     public class UnitOfWork : IDisposable
     {
-        private WebAppDbContext _db;
+        private readonly WebAppDbContext _db;
         public IGenericRepository<Candidate> Candidate { get; set; }
         public IGenericRepository<Certificate> Certificate { get; set; }
         public IGenericRepository<Stem> Stem { get; set; }

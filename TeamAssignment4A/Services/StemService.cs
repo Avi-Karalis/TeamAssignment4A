@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TeamAssignment4A.Data;
+using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models;
 
 namespace TeamAssignment4A.Services
@@ -10,8 +12,10 @@ namespace TeamAssignment4A.Services
         private UnitOfWork _unit;
         private WebAppDbContext _db;
         private MyDTO _myDTO;
-        public StemService(UnitOfWork unit, WebAppDbContext db)
+        private readonly IMapper _mapper;
+        public StemService(UnitOfWork unit, WebAppDbContext db, IMapper mapper)
         {
+            _mapper = mapper;
             _unit = unit;
             _db = db;
             _myDTO = new MyDTO();
@@ -26,13 +30,16 @@ namespace TeamAssignment4A.Services
             else
             {
                 _myDTO.View = "Details";
-                _myDTO.Stem = await _unit.Stem.GetAsync(id);
+                Stem stem = await _unit.Stem.GetAsync(id);
+                _myDTO.StemDto = _mapper.Map<StemDto>(stem);
             }
             return _myDTO;
         }
-        public async Task<ICollection<Stem>?> GetAllStems()
+        public async Task<IEnumerable<StemDto>?> GetAllStems()
         {
-            return await _unit.Stem.GetAllAsync();
+            var stems = await _unit.Stem.GetAllAsync();
+            _myDTO.StemDtos = _mapper.Map<List<StemDto>>(stems);
+            return _myDTO.StemDtos;
         }
 
         public async Task<MyDTO> GetForUpdate(int id)
@@ -44,17 +51,19 @@ namespace TeamAssignment4A.Services
                 _myDTO.Message = "The requested stem could not be found. Please try again later.";
                 return _myDTO;
             }
-            _myDTO.Stem = await _unit.Stem.GetAsync(id);
-            if (_myDTO.Stem == null)
+            Stem stem = await _unit.Stem.GetAsync(id);
+            _myDTO.StemDto = _mapper.Map<StemDto>(stem);
+            if (_myDTO.StemDto == null)
             {
                 _myDTO.View = "Index";
-                _myDTO.Message = "The requested Stem could not be found. Please try again later.";
+                _myDTO.Message = "The requested stem could not be found. Please try again later.";
             }
             return _myDTO;
         }
 
-        public async Task<MyDTO> AddOrUpdateStem(int id, [Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,TopicDescription")] Stem stem)
+        public async Task<MyDTO> AddOrUpdateStem(int id, [Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,TopicDescription")] StemDto stemDto)
         {
+            Stem stem = _mapper.Map<Stem>(stemDto);
             EntityState state = _unit.Stem.AddOrUpdate(stem);
             if (id != stem.Id)
             {
@@ -67,7 +76,7 @@ namespace TeamAssignment4A.Services
                     _myDTO.View = "Edit";
                 }
                 _myDTO.Message = "The stem Id was compromised. The request could not be completed due to security reasons. Please try again later.";
-                _myDTO.Stem = stem;
+                _myDTO.StemDto = stemDto;
                 return _myDTO;
             }
             if (ModelState.IsValid)
@@ -83,7 +92,8 @@ namespace TeamAssignment4A.Services
                 }
                 await _unit.SaveAsync();
                 _myDTO.View = "Index";
-                _myDTO.Stems = await _unit.Stem.GetAllAsync();
+                IEnumerable<Stem> stems = await _unit.Stem.GetAllAsync();
+                _myDTO.StemDtos = _mapper.Map<List<StemDto>>(stems);
                 return _myDTO;
             }
             else
@@ -97,7 +107,7 @@ namespace TeamAssignment4A.Services
                     _myDTO.View = "Edit";
                 }
                 _myDTO.Message = "Invalid entries. Please try again later.";
-                _myDTO.Stem = stem;
+                _myDTO.StemDto = stemDto;
             }
             return _myDTO;
         }
@@ -109,13 +119,18 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested stem could not be found. Please try again later.";
+                IEnumerable<Stem> stems = await _unit.Stem.GetAllAsync();
+                _myDTO.StemDtos = _mapper.Map<List<StemDto>>(stems);
                 return _myDTO;
             }
-            _myDTO.Stem = await _unit.Stem.GetAsync(id);
-            if (_myDTO.Stem == null)
+            Stem stem = await _unit.Stem.GetAsync(id);
+            _myDTO.StemDto = _mapper.Map<StemDto>(stem);
+            if (_myDTO.StemDto == null)
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested stem could not be found. Please try again later.";
+                IEnumerable<Stem> stems = await _unit.Stem.GetAllAsync();
+                _myDTO.StemDtos = _mapper.Map<List<StemDto>>(stems);
             }
             return _myDTO;
         }        
@@ -129,10 +144,11 @@ namespace TeamAssignment4A.Services
                 _myDTO.Message = "The requested stem could not be found. Please try again later.";
                 return _myDTO;
             }
-            _myDTO.Stem = await _unit.Stem.GetAsync(id);
-            _unit.Stem.Delete(_myDTO.Stem);
+            Stem stem = await _unit.Stem.GetAsync(id);
+            _unit.Stem.Delete(stem);
             await _unit.SaveAsync();
-            _myDTO.Stems = await _unit.Stem.GetAllAsync();
+            IEnumerable<Stem> stems = await _unit.Stem.GetAllAsync();
+            _myDTO.StemDtos = _mapper.Map<List<StemDto>>(stems);
             return _myDTO;
         }
     }

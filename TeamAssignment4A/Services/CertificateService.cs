@@ -34,7 +34,7 @@ namespace TeamAssignment4A.Services
             return _myDTO;
         }
 
-        public async Task<ICollection<Certificate>?> GetAllCertificates()
+        public async Task<IEnumerable<Certificate>?> GetAllCertificates()
         {
             return await _unit.Certificate.GetAllAsync();                       
         }
@@ -113,6 +113,7 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested certificate could not be found. Please try again later.";
+                _myDTO.Certificates = await _unit.Certificate.GetAllAsync();
                 return _myDTO;
             }
             _myDTO.Certificate = await _unit.Certificate.GetAsync(id);
@@ -120,6 +121,7 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested certificate could not be found. Please try again later.";
+                _myDTO.Certificates = await _unit.Certificate.GetAllAsync();
             }
             return _myDTO;
         }

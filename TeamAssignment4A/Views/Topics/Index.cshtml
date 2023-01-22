@@ -1,10 +1,10 @@
-﻿@model IEnumerable<TeamAssignment4A.Dtos.TopicIndexDto>
+﻿@model IEnumerable<TeamAssignment4A.Dtos.TopicDto>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>GetAll</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -18,14 +18,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.NumberOfPossibleMarks)
             </th>
-
             <th>
-                @Html.DisplayNameFor(model => model.CertificateTitle)
+                @Html.DisplayNameFor(model => model.TitleOfCertificate)
             </th>
-
-            <th>
-                Options
-            </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -37,11 +33,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.NumberOfPossibleMarks)
             </td>
-
-                <th>
-                    @Html.DisplayFor(modelItem => item.CertificateTitle)
-                </th>
-
+            <td>
+                @Html.DisplayFor(modelItem => item.TitleOfCertificate)
+            </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |

@@ -236,7 +236,7 @@ namespace TeamAssignment4A.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Candidates");
+                    b.ToTable("Candidates", (string)null);
                 });
 
             modelBuilder.Entity("TeamAssignment4A.Models.Certificate", b =>
@@ -260,7 +260,7 @@ namespace TeamAssignment4A.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Certificates");
+                    b.ToTable("Certificates", (string)null);
                 });
 
             modelBuilder.Entity("TeamAssignment4A.Models.Exam", b =>
@@ -298,7 +298,7 @@ namespace TeamAssignment4A.Migrations
 
                     b.HasIndex("CertificateId");
 
-                    b.ToTable("Exams");
+                    b.ToTable("Exams", (string)null);
                 });
 
             modelBuilder.Entity("TeamAssignment4A.Models.IdentityUsers.AppUser", b =>
@@ -391,7 +391,7 @@ namespace TeamAssignment4A.Migrations
 
                     b.HasIndex("ExamId");
 
-                    b.ToTable("CandidateExams");
+                    b.ToTable("CandidateExams", (string)null);
                 });
 
             modelBuilder.Entity("TeamAssignment4A.Models.JointTables.ExamStem", b =>
@@ -421,30 +421,7 @@ namespace TeamAssignment4A.Migrations
 
                     b.HasIndex("StemsId");
 
-                    b.ToTable("ExamStems");
-                });
-
-            modelBuilder.Entity("TeamAssignment4A.Models.JointTables.ExamTopic", b =>
-                {
-                    b.Property<int>("ExamTopicId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExamTopicId"), 1L, 1);
-
-                    b.Property<int>("ExamId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TopicId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ExamTopicId");
-
-                    b.HasIndex("ExamId");
-
-                    b.HasIndex("TopicId");
-
-                    b.ToTable("ExamTopics");
+                    b.ToTable("ExamStems", (string)null);
                 });
 
             modelBuilder.Entity("TeamAssignment4A.Models.Stem", b =>
@@ -479,14 +456,14 @@ namespace TeamAssignment4A.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TopicID")
+                    b.Property<int>("TopicId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TopicID");
+                    b.HasIndex("TopicId");
 
-                    b.ToTable("Stems");
+                    b.ToTable("Stems", (string)null);
                 });
 
             modelBuilder.Entity("TeamAssignment4A.Models.Topic", b =>
@@ -511,7 +488,7 @@ namespace TeamAssignment4A.Migrations
 
                     b.HasIndex("CertificateId");
 
-                    b.ToTable("Topics");
+                    b.ToTable("Topics", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -625,30 +602,11 @@ namespace TeamAssignment4A.Migrations
                     b.Navigation("Stems");
                 });
 
-            modelBuilder.Entity("TeamAssignment4A.Models.JointTables.ExamTopic", b =>
-                {
-                    b.HasOne("TeamAssignment4A.Models.Exam", "Exam")
-                        .WithMany("ExamTopics")
-                        .HasForeignKey("ExamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TeamAssignment4A.Models.Topic", "Topic")
-                        .WithMany()
-                        .HasForeignKey("TopicId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Exam");
-
-                    b.Navigation("Topic");
-                });
-
             modelBuilder.Entity("TeamAssignment4A.Models.Stem", b =>
                 {
                     b.HasOne("TeamAssignment4A.Models.Topic", "Topic")
                         .WithMany("Stems")
-                        .HasForeignKey("TopicID")
+                        .HasForeignKey("TopicId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -683,8 +641,6 @@ namespace TeamAssignment4A.Migrations
                     b.Navigation("CandidateExams");
 
                     b.Navigation("ExamStems");
-
-                    b.Navigation("ExamTopics");
                 });
 
             modelBuilder.Entity("TeamAssignment4A.Models.Stem", b =>

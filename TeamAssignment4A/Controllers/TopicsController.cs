@@ -65,7 +65,6 @@ namespace TeamAssignment4A.Controllers
         [ProducesResponseType(typeof(TopicDto), 200)]
         public IActionResult Create()
         {
-
             return View();
         }
 
@@ -118,8 +117,7 @@ namespace TeamAssignment4A.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        [HttpPost]
+        [ValidateAntiForgeryToken]        
         [ProducesResponseType(typeof(TopicDto), 200)]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Description,NumberOfPossibleMarks,TitleOfCertificate")] TopicDto topicDto)
         {

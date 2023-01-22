@@ -13,7 +13,7 @@ namespace TeamAssignment4A.Controllers
 {
     public class CertificatesController : Controller
     {       
-        private CertificateService _service;
+        private readonly CertificateService _service;
         public CertificatesController(CertificateService service)
         {            
             _service = service;        
@@ -101,10 +101,7 @@ namespace TeamAssignment4A.Controllers
         public async Task<IActionResult> DeleteConfirmed(int Id)
         {
             MyDTO myDTO = await _service.Delete(Id);
-
             ViewBag.Message = myDTO.Message;
-     
-
             return View($"{myDTO.View}", myDTO.Certificates);
         }        
     }
