@@ -18,7 +18,7 @@ namespace TeamAssignment4A.Controllers {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IMapper _mapper;
         private readonly StemService _service;
-        public StemsController(StemService service, WebAppDbContext db, IWebHostEnvironment webHostEnvironment,IMapper mapper) 
+        public StemsController(StemService service, WebAppDbContext db, IWebHostEnvironment webHostEnvironment, IMapper mapper) 
         {
             _service = service;
             _db = db;
@@ -29,22 +29,10 @@ namespace TeamAssignment4A.Controllers {
         // GET: Stems
         [HttpGet]
         [ProducesResponseType(typeof(StemDto), 200)]
-        public async Task<IActionResult> Index() // index
-        {
-            //var stems = await _service.GetAllStems();
-            //var stemDtos = _mapper.Map<List<StemDto>>(stems);
+        public async Task<IActionResult> Index()
+        {            
             return View(await _service.GetAllStems());
-        }
-        //public async Task<IActionResult> Index() 
-        //{
-        //    List<Stem> ListOfStems = _context.Stems.Include(s => s.Topic).ToList();
-        //    //foreach (var topic in ListOfTopics) {
-
-        //    //    Stem stem = _context.Stems.Find(TopicID);
-        //    //}
-
-        //    return View(await _context.Stems.ToListAsync());
-        //}
+        }        
 
         // GET: Stems/Details/5
         [HttpGet]
