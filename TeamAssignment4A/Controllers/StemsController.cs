@@ -64,6 +64,7 @@ namespace TeamAssignment4A.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer, TopicID")] Stem stem) {
+
             if (ModelState.IsValid) {
                 _context.Add(stem);
                 await _context.SaveChangesAsync();
@@ -77,7 +78,14 @@ namespace TeamAssignment4A.Controllers {
             if (id == null || _context.Stems == null) {
                 return NotFound();
             }
-
+            var AnswerOptions = new List<SelectListItem>{
+                new SelectListItem { Value = "A", Text = "A" },
+                new SelectListItem { Value = "B", Text = "B" },
+                new SelectListItem { Value = "C", Text = "C" },
+                new SelectListItem { Value = "D", Text = "D" }
+            };
+            ViewBag.AnswerOptions = AnswerOptions;
+            ViewBag.Topics = new SelectList(_context.Topics, "Id", "Description");
             var stem = await _context.Stems.FindAsync(id);
             if (stem == null) {
                 return NotFound();
@@ -90,7 +98,7 @@ namespace TeamAssignment4A.Controllers {
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer")] Stem stem) {
+        public async Task<IActionResult> Edit(int id, Stem stem) {
             if (id != stem.Id) {
                 return NotFound();
             }

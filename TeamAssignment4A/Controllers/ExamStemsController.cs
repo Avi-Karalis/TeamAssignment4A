@@ -49,13 +49,14 @@ namespace TeamAssignment4A.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ExamSubmit(ExamSubmissionDTO examSubmissionDTO) {
-            
 
             if (ModelState.IsValid) {
+            Exam exam = _context.Exams.Find(examSubmissionDTO.ExamQuestions.FirstOrDefault().ExamId);
                 foreach(var examQuestion in examSubmissionDTO.ExamQuestions) {
                     ExamStem examStem = new ExamStem();
                     examStem.SubmittedAnswer = examQuestion.Answer;
-                    examStem.Exam = _context.Exams.Find(examQuestion.ExamId);
+                    
+                    examStem.Exam = exam;
                     examStem.Stem = _context.Stems.Find(examQuestion.StemId);
                     if (examQuestion.Answer == examStem.Stem.CorrectAnswer) {
                         examStem.Score = 1;
@@ -63,7 +64,10 @@ namespace TeamAssignment4A.Controllers
                         examStem.Score = 0;
                     }
                     _context.Add(examStem);
+                    
                 }
+                exam.ExaminationDate = DateTime.Now;
+                _context.Update(exam);
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
