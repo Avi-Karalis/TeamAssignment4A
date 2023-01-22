@@ -24,25 +24,17 @@ namespace TeamAssignment4A.Controllers
         // GET: ExamStems
         public async Task<IActionResult> Index()
         {
-            
 
-            //List<Stem> listOfStemsToBeExamined = _context.Stems.Include(s => s.Topic).Where(c => c.Topic.Certificate.Id == Id).ToList();
-            //List<ExamQuestion> examTakeDTOs = new List<ExamQuestion>();
-            //foreach(var stem in listOfStemsToBeExamined) {
-            //    ExamQuestion examTakeDTO = new ExamQuestion(stem);
-            //    examTakeDTOs.Add(examTakeDTO);
-            //}
-            ////foreach(Topic topics in ListOfTopics.Where(c => c.Topic.Certificate.Id == certToTestId)) {
-            //ViewBag.ExamTakeDTOs = examTakeDTOs;
-            return View();
+            return View(await _context.ExamStems.ToListAsync());
         }
 
         //Take an exam
-        public async Task<IActionResult> TakeExam(int certificateId, int examId) {
-            List<Stem> listOfStemsToBeExamined = _context.Stems.Include(s => s.Topic).Where(c => c.Topic.Certificate.Id == certificateId).ToList();
+        public async Task<IActionResult> TakeExam(int id) {
+            Exam exam = _context.Exams.Include(e => e.Certificate).Where(e => e.Id == id).FirstOrDefault();
+            List <Stem> listOfStemsToBeExamined = _context.Stems.Include(s => s.Topic).Where(c => c.Topic.Certificate.Id == exam.Certificate.Id).ToList();
             List<ExamQuestion> examQuestions = new List<ExamQuestion>();
             foreach (var stem in listOfStemsToBeExamined) {
-                ExamQuestion examQuestion = new ExamQuestion(stem, examId);
+                ExamQuestion examQuestion = new ExamQuestion(stem, id);
                 examQuestions.Add(examQuestion);
             }
             List<string> selections = new List<string>{ "A", "B", "C", "D"};

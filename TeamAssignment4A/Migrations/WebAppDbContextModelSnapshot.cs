@@ -272,7 +272,6 @@ namespace TeamAssignment4A.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("AssessmentResultLabel")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AssessmentTestCode")
@@ -282,20 +281,19 @@ namespace TeamAssignment4A.Migrations
                     b.Property<int>("CandidateId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CandidateScore")
+                    b.Property<int?>("CandidateScore")
                         .HasColumnType("int");
 
                     b.Property<int>("CertificateId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("ExaminationDate")
+                    b.Property<DateTime?>("ExaminationDate")
                         .HasColumnType("Date");
 
                     b.Property<string>("PercentageScore")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ScoreReportDate")
+                    b.Property<DateTime?>("ScoreReportDate")
                         .HasColumnType("Date");
 
                     b.HasKey("Id");

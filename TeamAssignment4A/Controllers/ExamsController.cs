@@ -60,14 +60,13 @@ namespace TeamAssignment4A.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("assessmentTestCode, CertificateId, CandidateId")] ExamCreateDTO examDTO)
         {
-            if (ModelState.IsValid)
-            {
+            if (ModelState.IsValid) {
                 Certificate certificate = _context.Certificates.Find(examDTO.CertificateId);
                 Candidate candidate = _context.Candidates.Find(examDTO.CandidateId);
-                Exam exam = new Exam(certificate, candidate);
+                Exam exam = new Exam(examDTO.assessmentTestCode, certificate, candidate);
                 _context.Add(exam);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("TakeExam", "ExamStems", new { id = exam.Id });
             }
             return View(examDTO);
         }

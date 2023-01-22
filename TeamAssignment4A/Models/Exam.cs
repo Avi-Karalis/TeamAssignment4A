@@ -19,30 +19,31 @@ namespace TeamAssignment4A.Models
      
         [Display(Name = "Examination Date")]
         [Column(TypeName = "Date")]
-        public DateTime ExaminationDate { get; set; }
+        public DateTime? ExaminationDate { get; set; }
 
 
         [Display(Name = "Score Report Date")]
         [Column(TypeName = "Date")]
-        public DateTime ScoreReportDate { get; set; }
+        public DateTime? ScoreReportDate { get; set; }
 
 
         [Display(Name = "Candidate Score")]
-        public int CandidateScore { get; set; }
+        public int? CandidateScore { get; set; }
 
  
         [Display(Name = "Percentage Score")]
-        public string PercentageScore { get; set; }
+        public string? PercentageScore { get; set; }
 
    
         [Display(Name = "Assessment Result Label")]
-        public string AssessmentResultLabel { get; set; }
+        public string? AssessmentResultLabel { get; set; }
 
         public Exam() {
 
         }
 
-        public Exam(Certificate certificate, Candidate candidate) {
+        public Exam(string assessmentTestCode, Certificate certificate, Candidate candidate) {
+            this.AssessmentTestCode = assessmentTestCode;
             this.Certificate = certificate;
             this.Candidate = candidate;
         }
