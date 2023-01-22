@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using TeamAssignment4A.Data;
 using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models;
+using TeamAssignment4A.ViewModels;
 
 namespace TeamAssignment4A.Services
 {
@@ -61,21 +62,35 @@ namespace TeamAssignment4A.Services
             return _myDTO;
         }
 
-        public async Task<MyDTO> AddOrUpdateStem(int id, [Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,TopicDescription")] StemDto stemDto)
+        public async Task<MyDTO> AddOrUpdateStem(int id, [Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,TopicDescription,Topic")] StemDto stemDto)
         {
-            Topic topic = await _unit.Topic.GetAsyncByDesc(stemDto.TopicDescription);   //_context.Certificates.FirstOrDefault(cert => cert.TitleOfCertificate == topicDto.TitleOfCertificate);
-            Stem stem = new Stem
+            Stem stem;
+            if (id == 0)
             {
-                Id = stemDto.Id,
-                Question = stemDto.Question,
-                OptionA = stemDto.OptionA,
-                OptionB = stemDto.OptionB,
-                OptionC = stemDto.OptionC,
-                OptionD = stemDto.OptionD,
-                CorrectAnswer = stemDto.CorrectAnswer,                
-                Topic = topic
-            };
+                Topic topic = await _unit.Topic.GetAsyncByDesc(stemDto.TopicDescription);
+                stemDto = new StemDto()
+                {
+                    Topic = topic
+                };
+                
+                 //stem = _mapper.Map<Stem>(stemDtoForUpdate);
+                //stem = new Stem
+                //{
+                //    Question = stemDto.Question,
+                //    OptionA = stemDto.OptionA,
+                //    OptionB = stemDto.OptionB,
+                //    OptionC = stemDto.OptionC,
+                //    OptionD = stemDto.OptionD,
+                //    CorrectAnswer = stemDto.CorrectAnswer,
+                //    Topic = topic
+            //    //}; 
+            //}
+            //else
+            //{
+            //    stem = _mapper.Map<Stem>(stemDto);
+            }
             stem = _mapper.Map<Stem>(stemDto);
+
             EntityState state = _unit.Stem.AddOrUpdate(stem);
             if (id != stem.Id)
             {

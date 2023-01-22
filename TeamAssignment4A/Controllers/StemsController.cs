@@ -89,7 +89,7 @@ namespace TeamAssignment4A.Controllers {
                                //_db.Topics.Include(topic => topic.Certificate).ToListAsync<Topic>();
             var topicDtos = _mapper.Map<List<TopicDto>>(topics);
 
-            var options2 = new SelectList(topicDtos, "Id", "Description");
+            var options2 = new SelectList(topicDtos, "Description", "Description");
             ViewBag.Topics = options2;
             return View();
         }
@@ -99,7 +99,7 @@ namespace TeamAssignment4A.Controllers {
         [HttpPost]
         [ProducesResponseType(typeof(StemDto), 200)]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int id, [Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,TopicDescription")] StemDto stemDto) 
+        public async Task<IActionResult> Create(int id, [Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,TopicDescription,Topic")] StemDto stemDto) 
         {
             MyDTO myDTO = await _service.AddOrUpdateStem(id, stemDto);
             ViewBag.Message = myDTO.Message;
@@ -129,7 +129,7 @@ namespace TeamAssignment4A.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ProducesResponseType(typeof(StemDto), 200)]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,TopicDescription")] StemDto stemDto) 
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,TopicDescription,Topic")] StemDto stemDto) 
         {
             MyDTO myDTO = await _service.AddOrUpdateStem(id, stemDto);
             ViewBag.Message = myDTO.Message;

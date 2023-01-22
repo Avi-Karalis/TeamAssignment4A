@@ -1,33 +1,25 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
-using TeamAssignment4A.Models;
+﻿using TeamAssignment4A.Models;
 
-namespace TeamAssignment4A.Dtos
+namespace TeamAssignment4A.ViewModels
 {
-    public class StemDto
+    public class AddOrUpdateStemDto
     {
-        [Required]
         public int Id { get; set; }
 
-        [Required]
         public string Question { get; set; }
 
-        [Required]
         public string OptionA { get; set; }
 
-        [Required]
         public string OptionB { get; set; }
 
-        [Required]
         public string OptionC { get; set; }
 
-        [Required]
+        
         public string OptionD { get; set; }
 
-        [Required]
+        
         public char CorrectAnswer { get; set; }
 
-        public string TopicDescription { get; set; }
         public Topic Topic { get; set; }
     }
 }
