@@ -39,7 +39,7 @@
             </div>
             <div class="form-group text-black">
                 <label asp-for="CorrectAnswer" class="control-label text-white"></label>
-                <select asp-for="CorrectAnswer" class="form-control  text-black" asp-items="@ViewBag.Options"></select>
+                <select asp-for="CorrectAnswer" class="form-control  text-black" asp-items="@ViewBag.AnswerOptions"></select>
                 <span asp-validation-for="CorrectAnswer" class="text-danger"></span>
             </div>
 

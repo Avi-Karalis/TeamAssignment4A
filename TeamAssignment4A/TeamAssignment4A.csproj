@@ -8,9 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Migrations\**" />
     <Compile Remove="wwwroot\uploader\**" />
+    <Content Remove="Data\Migrations\**" />
     <Content Remove="wwwroot\uploader\**" />
+    <EmbeddedResource Remove="Data\Migrations\**" />
     <EmbeddedResource Remove="wwwroot\uploader\**" />
+    <None Remove="Data\Migrations\**" />
     <None Remove="wwwroot\uploader\**" />
   </ItemGroup>
 
@@ -28,7 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Migrations\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

@@ -1,112 +1,103 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using TeamAssignment4A.Data;
 using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace TeamAssignment4A.Controllers
 {
-    public class TopicsController : Controller
+    public class ExamsController : Controller
     {
         private readonly WebAppDbContext _context;
 
-        public TopicsController(WebAppDbContext context)
+        public ExamsController(WebAppDbContext context)
         {
             _context = context;
         }
 
-        // GET: Topics
+        // GET: Exams
         public async Task<IActionResult> Index()
         {
-            List<Topic> ListOfTopics = _context.Topics.Include(c=>c.Certificate).ToList();
-            List<TopicIndexDto> ListOfTopicIndexDtos = new List<TopicIndexDto>();
-            foreach(Topic topic in ListOfTopics) {
-                TopicIndexDto topicIndexDto = new TopicIndexDto(topic);
-                ListOfTopicIndexDtos.Add(topicIndexDto);
-            }
-            return View(ListOfTopicIndexDtos);
+            
+            return View(await _context.Exams.ToListAsync());
         }
 
-        // GET: Topics/Details/5
+        // GET: Exams/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Topics == null)
+            if (id == null || _context.Exams == null)
             {
                 return NotFound();
             }
 
-            var topic = await _context.Topics
+            var exam = await _context.Exams
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (topic == null)
+            if (exam == null)
             {
                 return NotFound();
             }
 
-            return View(topic);
+            return View(exam);
         }
 
-        // GET: Topics/Create
+        // GET: Exams/Create
         public IActionResult Create()
         {
-
             ViewBag.Certificates = new SelectList(_context.Certificates, "Id", "TitleOfCertificate");
-
+            ViewBag.Candidates = new SelectList(_context.Candidates, "Id", "LastName");
             return View();
         }
 
-        // POST: Topics/Create
+        // POST: Exams/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Description,NumberOfPossibleMarks, CertificateID")] TopicCreateDto topicDto)//<- theleiDTO
+        public async Task<IActionResult> Create([Bind("assessmentTestCode, CertificateId, CandidateId")] ExamCreateDTO examDTO)
         {
-
             if (ModelState.IsValid)
             {
-                Certificate certificate = _context.Certificates.Find(topicDto.CertificateID);
-                Topic topic = new Topic(topicDto, certificate);
-                _context.Add(topic);
+                Certificate certificate = _context.Certificates.Find(examDTO.CertificateId);
+                Candidate candidate = _context.Candidates.Find(examDTO.CandidateId);
+                Exam exam = new Exam(certificate, candidate);
+                _context.Add(exam);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View();
+            return View(examDTO);
         }
 
-        // GET: Topics/Edit/5
+        // GET: Exams/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Topics == null)
+            if (id == null || _context.Exams == null)
             {
                 return NotFound();
             }
 
-            var topic = await _context.Topics.FindAsync(id);
+            var exam = await _context.Exams.FindAsync(id);
             ViewBag.Certificates = new SelectList(_context.Certificates, "Id", "TitleOfCertificate");
-            if (topic == null)
+            ViewBag.Candidates = new SelectList(_context.Candidates, "Id", "LastName");
+            if (exam == null)
             {
                 return NotFound();
             }
-            return View(topic);
+            return View(exam);
         }
 
-        // POST: Topics/Edit/5
+        // POST: Exams/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Description,NumberOfPossibleMarks")] Topic topic)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,AssessmentTestCode,ExaminationDate,ScoreReportDate,CandidateScore,PercentageScore,AssessmentResultLabel")] Exam exam)
         {
-            if (id != topic.Id)
+            if (id != exam.Id)
             {
                 return NotFound();
             }
@@ -115,12 +106,12 @@ namespace TeamAssignment4A.Controllers
             {
                 try
                 {
-                    _context.Update(topic);
+                    _context.Update(exam);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TopicExists(topic.Id))
+                    if (!ExamExists(exam.Id))
                     {
                         return NotFound();
                     }
@@ -131,49 +122,49 @@ namespace TeamAssignment4A.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(topic);
+            return View(exam);
         }
 
-        // GET: Topics/Delete/5
+        // GET: Exams/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Topics == null)
+            if (id == null || _context.Exams == null)
             {
                 return NotFound();
             }
 
-            var topic = await _context.Topics
+            var exam = await _context.Exams
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (topic == null)
+            if (exam == null)
             {
                 return NotFound();
             }
 
-            return View(topic);
+            return View(exam);
         }
 
-        // POST: Topics/Delete/5
+        // POST: Exams/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Topics == null)
+            if (_context.Exams == null)
             {
-                return Problem("Entity set 'WebAppDbContext.Topics'  is null.");
+                return Problem("Entity set 'WebAppDbContext.Exams'  is null.");
             }
-            var topic = await _context.Topics.FindAsync(id);
-            if (topic != null)
+            var exam = await _context.Exams.FindAsync(id);
+            if (exam != null)
             {
-                _context.Topics.Remove(topic);
+                _context.Exams.Remove(exam);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TopicExists(int id)
+        private bool ExamExists(int id)
         {
-            return _context.Topics.Any(e => e.Id == id);
+            return _context.Exams.Any(e => e.Id == id);
         }
     }
 }

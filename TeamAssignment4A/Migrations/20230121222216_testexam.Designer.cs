@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TeamAssignment4A.Data;
 
@@ -11,9 +12,10 @@ using TeamAssignment4A.Data;
 namespace TeamAssignment4A.Migrations
 {
     [DbContext(typeof(WebAppDbContext))]
-    partial class WebAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230121222216_testexam")]
+    partial class testexam
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -408,13 +410,13 @@ namespace TeamAssignment4A.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ExamId")
+                    b.Property<int>("ExamsId")
                         .HasColumnType("int");
 
                     b.Property<int>("Score")
                         .HasColumnType("int");
 
-                    b.Property<int>("StemId")
+                    b.Property<int>("StemsId")
                         .HasColumnType("int");
 
                     b.Property<string>("SubmittedAnswer")
@@ -423,9 +425,9 @@ namespace TeamAssignment4A.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExamId");
+                    b.HasIndex("ExamsId");
 
-                    b.HasIndex("StemId");
+                    b.HasIndex("StemsId");
 
                     b.ToTable("ExamStems");
                 });
@@ -599,21 +601,21 @@ namespace TeamAssignment4A.Migrations
 
             modelBuilder.Entity("TeamAssignment4A.Models.JointTables.ExamStem", b =>
                 {
-                    b.HasOne("TeamAssignment4A.Models.Exam", "Exam")
+                    b.HasOne("TeamAssignment4A.Models.Exam", "Exams")
                         .WithMany("ExamStems")
-                        .HasForeignKey("ExamId")
+                        .HasForeignKey("ExamsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TeamAssignment4A.Models.Stem", "Stem")
+                    b.HasOne("TeamAssignment4A.Models.Stem", "Stems")
                         .WithMany("ExamStems")
-                        .HasForeignKey("StemId")
+                        .HasForeignKey("StemsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Exam");
+                    b.Navigation("Exams");
 
-                    b.Navigation("Stem");
+                    b.Navigation("Stems");
                 });
 
             modelBuilder.Entity("TeamAssignment4A.Models.Stem", b =>

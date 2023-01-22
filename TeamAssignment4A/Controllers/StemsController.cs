@@ -47,13 +47,13 @@ namespace TeamAssignment4A.Controllers {
 
         // GET: Stems/Create
         public IActionResult Create() {
-            var options = new List<SelectListItem>{
+            var AnswerOptions = new List<SelectListItem>{
                 new SelectListItem { Value = "A", Text = "A" },
                 new SelectListItem { Value = "B", Text = "B" },
                 new SelectListItem { Value = "C", Text = "C" },
                 new SelectListItem { Value = "D", Text = "D" }
             };
-            ViewBag.Options = options;
+            ViewBag.AnswerOptions = AnswerOptions;
             ViewBag.Topics = new SelectList(_context.Topics, "Id", "Description");
             return View();
         }

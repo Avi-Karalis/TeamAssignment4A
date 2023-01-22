@@ -2,9 +2,8 @@
 
 namespace TeamAssignment4A.Dtos {
     public class ExamCreateDTO {
-        public string ExamDescription { get; set; }
+        public string assessmentTestCode { get; set; }
         public int CertificateId { get; set; }
-        public int Topic1Id { get; set; }
-        public int Topic2Id { get; set; }
+        public int CandidateId { get; set; }
     }
 }
