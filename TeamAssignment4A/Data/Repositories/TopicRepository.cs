@@ -3,7 +3,7 @@ using TeamAssignment4A.Models;
 
 namespace TeamAssignment4A.Data.Repositories
 {
-    public class TopicRepository //: IGenericRepository<Topic>
+    public class TopicRepository : IGenericRepository<Topic>
     {
         private readonly WebAppDbContext _db;
         public TopicRepository(WebAppDbContext context)

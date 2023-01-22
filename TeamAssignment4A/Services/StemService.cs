@@ -63,33 +63,10 @@ namespace TeamAssignment4A.Services
         }
 
         public async Task<MyDTO> AddOrUpdateStem(int id, [Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,TopicDescription,Topic")] StemDto stemDto)
-        {
-            Stem stem;
-            if (id == 0)
-            {
-                Topic topic = await _unit.Topic.GetAsyncByDesc(stemDto.TopicDescription);
-                stemDto = new StemDto()
-                {
-                    Topic = topic
-                };
-                
-                 //stem = _mapper.Map<Stem>(stemDtoForUpdate);
-                //stem = new Stem
-                //{
-                //    Question = stemDto.Question,
-                //    OptionA = stemDto.OptionA,
-                //    OptionB = stemDto.OptionB,
-                //    OptionC = stemDto.OptionC,
-                //    OptionD = stemDto.OptionD,
-                //    CorrectAnswer = stemDto.CorrectAnswer,
-                //    Topic = topic
-            //    //}; 
-            //}
-            //else
-            //{
-            //    stem = _mapper.Map<Stem>(stemDto);
-            }
-            stem = _mapper.Map<Stem>(stemDto);
+        {            
+            Topic topic = await _unit.Topic.GetAsyncByDesc(stemDto.TopicDescription);
+            stemDto.Topic = topic;                
+            Stem stem = _mapper.Map<Stem>(stemDto);
 
             EntityState state = _unit.Stem.AddOrUpdate(stem);
             if (id != stem.Id)

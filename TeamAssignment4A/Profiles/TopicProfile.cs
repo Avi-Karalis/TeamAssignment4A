@@ -30,18 +30,7 @@ namespace TeamAssignment4A.Profiles
                 .ForMember(dest => dest.CorrectAnswer, opt => opt.MapFrom(src => src.CorrectAnswer))
                 .ForMember(dest => dest.TopicDescription, opt => opt.MapFrom(src => src.Topic.Description))
                 .ForMember(dest => dest.Topic, opt => opt.MapFrom(src => src.Topic))
-                .ReverseMap();
-
-            CreateMap<Stem , AddOrUpdateStemDto>();
-            
-            CreateMap<Stem , AddOrUpdateStemDto>()
-                .ForMember(dest => dest.Question, opt => opt.MapFrom(src => src.Question))
-                .ForMember(dest => dest.OptionA, opt => opt.MapFrom(src => src.OptionA))
-                .ForMember(dest => dest.OptionB, opt => opt.MapFrom(src => src.OptionB))
-                .ForMember(dest => dest.OptionC, opt => opt.MapFrom(src => src.OptionC))
-                .ForMember(dest => dest.OptionD, opt => opt.MapFrom(src => src.OptionD))
-                .ForMember(dest => dest.CorrectAnswer, opt => opt.MapFrom(src => src.CorrectAnswer))
-                .ForMember(dest => dest.Topic, opt => opt.MapFrom(src => src.Topic)).ReverseMap();
+                .ReverseMap();            
         }
     }
 }

@@ -58,20 +58,7 @@ namespace TeamAssignment4A.Controllers {
                 return View($"{myDTO.View}", myDTO.StemDtos);
             }
             return View($"{myDTO.View}", myDTO.StemDto);
-        }
-        //public async Task<IActionResult> Details(int? id) {
-        //    if (id == null || _context.Stems == null) {
-        //        return NotFound();
-        //    }
-
-        //    var stem = await _context.Stems
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (stem == null) {
-        //        return NotFound();
-        //    }
-
-        //    return View(stem);
-        //}
+        }       
 
         // GET: Stems/Create
         [HttpGet]
@@ -85,10 +72,8 @@ namespace TeamAssignment4A.Controllers {
                 new SelectListItem { Value = "D", Text = "D" }
             };
             ViewBag.Options = options;
-            var topics = await _db.Topics.Include(top => top.Certificate).ToListAsync<Topic>();
-                               //_db.Topics.Include(topic => topic.Certificate).ToListAsync<Topic>();
+            var topics = await _db.Topics.Include(top => top.Certificate).ToListAsync<Topic>();                               
             var topicDtos = _mapper.Map<List<TopicDto>>(topics);
-
             var options2 = new SelectList(topicDtos, "Description", "Description");
             ViewBag.Topics = options2;
             return View();
@@ -164,10 +149,5 @@ namespace TeamAssignment4A.Controllers {
             ViewBag.Message = myDTO.Message;
             return View($"{myDTO.View}", myDTO.StemDtos);
         }
-
-        //private bool StemExists(int id) {
-        //    return _context.Stems.Any(e => e.Id == id);
-        //}
-
     }
 }
