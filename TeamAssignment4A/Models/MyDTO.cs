@@ -11,5 +11,7 @@ namespace TeamAssignment4A.Models
         public IEnumerable<Certificate>? Certificates { get; set;}
         public StemDto? StemDto { get; set; }
         public IEnumerable<StemDto>? StemDtos { get; set; }
+        public Topic? TopicDto { get; set; }
+        public IEnumerable<Topic>? TopicDtos { get;}
     }
 }
