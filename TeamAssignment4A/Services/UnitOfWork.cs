@@ -6,14 +6,18 @@ namespace TeamAssignment4A.Services
 {
     public class UnitOfWork : IDisposable
     {
-        private WebAppDbContext _db;
-        public IGenericRepository<Candidate> Candidate { get; set; }
-        public IGenericRepository<Certificate> Certificate { get; set; }
+        private readonly WebAppDbContext _db;
+        public CandidateRepository Candidate { get; set; }
+        public CertificateRepository Certificate { get; set; }
+        public TopicRepository Topic { get; set; }
+        public StemRepository Stem { get; set; }
         public UnitOfWork(WebAppDbContext db)
         {
             _db = db;
             Candidate = new CandidateRepository(db);
             Certificate = new CertificateRepository(db);
+            Topic = new TopicRepository(db);
+            Stem = new StemRepository(db);
         }
 
         public async Task<int> SaveAsync() 

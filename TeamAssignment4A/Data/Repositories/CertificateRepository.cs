@@ -17,7 +17,7 @@ namespace TeamAssignment4A.Data.Repositories
             return await _db.Certificates.FirstOrDefaultAsync(x => x.Id == id);            
         }
 
-        public async Task<ICollection<Certificate>?> GetAllAsync()
+        public async Task<IEnumerable<Certificate>?> GetAllAsync()
         {
             return await _db.Certificates.ToListAsync<Certificate>();
         }        

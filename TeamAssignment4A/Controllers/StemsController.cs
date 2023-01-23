@@ -2,81 +2,97 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TeamAssignment4A.Data;
+using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models;
+using TeamAssignment4A.Services;
 
 namespace TeamAssignment4A.Controllers {
-    public class StemsController : Controller {
-        private readonly WebAppDbContext _context;
-
+    public class StemsController : Controller 
+    {
+        private readonly WebAppDbContext _db;
         private readonly IWebHostEnvironment _webHostEnvironment;
-
-        public StemsController(WebAppDbContext context, IWebHostEnvironment webHostEnvironment) {
-            _context = context;
+        private readonly IMapper _mapper;
+        private readonly StemService _service;
+        public StemsController(StemService service, WebAppDbContext db, IWebHostEnvironment webHostEnvironment, IMapper mapper) 
+        {
+            _service = service;
+            _db = db;
             _webHostEnvironment = webHostEnvironment;
+            _mapper = mapper;
         }
 
         // GET: Stems
-        public async Task<IActionResult> Index() {
-            List<Stem> ListOfStems = _context.Stems.Include(s => s.Topic).ToList();
-            //foreach (var topic in ListOfTopics) {
-
-            //    Stem stem = _context.Stems.Find(TopicID);
-            //}
-
-            return View(await _context.Stems.ToListAsync());
-        }
+        [HttpGet]
+        [ProducesResponseType(typeof(StemDto), 200)]
+        public async Task<IActionResult> Index()
+        {            
+            return View(await _service.GetAllStems());
+        }        
 
         // GET: Stems/Details/5
-        public async Task<IActionResult> Details(int? id) {
-            if (id == null || _context.Stems == null) {
-                return NotFound();
+        [HttpGet]
+        [ProducesResponseType(typeof(StemDto), 200)]
+        public async Task<IActionResult> Details(int id)
+        {
+            MyDTO myDTO = await _service.GetStem(id);
+            ViewBag.Message = myDTO.Message;
+            if (myDTO.View == "Index")
+            {
+                return View($"{myDTO.View}", myDTO.StemDtos);
             }
-
-            var stem = await _context.Stems
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (stem == null) {
-                return NotFound();
-            }
-
-            return View(stem);
-        }
+            return View($"{myDTO.View}", myDTO.StemDto);
+        }       
 
         // GET: Stems/Create
-        public IActionResult Create() {
-            var AnswerOptions = new List<SelectListItem>{
+        [HttpGet]
+        [ProducesResponseType(typeof(StemDto), 200)]
+        public async Task<IActionResult> Create() 
+        {
+            var options = new List<SelectListItem>{
                 new SelectListItem { Value = "A", Text = "A" },
                 new SelectListItem { Value = "B", Text = "B" },
                 new SelectListItem { Value = "C", Text = "C" },
                 new SelectListItem { Value = "D", Text = "D" }
             };
-            ViewBag.AnswerOptions = AnswerOptions;
-            ViewBag.Topics = new SelectList(_context.Topics, "Id", "Description");
+            ViewBag.Options = options;
+            var topics = await _db.Topics.Include(top => top.Certificate).ToListAsync<Topic>();                               
+            var topicDtos = _mapper.Map<List<TopicDto>>(topics);
+            var options2 = new SelectList(topicDtos, "Description", "Description");
+            ViewBag.Topics = options2;
             return View();
         }
 
         // POST: Stems/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
+        [ProducesResponseType(typeof(StemDto), 200)]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer, TopicID")] Stem stem) {
-
-            if (ModelState.IsValid) {
-                _context.Add(stem);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+        public async Task<IActionResult> Create(int id, [Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,TopicDescription,Topic")] StemDto stemDto) 
+        {
+            MyDTO myDTO = await _service.AddOrUpdateStem(id, stemDto);
+            ViewBag.Message = myDTO.Message;
+            if (myDTO.View == "Index")
+            {
+                return View($"{myDTO.View}", myDTO.StemDtos);
             }
-            return View(stem);
+            return View($"{myDTO.View}", myDTO.StemDto);
         }
 
         // GET: Stems/Edit/5
-        public async Task<IActionResult> Edit(int? id) {
-            if (id == null || _context.Stems == null) {
-                return NotFound();
+        [HttpGet]
+        [ProducesResponseType(typeof(StemDto), 200)]
+        public async Task<IActionResult> Edit(int id) 
+        {
+            MyDTO myDTO = await _service.GetForUpdate(id);
+            ViewBag.Message = myDTO.Message;
+            if (myDTO.View == "Index")
+            {
+                return View($"{myDTO.View}", myDTO.StemDtos);
             }
             var AnswerOptions = new List<SelectListItem>{
                 new SelectListItem { Value = "A", Text = "A" },
@@ -90,69 +106,48 @@ namespace TeamAssignment4A.Controllers {
             if (stem == null) {
                 return NotFound();
             }
-            return View(stem);
+            return View($"{myDTO.View}", myDTO.StemDto);
         }
 
         // POST: Stems/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Stem stem) {
-            if (id != stem.Id) {
-                return NotFound();
+        [ProducesResponseType(typeof(StemDto), 200)]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,TopicDescription,Topic")] StemDto stemDto) 
+        {
+            MyDTO myDTO = await _service.AddOrUpdateStem(id, stemDto);
+            ViewBag.Message = myDTO.Message;
+            if (myDTO.View == "Index")
+            {
+                return View($"{myDTO.View}", myDTO.StemDtos);
             }
-
-            if (ModelState.IsValid) {
-                try {
-                    _context.Update(stem);
-                    await _context.SaveChangesAsync();
-                } catch (DbUpdateConcurrencyException) {
-                    if (!StemExists(stem.Id)) {
-                        return NotFound();
-                    } else {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(stem);
+            return View($"{myDTO.View}", myDTO.StemDto);
         }
 
         // GET: Stems/Delete/5
-        public async Task<IActionResult> Delete(int? id) {
-            if (id == null || _context.Stems == null) {
-                return NotFound();
+        [HttpGet]
+        [ProducesResponseType(typeof(StemDto), 200)]
+        public async Task<IActionResult> Delete(int id) 
+        {
+            MyDTO myDTO = await _service.GetForDelete(id);
+            ViewBag.Message = myDTO.Message;
+            if (myDTO.View == "Index")
+            {
+                return View($"{myDTO.View}", myDTO.StemDtos);
             }
-
-            var stem = await _context.Stems
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (stem == null) {
-                return NotFound();
-            }
-
-            return View(stem);
+            return View($"{myDTO.View}", myDTO.StemDto);
         }
 
         // POST: Stems/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id) {
-            if (_context.Stems == null) {
-                return Problem("Entity set 'WebAppDbContext.Stems'  is null.");
-            }
-            var stem = await _context.Stems.FindAsync(id);
-            if (stem != null) {
-                _context.Stems.Remove(stem);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+        [ProducesResponseType(typeof(StemDto), 200)]
+        public async Task<IActionResult> DeleteConfirmed(int id) 
+        {
+            MyDTO myDTO = await _service.Delete(id);
+            ViewBag.Message = myDTO.Message;
+            return View($"{myDTO.View}", myDTO.StemDtos);
         }
-
-        private bool StemExists(int id) {
-            return _context.Stems.Any(e => e.Id == id);
-        }
-
     }
 }
