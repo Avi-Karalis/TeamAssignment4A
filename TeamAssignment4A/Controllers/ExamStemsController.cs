@@ -46,7 +46,6 @@ namespace TeamAssignment4A.Controllers
             return View(examSubmissionDTO);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ExamSubmit(ExamSubmissionDTO examSubmissionDTO) {
