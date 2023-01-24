@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TeamAssignment4A.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial_Create : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -127,17 +127,24 @@ namespace TeamAssignment4A.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AssessmentTestCode = table.Column<int>(type: "int", nullable: false),
-                    ExaminationDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    ScoreReportDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    CandidateScore = table.Column<int>(type: "int", nullable: false),
-                    PercentageScore = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AssessmentResultLabel = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CertificateId = table.Column<int>(type: "int", nullable: false)
+                    AssessmentTestCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExaminationDate = table.Column<DateTime>(type: "Date", nullable: true),
+                    ScoreReportDate = table.Column<DateTime>(type: "Date", nullable: true),
+                    CandidateScore = table.Column<int>(type: "int", nullable: true),
+                    PercentageScore = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AssessmentResultLabel = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CertificateId = table.Column<int>(type: "int", nullable: false),
+                    CandidateId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Exams", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Exams_Candidates_CandidateId",
+                        column: x => x.CandidateId,
+                        principalTable: "Candidates",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Exams_Certificates_CertificateId",
                         column: x => x.CertificateId,
@@ -275,7 +282,7 @@ namespace TeamAssignment4A.Migrations
                         column: x => x.ExamId,
                         principalTable: "Exams",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -290,14 +297,14 @@ namespace TeamAssignment4A.Migrations
                     OptionC = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OptionD = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CorrectAnswer = table.Column<string>(type: "nvarchar(1)", nullable: false),
-                    TopicId = table.Column<int>(type: "int", nullable: false)
+                    TopicID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Stems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Stems_Topics_TopicId",
-                        column: x => x.TopicId,
+                        name: "FK_Stems_Topics_TopicID",
+                        column: x => x.TopicID,
                         principalTable: "Topics",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -311,21 +318,21 @@ namespace TeamAssignment4A.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SubmittedAnswer = table.Column<string>(type: "nvarchar(1)", nullable: false),
                     Score = table.Column<int>(type: "int", nullable: false),
-                    ExamsId = table.Column<int>(type: "int", nullable: false),
-                    StemsId = table.Column<int>(type: "int", nullable: false)
+                    ExamId = table.Column<int>(type: "int", nullable: false),
+                    StemId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ExamStems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ExamStems_Exams_ExamsId",
-                        column: x => x.ExamsId,
+                        name: "FK_ExamStems_Exams_ExamId",
+                        column: x => x.ExamId,
                         principalTable: "Exams",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ExamStems_Stems_StemsId",
-                        column: x => x.StemsId,
+                        name: "FK_ExamStems_Stems_StemId",
+                        column: x => x.StemId,
                         principalTable: "Stems",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
@@ -386,24 +393,29 @@ namespace TeamAssignment4A.Migrations
                 column: "ExamId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Exams_CandidateId",
+                table: "Exams",
+                column: "CandidateId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Exams_CertificateId",
                 table: "Exams",
                 column: "CertificateId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ExamStems_ExamsId",
+                name: "IX_ExamStems_ExamId",
                 table: "ExamStems",
-                column: "ExamsId");
+                column: "ExamId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ExamStems_StemsId",
+                name: "IX_ExamStems_StemId",
                 table: "ExamStems",
-                column: "StemsId");
+                column: "StemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Stems_TopicId",
+                name: "IX_Stems_TopicID",
                 table: "Stems",
-                column: "TopicId");
+                column: "TopicID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Topics_CertificateId",

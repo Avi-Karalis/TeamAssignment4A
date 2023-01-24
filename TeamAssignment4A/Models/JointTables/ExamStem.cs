@@ -8,8 +8,8 @@ namespace TeamAssignment4A.Models.JointTables {
         public int Score { get; set; }
 
         // Navigation Properties
-        public virtual Exam Exams { get; set; }
-        public virtual Stem Stems { get; set; }
+        public virtual Exam Exam { get; set; }
+        public virtual Stem Stem { get; set; }
 
     }
 }

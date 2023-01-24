@@ -25,7 +25,6 @@ namespace TeamAssignment4A.Models
         }
 
         public Topic(TopicCreateDto topicDto, Certificate certificate) {
-            this.Id = topicDto.Id;
             this.Description = topicDto.Description;
             this.NumberOfPossibleMarks = topicDto.NumberOfPossibleMarks;
             this.Certificate = certificate;

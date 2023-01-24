@@ -95,6 +95,19 @@ namespace TeamAssignment4A.Controllers {
                 return View($"{myDTO.View}", myDTO.StemDtos);
             }
             return View($"{myDTO.View}", myDTO.StemDto);
+            var AnswerOptions = new List<SelectListItem>{
+                new SelectListItem { Value = "A", Text = "A" },
+                new SelectListItem { Value = "B", Text = "B" },
+                new SelectListItem { Value = "C", Text = "C" },
+                new SelectListItem { Value = "D", Text = "D" }
+            };
+            ViewBag.AnswerOptions = AnswerOptions;
+            ViewBag.Topics = new SelectList(_context.Topics, "Id", "Description");
+            var stem = await _context.Stems.FindAsync(id);
+            if (stem == null) {
+                return NotFound();
+            }
+            return View(stem);
         }
 
         // POST: Stems/Edit/5

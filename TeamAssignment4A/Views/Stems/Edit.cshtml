@@ -9,40 +9,41 @@
 <h4>StemDto</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-8 mx-auto">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Question" class="control-label"></label>
-                <input asp-for="Question" class="form-control" />
+            <div class="form-group text-black">
+                <label asp-for="Question" class="control-label text-white"></label>
+                <textarea asp-for="Question" class="form-control  ckeditor"></textarea>
                 <span asp-validation-for="Question" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="OptionA" class="control-label"></label>
-                <input asp-for="OptionA" class="form-control" />
+            <div class="form-group text-black">
+                <label asp-for="OptionA" class="control-label text-white"></label>
+                <textarea asp-for="OptionA" class="form-control text-black ckeditor"></textarea>
                 <span asp-validation-for="OptionA" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="OptionB" class="control-label"></label>
-                <input asp-for="OptionB" class="form-control" />
+            <div class="form-group text-black">
+                <label asp-for="OptionB" class="control-label text-white"></label>
+                <textarea asp-for="OptionB" class="form-control text-black ckeditor"></textarea>
                 <span asp-validation-for="OptionB" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="OptionC" class="control-label"></label>
-                <input asp-for="OptionC" class="form-control" />
+            <div class="form-group text-black">
+                <label asp-for="OptionC" class="control-label text-white"></label>
+                <textarea asp-for="OptionC" class="form-control text-black ckeditor"></textarea>
                 <span asp-validation-for="OptionC" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="OptionD" class="control-label"></label>
-                <input asp-for="OptionD" class="form-control" />
+            <div class="form-group text-black">
+                <label asp-for="OptionD" class="control-label text-white"></label>
+                <textarea asp-for="OptionD" class="form-control text-black ckeditor"></textarea>
                 <span asp-validation-for="OptionD" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CorrectAnswer" class="control-label"></label>
-                <input asp-for="CorrectAnswer" class="form-control" />
+            <div class="form-group text-black">
+                <label asp-for="CorrectAnswer" class="control-label text-white"></label>
+                <select asp-for="CorrectAnswer" class="form-control  text-black" asp-items="@ViewBag.AnswerOptions"></select>
                 <span asp-validation-for="CorrectAnswer" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="TopicDescription" class="control-label"></label>
                 <input asp-for="TopicDescription" class="form-control" />
@@ -50,13 +51,40 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
+                <label asp-for="TopicID" class="control-label"></label>
+                <select asp-for="TopicID" class=" form-control" asp-items="@ViewBag.Topics"></select>
+                <span asp-validation-for="TopicID" class="text-danger"></span>
             </div>
+            <div class="form-group ">
+                <input type="submit" value="Save Changes" class="btn btn-primary" />
+            </div>
+            <script>
+
+                var allEditors = document.querySelectorAll('.ckeditor');
+                for (var i = 0; i < allEditors.length; ++i) {
+                    ClassicEditor
+                        .create(allEditors[i], {
+                            ckfinder: {
+                                uploadUrl: '/Image/UploadImage/'
+                            },
+                            width: 600,
+                            height: 900,
+                            autoGrow_onStartup: true,
+                            autoGrow_minHeight: 200,
+
+                        }).catch(error => {
+                            console.error(error);
+                        });
+                }
+            </script>
+
+
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
 </div>
 
 @section Scripts {
