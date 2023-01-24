@@ -16,6 +16,11 @@ namespace TeamAssignment4A.Data.Repositories
         {            
             return await _db.Certificates.FirstOrDefaultAsync(x => x.Id == id);            
         }
+        
+        public async Task<Certificate?> GetAsyncByTilteOfCert(string titleOfCert)
+        {            
+            return await _db.Certificates.FirstOrDefaultAsync(x => x.TitleOfCertificate == titleOfCert);            
+        }
 
         public async Task<IEnumerable<Certificate>?> GetAllAsync()
         {

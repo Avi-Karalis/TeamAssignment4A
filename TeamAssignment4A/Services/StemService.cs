@@ -4,26 +4,25 @@ using Microsoft.EntityFrameworkCore;
 using TeamAssignment4A.Data;
 using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models;
-//using TeamAssignment4A.ViewModels;
 
 namespace TeamAssignment4A.Services
 {
     public class StemService : ControllerBase, IStemService
     {
-        private UnitOfWork _unit;
         private WebAppDbContext _db;
-        private MyDTO _myDTO;
+        private UnitOfWork _unit;
         private readonly IMapper _mapper;
-        public StemService(UnitOfWork unit, WebAppDbContext db, IMapper mapper)
+        private MyDTO _myDTO;
+        public StemService(WebAppDbContext db, UnitOfWork unit, IMapper mapper)
         {
-            _mapper = mapper;
-            _unit = unit;
             _db = db;
+            _unit = unit;
+            _mapper = mapper;
             _myDTO = new MyDTO();
         }
         public async Task<MyDTO> GetStem(int id)
         {
-            if ((id == null || _db.Stems == null) || await _unit.Stem.GetAsync(id) == null)
+            if (id == null || _db.Stems == null || await _unit.Stem.GetAsync(id) == null)
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested stem could not be found. Please try again later.";

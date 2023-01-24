@@ -14,6 +14,7 @@ namespace TeamAssignment4A.Services
         public UnitOfWork(WebAppDbContext db)
         {
             _db = db;
+            _db.Database.EnsureCreated();
             Candidate = new CandidateRepository(db);
             Certificate = new CertificateRepository(db);
             Topic = new TopicRepository(db);

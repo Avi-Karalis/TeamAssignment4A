@@ -73,7 +73,7 @@ namespace TeamAssignment4A.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(TopicDto), 200)]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult<TopicDto>> Create([Bind("Id,Description,NumberOfPossibleMarks,TitleOfCertificate")] TopicDto topicDto)
+        public async Task<ActionResult<TopicDto>> Create([Bind("Id,Description,NumberOfPossibleMarks,TitleOfCertificate,Certificate")] TopicDto topicDto)
         {
             Certificate cert = _context.Certificates.FirstOrDefault(cert => cert.TitleOfCertificate == topicDto.TitleOfCertificate);
             Topic topic = new Topic
@@ -119,7 +119,7 @@ namespace TeamAssignment4A.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]        
         [ProducesResponseType(typeof(TopicDto), 200)]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Description,NumberOfPossibleMarks,TitleOfCertificate")] TopicDto topicDto)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Description,NumberOfPossibleMarks,TitleOfCertificate,Certificate")] TopicDto topicDto)
         {
             if (id != topicDto.Id)
             {

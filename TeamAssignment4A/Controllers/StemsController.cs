@@ -15,13 +15,13 @@ namespace TeamAssignment4A.Controllers {
     public class StemsController : Controller 
     {
         private readonly WebAppDbContext _db;
+        private readonly StemService _service;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IMapper _mapper;
-        private readonly StemService _service;
-        public StemsController(StemService service, WebAppDbContext db, IWebHostEnvironment webHostEnvironment, IMapper mapper) 
+        public StemsController(WebAppDbContext db, StemService service, IWebHostEnvironment webHostEnvironment, IMapper mapper) 
         {
-            _service = service;
             _db = db;
+            _service = service;
             _webHostEnvironment = webHostEnvironment;
             _mapper = mapper;
         }
@@ -90,24 +90,24 @@ namespace TeamAssignment4A.Controllers {
         {
             MyDTO myDTO = await _service.GetForUpdate(id);
             ViewBag.Message = myDTO.Message;
-            if (myDTO.View == "Index")
-            {
-                return View($"{myDTO.View}", myDTO.StemDtos);
-            }
-            return View($"{myDTO.View}", myDTO.StemDto);
-            var AnswerOptions = new List<SelectListItem>{
+            var options = new List<SelectListItem>{
                 new SelectListItem { Value = "A", Text = "A" },
                 new SelectListItem { Value = "B", Text = "B" },
                 new SelectListItem { Value = "C", Text = "C" },
                 new SelectListItem { Value = "D", Text = "D" }
             };
-            ViewBag.AnswerOptions = AnswerOptions;
-            ViewBag.Topics = new SelectList(_context.Topics, "Id", "Description");
-            var stem = await _context.Stems.FindAsync(id);
-            if (stem == null) {
-                return NotFound();
+            ViewBag.Options = options;
+            var topics = await _db.Topics.Include(top => top.Certificate).ToListAsync<Topic>();
+            var topicDtos = _mapper.Map<List<TopicDto>>(topics);
+            var options2 = new SelectList(topicDtos, "Description", "Description");
+            ViewBag.Topics = options2;
+            if (myDTO.View == "Index")
+            {
+                return View($"{myDTO.View}", myDTO.StemDtos);
             }
-            return View(stem);
+            return View($"{myDTO.View}", myDTO.StemDto);
+            
+            
         }
 
         // POST: Stems/Edit/5
