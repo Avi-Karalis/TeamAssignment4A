@@ -10,6 +10,7 @@
         public void OtiNanai()
         {
             Console.WriteLine("sdfsdfsdf");
+            Console.WriteLine("erydtrdgdf");
         }
     }
 }
