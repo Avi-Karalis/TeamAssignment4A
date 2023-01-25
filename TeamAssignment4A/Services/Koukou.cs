@@ -9,7 +9,9 @@
 
         public void OtiNanai()
         {
-            Console.WriteLine("sdfsdfsdf");
+            int i = 20;
+            int j = 40;
+            Console.WriteLine(i + j);
         }
     }
 }
