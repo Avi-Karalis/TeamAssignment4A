@@ -15,7 +15,7 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <div class="container-fluid ">
+            <div class="container-fluid custom-font fadein">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" >TeamAssignment4A</a>
                 <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -27,8 +27,29 @@
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" asp-area="" asp-controller="Candidates" asp-action="Index">Candidates</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Certificates" asp-action="Index">Certificates</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Stems" asp-action="Index">Stems</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Topics" asp-action="Index">Topics</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="ExamStems" asp-action="Index">ExamStems</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Exams" asp-action="Index">Exams(index)</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Exams" asp-action="Create">Exams(Create)</a>
+                        </li>
+                        @*<li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="ExamStems" asp-action="TakeExam">TakeExam</a>
+                        </li>*@
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
