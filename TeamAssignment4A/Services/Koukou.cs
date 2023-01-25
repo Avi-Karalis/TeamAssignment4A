@@ -6,5 +6,10 @@
         {
             Console.WriteLine("Koukou");
         }
+
+        public void OtiNanai()
+        {
+            Console.WriteLine("sdfsdfsdf");
+        }
     }
 }
