@@ -3,13 +3,9 @@ using TeamAssignment4A.Models;
 
 namespace TeamAssignment4A.Services
 {
-    public interface IStemService
+    public interface IStemService : IGenericService<StemDto>
     {
-        Task<MyDTO> GetStem(int id);
-        Task<IEnumerable<StemDto>?> GetAllStems();
-        Task<MyDTO> AddOrUpdateStem(int id, StemDto stemDto);
-        Task<MyDTO> Delete(int id);
-        Task<MyDTO> GetForUpdate(int id);
-        Task<MyDTO> GetForDelete(int id);
+        new Task<IEnumerable<StemDto>?> GetAll();
+        new Task<MyDTO> AddOrUpdate(int id, StemDto stemDto);        
     }
 }

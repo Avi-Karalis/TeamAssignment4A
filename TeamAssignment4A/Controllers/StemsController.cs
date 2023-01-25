@@ -15,12 +15,14 @@ namespace TeamAssignment4A.Controllers {
     public class StemsController : Controller 
     {
         private readonly WebAppDbContext _db;
+        private readonly TopicService _topicService;
         private readonly StemService _service;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IMapper _mapper;
-        public StemsController(WebAppDbContext db, StemService service, IWebHostEnvironment webHostEnvironment, IMapper mapper) 
+        public StemsController(WebAppDbContext db, TopicService topicService, StemService service, IWebHostEnvironment webHostEnvironment, IMapper mapper) 
         {
             _db = db;
+            _topicService = topicService;
             _service = service;
             _webHostEnvironment = webHostEnvironment;
             _mapper = mapper;
@@ -31,7 +33,7 @@ namespace TeamAssignment4A.Controllers {
         [ProducesResponseType(typeof(StemDto), 200)]
         public async Task<IActionResult> Index()
         {            
-            return View(await _service.GetAllStems());
+            return View(await _service.GetAll());
         }        
 
         // GET: Stems/Details/5
@@ -39,7 +41,7 @@ namespace TeamAssignment4A.Controllers {
         [ProducesResponseType(typeof(StemDto), 200)]
         public async Task<IActionResult> Details(int id)
         {
-            MyDTO myDTO = await _service.GetStem(id);
+            MyDTO myDTO = await _service.Get(id);
             ViewBag.Message = myDTO.Message;
             if (myDTO.View == "Index")
             {
@@ -53,17 +55,13 @@ namespace TeamAssignment4A.Controllers {
         [ProducesResponseType(typeof(StemDto), 200)]
         public async Task<IActionResult> Create() 
         {
-            var options = new List<SelectListItem>{
+            ViewBag.Options = new List<SelectListItem>{
                 new SelectListItem { Value = "A", Text = "A" },
                 new SelectListItem { Value = "B", Text = "B" },
                 new SelectListItem { Value = "C", Text = "C" },
                 new SelectListItem { Value = "D", Text = "D" }
-            };
-            ViewBag.Options = options;
-            var topics = await _db.Topics.Include(top => top.Certificate).ToListAsync<Topic>();                               
-            var topicDtos = _mapper.Map<List<TopicDto>>(topics);
-            var options2 = new SelectList(topicDtos, "Description", "Description");
-            ViewBag.Topics = options2;
+            };                        
+            ViewBag.Topics = new SelectList(await _topicService.GetAll(), "Description", "Description");
             return View();
         }
 
@@ -74,7 +72,7 @@ namespace TeamAssignment4A.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int id, [Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,TopicDescription,Topic")] StemDto stemDto) 
         {
-            MyDTO myDTO = await _service.AddOrUpdateStem(id, stemDto);
+            MyDTO myDTO = await _service.AddOrUpdate(id, stemDto);
             ViewBag.Message = myDTO.Message;
             if (myDTO.View == "Index")
             {
@@ -90,17 +88,13 @@ namespace TeamAssignment4A.Controllers {
         {
             MyDTO myDTO = await _service.GetForUpdate(id);
             ViewBag.Message = myDTO.Message;
-            var options = new List<SelectListItem>{
+            ViewBag.Options = new List<SelectListItem>{
                 new SelectListItem { Value = "A", Text = "A" },
                 new SelectListItem { Value = "B", Text = "B" },
                 new SelectListItem { Value = "C", Text = "C" },
                 new SelectListItem { Value = "D", Text = "D" }
-            };
-            ViewBag.Options = options;
-            var topics = await _db.Topics.Include(top => top.Certificate).ToListAsync<Topic>();
-            var topicDtos = _mapper.Map<List<TopicDto>>(topics);
-            var options2 = new SelectList(topicDtos, "Description", "Description");
-            ViewBag.Topics = options2;
+            };                                    
+            ViewBag.Topics = new SelectList(await _topicService.GetAll(), "Description", "Description");
             if (myDTO.View == "Index")
             {
                 return View($"{myDTO.View}", myDTO.StemDtos);
@@ -117,7 +111,7 @@ namespace TeamAssignment4A.Controllers {
         [ProducesResponseType(typeof(StemDto), 200)]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,TopicDescription,Topic")] StemDto stemDto) 
         {
-            MyDTO myDTO = await _service.AddOrUpdateStem(id, stemDto);
+            MyDTO myDTO = await _service.AddOrUpdate(id, stemDto);
             ViewBag.Message = myDTO.Message;
             if (myDTO.View == "Index")
             {

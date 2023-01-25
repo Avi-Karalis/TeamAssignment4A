@@ -19,13 +19,13 @@ namespace TeamAssignment4A.Data.Repositories
         
         public async Task<Certificate?> GetAsyncByTilteOfCert(string titleOfCert)
         {            
-            return await _db.Certificates.FirstOrDefaultAsync(x => x.TitleOfCertificate == titleOfCert);            
+            return await _db.Certificates.FirstOrDefaultAsync(x => x.TitleOfCertificate == titleOfCert);                      
         }
 
         public async Task<IEnumerable<Certificate>?> GetAllAsync()
         {
             return await _db.Certificates.ToListAsync<Certificate>();
-        }        
+        }       
 
         public EntityState AddOrUpdate(Certificate certificate)
         {                      

@@ -19,9 +19,9 @@ namespace TeamAssignment4A.Services
             _db = db;
             _myDTO = new MyDTO();
         }
-        public async Task<MyDTO> GetCertificate(int id)
+        public async Task<MyDTO> Get(int id)
         {
-            if((id == null || _db.Certificates == null) || await _unit.Certificate.GetAsync(id) == null)
+            if(id == null || _db.Certificates == null || await _unit.Certificate.GetAsync(id) == null)
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested certificate could not be found. Please try again later.";
@@ -34,10 +34,10 @@ namespace TeamAssignment4A.Services
             return _myDTO;
         }
 
-        public async Task<IEnumerable<Certificate>?> GetAllCertificates()
+        public async Task<IEnumerable<Certificate>?> GetAll()
         {
             return await _unit.Certificate.GetAllAsync();                       
-        }
+        }       
 
         public async Task<MyDTO> GetForUpdate(int id)
         {
@@ -57,7 +57,7 @@ namespace TeamAssignment4A.Services
             return _myDTO;
         }        
 
-        public async Task<MyDTO> AddOrUpdateCertificate(int id, [Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
+        public async Task<MyDTO> AddOrUpdate(int id, [Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
         {
             EntityState state = _unit.Certificate.AddOrUpdate(certificate);
             if (id != certificate.Id) 

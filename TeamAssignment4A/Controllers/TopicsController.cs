@@ -10,61 +10,50 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using TeamAssignment4A.Data;
 using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models;
+using TeamAssignment4A.Services;
 
 namespace TeamAssignment4A.Controllers
 {
     public class TopicsController : Controller
     {
-        private readonly WebAppDbContext _context;
+        private readonly WebAppDbContext _db;
+        private readonly TopicService _service;        
         private readonly IMapper _mapper;
 
-        public TopicsController(WebAppDbContext context, IMapper mapper)
+        public TopicsController(WebAppDbContext context, TopicService service)
         {
-            _context = context;
-            _mapper = mapper;
+            _db = context;
+            _service = service;             
         }
 
         // GET: Topics
         [HttpGet]
         [ProducesResponseType(typeof(TopicDto), 200)]
-        public async Task<IActionResult> Index() // index
+        public async Task<IActionResult> Index()
         {
-            var topics = await _context.Topics.Include(top => top.Certificate).ToListAsync();
-            var topicDtos = _mapper.Map<List<TopicDto>>(topics);
-            return View(topicDtos);
+            return View(await _service.GetAll());        
         }
-
-
-
 
         // GET: Topics/Details/5
         [HttpGet]
         [ProducesResponseType(typeof(TopicDto), 200)]
         public async Task<IActionResult> Details(int id)
         {
-            if (id == null || _context.Topics == null)
+            MyDTO myDTO = await _service.Get(id);
+            ViewBag.Message = myDTO.Message;
+            if (myDTO.View == "Index")
             {
-                return NotFound();
+                return View($"{myDTO.View}", myDTO.TopicDtos);
             }
-
-            var topic = await _context.Topics.Include(top => top.Certificate).FirstOrDefaultAsync(m => m.Id == id);
-
-            TopicDto topicDto = _mapper.Map<TopicDto>(topic);
-            if (topic == null)
-            {
-                return NotFound();
-            }
-
-            return View(topicDto);
+            return View($"{myDTO.View}", myDTO.TopicDto);            
         }
-
-
         
         // GET: Topics/Create
         [HttpGet]
         [ProducesResponseType(typeof(TopicDto), 200)]
         public IActionResult Create()
-        {
+        {            
+            ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
             return View();
         }
 
@@ -73,25 +62,15 @@ namespace TeamAssignment4A.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(TopicDto), 200)]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult<TopicDto>> Create([Bind("Id,Description,NumberOfPossibleMarks,TitleOfCertificate,Certificate")] TopicDto topicDto)
+        public async Task<ActionResult<TopicDto>> Create(int id, [Bind("Id,Description,NumberOfPossibleMarks,TitleOfCertificate,Certificate")] TopicDto topicDto)
         {
-            Certificate cert = _context.Certificates.FirstOrDefault(cert => cert.TitleOfCertificate == topicDto.TitleOfCertificate);
-            Topic topic = new Topic
+            MyDTO myDTO = await _service.AddOrUpdate(id, topicDto);
+            ViewBag.Message = myDTO.Message;
+            if (myDTO.View == "Index")
             {
-                Id = topicDto.Id,
-                Description = topicDto.Description,
-                NumberOfPossibleMarks = topicDto.NumberOfPossibleMarks,
-                Certificate = cert 
-            };
-            _context.Topics.Add(topic);
-            await _context.SaveChangesAsync();
-            
-            
-            var topics = await _context.Topics.Include(top => top.Certificate).ToListAsync();
-            var topicDtos = _mapper.Map<List<TopicDto>>(topics);
-
-            return View("Index", topicDtos);
-            
+                return View($"{myDTO.View}", myDTO.TopicDtos);
+            }
+            return View($"{myDTO.View}", myDTO.TopicDto);           
         }
 
         // GET: Topics/Edit/5
@@ -99,56 +78,30 @@ namespace TeamAssignment4A.Controllers
         [ProducesResponseType(typeof(TopicDto), 200)]
         public async Task<IActionResult> Edit(int id)
         {
-            if (id == null || _context.Topics == null)
+            MyDTO myDTO = await _service.GetForUpdate(id);
+            ViewBag.Message = myDTO.Message;            
+            ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
+            if (myDTO.View == "Index")
             {
-                return NotFound();
+                return View($"{myDTO.View}", myDTO.TopicDtos);
             }
-
-            var topic = await _context.Topics.Include(top => top.Certificate).FirstOrDefaultAsync(top => top.Id == id);
-            TopicDto topicDto = _mapper.Map<TopicDto>(topic);
-            if (topic == null)
-            {
-                return NotFound();
-            }
-            return View(topicDto);
+            return View($"{myDTO.View}", myDTO.TopicDto);            
         }
 
         // POST: Topics/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]        
         [ProducesResponseType(typeof(TopicDto), 200)]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Description,NumberOfPossibleMarks,TitleOfCertificate,Certificate")] TopicDto topicDto)
         {
-            if (id != topicDto.Id)
+            MyDTO myDTO = await _service.AddOrUpdate(id, topicDto);
+            ViewBag.Message = myDTO.Message;
+            if (myDTO.View == "Index")
             {
-                return NotFound();
+                return View($"{myDTO.View}", myDTO.TopicDtos);
             }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    
-                    Topic topic = _mapper.Map<Topic>(topicDto);
-                    _context.Update(topic);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TopicExists(topicDto.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(topicDto);
+            return View($"{myDTO.View}", myDTO.TopicDto);            
         }
 
         // GET: Topics/Delete/5
@@ -156,20 +109,13 @@ namespace TeamAssignment4A.Controllers
         [ProducesResponseType(typeof(TopicDto), 200)]
         public async Task<IActionResult> Delete(int id)
         {
-            if (id == null || _context.Topics == null)
+            MyDTO myDTO = await _service.GetForDelete(id);
+            ViewBag.Message = myDTO.Message;
+            if (myDTO.View == "Index")
             {
-                return NotFound();
+                return View($"{myDTO.View}", myDTO.TopicDtos);
             }
-
-            var topic = await _context.Topics.Include(top => top.Certificate).FirstOrDefaultAsync(top => top.Id == id);
-            TopicDto topicDto = _mapper.Map<TopicDto>(topic);
-            
-            if (topic == null)
-            {
-                return NotFound();
-            }
-
-            return View(topicDto);
+            return View($"{myDTO.View}", myDTO.TopicDto);            
         }
 
         // POST: Topics/Delete/5
@@ -178,27 +124,9 @@ namespace TeamAssignment4A.Controllers
         [ProducesResponseType(typeof(TopicDto), 200)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Topics == null)
-            {
-                return Problem("Entity set 'WebAppDbContext.Topics'  is null.");
-            }
-            var topic = await _context.Topics.Include(top => top.Certificate).FirstOrDefaultAsync(top => top.Id == id);
-            //TopicDto topicDto = _mapper.Map<TopicDto>(topic);
-            
-            if (topic != null)
-            {
-                _context.Topics.Remove(topic);
-            }
-
-            await _context.SaveChangesAsync();
-            var topics = await _context.Topics.Include(top => top.Certificate).ToListAsync();
-            var topicDtos = _mapper.Map<List<TopicDto>>(topics);
-            return View("Index", topicDtos);
-        }
-
-        private bool TopicExists(int id)
-        {
-            return _context.Topics.Any(e => e.Id == id);
-        }
+            MyDTO myDTO = await _service.Delete(id);
+            ViewBag.Message = myDTO.Message;
+            return View($"{myDTO.View}", myDTO.TopicDtos);            
+        }       
     }
 }

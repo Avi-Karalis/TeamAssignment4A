@@ -20,7 +20,7 @@ namespace TeamAssignment4A.Services
             _mapper = mapper;
             _myDTO = new MyDTO();
         }
-        public async Task<MyDTO> GetStem(int id)
+        public async Task<MyDTO> Get(int id)
         {
             if (id == null || _db.Stems == null || await _unit.Stem.GetAsync(id) == null)
             {
@@ -35,7 +35,7 @@ namespace TeamAssignment4A.Services
             }
             return _myDTO;
         }
-        public async Task<IEnumerable<StemDto>?> GetAllStems()
+        public async Task<IEnumerable<StemDto>?> GetAll()
         {
             var stems = await _unit.Stem.GetAllAsync();
             _myDTO.StemDtos = _mapper.Map<List<StemDto>>(stems);
@@ -61,7 +61,7 @@ namespace TeamAssignment4A.Services
             return _myDTO;
         }
 
-        public async Task<MyDTO> AddOrUpdateStem(int id, [Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,TopicDescription,Topic")] StemDto stemDto)
+        public async Task<MyDTO> AddOrUpdate(int id, [Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,TopicDescription,Topic")] StemDto stemDto)
         {            
             Topic topic = await _unit.Topic.GetAsyncByDesc(stemDto.TopicDescription);
             stemDto.Topic = topic;                

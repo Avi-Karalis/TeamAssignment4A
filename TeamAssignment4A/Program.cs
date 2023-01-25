@@ -27,6 +27,7 @@ namespace TeamAssignment4A {
             builder.Services.AddScoped<IdentityDbContext<AppUser>, WebAppDbContext>();
             builder.Services.AddScoped<UnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<CertificateService, CertificateService>();
+            builder.Services.AddScoped<TopicService, TopicService>();
             builder.Services.AddScoped<StemService, StemService>();
             builder.Services.AddAutoMapper(typeof(Program));
             

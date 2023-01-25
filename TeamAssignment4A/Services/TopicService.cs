@@ -20,7 +20,7 @@ namespace TeamAssignment4A.Services
             _mapper = mapper;
             _myDTO = new MyDTO();
         }
-        public async Task<MyDTO> GetTopic(int id)
+        public async Task<MyDTO> Get(int id)
         {
             if (id == null || _db.Topics == null || await _unit.Topic.GetAsync(id) == null)
             {
@@ -35,7 +35,7 @@ namespace TeamAssignment4A.Services
             }
             return _myDTO;
         }
-        public async Task<IEnumerable<TopicDto>?> GetAllTopics()
+        public async Task<IEnumerable<TopicDto>?> GetAll()
         {
             var topics = await _unit.Topic.GetAllAsync();
             _myDTO.TopicDtos = _mapper.Map<List<TopicDto>>(topics);
@@ -61,7 +61,7 @@ namespace TeamAssignment4A.Services
             return _myDTO;
         }
 
-        public async Task<MyDTO> AddOrUpdateTopic(int id, [Bind("Id,Description,NumberOfPossibleMarks,TitleOfCertificate,Certificate")] TopicDto topicDto)
+        public async Task<MyDTO> AddOrUpdate(int id, [Bind("Id,Description,NumberOfPossibleMarks,TitleOfCertificate,Certificate")] TopicDto topicDto)
         {
             Certificate certificate = await _unit.Certificate.GetAsyncByTilteOfCert(topicDto.TitleOfCertificate);
             topicDto.Certificate = certificate;
@@ -150,8 +150,8 @@ namespace TeamAssignment4A.Services
             Topic topic = await _unit.Topic.GetAsync(id);
             _unit.Topic.Delete(topic);
             await _unit.SaveAsync();
-            IEnumerable<Topic> Topics = await _unit.Topic.GetAllAsync();
-            _myDTO.TopicDtos = _mapper.Map<List<TopicDto>>(topic);
+            IEnumerable<Topic> topics = await _unit.Topic.GetAllAsync();
+            _myDTO.TopicDtos = _mapper.Map<List<TopicDto>>(topics);
             return _myDTO;
         }
     }    

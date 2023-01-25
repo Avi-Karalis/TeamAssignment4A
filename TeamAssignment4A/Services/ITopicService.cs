@@ -3,13 +3,9 @@ using TeamAssignment4A.Models;
 
 namespace TeamAssignment4A.Services
 {
-    internal interface ITopicService
+    internal interface ITopicService : IGenericService<TopicDto>
     {
-        Task<MyDTO> GetTopic(int id);
-        Task<IEnumerable<TopicDto>?> GetAllTopics();
-        Task<MyDTO> AddOrUpdateTopic(int id, TopicDto topicDto);
-        Task<MyDTO> Delete(int id);
-        Task<MyDTO> GetForUpdate(int id);
-        Task<MyDTO> GetForDelete(int id);
+        new Task<IEnumerable<TopicDto>?> GetAll();
+        new Task<MyDTO> AddOrUpdate(int id, TopicDto topicDto);        
     }
 }
