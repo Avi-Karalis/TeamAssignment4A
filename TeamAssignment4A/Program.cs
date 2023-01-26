@@ -26,6 +26,7 @@ namespace TeamAssignment4A {
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IdentityDbContext<AppUser>, WebAppDbContext>();
             builder.Services.AddScoped<UnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<CandidateService, CandidateService>();
             builder.Services.AddScoped<CertificateService, CertificateService>();
             builder.Services.AddScoped<TopicService, TopicService>();
             builder.Services.AddScoped<StemService, StemService>();
