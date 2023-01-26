@@ -7,40 +7,34 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TeamAssignment4A.Data;
 using TeamAssignment4A.Models;
+using TeamAssignment4A.Services;
 
 namespace TeamAssignment4A.Controllers
 {
     public class CandidatesController : Controller
     {
-        private readonly WebAppDbContext _context;
-
-        public CandidatesController(WebAppDbContext context)
+        private readonly CandidateService _service;
+        public CandidatesController(CandidateService service)
         {
-            _context = context;
+            _service = service;
         }
 
         // GET: Candidates
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Candidates.ToListAsync());
+            return View(await _service.GetAll());
         }
 
         // GET: Candidates/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null || _context.Candidates == null)
+            MyDTO myDTO = await _service.Get(id);
+            ViewBag.Message = myDTO.Message;
+            if (myDTO.View == "Index")
             {
-                return NotFound();
+                return View($"{myDTO.View}", myDTO.Candidates);
             }
-
-            var candidate = await _context.Candidates
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (candidate == null)
-            {
-                return NotFound();
-            }
-
-            return View(candidate);
+            return View($"{myDTO.View}", myDTO.Candidate);
         }
 
         // GET: Candidates/Create
@@ -54,31 +48,29 @@ namespace TeamAssignment4A.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,MiddleName,LastName,Gender,NativeLanguage,CountryOfResidence,Birthdate,Email,LandlineNumber,MobileNumber,Address1,Address2,PostalCode,Town,Province,PhotoIdType,PhotoIdNumber,PhotoIdDate")] Candidate candidate)
+        public async Task<IActionResult> Create(int id, [Bind("Id,FirstName,MiddleName,LastName,Gender,NativeLanguage,CountryOfResidence," +
+            "Birthdate,Email,LandlineNumber,MobileNumber,Address1,Address2,PostalCode,Town,Province,PhotoIdType,PhotoIdNumber," +
+            "PhotoIdDate")] Candidate candidate)
         {
-            if (ModelState.IsValid)
+            MyDTO myDTO = await _service.AddOrUpdate(id, candidate);
+            ViewBag.Message = myDTO.Message;
+            if (myDTO.View == "Index")
             {
-                _context.Add(candidate);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View($"{myDTO.View}", myDTO.Candidates);
             }
-            return View(candidate);
+            return View($"{myDTO.View}", myDTO.Candidate);
         }
 
         // GET: Candidates/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null || _context.Candidates == null)
+            MyDTO myDTO = await _service.GetForUpdate(id);
+            ViewBag.Message = myDTO.Message;
+            if (myDTO.View == "Index")
             {
-                return NotFound();
+                return View($"{myDTO.View}", myDTO.Candidates);
             }
-
-            var candidate = await _context.Candidates.FindAsync(id);
-            if (candidate == null)
-            {
-                return NotFound();
-            }
-            return View(candidate);
+            return View($"{myDTO.View}", myDTO.Candidate);
         }
 
         // POST: Candidates/Edit/5
@@ -88,50 +80,25 @@ namespace TeamAssignment4A.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,Gender,NativeLanguage,CountryOfResidence,Birthdate,Email,LandlineNumber,MobileNumber,Address1,Address2,PostalCode,Town,Province,PhotoIdType,PhotoIdNumber,PhotoIdDate")] Candidate candidate)
         {
-            if (id != candidate.Id)
+            MyDTO myDTO = await _service.AddOrUpdate(id, candidate);
+            ViewBag.Message = myDTO.Message;
+            if (myDTO.View == "Index")
             {
-                return NotFound();
+                return View($"{myDTO.View}", myDTO.Candidates);
             }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(candidate);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CandidateExists(candidate.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(candidate);
+            return View($"{myDTO.View}", myDTO.Candidates);
         }
 
         // GET: Candidates/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null || _context.Candidates == null)
+            MyDTO myDTO = await _service.GetForDelete(id);
+            ViewBag.Message = myDTO.Message;
+            if (myDTO.View == "Index")
             {
-                return NotFound();
+                return View($"{myDTO.View}", myDTO.Candidates);
             }
-
-            var candidate = await _context.Candidates
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (candidate == null)
-            {
-                return NotFound();
-            }
-
-            return View(candidate);
+            return View($"{myDTO.View}", myDTO.Candidate);
         }
 
         // POST: Candidates/Delete/5
@@ -139,23 +106,9 @@ namespace TeamAssignment4A.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Candidates == null)
-            {
-                return Problem("Entity set 'WebAppDbContext.Candidates'  is null.");
-            }
-            var candidate = await _context.Candidates.FindAsync(id);
-            if (candidate != null)
-            {
-                _context.Candidates.Remove(candidate);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool CandidateExists(int id)
-        {
-            return _context.Candidates.Any(e => e.Id == id);
-        }
+            MyDTO myDTO = await _service.Delete(id);
+            ViewBag.Message = myDTO.Message;
+            return View($"{myDTO.View}", myDTO.Candidates);
+        }        
     }
 }
