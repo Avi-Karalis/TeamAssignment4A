@@ -35,6 +35,7 @@ namespace TeamAssignment4A.Services
             }
             return _myDTO;
         }
+        
         public async Task<IEnumerable<StemDto>?> GetAll()
         {
             var stems = await _unit.Stem.GetAllAsync();

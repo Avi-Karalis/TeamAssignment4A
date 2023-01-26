@@ -26,3 +26,104 @@ body {
 button > a {
     color: aliceblue !important;
 }
+
+.hide-on-load {
+    display: none;
+}
+.my-round-button {
+    cursor: pointer;
+    width: 130px;
+    border-top-left-radius: 100px;
+    border-bottom-left-radius: 100px;
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+    
+}
+
+
+
+.viewbody {
+    animation: fadein 1.5;
+    font-size: 19px;
+}
+
+.fadein {
+    animation: fadein 1s;
+}
+
+.custom-font {
+    font-family: 'Cambria', serif;
+}
+
+.table {
+    animation: fadein 1.5s;
+}
+
+
+.btn:hover {
+    box-shadow: 0px 0px 10px #ddd;
+}
+
+
+.sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.sticky-header:hover {
+    filter: brightness(115%) blur(0px);
+    box-shadow: 0px 0px 0px #ddd;
+}
+
+
+.btn-primary {
+    animation: fadein 1.5s;
+}
+
+.btn-success {
+    animation: fadein 2.5s;
+}
+
+.btn-danger {
+    animation: fadein 3.5s;
+}
+
+.btn-info {
+    animation: fadein 1s;
+}
+
+.btn-warning {
+    animation: fadein 1s;
+}
+
+
+.center-adjust {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.rightalign {
+    text-align: right;
+    text-decoration: underline;
+}
+
+.typing-text {
+    
+    white-space: nowrap;
+}
+
+
+
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

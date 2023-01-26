@@ -4,41 +4,44 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Certificate</h4>
+<h3 class=" custom-font fadein center-adjust">Creating a Certificate</h3>
 <hr />
-<div class="row">
+<div class="row custom-font fadein center-adjust">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="TitleOfCertificate" class="control-label"></label>
-                <input asp-for="TitleOfCertificate" class="form-control" />
+                <input asp-for="TitleOfCertificate" class="form-control" placeholder="Enter Title Of Certificate" />
                 <span asp-validation-for="TitleOfCertificate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PassingGrade" class="control-label"></label>
-                <input asp-for="PassingGrade" class="form-control" type="number"/>
-                
+                <input asp-for="PassingGrade" class="form-control" type="number" placeholder="Enter Passing Grade" />
+
                 <span asp-validation-for="PassingGrade" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="MaximumScore" class="control-label"></label>
-                <input asp-for="MaximumScore" class="form-control" type="number" value="100"/>
+                <input asp-for="MaximumScore" class="form-control" type="number" value="100" />
                 <span asp-validation-for="MaximumScore" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
+            <p>
+                <div class="form-group center-adjust">
+                    <input type="submit" value="Create" class="custom-font btn btn-info" /> |
+                    <a asp-action="Index" class="custom-font btn btn-primary">Back to List</a>
+                </div>
+            </p>
         </form>
     </div>
 </div>
 
-<div>
+@*<div>
     <a asp-action="Index"class="btn btn-outline-info">Back to List</a>
-</div>
+</div>*@
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

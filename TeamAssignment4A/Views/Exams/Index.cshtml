@@ -4,15 +4,17 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h2 class="custom-font fadein center-adjust">Examinations List</h2>
 
-<p>
-    <a asp-action="Create" class="btn btn-success">Create New</a>
+<p class="center-adjust">
+    <a asp-action="Create" class="custom-font btn btn-info">Create New</a>
 </p>
 <table class="table">
-    <thead>
-        <tr>
-            <th>
+    <thead class=" sticky-header text-nowrap  text-center navbar-dark bg-primary"
+           onclick="scrollToTop()" style="cursor:pointer;"
+           data-toggle="tooltip" data-placement="top" title="click to scroll to top">
+        <tr style="border-style:hidden;">
+            <th style="border-top-left-radius: 100px; border-bottom-left-radius: 100px;">
                 @Html.DisplayNameFor(model => model.AssessmentTestCode)
             </th>
             <th>
@@ -30,12 +32,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.AssessmentResultLabel)
             </th>
-            <th></th>
+            <th style="border-top-right-radius: 100px; border-bottom-right-radius: 100px;">Options</th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr class="text-center">
             <td>
                 @Html.DisplayFor(modelItem => item.AssessmentTestCode)
             </td>
@@ -54,15 +56,11 @@
             <td>
                 @Html.DisplayFor(modelItem => item.AssessmentResultLabel)
             </td>
-            <td>
-
-                  
-                    
-                    
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-success">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
-            </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary w-50 mb-2">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-success w-50 mb-2">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger w-50 mb-2">Delete</a>
+                </td>
         </tr>
 }
     </tbody>
