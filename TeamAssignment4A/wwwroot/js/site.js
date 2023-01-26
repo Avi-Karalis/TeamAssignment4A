@@ -12,3 +12,20 @@ function scrollToTop() {
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
 })
+
+$(function () {
+    var threshold = 100;
+    var tooltip = $('[data-toggle="tooltip"]');
+    $(tooltip).on('click', function () {
+        tooltip.tooltip('hide');
+        scrollToTop();
+    });
+    $(window).on('scroll', function () {
+        var scroll = $(window).scrollTop();
+        if (scroll > threshold) {
+            tooltip.tooltip('show');
+        } else {
+            tooltip.tooltip('hide');
+        }
+    });
+});

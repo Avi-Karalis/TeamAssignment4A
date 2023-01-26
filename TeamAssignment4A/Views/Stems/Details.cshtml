@@ -4,66 +4,68 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
+<h3 class="custom-font fadein details-text-middle">Stem Details</h3>
+<hr />
 <div>
-    <h4>Stem</h4>
-    <hr />
-    <div class="row">
-        <div class="col-sm-2">
+
+    <div class="row custom-font fadein">
+        <div class="col-sm-6 rightalign">
             @Html.DisplayNameFor(model => model.Question)
         </div>
         <br />
-        <div class="col-sm-10">
+        <div class="col-sm-6">
             @Html.Raw(Model.Question)
         </div>
         <br />
         <br />
-        <div class="col-sm-2">
+        <div class="col-sm-6 rightalign">
             @Html.DisplayNameFor(model => model.OptionA)
         </div>
         <br />
-        <div class="col-sm-10">
+        <div class="col-sm-6">
             @Html.Raw(Model.OptionA)
         </div>
         <br />
         <br />
-        <div class="col-sm-2">
+        <div class="col-sm-6 rightalign">
             @Html.DisplayNameFor(model => model.OptionB)
         </div>
         <br />
-        <div class="col-sm-10">
+        <div class="col-sm-6">
             @Html.Raw(Model.OptionB)
         </div>
         <br />
         <br />
-        <div class="col-sm-2">
+        <div class="col-sm-6 rightalign">
             @Html.DisplayNameFor(model => model.OptionC)
         </div>
         <br />
-        <div class="col-sm-10">
+        <div class="col-sm-6">
             @Html.Raw(Model.OptionC)
         </div>
         <br />
         <br />
-        <div class="col-sm-2">
+        <div class="col-sm-6 rightalign">
             @Html.DisplayNameFor(model => model.OptionD)
         </div>
         <br />
-        <div class="col-sm-10">
+        <div class="col-sm-6">
             @Html.Raw(Model.OptionD)
         </div>
         <br /><br />
-        <div class="col-sm-2">
+        <div class="col-sm-6 rightalign">
             @Html.DisplayNameFor(model => model.CorrectAnswer)
         </div>
         <br />
-        <div class="col-sm-10">
+        <div class="col-sm-6">
             @Html.Raw(Model.CorrectAnswer)
         </div>
     </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Edit</a> |
-    <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
+
+<p>
+<div class="center-adjust">
+    <a asp-action="Edit" asp-route-id="@Model?.Id" style="width:95px;" class="custom-font btn btn-info col-sm-6">Edit</a> |
+    <a asp-action="Index" style="width:110px;" class="custom-font btn btn-primary col-sm-6">Back to List</a>
 </div>
+</p>
