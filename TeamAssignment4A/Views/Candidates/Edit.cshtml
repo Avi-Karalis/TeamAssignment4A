@@ -50,8 +50,10 @@
             </div>
             <div class="form-group">
                 <label asp-for="Birthdate" class="control-label"></label>
-                <input asp-for="Birthdate" class="form-control" />
-                <span asp-validation-for="Birthdate" class="text-danger"></span>
+                <div>
+                    <input asp-for="Birthdate" class="form-control" type="date" placeholder="Enter your birthdate" />
+                    <span asp-validation-for="Birthdate" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
@@ -112,8 +114,10 @@
             </div>
             <div class="form-group">
                 <label asp-for="PhotoIdDate" class="control-label"></label>
-                <input asp-for="PhotoIdDate" class="form-control" />
-                <span asp-validation-for="PhotoIdDate" class="text-danger"></span>
+                <div>
+                    <input asp-for="PhotoIdDate" class="form-control" type="date" placeholder="Enter PhotoId date" />
+                    <span asp-validation-for="PhotoIdDate" class="text-danger"></span>
+                </div>
             </div>
             <p>
                 <div class="form-group center-adjust">

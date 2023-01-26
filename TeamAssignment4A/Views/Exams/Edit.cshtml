@@ -4,11 +4,9 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-
-<h4>Exam</h4>
+<h3 class="custom-font fadein center-adjust">Editing Examination</h3>
 <hr />
-<div class="row">
+<div class="row custom-font fadein center-adjust">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -20,14 +18,19 @@
             </div>
             <div class="form-group">
                 <label asp-for="ExaminationDate" class="control-label"></label>
-                <input asp-for="ExaminationDate" class="form-control" />
-                <span asp-validation-for="ExaminationDate" class="text-danger"></span>
+                <div>
+                    <input asp-for="ExaminationDate" class="form-control" type="date" placeholder="Enter PhotoId date" />
+                    <span asp-validation-for="ExaminationDate" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="ScoreReportDate" class="control-label"></label>
-                <input asp-for="ScoreReportDate" class="form-control" />
-                <span asp-validation-for="ScoreReportDate" class="text-danger"></span>
+                <div>
+                    <input asp-for="ScoreReportDate" class="form-control" type="date" placeholder="Enter PhotoId date" />
+                    <span asp-validation-for="ScoreReportDate" class="text-danger"></span>
+                </div>
             </div>
+            
             <div class="form-group">
                 <label asp-for="CandidateScore" class="control-label"></label>
                 <input asp-for="CandidateScore" class="form-control" />
@@ -43,15 +46,14 @@
                 <input asp-for="AssessmentResultLabel" class="form-control" />
                 <span asp-validation-for="AssessmentResultLabel" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <p> 
+            <div class="form-group center-adjust">
+                <input type="submit" value="Save" class="custom-font btn btn-info" /> |
+                <a asp-action="Index" class="custom-font btn btn-primary">Back to List</a>
             </div>
+            </p>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

@@ -4,51 +4,49 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Exam</h4>
-    <hr />
+<h3 class="custom-font fadein center-adjust">Examination Details</h3>
+<hr />
+<div class="custom-font fadein">
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-6 rightalign">
             @Html.DisplayNameFor(model => model.AssessmentTestCode)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-6">
             @Html.DisplayFor(model => model.AssessmentTestCode)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-6 rightalign">
             @Html.DisplayNameFor(model => model.ExaminationDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-6">
             @Html.DisplayFor(model => model.ExaminationDate)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-6 rightalign">
             @Html.DisplayNameFor(model => model.ScoreReportDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-6">
             @Html.DisplayFor(model => model.ScoreReportDate)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-6 rightalign">
             @Html.DisplayNameFor(model => model.CandidateScore)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-6">
             @Html.DisplayFor(model => model.CandidateScore)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-6 rightalign">
             @Html.DisplayNameFor(model => model.PercentageScore)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-6">
             @Html.DisplayFor(model => model.PercentageScore)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-6 rightalign">
             @Html.DisplayNameFor(model => model.AssessmentResultLabel)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-6">
             @Html.DisplayFor(model => model.AssessmentResultLabel)
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Edit</a> |
-    <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
+<div class="center-adjust">
+    <a asp-action="Edit" asp-route-id="@Model?.Id" style="width:100px;" class="custom-font btn btn-info col-sm-7">Edit</a> |
+    <a asp-action="Index" style="width:110px;" class="text-nowrap custom-font btn btn-primary col-sm-7">Back to List</a>
 </div>
