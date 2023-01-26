@@ -4,12 +4,13 @@
     ViewData["Title"] = "TakeExam";
 }
 
-<h1>TakeExam</h1>
-
+<h3 class="custom-font fadein center-adjust">Taking an Examination</h3>
+<hr />
 @*<p>
     <a asp-action="Create">Take Exam</a>
 </p>*@
-<form asp-action="ExamSubmit">
+<div class="row custom-font fadein center-adjust">
+    <form asp-action="ExamSubmit" class="col-sm-1 text-center">
 @*    @for (var i = 10; i < 21; i++) {
         <p>Line @i</p>
     }*@
@@ -115,3 +116,4 @@
     }*@
     <input type="submit" value="Submit" class="btn btn-warning" />
 </form>
+</div>
