@@ -4,115 +4,132 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Candidate</h4>
+<h3 class=" custom-font fadein center-adjust">Creating a new Candidate</h3>
 <hr />
-<div class="row">
+<div class="row custom-font fadein center-adjust">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
+                <input asp-for="FirstName" class="form-control" placeholder="Enter your First name" />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="MiddleName" class="control-label"></label>
-                <input asp-for="MiddleName" class="form-control" />
+                <input asp-for="MiddleName" class="form-control" placeholder="Enter your Middle name" />
                 <span asp-validation-for="MiddleName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
+                <input asp-for="LastName" class="form-control" placeholder="Enter your Last name" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Gender" class="control-label"></label>
-                <input asp-for="Gender" class="form-control" />
-                <span asp-validation-for="Gender" class="text-danger"></span>
+                <div>
+                    <select asp-for="Gender" class="form-control  text-secondary">
+                        <option value="" disabled selected>--Select Gender--</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="NativeLanguage" class="control-label"></label>
-                <input asp-for="NativeLanguage" class="form-control" />
+                <input asp-for="NativeLanguage" class="form-control" placeholder="Enter Native language" />
                 <span asp-validation-for="NativeLanguage" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CountryOfResidence" class="control-label"></label>
-                <input asp-for="CountryOfResidence" class="form-control" />
+                <input asp-for="CountryOfResidence" class="form-control" placeholder="Enter Country of residence" />
                 <span asp-validation-for="CountryOfResidence" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Birthdate" class="control-label"></label>
-                <input asp-for="Birthdate" class="form-control" />
-                <span asp-validation-for="Birthdate" class="text-danger"></span>
+                <div>
+                    <input asp-for="Birthdate" class="form-control" type="date" placeholder="Enter your birthdate" />
+                    <span asp-validation-for="Birthdate" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
+                <input asp-for="Email" class="form-control" placeholder="mail@adress.com" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="LandlineNumber" class="control-label"></label>
-                <input asp-for="LandlineNumber" class="form-control" />
+                <input asp-for="LandlineNumber" class="form-control" placeholder="Enter Land Line Number" />
                 <span asp-validation-for="LandlineNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="MobileNumber" class="control-label"></label>
-                <input asp-for="MobileNumber" class="form-control" />
+                <input asp-for="MobileNumber" class="form-control" placeholder="Enter Mobile Number" />
                 <span asp-validation-for="MobileNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Address1" class="control-label"></label>
-                <input asp-for="Address1" class="form-control" />
+                <input asp-for="Address1" class="form-control" placeholder="Enter First/Main Address" />
                 <span asp-validation-for="Address1" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Address2" class="control-label"></label>
-                <input asp-for="Address2" class="form-control" />
+                <input asp-for="Address2" class="form-control" placeholder="Enter Secondary Address" />
                 <span asp-validation-for="Address2" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PostalCode" class="control-label"></label>
-                <input asp-for="PostalCode" class="form-control" />
+                <input asp-for="PostalCode" class="form-control" placeholder="Enter Postal Code" />
                 <span asp-validation-for="PostalCode" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Town" class="control-label"></label>
-                <input asp-for="Town" class="form-control" />
+                <input asp-for="Town" class="form-control" placeholder="Enter Town" />
                 <span asp-validation-for="Town" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Province" class="control-label"></label>
-                <input asp-for="Province" class="form-control" />
+                <input asp-for="Province" class="form-control" placeholder="Enter Province" />
                 <span asp-validation-for="Province" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PhotoIdType" class="control-label"></label>
-                <input asp-for="PhotoIdType" class="form-control" />
-                <span asp-validation-for="PhotoIdType" class="text-danger"></span>
+                <div>
+                    <select asp-for="PhotoIdType" class="form-control  text-secondary">
+                        <option value="" disabled selected>--Select Id Type--</option>
+                        <option value="NationalIDCard">NationalIDCard</option>
+                        <option value="Passport">Passport</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <span asp-validation-for="PhotoIdType" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="PhotoIdNumber" class="control-label"></label>
-                <input asp-for="PhotoIdNumber" class="form-control" />
+                <input asp-for="PhotoIdNumber" class="form-control" placeholder="Enter Photo Id Number" />
                 <span asp-validation-for="PhotoIdNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PhotoIdDate" class="control-label"></label>
-                <input asp-for="PhotoIdDate" class="form-control" />
-                <span asp-validation-for="PhotoIdDate" class="text-danger"></span>
+                <div>
+                    <input asp-for="PhotoIdDate" class="form-control" type="date" placeholder="Enter PhotoId date" />
+                    <span asp-validation-for="PhotoIdDate" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
+            <p>
+                <div class="form-group center-adjust">
+                    <input type="submit" value="Create" class="custom-font btn btn-info" /> |
+                    <a asp-action="Index" class="custom-font btn btn-primary">Back to List</a>
+                </div>
+            </p>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

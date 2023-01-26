@@ -4,33 +4,35 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h3 class="custom-font fadein center-adjust">Certificate Details</h3>
+<hr />
 
 <div>
-    <h4>Certificate</h4>
-    <hr />
+
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-6 rightalign">
             @Html.DisplayNameFor(model => model.TitleOfCertificate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-6">
             @Html.DisplayFor(model => model.TitleOfCertificate)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-6 rightalign">
             @Html.DisplayNameFor(model => model.PassingGrade)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-6">
             @Html.DisplayFor(model => model.PassingGrade)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-6 rightalign">
             @Html.DisplayNameFor(model => model.MaximumScore)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-6">
             @Html.DisplayFor(model => model.MaximumScore)
         </dd>
     </dl>
+   
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Edit</a> |
-    <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
+<div class="center-adjust">
+    <a asp-action="Edit" asp-route-id="@Model?.Id" style="width:95px;" class="custom-font btn btn-info col-sm-7">Edit</a> |
+    <a asp-action="Index" style="width:110px;" class="text-nowrap custom-font btn btn-primary col-sm-5">Back to List</a>
 </div>
+
