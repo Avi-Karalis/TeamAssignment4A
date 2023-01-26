@@ -5,6 +5,11 @@
 }
 
 <h3 class="custom-font fadein center-adjust">Taking an Examination</h3>
+<div class="sticky-header go-to-top hide-on-load text-nowrap my-round-button text-center navbar-dark bg-info"
+     onclick="scrollToTop()">
+    Go to top
+</div>
+
 <hr />
 @*<p>
     <a asp-action="Create">Take Exam</a>
@@ -26,14 +31,14 @@
                 @Html.Raw(Model.ExamQuestions[i].Question)
                 @Html.HiddenFor(m => m.ExamQuestions[i].Question)
             </div>
-            <div class="text-nowrap text-center navbar-dark bg-success"
+            <div class="text-nowrap text-center"
                  style="border-top-right-radius: 100px; border-bottom-right-radius: 100px; border-top-left-radius: 100px; border-bottom-left-radius: 100px">
                 @Html.DisplayNameFor(m => Model.ExamQuestions[i].OptionA)
                 <br>
                 @Html.Raw(Model.ExamQuestions[i].OptionA)
                 @Html.HiddenFor(m => m.ExamQuestions[i].OptionA)
             </div>
-                <div class="text-nowrap text-center navbar-dark bg-success"
+                <div class="text-nowrap text-center"
                  style="border-top-right-radius: 100px; border-bottom-right-radius: 100px; border-top-left-radius: 100px; border-bottom-left-radius: 100px">
                     >
                 @Html.DisplayNameFor(m => Model.ExamQuestions[i].OptionB)
@@ -41,14 +46,14 @@
                 @Html.Raw(Model.ExamQuestions[i].OptionB)
                 @Html.HiddenFor(m => m.ExamQuestions[i].OptionB)
             </div>
-            <div class="text-nowrap text-center navbar-dark bg-success"
+            <div class="text-nowrap text-center"
                  style="border-top-right-radius: 100px; border-bottom-right-radius: 100px; border-top-left-radius: 100px; border-bottom-left-radius: 100px">>
                 @Html.DisplayNameFor(m => Model.ExamQuestions[i].OptionC)
                 <br>
                 @Html.Raw(Model.ExamQuestions[i].OptionC)
                 @Html.HiddenFor(m => m.ExamQuestions[i].OptionC)
             </div>
-                <div class="text-nowrap text-center navbar-dark bg-success"
+                <div class="text-nowrap text-center"
                  style="border-top-right-radius: 100px; border-bottom-right-radius: 100px; border-top-left-radius: 100px; border-bottom-left-radius: 100px">
                     >
                 @Html.DisplayNameFor(m => Model.ExamQuestions[i].OptionD)
@@ -59,10 +64,13 @@
                 <div style="text-decoration: underline;" class="">
                 @Html.DisplayNameFor(m => Model.ExamQuestions[i].Answer)
                 <br>
+                    <hr>
 
                 @Html.DropDownListFor(m => m.ExamQuestions[i].Answer,@ViewBag.Selections as SelectList, "Select Answer")
                @* @Html.TextBoxFor(m => Model.ExamQuestions[i].Answer)*@
             </div>
+                <hr>
+            
  @*
             <div>@Html.TextBoxFor(m => Model.ExamQuestions[i].Question, new { @readonly = true })</div>
             <br>
@@ -122,6 +130,17 @@
             <input type="text" id="@item.Answer" name="Answer" value="@item.Answer" />
         </div>
     }*@
+    
     <input type="submit" value="Submit" class="btn btn-warning" />
+    
 </form>
 </div>
+
+@section Scripts {
+    @{
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

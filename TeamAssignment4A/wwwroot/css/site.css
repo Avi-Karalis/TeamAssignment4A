@@ -27,6 +27,20 @@ button > a {
     color: aliceblue !important;
 }
 
+.hide-on-load {
+    display: none;
+}
+.my-round-button {
+    cursor: pointer;
+    width: 130px;
+    border-top-left-radius: 100px;
+    border-bottom-left-radius: 100px;
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+    
+}
+
+
 
 .viewbody {
     animation: fadein 1.5;
