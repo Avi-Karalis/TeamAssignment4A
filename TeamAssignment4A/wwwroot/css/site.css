@@ -96,6 +96,13 @@ button > a {
     text-decoration: underline;
 }
 
+.typing-text {
+    
+    white-space: nowrap;
+}
+
+
+
 
 @keyframes fadein {
     from {

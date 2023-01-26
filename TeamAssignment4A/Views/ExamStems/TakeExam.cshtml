@@ -10,45 +10,53 @@
     <a asp-action="Create">Take Exam</a>
 </p>*@
 <div class="row custom-font fadein center-adjust">
-    <form asp-action="ExamSubmit" class="col-sm-1 text-center">
+    <form asp-action="ExamSubmit" class="col-sm-2 text-center">
 @*    @for (var i = 10; i < 21; i++) {
         <p>Line @i</p>
     }*@
     @for (var i = 0; i < Model.ExamQuestions.Count; i++) {
-        <div>
+        <div >
             @Html.HiddenFor(m => m.ExamQuestions[i].ExamId)
             @Html.HiddenFor(m => m.ExamQuestions[i].StemId)
-            <div>
+                <div class="text-nowrap text-center navbar-dark bg-primary"
+                 style="border-top-right-radius: 100px; border-bottom-right-radius: 100px; border-top-left-radius: 100px; border-bottom-left-radius: 100px">
+                    
                 @Html.DisplayNameFor(m => Model.ExamQuestions[i].Question)
             <br>
                 @Html.Raw(Model.ExamQuestions[i].Question)
                 @Html.HiddenFor(m => m.ExamQuestions[i].Question)
             </div>
-            <div>
+            <div class="text-nowrap text-center navbar-dark bg-success"
+                 style="border-top-right-radius: 100px; border-bottom-right-radius: 100px; border-top-left-radius: 100px; border-bottom-left-radius: 100px">
                 @Html.DisplayNameFor(m => Model.ExamQuestions[i].OptionA)
                 <br>
                 @Html.Raw(Model.ExamQuestions[i].OptionA)
                 @Html.HiddenFor(m => m.ExamQuestions[i].OptionA)
             </div>
-            <div>
+                <div class="text-nowrap text-center navbar-dark bg-success"
+                 style="border-top-right-radius: 100px; border-bottom-right-radius: 100px; border-top-left-radius: 100px; border-bottom-left-radius: 100px">
+                    >
                 @Html.DisplayNameFor(m => Model.ExamQuestions[i].OptionB)
                 <br>
                 @Html.Raw(Model.ExamQuestions[i].OptionB)
                 @Html.HiddenFor(m => m.ExamQuestions[i].OptionB)
             </div>
-            <div>
+            <div class="text-nowrap text-center navbar-dark bg-success"
+                 style="border-top-right-radius: 100px; border-bottom-right-radius: 100px; border-top-left-radius: 100px; border-bottom-left-radius: 100px">>
                 @Html.DisplayNameFor(m => Model.ExamQuestions[i].OptionC)
                 <br>
                 @Html.Raw(Model.ExamQuestions[i].OptionC)
                 @Html.HiddenFor(m => m.ExamQuestions[i].OptionC)
             </div>
-            <div>
+                <div class="text-nowrap text-center navbar-dark bg-success"
+                 style="border-top-right-radius: 100px; border-bottom-right-radius: 100px; border-top-left-radius: 100px; border-bottom-left-radius: 100px">
+                    >
                 @Html.DisplayNameFor(m => Model.ExamQuestions[i].OptionD)
                 <br>
                 @Html.Raw(Model.ExamQuestions[i].OptionD)
                 @Html.HiddenFor(m => m.ExamQuestions[i].OptionD)
             </div>
-            <div>
+                <div style="text-decoration: underline;" class="">
                 @Html.DisplayNameFor(m => Model.ExamQuestions[i].Answer)
                 <br>
 

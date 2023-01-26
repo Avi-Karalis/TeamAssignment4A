@@ -29,3 +29,30 @@ $(function () {
         }
     });
 });
+
+
+//----1st attempt
+const text = "PeopleCert Operations Menu";
+const typingDelay = 100; // delay between each character
+const newTextDelay = 12000; // delay between current and next text
+let index = 0;
+
+function type() {
+    if (index < text.length) {
+        document.querySelector(".typing-text").textContent += text.charAt(index);
+        index++;
+        setTimeout(type, typingDelay);
+    } else {
+        setTimeout(erase, newTextDelay);
+    }
+}
+
+type();
+
+
+
+
+
+
+
+
