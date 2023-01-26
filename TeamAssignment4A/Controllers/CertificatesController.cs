@@ -13,7 +13,7 @@ namespace TeamAssignment4A.Controllers
 {
     public class CertificatesController : Controller
     {       
-        private CertificateService _service;
+        private readonly CertificateService _service;
         public CertificatesController(CertificateService service)
         {            
             _service = service;        
@@ -22,13 +22,13 @@ namespace TeamAssignment4A.Controllers
         // GET: Certificates
         public async Task<IActionResult> Index()
         {
-            return View(await _service.GetAllCertificates());
+            return View(await _service.GetAll());
         }
 
         // GET: Certificates/Details/5
         public async Task<IActionResult> Details(int Id)
         {
-            MyDTO myDTO = await _service.GetCertificate(Id);
+            MyDTO myDTO = await _service.Get(Id);
             ViewBag.Message = myDTO.Message;
             if(myDTO.View == "Index")
             {
@@ -48,7 +48,7 @@ namespace TeamAssignment4A.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int Id, [Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
         {
-            MyDTO myDTO = await _service.AddOrUpdateCertificate(Id, certificate);
+            MyDTO myDTO = await _service.AddOrUpdate(Id, certificate);
             ViewBag.Message = myDTO.Message;
             if (myDTO.View == "Index")
             {
@@ -74,7 +74,7 @@ namespace TeamAssignment4A.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int Id, [Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
         {
-            MyDTO myDTO = await _service.AddOrUpdateCertificate(Id, certificate);
+            MyDTO myDTO = await _service.AddOrUpdate(Id, certificate);
             ViewBag.Message = myDTO.Message;
             if (myDTO.View == "Index")
             {
@@ -101,10 +101,7 @@ namespace TeamAssignment4A.Controllers
         public async Task<IActionResult> DeleteConfirmed(int Id)
         {
             MyDTO myDTO = await _service.Delete(Id);
-
             ViewBag.Message = myDTO.Message;
-     
-
             return View($"{myDTO.View}", myDTO.Certificates);
         }        
     }
