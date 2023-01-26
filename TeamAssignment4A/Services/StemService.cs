@@ -34,6 +34,7 @@ namespace TeamAssignment4A.Services
                 _myDTO.StemDto = _mapper.Map<StemDto>(stem);
             }
             return _myDTO;
+
         }
         public async Task<IEnumerable<StemDto>?> GetAll()
         {
