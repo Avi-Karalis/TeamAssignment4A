@@ -16,7 +16,7 @@ namespace TeamAssignment4A.Data.Repositories
             return await _db.Candidates.FirstOrDefaultAsync(candidate => candidate.Id == id);
         }
 
-        public async Task<ICollection<Candidate?>> GetAllAsync()
+        public async Task<IEnumerable<Candidate?>> GetAllAsync()
         {
             return await _db.Candidates.ToListAsync<Candidate>();
         }
