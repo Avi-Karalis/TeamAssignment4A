@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TeamAssignment4A.Data;
 using TeamAssignment4A.Dtos;
@@ -92,6 +93,20 @@ namespace TeamAssignment4A.Services
                 if (state == EntityState.Modified && !await _unit.Topic.Exists(topic.Id))
                 {
                     _myDTO.Message = "The requested topic could not be found. Please try again later.";
+                }
+                if (await _unit.Topic.DescriptionExists(topic.Id, topic.Description))
+                {
+                    if (state == EntityState.Added)
+                    {
+                        _myDTO.View = "Create";
+                    }
+                    if (state == EntityState.Modified)
+                    {
+                        _myDTO.View = "Edit";
+                    }
+                    _myDTO.Message = "This topic description already exists. Please try providing a different description.";
+                    _myDTO.TopicDto = topicDto;                    
+                    return _myDTO;
                 }
                 await _unit.SaveAsync();
                 _myDTO.View = "Index";
