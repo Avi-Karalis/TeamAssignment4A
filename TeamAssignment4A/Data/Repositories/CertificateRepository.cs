@@ -43,9 +43,9 @@ namespace TeamAssignment4A.Data.Repositories
             return await _db.Certificates.AnyAsync(e => e.Id == id);
         }
 
-        public async Task<bool> TitleExists(string title)
+        public async Task<bool> TitleExists(int id, string title)
         {
-            return await _db.Certificates.AnyAsync(e => e.TitleOfCertificate == title);
+            return await _db.Certificates.AnyAsync(e => e.TitleOfCertificate == title && e.Id != id);
         }
     }
 }

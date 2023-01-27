@@ -26,8 +26,9 @@ namespace TeamAssignment4A.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Certificate>().HasKey(c => new { c.Id, c.TitleOfCertificate });
+            base.OnModelCreating(modelBuilder);            
             modelBuilder.Entity<Certificate>().HasIndex(c => c.TitleOfCertificate).IsUnique();
+            modelBuilder.Entity<Topic>().HasIndex(c => c.Description).IsUnique();
         }
     }
 }

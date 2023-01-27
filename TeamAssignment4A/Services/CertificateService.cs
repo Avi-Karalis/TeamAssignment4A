@@ -85,7 +85,7 @@ namespace TeamAssignment4A.Services
                 {                   
                     _myDTO.Message = "The requested certificate could not be found. Please try again later.";                   
                 } 
-                if(await _unit.Certificate.TitleExists(certificate.TitleOfCertificate))
+                if(await _unit.Certificate.TitleExists(certificate.Id, certificate.TitleOfCertificate))
                 {
                     if (state == EntityState.Added)
                     {
