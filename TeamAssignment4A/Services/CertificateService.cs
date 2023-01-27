@@ -84,7 +84,21 @@ namespace TeamAssignment4A.Services
                 if (state == EntityState.Modified && !await _unit.Certificate.Exists(certificate.Id))
                 {                   
                     _myDTO.Message = "The requested certificate could not be found. Please try again later.";                   
-                }                
+                } 
+                if(await _unit.Certificate.TitleExists(certificate.TitleOfCertificate))
+                {
+                    if (state == EntityState.Added)
+                    {
+                        _myDTO.View = "Create";
+                    }
+                    if (state == EntityState.Modified)
+                    {
+                        _myDTO.View = "Edit";
+                    }
+                    _myDTO.Message = "This certificate title already exists. Please try providing a different title.";
+                    _myDTO.Certificate = certificate;
+                    return _myDTO;
+                }
                 await _unit.SaveAsync();
                 _myDTO.View = "Index";
                 _myDTO.Certificates = await _unit.Certificate.GetAllAsync();

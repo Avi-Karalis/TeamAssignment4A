@@ -23,6 +23,12 @@ namespace TeamAssignment4A.Data
         public virtual DbSet<Stem> Stems { get; set; } = default!;        
         public virtual DbSet<ExamStem> ExamStems { get; set; } = default!;        
         public virtual DbSet<CandidateExam> CandidateExams { get; set; } = default!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Certificate>().HasKey(c => new { c.Id, c.TitleOfCertificate });
+            modelBuilder.Entity<Certificate>().HasIndex(c => c.TitleOfCertificate).IsUnique();
+        }
     }
 }
 
