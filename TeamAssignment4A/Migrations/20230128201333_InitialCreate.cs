@@ -128,7 +128,7 @@ namespace TeamAssignment4A.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AssessmentTestCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ExaminationDate = table.Column<DateTime>(type: "Date", nullable: true),
+                    ExaminationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ScoreReportDate = table.Column<DateTime>(type: "Date", nullable: true),
                     CandidateScore = table.Column<int>(type: "int", nullable: true),
                     PercentageScore = table.Column<string>(type: "nvarchar(max)", nullable: true),

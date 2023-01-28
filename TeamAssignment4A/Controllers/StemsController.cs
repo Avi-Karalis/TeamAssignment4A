@@ -18,14 +18,14 @@ namespace TeamAssignment4A.Controllers {
         private readonly TopicService _topicService;
         private readonly StemService _service;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly IMapper _mapper;
-        public StemsController(WebAppDbContext db, TopicService topicService, StemService service, IWebHostEnvironment webHostEnvironment, IMapper mapper) 
+        
+        public StemsController(WebAppDbContext db, TopicService topicService, 
+            StemService service, IWebHostEnvironment webHostEnvironment) 
         {
             _db = db;
             _topicService = topicService;
             _service = service;
-            _webHostEnvironment = webHostEnvironment;
-            _mapper = mapper;
+            _webHostEnvironment = webHostEnvironment;            
         }
 
         // GET: Stems

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RandomDataGenerator.FieldOptions;
+using RandomDataGenerator.Randomizers;
 using TeamAssignment4A.Data;
 using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models;
@@ -61,13 +63,17 @@ namespace TeamAssignment4A.Services
             return _myDTO;
         }
 
-        public async Task<MyDTO> AddOrUpdate(int id, [Bind("AssessmentTestCode,ExaminationDate,ScoreReportDate," +
+        public async Task<MyDTO> AddOrUpdate(int id, [Bind("Id,AssessmentTestCode,ExaminationDate,ScoreReportDate," +
             "CandidateScore,PercentageScore,AssessmentResultLabel,CandidateId,Candidate,TitleOfCertificate,Certificate")] ExamDto examDto)
         {
             Candidate candidate = await _unit.Candidate.GetAsync(examDto.CandidateId);
             Certificate certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
             examDto.Candidate = candidate;
             examDto.Certificate = certificate;
+            //if(await _unit.Exam.GetAsync(examDto.Id) == null)
+            //{
+                
+            //}
             Exam exam = _mapper.Map<Exam>(examDto);
 
             EntityState state = _unit.Exam.AddOrUpdate(exam);
@@ -86,8 +92,12 @@ namespace TeamAssignment4A.Services
                 return _myDTO;
             }
             if (ModelState.IsValid)
-            {
-                _myDTO.Message = "The requested exam has been added successfully.";
+            { 
+                if(state == EntityState.Added)
+                {
+                    _myDTO.Message = "The requested exam has been added successfully.";
+                    exam.AssessmentTestCode = RandomizerFactory.GetRandomizer(new FieldOptionsIBAN()).Generate();
+                }
                 if (state == EntityState.Modified)
                 {
                     _myDTO.Message = "The requested exam has been updated successfully.";

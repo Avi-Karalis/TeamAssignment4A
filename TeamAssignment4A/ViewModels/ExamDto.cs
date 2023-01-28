@@ -9,35 +9,28 @@ namespace TeamAssignment4A.Dtos
     public class ExamDto
     {
         public int Id { get; set; }
-        [Required]
-        [Display(Name = "Assessment Test Code")]
+        
         public string AssessmentTestCode { get; set; }
+        [Required]
+        public DateTime ExaminationDate { get; set; }
 
-
-        [Display(Name = "Examination Date")]
-        [Column(TypeName = "Date")]
-        public DateTime? ExaminationDate { get; set; }
-
-
-        [Display(Name = "Score Report Date")]
         [Column(TypeName = "Date")]
         public DateTime? ScoreReportDate { get; set; }
-
-
-        [Display(Name = "Candidate Score")]
+        
         public int? CandidateScore { get; set; }
 
-
-        [Display(Name = "Percentage Score")]
         public string? PercentageScore { get; set; }
-
-
-        [Display(Name = "Assessment Result Label")]
+        
         public string? AssessmentResultLabel { get; set; }
 
+        [Required]
         public int CandidateId { get; set; }
+
         public Candidate Candidate { get; set; }
+
+        [Required]
         public string TitleOfCertificate { get; set; }
+
         public Certificate Certificate { get; set; }
     }
 }

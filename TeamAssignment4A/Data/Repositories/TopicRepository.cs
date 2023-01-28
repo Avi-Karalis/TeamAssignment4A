@@ -12,12 +12,12 @@ namespace TeamAssignment4A.Data.Repositories
         }
         public async Task<Topic?> GetAsync(int id)
         {
-            return await _db.Topics.Include(stem => stem.Certificate).FirstOrDefaultAsync(x => x.Id == id);
+            return await _db.Topics.Include(topic => topic.Certificate).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Topic?> GetAsyncByDesc(string topicDescription)
         {
-            return await _db.Topics.Include(stem => stem.Certificate).FirstOrDefaultAsync(x => x.Description == topicDescription);
+            return await _db.Topics.Include(topic => topic.Certificate).FirstOrDefaultAsync(x => x.Description == topicDescription);
         }
 
         public async Task<IEnumerable<Topic>?> GetAllAsync()

@@ -4,9 +4,9 @@ using TeamAssignment4A.Models;
 
 namespace TeamAssignment4A.Profiles
 {
-    public class TopicProfile: Profile
+    public class Profile: AutoMapper.Profile
     {
-        public TopicProfile()
+        public Profile()
         {
             CreateMap<Topic,TopicDto>();
 
