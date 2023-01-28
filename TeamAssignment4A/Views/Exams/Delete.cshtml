@@ -1,4 +1,4 @@
-﻿@model TeamAssignment4A.Models.Exam
+﻿@model TeamAssignment4A.Dtos.ExamDto
 
 @{
     ViewData["Title"] = "Delete";
@@ -43,6 +43,18 @@
         </dt>
         <dd class = "col-sm-6">
             @Html.DisplayFor(model => model.AssessmentResultLabel)
+        </dd>
+        <dt class="col-sm-6 rightalign">
+            @Html.DisplayNameFor(model => model.TitleOfCertificate)
+        </dt>
+        <dd class="col-sm-6">
+            @Html.DisplayFor(model => model.TitleOfCertificate)
+        </dd>
+        <dt class="col-sm-6 rightalign">
+            @Html.DisplayNameFor(model => model.CandidateId)
+        </dt>
+        <dd class="col-sm-6">
+            @Html.DisplayFor(model => model.CandidateId)
         </dd>
     </dl>
     <div class="center-adjust">

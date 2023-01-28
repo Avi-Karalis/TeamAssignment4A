@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TeamAssignment4A.Models.Exam>
+﻿@model IEnumerable<TeamAssignment4A.Dtos.ExamDto>
 
 @{
     ViewData["Title"] = "Index";
@@ -20,7 +20,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.ExaminationDate)
             </th>
-            <th>
+           @* <th>
                 @Html.DisplayNameFor(model => model.ScoreReportDate)
             </th>
             <th>
@@ -31,7 +31,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AssessmentResultLabel)
-            </th>
+            </th>*@
             <th style="border-top-right-radius: 100px; border-bottom-right-radius: 100px;">Options</th>
         </tr>
     </thead>
@@ -44,7 +44,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ExaminationDate)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.ScoreReportDate)
             </td>
             <td>
@@ -55,7 +55,7 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AssessmentResultLabel)
-            </td>
+            </td>*@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary w-50 mb-2">Edit</a>
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-success w-50 mb-2">Details</a>

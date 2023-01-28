@@ -290,8 +290,8 @@ namespace TeamAssignment4A.Migrations
                     b.Property<int>("CertificateId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("ExaminationDate")
-                        .HasColumnType("Date");
+                    b.Property<DateTime>("ExaminationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("PercentageScore")
                         .HasColumnType("nvarchar(max)");
