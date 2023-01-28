@@ -93,6 +93,20 @@ namespace TeamAssignment4A.Services
                 {
                     _myDTO.Message = "The requested topic could not be found. Please try again later.";
                 }
+                if (await _unit.Topic.DescriptionExists(topic.Id, topic.Description))
+                {
+                    if (state == EntityState.Added)
+                    {
+                        _myDTO.View = "Create";
+                    }
+                    if (state == EntityState.Modified)
+                    {
+                        _myDTO.View = "Edit";
+                    }
+                    _myDTO.Message = "This topic description already exists. Please try providing a different description.";
+                    _myDTO.TopicDto = topicDto;                    
+                    return _myDTO;
+                }
                 await _unit.SaveAsync();
                 _myDTO.View = "Index";
                 IEnumerable<Topic> topics = await _unit.Topic.GetAllAsync();

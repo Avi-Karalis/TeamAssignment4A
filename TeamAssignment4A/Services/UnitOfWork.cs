@@ -11,6 +11,7 @@ namespace TeamAssignment4A.Services
         public CertificateRepository Certificate { get; set; }
         public TopicRepository Topic { get; set; }
         public StemRepository Stem { get; set; }
+        public ExamRepository Exam { get; set; }
         public UnitOfWork(WebAppDbContext db)
         {
             _db = db;
@@ -19,6 +20,7 @@ namespace TeamAssignment4A.Services
             Certificate = new CertificateRepository(db);
             Topic = new TopicRepository(db);
             Stem = new StemRepository(db);
+            Exam = new ExamRepository(db);
         }
 
         public async Task<int> SaveAsync() 

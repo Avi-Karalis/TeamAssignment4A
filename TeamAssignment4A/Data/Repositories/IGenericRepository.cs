@@ -11,7 +11,6 @@ namespace TeamAssignment4A.Data.Repositories
         Task<IEnumerable<T>?> GetAllAsync();
         EntityState AddOrUpdate(T item);        
         void Delete(T item);
-        Task<bool> Exists(int id);
-        //Task<Topic> GetAsyncByDesc(string topicDescription);
+        Task<bool> Exists(int id);        
     }
 }
