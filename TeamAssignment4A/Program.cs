@@ -30,6 +30,7 @@ namespace TeamAssignment4A {
             builder.Services.AddScoped<CertificateService, CertificateService>();
             builder.Services.AddScoped<TopicService, TopicService>();
             builder.Services.AddScoped<StemService, StemService>();
+            builder.Services.AddScoped<ExamService, ExamService>();
             builder.Services.AddAutoMapper(typeof(Program));
             
 
