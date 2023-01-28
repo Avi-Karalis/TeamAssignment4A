@@ -4,7 +4,7 @@ Giannis Marinakis
 Georgos Georgiadis
 Pavlos Xanthopoulos
 Averkios Karalis
-===================+++++++++++++++++++++======================
+
 	 ______	 _   _	     _	 _________	     _
 	/ _____\	| | / /	    / \	|___   ___|	    / \	
 	| |_____    | |/ /	   / Λ \	    | |	   / Λ \	
