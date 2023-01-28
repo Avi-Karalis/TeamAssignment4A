@@ -13,6 +13,7 @@ namespace TeamAssignment4A.Models
         public int Id { get; set; }
 
         [Required]
+        [StringLength(50)]
         [Display(Name = "Description")]
         public string Description { get; set; }
 

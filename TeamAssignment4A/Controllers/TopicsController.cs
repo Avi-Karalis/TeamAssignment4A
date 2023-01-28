@@ -70,6 +70,7 @@ namespace TeamAssignment4A.Controllers
             {
                 return View($"{myDTO.View}", myDTO.TopicDtos);
             }
+            ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
             return View($"{myDTO.View}", myDTO.TopicDto);           
         }
 
@@ -101,6 +102,7 @@ namespace TeamAssignment4A.Controllers
             {
                 return View($"{myDTO.View}", myDTO.TopicDtos);
             }
+            ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
             return View($"{myDTO.View}", myDTO.TopicDto);            
         }
 

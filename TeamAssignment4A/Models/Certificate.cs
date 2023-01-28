@@ -10,11 +10,11 @@ namespace TeamAssignment4A.Models
         //Basic Info for Certificate
         [Key]
         [Required]
-        [Display(Name = "Certificate Id")]
+        [Display(Name = "Certificate Id")]        
         public int Id { get; set; }
 
         [Required]
-        [StringLength(20)]
+        [StringLength(50)]
         [Display(Name = "Title Of Certificate")]
         public string TitleOfCertificate { get; set; }
 

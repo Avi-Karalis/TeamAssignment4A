@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TeamAssignment4A.Migrations
 {
-    public partial class Initial_Create : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -59,7 +59,7 @@ namespace TeamAssignment4A.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TitleOfCertificate = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    TitleOfCertificate = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     PassingGrade = table.Column<int>(type: "int", nullable: false),
                     MaximumScore = table.Column<int>(type: "int", nullable: false)
                 },
@@ -159,7 +159,7 @@ namespace TeamAssignment4A.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     NumberOfPossibleMarks = table.Column<int>(type: "int", nullable: false),
                     CertificateId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -297,14 +297,14 @@ namespace TeamAssignment4A.Migrations
                     OptionC = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OptionD = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CorrectAnswer = table.Column<string>(type: "nvarchar(1)", nullable: false),
-                    TopicID = table.Column<int>(type: "int", nullable: false)
+                    TopicId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Stems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Stems_Topics_TopicID",
-                        column: x => x.TopicID,
+                        name: "FK_Stems_Topics_TopicId",
+                        column: x => x.TopicId,
                         principalTable: "Topics",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -393,6 +393,12 @@ namespace TeamAssignment4A.Migrations
                 column: "ExamId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Certificates_TitleOfCertificate",
+                table: "Certificates",
+                column: "TitleOfCertificate",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Exams_CandidateId",
                 table: "Exams",
                 column: "CandidateId");
@@ -413,14 +419,20 @@ namespace TeamAssignment4A.Migrations
                 column: "StemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Stems_TopicID",
+                name: "IX_Stems_TopicId",
                 table: "Stems",
-                column: "TopicID");
+                column: "TopicId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Topics_CertificateId",
                 table: "Topics",
                 column: "CertificateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Topics_Description",
+                table: "Topics",
+                column: "Description",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
