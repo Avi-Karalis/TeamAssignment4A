@@ -79,7 +79,7 @@ namespace TeamAssignment4A.Controllers
         [ProducesResponseType(typeof(ExamDto), 200)]
         public IActionResult Create()
         {
-            ViewBag.Candidates = new SelectList(_db.Candidates, "CandidateId", "CandidateId");
+            ViewBag.Candidates = new SelectList(_db.Candidates, "Id", "Id");
             ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
             return View();
         }
@@ -94,7 +94,7 @@ namespace TeamAssignment4A.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ExamDto), 200)]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(int id, [Bind("Id,AssessmentTestCode,ExaminationDate,ScoreReportDate," +
+        public async Task<IActionResult> Create(int id, [Bind("Id,AssessmentTestCode,ExaminationDate,ScoreReportDate," +
             "CandidateScore,PercentageScore,AssessmentResultLabel,CandidateId,Candidate,TitleOfCertificate,Certificate")] ExamDto examDto)
         {
             MyDTO myDTO = await _service.AddOrUpdate(id, examDto);
@@ -103,7 +103,7 @@ namespace TeamAssignment4A.Controllers
             {
                 return View($"{myDTO.View}", myDTO.ExamDtos);
             }
-            ViewBag.Candidates = new SelectList(_db.Candidates, "CandidateId", "CandidateId");
+            ViewBag.Candidates = new SelectList(_db.Candidates, "Id", "Id");
             ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
             return View($"{myDTO.View}", myDTO.ExamDto);
         }
@@ -130,7 +130,7 @@ namespace TeamAssignment4A.Controllers
         {
             MyDTO myDTO = await _service.GetForUpdate(id);
             ViewBag.Message = myDTO.Message;
-            ViewBag.Candidates = new SelectList(_db.Candidates, "CandidateId", "CandidateId");
+            ViewBag.Candidates = new SelectList(_db.Candidates, "Id", "Id");
             ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
             if (myDTO.View == "Index")
             {
@@ -168,7 +168,7 @@ namespace TeamAssignment4A.Controllers
             {
                 return View($"{myDTO.View}", myDTO.ExamDtos);
             }
-            ViewBag.Candidates = new SelectList(_db.Candidates, "CandidateId", "CandidateId");
+            ViewBag.Candidates = new SelectList(_db.Candidates, "Id", "Id");
             ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
             return View($"{myDTO.View}", myDTO.ExamDto);
         }

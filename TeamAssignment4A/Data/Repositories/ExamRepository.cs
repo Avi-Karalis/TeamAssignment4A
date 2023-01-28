@@ -17,20 +17,17 @@ namespace TeamAssignment4A.Data.Repositories
 
         public async Task<IEnumerable<Exam>?> GetAllAsync()
         {
-            await _db.Exams.ToListAsync<Exam>();
-            var exams = await _db.Exams.ToListAsync<Exam>();
-            foreach (var exam in exams)
-            {
-                if (exam.Candidate != null)
-                    _db.Entry(exam).Reference(e => e.Candidate).Load();
-                if (exam.Certificate != null)
-                    _db.Entry(exam).Reference(e => e.Certificate).Load();
-            }
-            return exams;
+            return await _db.Exams.Include(exam => exam.Candidate).Include(exam => exam.Certificate).ToListAsync<Exam>();            
         }
 
         public EntityState AddOrUpdate(Exam exam)
         {
+            //_db.Entry(exam).State = EntityState.Detached;
+            //_db.Attach(exam);
+            //dbContext.SaveChanges();
+            //_db.Entry(exam).Reload();
+            //_db.Update(exam);
+            //dbContext.SaveChanges();
             _db.Exams.Update(exam);
             return _db.Entry(exam).State;
         }

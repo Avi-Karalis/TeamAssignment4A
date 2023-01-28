@@ -70,10 +70,10 @@ namespace TeamAssignment4A.Services
             Certificate certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
             examDto.Candidate = candidate;
             examDto.Certificate = certificate;
-            if(await _unit.Exam.GetAsync(examDto.Id) == null)
-            {
-                examDto.AssessmentTestCode = RandomizerFactory.GetRandomizer(new FieldOptionsIBAN()).Generate();
-            }
+            //if(await _unit.Exam.GetAsync(examDto.Id) == null)
+            //{
+                
+            //}
             Exam exam = _mapper.Map<Exam>(examDto);
 
             EntityState state = _unit.Exam.AddOrUpdate(exam);
@@ -92,8 +92,12 @@ namespace TeamAssignment4A.Services
                 return _myDTO;
             }
             if (ModelState.IsValid)
-            {                
-                _myDTO.Message = "The requested exam has been added successfully.";
+            { 
+                if(state == EntityState.Added)
+                {
+                    _myDTO.Message = "The requested exam has been added successfully.";
+                    exam.AssessmentTestCode = RandomizerFactory.GetRandomizer(new FieldOptionsIBAN()).Generate();
+                }
                 if (state == EntityState.Modified)
                 {
                     _myDTO.Message = "The requested exam has been updated successfully.";
