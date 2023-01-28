@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using RandomDataGenerator.FieldOptions;
+using RandomDataGenerator.Randomizers;
 using TeamAssignment4A.Data;
 using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models;
@@ -58,12 +61,13 @@ namespace TeamAssignment4A.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("assessmentTestCode, CertificateId, CandidateId")] ExamCreateDTO examDTO)
+        public async Task<IActionResult> Create([Bind("CertificateId, CandidateId")] ExamCreateDTO examDTO)
         {
             if (ModelState.IsValid) {
                 Certificate certificate = _context.Certificates.Find(examDTO.CertificateId);
                 Candidate candidate = _context.Candidates.Find(examDTO.CandidateId);
-                Exam exam = new Exam(examDTO.assessmentTestCode, certificate, candidate);
+                string assessmentTestCode = RandomizerFactory.GetRandomizer(new FieldOptionsIBAN()).Generate();
+                Exam exam = new Exam(assessmentTestCode, certificate, candidate);
                 _context.Add(exam);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("TakeExam", "ExamStems", new { id = exam.Id });
