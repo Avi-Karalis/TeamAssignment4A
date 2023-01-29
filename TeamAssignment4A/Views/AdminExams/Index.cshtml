@@ -17,9 +17,9 @@
             <th style="border-top-left-radius: 100px; border-bottom-left-radius: 100px;">
                 @Html.DisplayNameFor(model => model.AssessmentTestCode)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.ExaminationDate)
-            </th>
+            </th>*@
            @* <th>
                 @Html.DisplayNameFor(model => model.ScoreReportDate)
             </th>
@@ -32,6 +32,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.AssessmentResultLabel)
             </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.TitleOfCertificate)
+            </th>
             <th style="border-top-right-radius: 100px; border-bottom-right-radius: 100px;">Options</th>
         </tr>
     </thead>
@@ -41,9 +44,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.AssessmentTestCode)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.ExaminationDate)
-            </td>
+            </td>*@
             @*<td>
                 @Html.DisplayFor(modelItem => item.ScoreReportDate)
             </td>
@@ -56,6 +59,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.AssessmentResultLabel)
             </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.TitleOfCertificate)
+            </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary w-50 mb-2">Edit</a>
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-success w-50 mb-2">Details</a>

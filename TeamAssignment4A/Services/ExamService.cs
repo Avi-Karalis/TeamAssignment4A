@@ -64,16 +64,10 @@ namespace TeamAssignment4A.Services
         }
 
         public async Task<MyDTO> AddOrUpdate(int id, [Bind("Id,AssessmentTestCode,ExaminationDate,ScoreReportDate," +
-            "CandidateScore,PercentageScore,AssessmentResultLabel,CandidateId,Candidate,TitleOfCertificate,Certificate")] ExamDto examDto)
-        {
-            Candidate candidate = await _unit.Candidate.GetAsync(examDto.CandidateId);
-            Certificate certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
-            examDto.Candidate = candidate;
-            examDto.Certificate = certificate;
-            //if(await _unit.Exam.GetAsync(examDto.Id) == null)
-            //{
-                
-            //}
+            "CandidateScore,PercentageScore,AssessmentResultLabel,TitleOfCertificate,Certificate")] ExamDto examDto)
+        {            
+            Certificate certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);            
+            examDto.Certificate = certificate;            
             Exam exam = _mapper.Map<Exam>(examDto);
 
             EntityState state = _unit.Exam.AddOrUpdate(exam);
@@ -92,12 +86,8 @@ namespace TeamAssignment4A.Services
                 return _myDTO;
             }
             if (ModelState.IsValid)
-            { 
-                if(state == EntityState.Added)
-                {
-                    _myDTO.Message = "The requested exam has been added successfully.";
-                    exam.AssessmentTestCode = RandomizerFactory.GetRandomizer(new FieldOptionsIBAN()).Generate();
-                }
+            {                 
+                _myDTO.Message = "The requested exam has been added successfully.";                
                 if (state == EntityState.Modified)
                 {
                     _myDTO.Message = "The requested exam has been updated successfully.";
@@ -105,7 +95,21 @@ namespace TeamAssignment4A.Services
                 if (state == EntityState.Modified && !await _unit.Exam.Exists(exam.Id))
                 {
                     _myDTO.Message = "The requested exam could not be found. Please try again later.";
-                }                
+                }
+                if (await _unit.Exam.CodeExists(exam.Id, exam.AssessmentTestCode))
+                {
+                    if (state == EntityState.Added)
+                    {
+                        _myDTO.View = "Create";
+                    }
+                    if (state == EntityState.Modified)
+                    {
+                        _myDTO.View = "Edit";
+                    }
+                    _myDTO.Message = "This exam assessment test code already exists. Please try providing a different code.";
+                    _myDTO.ExamDto = examDto;
+                    return _myDTO;
+                }
                 await _unit.SaveAsync();
                 _myDTO.View = "Index";
                 IEnumerable<Exam> exams = await _unit.Exam.GetAllAsync();

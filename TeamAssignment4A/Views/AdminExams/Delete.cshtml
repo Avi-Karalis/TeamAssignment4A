@@ -14,7 +14,7 @@
         <dd class = "col-sm-6">
             @Html.DisplayFor(model => model.AssessmentTestCode)
         </dd>
-        <dt class="col-sm-6 rightalign">
+        @*<dt class="col-sm-6 rightalign">
             @Html.DisplayNameFor(model => model.ExaminationDate)
         </dt>
         <dd class = "col-sm-6">
@@ -43,19 +43,13 @@
         </dt>
         <dd class = "col-sm-6">
             @Html.DisplayFor(model => model.AssessmentResultLabel)
-        </dd>
+        </dd>*@
         <dt class="col-sm-6 rightalign">
             @Html.DisplayNameFor(model => model.TitleOfCertificate)
         </dt>
         <dd class="col-sm-6">
             @Html.DisplayFor(model => model.TitleOfCertificate)
-        </dd>
-        <dt class="col-sm-6 rightalign">
-            @Html.DisplayNameFor(model => model.CandidateId)
-        </dt>
-        <dd class="col-sm-6">
-            @Html.DisplayFor(model => model.CandidateId)
-        </dd>
+        </dd>        
     </dl>
     <div class="center-adjust">
         <form asp-action="Delete">

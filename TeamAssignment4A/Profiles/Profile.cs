@@ -41,9 +41,7 @@ namespace TeamAssignment4A.Profiles
                 .ForMember(dest => dest.ScoreReportDate, opt => opt.MapFrom(src => src.ScoreReportDate))
                 .ForMember(dest => dest.CandidateScore, opt => opt.MapFrom(src => src.CandidateScore))
                 .ForMember(dest => dest.PercentageScore, opt => opt.MapFrom(src => src.PercentageScore))
-                .ForMember(dest => dest.AssessmentResultLabel, opt => opt.MapFrom(src => src.AssessmentResultLabel))
-                .ForMember(dest => dest.CandidateId, opt => opt.MapFrom(src => src.Candidate.Id))
-                .ForMember(dest => dest.Candidate, opt => opt.MapFrom(src => src.Candidate))
+                .ForMember(dest => dest.AssessmentResultLabel, opt => opt.MapFrom(src => src.AssessmentResultLabel))                
                 .ForMember(dest => dest.TitleOfCertificate, opt => opt.MapFrom(src => src.Certificate.TitleOfCertificate))
                 .ForMember(dest => dest.Certificate, opt => opt.MapFrom(src => src.Certificate))
                 .ReverseMap();

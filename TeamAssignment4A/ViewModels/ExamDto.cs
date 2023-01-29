@@ -11,8 +11,8 @@ namespace TeamAssignment4A.Dtos
         public int Id { get; set; }
         
         public string AssessmentTestCode { get; set; }
-        [Required]
-        public DateTime ExaminationDate { get; set; }
+        
+        public DateTime? ExaminationDate { get; set; }
 
         [Column(TypeName = "Date")]
         public DateTime? ScoreReportDate { get; set; }
@@ -21,14 +21,8 @@ namespace TeamAssignment4A.Dtos
 
         public string? PercentageScore { get; set; }
         
-        public string? AssessmentResultLabel { get; set; }
-
-        [Required]
-        public int CandidateId { get; set; }
-
-        public Candidate Candidate { get; set; }
-
-        [Required]
+        public string? AssessmentResultLabel { get; set; }  
+        
         public string TitleOfCertificate { get; set; }
 
         public Certificate Certificate { get; set; }

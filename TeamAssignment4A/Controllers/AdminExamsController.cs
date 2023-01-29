@@ -6,6 +6,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using RandomDataGenerator.FieldOptions;
+using RandomDataGenerator.Randomizers;
 using TeamAssignment4A.Data;
 using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models;
@@ -52,7 +54,7 @@ namespace TeamAssignment4A.Controllers
         [ProducesResponseType(typeof(ExamDto), 200)]
         public IActionResult Create()
         {
-            ViewBag.Candidates = new SelectList(_db.Candidates, "Id", "Id");
+            ViewBag.AssessmentCode = RandomizerFactory.GetRandomizer(new FieldOptionsIBAN()).Generate();
             ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
             return View();
         }        
@@ -62,15 +64,14 @@ namespace TeamAssignment4A.Controllers
         [ProducesResponseType(typeof(ExamDto), 200)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int id, [Bind("Id,AssessmentTestCode,ExaminationDate,ScoreReportDate," +
-            "CandidateScore,PercentageScore,AssessmentResultLabel,CandidateId,Candidate,TitleOfCertificate,Certificate")] ExamDto examDto)
+            "CandidateScore,PercentageScore,AssessmentResultLabel,TitleOfCertificate,Certificate")] ExamDto examDto)
         {
             MyDTO myDTO = await _service.AddOrUpdate(id, examDto);
             ViewBag.Message = myDTO.Message;
             if (myDTO.View == "Index")
             {
                 return View($"{myDTO.View}", myDTO.ExamDtos);
-            }
-            ViewBag.Candidates = new SelectList(_db.Candidates, "Id", "Id");
+            }            
             ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
             return View($"{myDTO.View}", myDTO.ExamDto);
         }        
@@ -82,7 +83,6 @@ namespace TeamAssignment4A.Controllers
         {
             MyDTO myDTO = await _service.GetForUpdate(id);
             ViewBag.Message = myDTO.Message;
-            ViewBag.Candidates = new SelectList(_db.Candidates, "Id", "Id");
             ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
             if (myDTO.View == "Index")
             {
@@ -96,7 +96,7 @@ namespace TeamAssignment4A.Controllers
         [ValidateAntiForgeryToken]
         [ProducesResponseType(typeof(ExamDto), 200)]
         public async Task<IActionResult> Edit(int id, [Bind("Id,AssessmentTestCode,ExaminationDate,ScoreReportDate," +
-            "CandidateScore,PercentageScore,AssessmentResultLabel,CandidateId,Candidate,TitleOfCertificate,Certificate")] ExamDto examDto)
+            "CandidateScore,PercentageScore,AssessmentResultLabel,TitleOfCertificate,Certificate")] ExamDto examDto)
         {
             MyDTO myDTO = await _service.AddOrUpdate(id, examDto);
             ViewBag.Message = myDTO.Message;
@@ -104,7 +104,6 @@ namespace TeamAssignment4A.Controllers
             {
                 return View($"{myDTO.View}", myDTO.ExamDtos);
             }
-            ViewBag.Candidates = new SelectList(_db.Candidates, "Id", "Id");
             ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
             return View($"{myDTO.View}", myDTO.ExamDto);
         }        

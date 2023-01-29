@@ -13,6 +13,7 @@ namespace TeamAssignment4A.Models
     public class Exam 
     {
         public int Id { get; set; }
+
         [Required]
         [Display(Name = "Assessment Test Code")]
         public string AssessmentTestCode { get; set; }
@@ -37,18 +38,6 @@ namespace TeamAssignment4A.Models
    
         [Display(Name = "Assessment Result Label")]
         public string? AssessmentResultLabel { get; set; }
-
-        //public Exam() {
-
-        //}
-
-        //public Exam(string assessmentTestCode, Certificate certificate, Candidate candidate) {
-        //    AssessmentTestCode = assessmentTestCode;
-        //    Candidate = candidate;
-        //    Certificate = certificate;
-        //}
-
-
 
 
         // Navigation Properties
