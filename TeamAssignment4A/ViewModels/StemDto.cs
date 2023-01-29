@@ -5,8 +5,7 @@ using TeamAssignment4A.Models;
 namespace TeamAssignment4A.Dtos
 {
     public class StemDto
-    {
-        [Required]
+    {        
         public int Id { get; set; }
 
         [Required]
@@ -27,6 +26,7 @@ namespace TeamAssignment4A.Dtos
         [Required]
         public char CorrectAnswer { get; set; }
 
+        [Required]
         public string TopicDescription { get; set; }
         public Topic Topic { get; set; }
     }

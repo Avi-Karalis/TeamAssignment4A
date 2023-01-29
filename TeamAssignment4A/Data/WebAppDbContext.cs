@@ -29,6 +29,7 @@ namespace TeamAssignment4A.Data
             base.OnModelCreating(modelBuilder);            
             modelBuilder.Entity<Certificate>().HasIndex(c => c.TitleOfCertificate).IsUnique();
             modelBuilder.Entity<Topic>().HasIndex(c => c.Description).IsUnique();
+            modelBuilder.Entity<Exam>().HasIndex(c => c.AssessmentTestCode).IsUnique();
         }
     }
 }

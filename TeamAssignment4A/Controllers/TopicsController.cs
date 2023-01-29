@@ -18,7 +18,6 @@ namespace TeamAssignment4A.Controllers
     {
         private readonly WebAppDbContext _db;
         private readonly TopicService _service;        
-        private readonly IMapper _mapper;
 
         public TopicsController(WebAppDbContext context, TopicService service)
         {
@@ -62,7 +61,7 @@ namespace TeamAssignment4A.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(TopicDto), 200)]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult<TopicDto>> Create(int id, [Bind("Id,Description,NumberOfPossibleMarks,TitleOfCertificate,Certificate")] TopicDto topicDto)
+        public async Task<IActionResult> Create(int id, [Bind("Id,Description,NumberOfPossibleMarks,TitleOfCertificate,Certificate")] TopicDto topicDto)
         {
             MyDTO myDTO = await _service.AddOrUpdate(id, topicDto);
             ViewBag.Message = myDTO.Message;

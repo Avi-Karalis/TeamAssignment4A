@@ -48,7 +48,7 @@ namespace TeamAssignment4A.Models
         [Display(Name = "E-mail address")]
         public string Email { get; set; }
 
-        [Required]
+        
         [Display(Name = "Landline Phone Number")]
         public string LandlineNumber { get; set; }
 
@@ -63,11 +63,11 @@ namespace TeamAssignment4A.Models
         [Display(Name = "Address Line 2")]
         public string? Address2 { get; set; }
 
-        [Required]
+        
         [Display(Name = "Postal Code")]
         public string PostalCode { get; set; }
 
-        [Required]
+        
         [Display(Name = "Town")]
         public string Town { get; set; }
 
