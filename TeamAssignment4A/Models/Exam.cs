@@ -17,9 +17,9 @@ namespace TeamAssignment4A.Models
         [Display(Name = "Assessment Test Code")]
         public string AssessmentTestCode { get; set; }
 
-        [Required]
+        
         [Display(Name = "Examination Date")]        
-        public DateTime ExaminationDate { get; set; }
+        public DateTime? ExaminationDate { get; set; }
 
 
         [Display(Name = "Score Report Date")]
@@ -54,7 +54,7 @@ namespace TeamAssignment4A.Models
         // Navigation Properties
 
         public virtual Certificate Certificate { get; set; }
-        public virtual Candidate Candidate { get; set; }        
+        public virtual ICollection<CandidateExam>? CandidateExams { get; set; }        
         public virtual ICollection<ExamStem>? ExamStems { get; set; }
     }
    
