@@ -12,7 +12,7 @@ using TeamAssignment4A.Data;
 namespace TeamAssignment4A.Migrations
 {
     [DbContext(typeof(WebAppDbContext))]
-    [Migration("20230127205728_InitialCreate")]
+    [Migration("20230129202903_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -281,10 +281,7 @@ namespace TeamAssignment4A.Migrations
 
                     b.Property<string>("AssessmentTestCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CandidateId")
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("CandidateScore")
                         .HasColumnType("int");
@@ -293,7 +290,7 @@ namespace TeamAssignment4A.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ExaminationDate")
-                        .HasColumnType("Date");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("PercentageScore")
                         .HasColumnType("nvarchar(max)");
@@ -303,7 +300,8 @@ namespace TeamAssignment4A.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CandidateId");
+                    b.HasIndex("AssessmentTestCode")
+                        .IsUnique();
 
                     b.HasIndex("CertificateId");
 
@@ -557,19 +555,11 @@ namespace TeamAssignment4A.Migrations
 
             modelBuilder.Entity("TeamAssignment4A.Models.Exam", b =>
                 {
-                    b.HasOne("TeamAssignment4A.Models.Candidate", "Candidate")
-                        .WithMany()
-                        .HasForeignKey("CandidateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("TeamAssignment4A.Models.Certificate", "Certificate")
                         .WithMany("Exams")
                         .HasForeignKey("CertificateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Candidate");
 
                     b.Navigation("Certificate");
                 });
@@ -594,7 +584,7 @@ namespace TeamAssignment4A.Migrations
                         .IsRequired();
 
                     b.HasOne("TeamAssignment4A.Models.Exam", "Exam")
-                        .WithMany()
+                        .WithMany("CandidateExams")
                         .HasForeignKey("ExamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -659,6 +649,8 @@ namespace TeamAssignment4A.Migrations
 
             modelBuilder.Entity("TeamAssignment4A.Models.Exam", b =>
                 {
+                    b.Navigation("CandidateExams");
+
                     b.Navigation("ExamStems");
                 });
 
