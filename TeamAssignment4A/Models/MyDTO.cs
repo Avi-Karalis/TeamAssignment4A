@@ -17,6 +17,8 @@ namespace TeamAssignment4A.Models
         public IEnumerable<TopicDto>? TopicDtos { get; set; }
         public ExamDto? ExamDto { get; set; }
         public IEnumerable<ExamDto>? ExamDtos { get; set; }
+        public ExamStemDto? ExamStemDto { get; set; }
+        public IEnumerable<ExamStemDto>? ExamStemDtos { get; set; }
 
     }
 }

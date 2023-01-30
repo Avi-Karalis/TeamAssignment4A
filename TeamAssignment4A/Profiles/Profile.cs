@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models;
+using TeamAssignment4A.Models.JointTables;
 
 namespace TeamAssignment4A.Profiles
 {
@@ -44,6 +45,17 @@ namespace TeamAssignment4A.Profiles
                 .ForMember(dest => dest.AssessmentResultLabel, opt => opt.MapFrom(src => src.AssessmentResultLabel))                
                 .ForMember(dest => dest.TitleOfCertificate, opt => opt.MapFrom(src => src.Certificate.TitleOfCertificate))
                 .ForMember(dest => dest.Certificate, opt => opt.MapFrom(src => src.Certificate))
+                .ReverseMap();
+
+            CreateMap<ExamStem, ExamStemDto>();
+
+            CreateMap<ExamStem, ExamStemDto>()
+                .ForMember(dest => dest.SubmittedAnswer, opt => opt.MapFrom(src => src.SubmittedAnswer))
+                .ForMember(dest => dest.Score, opt => opt.MapFrom(src => src.Score))
+                .ForMember(dest => dest.ExamId, opt => opt.MapFrom(src => src.Exam.Id))
+                .ForMember(dest => dest.Exam, opt => opt.MapFrom(src => src.Exam))
+                .ForMember(dest => dest.StemId, opt => opt.MapFrom(src => src.Stem.Id))
+                .ForMember(dest => dest.Stem, opt => opt.MapFrom(src => src.Stem))
                 .ReverseMap();
         }
     }

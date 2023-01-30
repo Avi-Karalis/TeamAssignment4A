@@ -1,8 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace TeamAssignment4A.Models.JointTables {
-    public class ExamStem {
+﻿namespace TeamAssignment4A.Models.JointTables 
+{
+    public class ExamStem 
+    {
         public int Id { get; set; } 
         public char SubmittedAnswer { get; set; }
         public int Score { get; set; }

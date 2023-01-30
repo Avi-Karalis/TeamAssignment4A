@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace TeamAssignment4A.Models.JointTables {
     public class CandidateExam 
     {
-        public int CandidateExamId { get; set; }     
+        public int Id { get; set; }     
 
 
         // Navigation Properties
