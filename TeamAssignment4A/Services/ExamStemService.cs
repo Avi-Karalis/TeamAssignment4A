@@ -62,10 +62,13 @@ namespace TeamAssignment4A.Services
             return _myDTO;
         }
 
-        public async Task<MyDTO> AddOrUpdate(int id, ExamStemDto examStemDto)
-        {
-            //Certificate certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examStemDto.TitleOfCertificate);
-            //examStemDto.Certificate = certificate;
+        public async Task<MyDTO> AddOrUpdate(int id, [Bind("Id,SubmittedAnswer,Score" +
+                                ",ExamId,Exam,StemId,Stem")]ExamStemDto examStemDto)
+        {            
+            Exam exam = await _unit.Exam.GetAsync(examStemDto.Id);
+            examStemDto.Exam = exam;
+            Stem stem = await _unit.Stem.GetAsync(examStemDto.Id);
+            examStemDto.Stem = stem;
             ExamStem examStem = _mapper.Map<ExamStem>(examStemDto);
 
             EntityState state = _unit.ExamStem.AddOrUpdate(examStem);
@@ -93,21 +96,7 @@ namespace TeamAssignment4A.Services
                 if (state == EntityState.Modified && !await _unit.ExamStem.Exists(examStem.Id))
                 {
                     _myDTO.Message = "The requested exam stem could not be found. Please try again later.";
-                }
-                //if (await _unit.ExamStem.DescriptionExists(examStem.Id, examStem.Description))
-                //{
-                //    if (state == EntityState.Added)
-                //    {
-                //        _myDTO.View = "Create";
-                //    }
-                //    if (state == EntityState.Modified)
-                //    {
-                //        _myDTO.View = "Edit";
-                //    }
-                //    _myDTO.Message = "This exam stem already exists. Please try again later.";
-                //    _myDTO.ExamStemDto = examStemDto;                    
-                //    return _myDTO;
-                //}
+                }                
                 await _unit.SaveAsync();
                 _myDTO.View = "Index";
                 IEnumerable<ExamStem> examStems = await _unit.ExamStem.GetAllAsync();
@@ -168,6 +157,12 @@ namespace TeamAssignment4A.Services
             IEnumerable<ExamStem> examStems = await _unit.ExamStem.GetAllAsync();
             _myDTO.ExamStemDtos = _mapper.Map<List<ExamStemDto>>(examStems);
             return _myDTO;
+        }
+
+        public async Task<IEnumerable<Stem>?> GetExamStems(int id)
+        {
+            Exam exam = await _unit.Exam.GetAsync(id);
+            return await _unit.Stem.GetByCert(exam.Certificate);
         }
     }
 }

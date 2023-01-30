@@ -13,12 +13,14 @@ namespace TeamAssignment4A.Data.Repositories
         }
         public async Task<CandidateExam?> GetAsync(int id)
         {
-            return await _db.CandidateExams.FirstOrDefaultAsync(x => x.Id == id);
+            return await _db.CandidateExams.Include(ce => ce.Exam)
+                .Include(ce => ce.Candidate).FirstOrDefaultAsync(x => x.Id == id);
         }        
 
         public async Task<IEnumerable<CandidateExam>?> GetAllAsync()
         {
-            return await _db.CandidateExams.ToListAsync<CandidateExam>();
+            return await _db.CandidateExams.Include(ce => ce.Exam)
+                .Include(ce => ce.Candidate).ToListAsync<CandidateExam>();
         }
 
         public EntityState AddOrUpdate(CandidateExam candidateExam)
