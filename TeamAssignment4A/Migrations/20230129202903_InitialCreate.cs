@@ -127,24 +127,17 @@ namespace TeamAssignment4A.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AssessmentTestCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ExaminationDate = table.Column<DateTime>(type: "Date", nullable: true),
+                    AssessmentTestCode = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ExaminationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ScoreReportDate = table.Column<DateTime>(type: "Date", nullable: true),
                     CandidateScore = table.Column<int>(type: "int", nullable: true),
                     PercentageScore = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AssessmentResultLabel = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CertificateId = table.Column<int>(type: "int", nullable: false),
-                    CandidateId = table.Column<int>(type: "int", nullable: false)
+                    CertificateId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Exams", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Exams_Candidates_CandidateId",
-                        column: x => x.CandidateId,
-                        principalTable: "Candidates",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Exams_Certificates_CertificateId",
                         column: x => x.CertificateId,
@@ -399,9 +392,10 @@ namespace TeamAssignment4A.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Exams_CandidateId",
+                name: "IX_Exams_AssessmentTestCode",
                 table: "Exams",
-                column: "CandidateId");
+                column: "AssessmentTestCode",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Exams_CertificateId",

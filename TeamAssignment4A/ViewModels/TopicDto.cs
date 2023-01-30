@@ -15,6 +15,7 @@ namespace TeamAssignment4A.Dtos
         [Required]
         public int NumberOfPossibleMarks { get; set; }
 
+        [Required]
         public string TitleOfCertificate { get; set; }
 
         public Certificate Certificate { get; set; }

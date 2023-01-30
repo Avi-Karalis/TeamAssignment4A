@@ -1,4 +1,4 @@
-﻿@model TeamAssignment4A.Models.Exam
+﻿@model TeamAssignment4A.Dtos.ExamDto
 
 @{
     ViewData["Title"] = "Details";
@@ -14,7 +14,7 @@
         <dd class = "col-sm-6">
             @Html.DisplayFor(model => model.AssessmentTestCode)
         </dd>
-        <dt class="col-sm-6 rightalign">
+        @*<dt class="col-sm-6 rightalign">
             @Html.DisplayNameFor(model => model.ExaminationDate)
         </dt>
         <dd class = "col-sm-6">
@@ -43,7 +43,13 @@
         </dt>
         <dd class = "col-sm-6">
             @Html.DisplayFor(model => model.AssessmentResultLabel)
-        </dd>
+        </dd>*@
+        <dt class="col-sm-6 rightalign">
+            @Html.DisplayNameFor(model => model.TitleOfCertificate)
+        </dt>
+        <dd class = "col-sm-6">
+            @Html.DisplayFor(model => model.TitleOfCertificate)
+        </dd>        
     </dl>
 </div>
 <div class="center-adjust">
