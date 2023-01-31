@@ -7,6 +7,6 @@ namespace TeamAssignment4A.Services
     public interface IExamService : IGenericService<ExamDto>
     {
         new Task<IEnumerable<ExamDto>?> GetAll();
-        new Task<MyDTO> AddOrUpdate(int id, ExamDto examDto);
+        new Task<MyDTO> AddOrUpdate(int id, ExamDto examDto);        
     }
 }

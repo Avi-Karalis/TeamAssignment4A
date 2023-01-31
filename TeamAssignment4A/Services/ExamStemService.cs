@@ -43,6 +43,14 @@ namespace TeamAssignment4A.Services
             return _myDTO.ExamStemDtos;
         }
 
+        public async Task<IEnumerable<ExamStemDto>?> GetExamStems(int id)
+        {
+            Exam exam = await _unit.Exam.GetAsync(id);
+            IEnumerable<Stem> specificStems = await _unit.Stem.GetByCert(exam.Certificate);
+            _myDTO.ExamStemDtos = _mapper.Map<List<ExamStemDto>>(specificStems);
+            return _myDTO.ExamStemDtos;
+        }
+
         public async Task<MyDTO> GetForUpdate(int id)
         {
             _myDTO.View = "Edit";
@@ -157,12 +165,6 @@ namespace TeamAssignment4A.Services
             IEnumerable<ExamStem> examStems = await _unit.ExamStem.GetAllAsync();
             _myDTO.ExamStemDtos = _mapper.Map<List<ExamStemDto>>(examStems);
             return _myDTO;
-        }
-
-        public async Task<IEnumerable<Stem>?> GetExamStems(int id)
-        {
-            Exam exam = await _unit.Exam.GetAsync(id);
-            return await _unit.Stem.GetByCert(exam.Certificate);
-        }
+        }        
     }
 }

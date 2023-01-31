@@ -37,7 +37,7 @@ namespace TeamAssignment4A.Controllers
                 ExamQuestion examQuestion = new ExamQuestion(stem, id);
                 examQuestions.Add(examQuestion);
             }
-            List<string> selections = new List<string>{ "A", "B", "C", "D"};
+            List<string> selections = new List<string>{ "A", "B", "C", "D" };
             ExamSubmissionDTO examSubmissionDTO = new ExamSubmissionDTO();
             examSubmissionDTO.ExamQuestions = examQuestions;
             ViewBag.Selections = new SelectList(selections);

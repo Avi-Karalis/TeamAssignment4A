@@ -42,7 +42,7 @@ namespace TeamAssignment4A.Services
             var exams = await _unit.Exam.GetAllAsync();
             _myDTO.ExamDtos = _mapper.Map<List<ExamDto>>(exams);
             return _myDTO.ExamDtos;
-        }
+        }        
 
         public async Task<MyDTO> GetForUpdate(int id)
         {
