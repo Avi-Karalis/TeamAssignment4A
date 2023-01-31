@@ -9,24 +9,27 @@ using Newtonsoft.Json;
 namespace TeamAssignment4A.Controllers {
 
     public class ImageController : Controller {
-        private readonly IHostingEnvironment _hostingEnvironment;
-        public ImageController(IHostingEnvironment hostingEnvironment) {
-            _hostingEnvironment = hostingEnvironment;
-        }
+        //private readonly IHostingEnvironment _hostingEnvironment;
+        //public ImageController(IHostingEnvironment hostingEnvironment) {
+        //    _hostingEnvironment = hostingEnvironment;
+        //}
 
         [HttpPost]
         public async Task<IActionResult> UploadImage(IFormFile upload) {
             if (upload == null || upload.Length == 0) {
                 return BadRequest("File not provided");
             }
-            var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "img", upload.FileName);  // new Guid
+            string guidFileName = Guid.NewGuid() + Path.GetExtension(upload.FileName);
+            string currentDir = Environment.CurrentDirectory;
+            var filePath = Path.Combine(currentDir, "Images", guidFileName);
+            //var filePath = Path.Combine(currentDir, "Images", upload.FileName);  // new Guid
             using (var stream = new FileStream(filePath, FileMode.Create)) {
                 await upload.CopyToAsync(stream);
             }
             var data = new {
                 uploaded = 1,
-                fileName = upload.FileName,
-                url = $"/img/{upload.FileName}"
+                fileName = guidFileName,
+                url = $"/Images/{guidFileName}"
             };
             var json = JsonConvert.SerializeObject(data);
             return Content(json, "application/json");

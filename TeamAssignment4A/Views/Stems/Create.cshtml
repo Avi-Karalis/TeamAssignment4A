@@ -50,19 +50,27 @@
                 <a asp-action="Index" class="custom-font btn btn-primary">Back to List</a>
             </div>
             </p>
+
             <script>
+
 
                 var allEditors = document.querySelectorAll('.ckeditor');
                 for (var i = 0; i < allEditors.length; ++i) {
                     ClassicEditor
                         .create(allEditors[i], {
+                            //plugins: [Image, ImageResizeEditing, ImageResizeHandles],
+                            
                             ckfinder: {
                                 uploadUrl: '/Image/UploadImage/'
                             },
+                              
+
                             width: 600,
                             height: 900,
                             autoGrow_onStartup: true,
                             autoGrow_minHeight: 200,
+
+
                         }).catch(error => {
                             console.error(error);
                         });
