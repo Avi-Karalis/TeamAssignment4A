@@ -23,6 +23,16 @@ namespace TeamAssignment4A.Data.Repositories
                 .Include(exs => exs.Stem).ToListAsync<ExamStem>();
         }
 
+        public async Task<IEnumerable<ExamStem>?> GetStemsByExam(Exam exam)
+        {
+            return await _db.ExamStems.Include(exs => exs.Exam).Include(exs => exs.Stem)
+                .Where(exs => exs.Exam == exam).ToListAsync();
+        }
+        public async Task<IEnumerable<int>?> GetStemIdsByExam(Exam exam)
+        {
+            return await _db.ExamStems.Where(exs => exs.Exam == exam).Select(exs => exs.Id).ToListAsync();
+        }
+
         public EntityState AddOrUpdate(ExamStem examStem)
         {
             _db.ExamStems.Update(examStem);

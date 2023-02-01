@@ -34,11 +34,11 @@ namespace TeamAssignment4A.Controllers
 
         [HttpGet, ActionName("sitforexam")]
         [ProducesResponseType(typeof(ExamStem), 200)]
-        public async Task<IActionResult> SitForExam(int id)
+        public async Task<IActionResult> SitForExam(Exam exam)
         {
             List<string> selections = new List<string> { "A", "B", "C", "D" };
             ViewBag.Selections = new SelectList(selections);
-            IEnumerable<ExamStem> examStems = await _examStemService.GetByExamId(1);            
+            IEnumerable<ExamStem> examStems = await _examStemService.GetByExam(exam);            
             return View(examStems);
         }
 

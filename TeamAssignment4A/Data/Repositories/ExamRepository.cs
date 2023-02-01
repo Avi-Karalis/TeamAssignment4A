@@ -34,11 +34,6 @@ namespace TeamAssignment4A.Data.Repositories
         public async Task<bool> Exists(int id)
         {
             return await _db.Exams.AnyAsync(e => e.Id == id);
-        }
-
-        public async Task<bool> CodeExists(int id, string code)
-        {
-            return await _db.Exams.AnyAsync(e => e.AssessmentTestCode == code && e.Id != id);
-        }
+        }        
     }
 }

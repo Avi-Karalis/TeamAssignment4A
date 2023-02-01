@@ -42,7 +42,13 @@ namespace TeamAssignment4A.Services
             var exams = await _unit.Exam.GetAllAsync();
             _myDTO.ExamDtos = _mapper.Map<List<ExamDto>>(exams);
             return _myDTO.ExamDtos;
-        }        
+        } 
+        
+        public async Task<IEnumerable<int>?> GetExamStemIds(ExamDto examDto)
+        {
+            Exam exam = _mapper.Map<Exam>(examDto);
+            return await _unit.ExamStem.GetStemIdsByExam(exam);
+        }
 
         public async Task<MyDTO> GetForUpdate(int id)
         {
@@ -63,12 +69,14 @@ namespace TeamAssignment4A.Services
             return _myDTO;
         }
 
-        public async Task<MyDTO> AddOrUpdate(int id, [Bind("Id,AssessmentTestCode,ExaminationDate,ScoreReportDate," +
-            "CandidateScore,PercentageScore,AssessmentResultLabel,TitleOfCertificate,Certificate")] ExamDto examDto)
+        public async Task<MyDTO> AddOrUpdate(int id, 
+            [Bind("Id,TitleOfCertificate,Certificate,ExamStemIds,ExamStems")] ExamDto examDto)
         {            
-            Certificate certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);            
-            examDto.Certificate = certificate;            
+            //Certificate certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);            
+            examDto.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
+            
             Exam exam = _mapper.Map<Exam>(examDto);
+            exam.ExamStems = await _unit.ExamStem.GetByExam(exam);
 
             EntityState state = _unit.Exam.AddOrUpdate(exam);
             if (id != exam.Id)
@@ -96,20 +104,20 @@ namespace TeamAssignment4A.Services
                 {
                     _myDTO.Message = "The requested exam could not be found. Please try again later.";
                 }
-                if (await _unit.Exam.CodeExists(exam.Id, exam.AssessmentTestCode))
-                {
-                    if (state == EntityState.Added)
-                    {
-                        _myDTO.View = "Create";
-                    }
-                    if (state == EntityState.Modified)
-                    {
-                        _myDTO.View = "Edit";
-                    }
-                    _myDTO.Message = "This exam assessment test code already exists. Please try providing a different code.";
-                    _myDTO.ExamDto = examDto;
-                    return _myDTO;
-                }
+                //if (await _unit.Exam.CodeExists(exam.Id, exam.AssessmentTestCode))
+                //{
+                //    if (state == EntityState.Added)
+                //    {
+                //        _myDTO.View = "Create";
+                //    }
+                //    if (state == EntityState.Modified)
+                //    {
+                //        _myDTO.View = "Edit";
+                //    }
+                //    _myDTO.Message = "This exam assessment test code already exists. Please try providing a different code.";
+                //    _myDTO.ExamDto = examDto;
+                //    return _myDTO;
+                //}
                 await _unit.SaveAsync();
                 _myDTO.View = "Index";
                 IEnumerable<Exam> exams = await _unit.Exam.GetAllAsync();

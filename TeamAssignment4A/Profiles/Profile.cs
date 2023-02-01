@@ -37,14 +37,10 @@ namespace TeamAssignment4A.Profiles
             CreateMap<Exam, ExamDto>();
 
             CreateMap<Exam, ExamDto>()
-                .ForMember(dest => dest.AssessmentTestCode, opt => opt.MapFrom(src => src.AssessmentTestCode))
-                .ForMember(dest => dest.ExaminationDate, opt => opt.MapFrom(src => src.ExaminationDate))
-                .ForMember(dest => dest.ScoreReportDate, opt => opt.MapFrom(src => src.ScoreReportDate))
-                .ForMember(dest => dest.CandidateScore, opt => opt.MapFrom(src => src.CandidateScore))
-                .ForMember(dest => dest.PercentageScore, opt => opt.MapFrom(src => src.PercentageScore))
-                .ForMember(dest => dest.AssessmentResultLabel, opt => opt.MapFrom(src => src.AssessmentResultLabel))                
                 .ForMember(dest => dest.TitleOfCertificate, opt => opt.MapFrom(src => src.Certificate.TitleOfCertificate))
                 .ForMember(dest => dest.Certificate, opt => opt.MapFrom(src => src.Certificate))
+                .ForMember(dest => dest.ExamStemIds, opt => opt.MapFrom(src => src.ExamStems.Select(exs => exs.Id)))
+                .ForMember(dest => dest.ExamStems, opt => opt.MapFrom(src => src.ExamStems))
                 .ReverseMap();
 
             CreateMap<Stem, ExamStem>();

@@ -53,9 +53,9 @@ namespace TeamAssignment4A.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(ExamDto), 200)]
         public IActionResult Create()
-        {
-            ViewBag.AssessmentCode = RandomizerFactory.GetRandomizer(new FieldOptionsIBAN()).Generate();
-            ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
+        {            
+            ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");            
+            ViewBag.ExamStems = new SelectList(_db.ExamStems, "Id", "Id");
             return View();
         }        
 
@@ -63,8 +63,8 @@ namespace TeamAssignment4A.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ExamDto), 200)]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int id, [Bind("Id,AssessmentTestCode,ExaminationDate,ScoreReportDate," +
-            "CandidateScore,PercentageScore,AssessmentResultLabel,TitleOfCertificate,Certificate")] ExamDto examDto)
+        public async Task<IActionResult> Create(int id, 
+            [Bind("Id,TitleOfCertificate,Certificate,ExamStemIds,ExamStems")] ExamDto examDto)
         {
             MyDTO myDTO = await _service.AddOrUpdate(id, examDto);
             ViewBag.Message = myDTO.Message;
@@ -73,6 +73,8 @@ namespace TeamAssignment4A.Controllers
                 return View($"{myDTO.View}", myDTO.ExamDtos);
             }            
             ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
+            //IEnumerable<int> selections = await _service.GetExamStemIds(examDto);
+            ViewBag.ExamStems = new SelectList(_db.ExamStems, "Id", "Id");
             return View($"{myDTO.View}", myDTO.ExamDto);
         }        
 
@@ -95,8 +97,8 @@ namespace TeamAssignment4A.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ProducesResponseType(typeof(ExamDto), 200)]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,AssessmentTestCode,ExaminationDate,ScoreReportDate," +
-            "CandidateScore,PercentageScore,AssessmentResultLabel,TitleOfCertificate,Certificate")] ExamDto examDto)
+        public async Task<IActionResult> Edit(int id, 
+            [Bind("Id,TitleOfCertificate,Certificate,ExamStemIds,ExamStems")] ExamDto examDto)
         {
             MyDTO myDTO = await _service.AddOrUpdate(id, examDto);
             ViewBag.Message = myDTO.Message;

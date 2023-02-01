@@ -32,23 +32,19 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.View = "Details";
                 ExamStem examStem = await _unit.ExamStem.GetAsync(id);
-                _myDTO.ExamStem = _mapper.Map<ExamStem>(examStem);
+                _myDTO.ExamStem = examStem;
             }
             return _myDTO;
         }
         public async Task<IEnumerable<ExamStem>?> GetAll()
-        {
-            var examStems = await _unit.ExamStem.GetAllAsync();
-            _myDTO.ExamStems = _mapper.Map<List<ExamStem>>(examStems);
-            return _myDTO.ExamStems;
+        {            
+            return await _unit.ExamStem.GetAllAsync();
         }
 
-        public async Task<IEnumerable<ExamStem>?> GetByExamId(int id)
-        {
-            Exam exam = await _unit.Exam.GetAsync(id);
-            IEnumerable<Stem> specificStems = await _unit.Stem.GetByCert(exam.Certificate);
-            _myDTO.ExamStems = _mapper.Map<List<ExamStem>>(specificStems);
-            return _myDTO.ExamStems;
+        // Get all Exam Stems that have a specific ExamId
+        public async Task<IEnumerable<ExamStem>?> GetByExam(Exam exam)
+        {  
+            return await _unit.ExamStem.GetByExam(exam);
         }
 
         public async Task<MyDTO> GetForUpdate(int id)
@@ -71,7 +67,7 @@ namespace TeamAssignment4A.Services
         }
 
         public async Task<MyDTO> AddOrUpdate(int id,
-                    [Bind("Id,SubmittedAnswer,Score,Exam,Stem")] ExamStem examStem)
+                    [Bind("Id,Exam,Stem")] ExamStem examStem)
         {   
             EntityState state = _unit.ExamStem.AddOrUpdate(examStem);
             if (id != examStem.Id)

@@ -7,6 +7,6 @@ namespace TeamAssignment4A.Services
     {
         new Task<IEnumerable<ExamStem>?> GetAll();
         new Task<MyDTO> AddOrUpdate(int id, ExamStem examStem);
-        Task<IEnumerable<ExamStem>?> GetByExamId(int id);
+        Task<IEnumerable<ExamStem>?> GetByExam(Exam exam);
     }
 }
