@@ -1,8 +1,12 @@
-﻿namespace TeamAssignment4A.Models.JointTables 
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TeamAssignment4A.Models.JointTables 
 {
     public class ExamStem 
     {
-        public int Id { get; set; } 
+        public int Id { get; set; }
+
+        [Display(Name = "Answer")]
         public char SubmittedAnswer { get; set; }
         public int Score { get; set; }
 

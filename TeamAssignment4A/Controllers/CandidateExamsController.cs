@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TeamAssignment4A.Data;
 using TeamAssignment4A.Dtos;
+using TeamAssignment4A.Models;
+using TeamAssignment4A.Models.JointTables;
 using TeamAssignment4A.Services;
 
 namespace TeamAssignment4A.Controllers
@@ -24,27 +26,34 @@ namespace TeamAssignment4A.Controllers
         }
         
         [HttpGet]
-        [ProducesResponseType(typeof(CandidateExamDto), 200)]
+        [ProducesResponseType(typeof(CandidateExam), 200)]
         public async Task<IActionResult> Index()
         {
             return View(await _examService.GetAll());            
         }
 
         [HttpGet, ActionName("sitforexam")]
-        [ProducesResponseType(typeof(ExamStemDto), 200)]
+        [ProducesResponseType(typeof(ExamStem), 200)]
         public async Task<IActionResult> SitForExam(int id)
         {
             List<string> selections = new List<string> { "A", "B", "C", "D" };
             ViewBag.Selections = new SelectList(selections);
-            IEnumerable<ExamStemDto> examStems = await _examStemService.GetExamStems(id);            
+            IEnumerable<ExamStem> examStems = await _examStemService.GetByExamId(1);            
             return View(examStems);
         }
 
         [HttpPost, ActionName("submitexam")]
-        [ProducesResponseType(typeof(ExamStemDto), 200)]
-        public async Task<IActionResult> SubmitExam(ExamStemDto examStems)
+        [ProducesResponseType(typeof(ExamStem), 200)]
+        public async Task<IActionResult> SubmitExam(int examId,
+                        [Bind("Id,SubmittedAnswer,Score,Exam,Stem")] IEnumerable<ExamStem> examStems)
         {
-            
+            //MyDTO myDTO = await _examStemService.SubmitExamStems(examId, examStems);
+            //ViewBag.Message = myDTO.Message;
+            //if (myDTO.View == "Index")
+            //{
+            //    return View($"{myDTO.View}", myDTO.Candidates);
+            //}
+            return View();
         }
     }
 }

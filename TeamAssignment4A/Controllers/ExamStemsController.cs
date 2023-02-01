@@ -24,7 +24,6 @@ namespace TeamAssignment4A.Controllers
         // GET: ExamStems
         public async Task<IActionResult> Index()
         {
-
             return View(await _context.ExamStems.ToListAsync());
         }
 

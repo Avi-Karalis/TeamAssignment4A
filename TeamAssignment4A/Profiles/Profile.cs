@@ -47,15 +47,26 @@ namespace TeamAssignment4A.Profiles
                 .ForMember(dest => dest.Certificate, opt => opt.MapFrom(src => src.Certificate))
                 .ReverseMap();
 
-            CreateMap<ExamStem, ExamStemDto>();
+            CreateMap<Stem, ExamStem>();
 
-            CreateMap<ExamStem, ExamStemDto>()
-                .ForMember(dest => dest.SubmittedAnswer, opt => opt.MapFrom(src => src.SubmittedAnswer))
-                .ForMember(dest => dest.Score, opt => opt.MapFrom(src => src.Score))
-                .ForMember(dest => dest.ExamId, opt => opt.MapFrom(src => src.Exam.Id))
-                .ForMember(dest => dest.Exam, opt => opt.MapFrom(src => src.Exam))
-                .ForMember(dest => dest.StemId, opt => opt.MapFrom(src => src.Stem.Id))
-                .ForMember(dest => dest.Stem, opt => opt.MapFrom(src => src.Stem))
+            //CreateMap<Stem, ExamStem>()
+            //    .ForMember(dest => dest.Stem.Question, opt => opt.MapFrom(src => src.Question))
+            //    .ForMember(dest => dest.Stem.OptionA, opt => opt.MapFrom(src => src.OptionA))
+            //    .ForMember(dest => dest.Stem.OptionB, opt => opt.MapFrom(src => src.OptionB))
+            //    .ForMember(dest => dest.Stem.OptionC, opt => opt.MapFrom(src => src.OptionC))
+            //    .ForMember(dest => dest.Stem.OptionD, opt => opt.MapFrom(src => src.OptionD))
+            //    .ForMember(dest => dest.Stem.CorrectAnswer, opt => opt.MapFrom(src => src.CorrectAnswer))
+            //    .ForMember(dest => dest.Stem.Topic, opt => opt.MapFrom(src => src.Topic))
+            //    .ReverseMap();
+
+            CreateMap<Stem, ExamStem>()
+                .ForPath(dest => dest.Stem.Question, opt => opt.MapFrom(src => src.Question))
+                .ForPath(dest => dest.Stem.OptionA, opt => opt.MapFrom(src => src.OptionA))
+                .ForPath(dest => dest.Stem.OptionB, opt => opt.MapFrom(src => src.OptionB))
+                .ForPath(dest => dest.Stem.OptionC, opt => opt.MapFrom(src => src.OptionC))
+                .ForPath(dest => dest.Stem.OptionD, opt => opt.MapFrom(src => src.OptionD))
+                .ForPath(dest => dest.Stem.CorrectAnswer, opt => opt.MapFrom(src => src.CorrectAnswer))
+                .ForPath(dest => dest.Stem.Topic, opt => opt.MapFrom(src => src.Topic))
                 .ReverseMap();
         }
     }

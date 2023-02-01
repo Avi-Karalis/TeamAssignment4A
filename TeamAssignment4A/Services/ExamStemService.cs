@@ -32,23 +32,23 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.View = "Details";
                 ExamStem examStem = await _unit.ExamStem.GetAsync(id);
-                _myDTO.ExamStemDto = _mapper.Map<ExamStemDto>(examStem);
+                _myDTO.ExamStem = _mapper.Map<ExamStem>(examStem);
             }
             return _myDTO;
         }
-        public async Task<IEnumerable<ExamStemDto>?> GetAll()
+        public async Task<IEnumerable<ExamStem>?> GetAll()
         {
             var examStems = await _unit.ExamStem.GetAllAsync();
-            _myDTO.ExamStemDtos = _mapper.Map<List<ExamStemDto>>(examStems);
-            return _myDTO.ExamStemDtos;
+            _myDTO.ExamStems = _mapper.Map<List<ExamStem>>(examStems);
+            return _myDTO.ExamStems;
         }
 
-        public async Task<IEnumerable<ExamStemDto>?> GetExamStems(int id)
+        public async Task<IEnumerable<ExamStem>?> GetByExamId(int id)
         {
             Exam exam = await _unit.Exam.GetAsync(id);
             IEnumerable<Stem> specificStems = await _unit.Stem.GetByCert(exam.Certificate);
-            _myDTO.ExamStemDtos = _mapper.Map<List<ExamStemDto>>(specificStems);
-            return _myDTO.ExamStemDtos;
+            _myDTO.ExamStems = _mapper.Map<List<ExamStem>>(specificStems);
+            return _myDTO.ExamStems;
         }
 
         public async Task<MyDTO> GetForUpdate(int id)
@@ -61,8 +61,8 @@ namespace TeamAssignment4A.Services
                 return _myDTO;
             }
             ExamStem examStem = await _unit.ExamStem.GetAsync(id);
-            _myDTO.ExamStemDto = _mapper.Map<ExamStemDto>(examStem);
-            if (_myDTO.ExamStemDto == null)
+            _myDTO.ExamStem = _mapper.Map<ExamStem>(examStem);
+            if (_myDTO.ExamStem == null)
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested exam stem could not be found. Please try again later.";
@@ -70,15 +70,9 @@ namespace TeamAssignment4A.Services
             return _myDTO;
         }
 
-        public async Task<MyDTO> AddOrUpdate(int id, [Bind("Id,SubmittedAnswer,Score" +
-                                ",ExamId,Exam,StemId,Stem")]ExamStemDto examStemDto)
-        {            
-            Exam exam = await _unit.Exam.GetAsync(examStemDto.Id);
-            examStemDto.Exam = exam;
-            Stem stem = await _unit.Stem.GetAsync(examStemDto.Id);
-            examStemDto.Stem = stem;
-            ExamStem examStem = _mapper.Map<ExamStem>(examStemDto);
-
+        public async Task<MyDTO> AddOrUpdate(int id,
+                    [Bind("Id,SubmittedAnswer,Score,Exam,Stem")] ExamStem examStem)
+        {   
             EntityState state = _unit.ExamStem.AddOrUpdate(examStem);
             if (id != examStem.Id)
             {
@@ -91,7 +85,7 @@ namespace TeamAssignment4A.Services
                     _myDTO.View = "Edit";
                 }
                 _myDTO.Message = "The exam stem Id was compromised. The request could not be completed due to security reasons. Please try again later.";
-                _myDTO.ExamStemDto = examStemDto;
+                _myDTO.ExamStem = examStem;
                 return _myDTO;
             }
             if (ModelState.IsValid)
@@ -108,7 +102,7 @@ namespace TeamAssignment4A.Services
                 await _unit.SaveAsync();
                 _myDTO.View = "Index";
                 IEnumerable<ExamStem> examStems = await _unit.ExamStem.GetAllAsync();
-                _myDTO.ExamStemDtos = _mapper.Map<List<ExamStemDto>>(examStems);
+                _myDTO.ExamStems = _mapper.Map<List<ExamStem>>(examStems);
                 return _myDTO;
             }
             else
@@ -122,10 +116,41 @@ namespace TeamAssignment4A.Services
                     _myDTO.View = "Edit";
                 }
                 _myDTO.Message = "Invalid entries. Please try again later.";
-                _myDTO.ExamStemDto = examStemDto;
+                _myDTO.ExamStem = examStem;
             }
             return _myDTO;
         }
+
+        //public async Task<MyDTO> SubmitExamStems(int examId, IEnumerable<ExamStem> examStems)
+        //{
+        //    foreach(var examStem in examStems)
+        //    {
+        //        if (examId != examStem.Exam.Id)
+        //        {                    
+        //            _myDTO.Message = "The exam Id was compromised. " +
+        //                "The request could not be completed due to security reasons. " +
+        //                "Please try submitting your answers again later.";
+        //            _myDTO.ExamStems = examStems;
+        //            return _myDTO;
+        //        }
+        //        _unit.ExamStem.AddOrUpdate(examStem);
+
+        //    }            
+        //    if (examId != examStem.Id)
+        //    {
+        //        if (state == EntityState.Added)
+        //        {
+        //            _myDTO.View = "Create";
+        //        }
+        //        if (state == EntityState.Modified)
+        //        {
+        //            _myDTO.View = "Edit";
+        //        }
+        //        _myDTO.Message = "The exam stem Id was compromised. The request could not be completed due to security reasons. Please try again later.";
+        //        _myDTO.ExamStem = examStem;
+        //        return _myDTO;
+        //    }
+        //}
 
         public async Task<MyDTO> GetForDelete(int id)
         {
@@ -135,17 +160,17 @@ namespace TeamAssignment4A.Services
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested exam stem could not be found. Please try again later.";
                 IEnumerable<ExamStem> examStems = await _unit.ExamStem.GetAllAsync();
-                _myDTO.ExamStemDtos = _mapper.Map<List<ExamStemDto>>(examStems);
+                _myDTO.ExamStems = _mapper.Map<List<ExamStem>>(examStems);
                 return _myDTO;
             }
             ExamStem examStem = await _unit.ExamStem.GetAsync(id);
-            _myDTO.ExamStemDto = _mapper.Map<ExamStemDto>(examStem);
-            if (_myDTO.ExamStemDto == null)
+            _myDTO.ExamStem = _mapper.Map<ExamStem>(examStem);
+            if (_myDTO.ExamStem == null)
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested exam stem could not be found. Please try again later.";
                 IEnumerable<ExamStem> examStems = await _unit.ExamStem.GetAllAsync();
-                _myDTO.ExamStemDtos = _mapper.Map<List<ExamStemDto>>(examStems);
+                _myDTO.ExamStems = _mapper.Map<List<ExamStem>>(examStems);
             }
             return _myDTO;
         }
@@ -163,7 +188,7 @@ namespace TeamAssignment4A.Services
             _unit.ExamStem.Delete(examStem);
             await _unit.SaveAsync();
             IEnumerable<ExamStem> examStems = await _unit.ExamStem.GetAllAsync();
-            _myDTO.ExamStemDtos = _mapper.Map<List<ExamStemDto>>(examStems);
+            _myDTO.ExamStems = _mapper.Map<List<ExamStem>>(examStems);
             return _myDTO;
         }        
     }

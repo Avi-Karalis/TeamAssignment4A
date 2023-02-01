@@ -45,7 +45,7 @@ namespace TeamAssignment4A.Models
         public DateTime Birthdate { get; set; }
 
         [Required]
-        [Display(Name = "E-mail address")]
+        [Display(Name = "E-mail Address")]
         public string Email { get; set; }
 
         
