@@ -59,21 +59,21 @@ namespace TeamAssignment4A.Controllers
         // POST: Exams/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CertificateId, CandidateId")] ExamCreateDTO examDTO)
-        {
-            if (ModelState.IsValid) {
-                Certificate certificate = _context.Certificates.Find(examDTO.CertificateId);
-                Candidate candidate = _context.Candidates.Find(examDTO.CandidateId);
-                string assessmentTestCode = RandomizerFactory.GetRandomizer(new FieldOptionsIBAN()).Generate();
-                Exam exam = new Exam(assessmentTestCode, certificate, candidate);
-                _context.Add(exam);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("TakeExam", "ExamStems", new { id = exam.Id });
-            }
-            return View(examDTO);
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("CertificateId, CandidateId")] ExamCreateDTO examDTO)
+        //{
+        //    if (ModelState.IsValid) {
+        //        Certificate certificate = _context.Certificates.Find(examDTO.CertificateId);
+        //        Candidate candidate = _context.Candidates.Find(examDTO.CandidateId);
+        //        string assessmentTestCode = RandomizerFactory.GetRandomizer(new FieldOptionsIBAN()).Generate();
+        //        Exam exam = new Exam(assessmentTestCode, certificate, candidate);
+        //        _context.Add(exam);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction("TakeExam", "ExamStems", new { id = exam.Id });
+        //    }
+        //    return View(examDTO);
+        //}
 
         // GET: Exams/Edit/5
         public async Task<IActionResult> Edit(int? id)

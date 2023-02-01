@@ -40,7 +40,7 @@ namespace TeamAssignment4A.Controllers {
             return View(candidateExam);
         }
 
-        // GET: EShop/Create
+        // GET: EShop/BuyExam
         public IActionResult BuyExam() {
             ViewBag.Certificates = new SelectList(_context.Certificates, "Id", "TitleOfCertificate");
             ViewBag.Candidates = new SelectList(_context.Candidates, "Id", "LastName");
@@ -52,17 +52,19 @@ namespace TeamAssignment4A.Controllers {
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> BuyExam([Bind("CertificateId, CandidateId")] ExamCreateDTO examDTO) {
+        public async Task<IActionResult> BuyExam([Bind("CertificateId, ΕxaminationDate, CandidateId")] BuyCertificateDTO buyCertificateDTO) {
             if (ModelState.IsValid) {
-                Certificate certificate = _context.Certificates.Find(examDTO.CertificateId);
-                Candidate candidate = _context.Candidates.Find(examDTO.CandidateId);
+                
+                Certificate certificate = _context.Certificates.Find(buyCertificateDTO.CertificateId);
+                Candidate candidate = _context.Candidates.Find(buyCertificateDTO.CandidateId);
                 string assessmentTestCode = RandomizerFactory.GetRandomizer(new FieldOptionsIBAN()).Generate();
-                Exam exam = new Exam(assessmentTestCode, certificate, candidate);
+                DateTime examinationDate = buyCertificateDTO.ExaminationDate;
+                Exam exam = new Exam(assessmentTestCode, examinationDate, certificate, candidate);
                 _context.Add(exam);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Eshop", new { id = exam.Id });
             }
-            return View(examDTO);
+            return View(buyCertificateDTO);
         }
 
 
