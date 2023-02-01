@@ -28,12 +28,15 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested exam could not be found. Please try again later.";
+                var exams = await _unit.Exam.GetAllAsync();
+                _myDTO.ExamDtos = _mapper.Map<List<ExamDto>>(exams);
             }
             else
             {
                 _myDTO.View = "Details";
                 Exam exam = await _unit.Exam.GetAsync(id);
                 _myDTO.ExamDto = _mapper.Map<ExamDto>(exam);
+                _myDTO.ExamDto.ExamStemIds = await _unit.ExamStem.GetStemIdsByExam(exam);
             }
             return _myDTO;
         }
@@ -76,7 +79,7 @@ namespace TeamAssignment4A.Services
             examDto.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
             
             Exam exam = _mapper.Map<Exam>(examDto);
-            exam.ExamStems = await _unit.ExamStem.GetByExam(exam);
+            exam.ExamStems = await _unit.ExamStem.GetStemsByExam(exam);
 
             EntityState state = _unit.Exam.AddOrUpdate(exam);
             if (id != exam.Id)

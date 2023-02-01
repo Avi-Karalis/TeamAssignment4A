@@ -12,6 +12,9 @@ namespace TeamAssignment4A.Models
 {
     public class Exam 
     {
+        [Key]
+        [Required]
+        [Display(Name = "Exam Id")]
         public int Id { get; set; }        
 
 

@@ -42,6 +42,8 @@ namespace TeamAssignment4A.Controllers
         {
             MyDTO myDTO = await _service.Get(id);
             ViewBag.Message = myDTO.Message;
+            //IEnumerable<int> selections = await _service.GetExamStemIds(examDto);
+            //ViewBag.ExamStems = new SelectList(_db.ExamStems, "Id", "Id");
             if (myDTO.View == "Index")
             {
                 return View($"{myDTO.View}", myDTO.ExamDtos);
@@ -86,6 +88,8 @@ namespace TeamAssignment4A.Controllers
             MyDTO myDTO = await _service.GetForUpdate(id);
             ViewBag.Message = myDTO.Message;
             ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
+            IEnumerable<int> selections = await _service.GetExamStemIds(myDTO.ExamDto);
+            ViewBag.ExamStems = new SelectList(selections);
             if (myDTO.View == "Index")
             {
                 return View($"{myDTO.View}", myDTO.ExamDtos);
@@ -107,6 +111,8 @@ namespace TeamAssignment4A.Controllers
                 return View($"{myDTO.View}", myDTO.ExamDtos);
             }
             ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
+            IEnumerable<int> selections = await _service.GetExamStemIds(myDTO.ExamDto);
+            ViewBag.ExamStems = new SelectList(selections);
             return View($"{myDTO.View}", myDTO.ExamDto);
         }        
 

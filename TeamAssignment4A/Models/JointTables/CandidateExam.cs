@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace TeamAssignment4A.Models.JointTables {
     public class CandidateExam 
     {
+        [Display(Name = "Candidate Exam Id")]
         public int Id { get; set; }
 
         [Required]

@@ -4,6 +4,7 @@ namespace TeamAssignment4A.Models.JointTables
 {
     public class ExamStem 
     {
+        [Display(Name = "Exam Stem Id")]
         public int Id { get; set; }
 
         

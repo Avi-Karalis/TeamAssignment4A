@@ -41,10 +41,10 @@ namespace TeamAssignment4A.Services
             return await _unit.ExamStem.GetAllAsync();
         }
 
-        // Get all Exam Stems that have a specific ExamId
+        // Get all Exam Stems that have a specific Exam
         public async Task<IEnumerable<ExamStem>?> GetByExam(Exam exam)
         {  
-            return await _unit.ExamStem.GetByExam(exam);
+            return await _unit.ExamStem.GetStemsByExam(exam);
         }
 
         public async Task<MyDTO> GetForUpdate(int id)

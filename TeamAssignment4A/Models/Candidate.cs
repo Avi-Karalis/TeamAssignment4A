@@ -8,7 +8,8 @@ using TeamAssignment4A.Models.JointTables;
 
 namespace TeamAssignment4A.Models
 {
-    public class Candidate {
+    public class Candidate 
+    {
         //Basic properties for each Candidate
 
         [Key]

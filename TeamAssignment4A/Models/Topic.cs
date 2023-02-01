@@ -6,7 +6,8 @@ using TeamAssignment4A.Models.JointTables;
 
 namespace TeamAssignment4A.Models
 {
-    public class Topic {
+    public class Topic 
+    {
         [Key]
         [Required]
         [Display(Name ="Topic Id")]

@@ -6,7 +6,8 @@ using TeamAssignment4A.Models.JointTables;
 
 namespace TeamAssignment4A.Models
 {
-    public class Stem {
+    public class Stem 
+    {
         [Key]
         [Required]
         [Display(Name = "Stem Id")]
