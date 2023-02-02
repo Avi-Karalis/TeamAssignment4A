@@ -104,6 +104,7 @@ namespace TeamAssignment4A.Controllers
             {
                 return View($"{myDTO.View}", myDTO.ExamDtos);
             }
+            ViewBag.StemIds = new SelectList(await _service.GetStemIds(examDto));
             return View($"{myDTO.View}", myDTO.ExamDto);            
         }
 
@@ -129,7 +130,7 @@ namespace TeamAssignment4A.Controllers
         [ValidateAntiForgeryToken]
         [ProducesResponseType(typeof(ExamDto), 200)]
         public async Task<IActionResult> Edit(int id, 
-            [Bind("Id,TitleOfCertificate,Certificate,ExamStemIds,ExamStems")] ExamDto examDto)
+            [Bind("Id,TitleOfCertificate,Certificate,StemIds,Stems,ExamStemIds,ExamStems")] ExamDto examDto)
         {
             MyDTO myDTO = await _service.AddOrUpdate(id, examDto);
             ViewBag.Message = myDTO.Message;

@@ -74,7 +74,7 @@
                 <select asp-for="TitleOfCertificate" class="form-control" asp-items="@ViewBag.Certificates"></select>
                 <span asp-validation-for="TitleOfCertificate" class="text-danger"></span>
             </div>
-            @foreach (var examStemId in Model.ExamStemIds)
+            @foreach (var examStemId in Model.ExamStems)
             {
                 <div class="form-group">
                     <label asp-for="ExamStemIds" class="control-label"></label>

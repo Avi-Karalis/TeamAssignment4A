@@ -6,12 +6,9 @@ using TeamAssignment4A.Models.JointTables;
 namespace TeamAssignment4A.Profiles
 {
     public class Profile: AutoMapper.Profile
-    {
-        private IMapper _mapper;
-        public Profile(IMapper mapper)
-        {
-            _mapper = mapper;
-
+    {        
+        public Profile()
+        {  
             CreateMap<Topic,TopicDto>();
 
             CreateMap<Topic, TopicDto>()

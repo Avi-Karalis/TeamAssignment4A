@@ -30,7 +30,14 @@ namespace TeamAssignment4A.Data.Repositories
         }
         public async Task<IEnumerable<int>?> GetStemIdsByExam(Exam exam)
         {
-            return await _db.ExamStems.Where(exs => exs.Exam == exam).Select(exs => exs.Id).ToListAsync();
+            return await _db.ExamStems.Where(exs => exs.Exam == exam)
+                .Select(exs => exs.Id).ToListAsync();
+        }
+
+        public ExamStem Create(Exam exam, Stem stem)
+        {
+            ExamStem examStem = new ExamStem(exam, stem);
+            return examStem;
         }
 
         public EntityState AddOrUpdate(ExamStem examStem)

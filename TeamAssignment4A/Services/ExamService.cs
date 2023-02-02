@@ -6,6 +6,7 @@ using RandomDataGenerator.Randomizers;
 using TeamAssignment4A.Data;
 using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models;
+using TeamAssignment4A.Models.JointTables;
 
 namespace TeamAssignment4A.Services
 {
@@ -79,7 +80,7 @@ namespace TeamAssignment4A.Services
         }
 
         public async Task<MyDTO> AddCert(int id,
-            [Bind("Id,TitleOfCertificate,Certificate,ExamStemIds,ExamStems")] ExamDto examDto)
+            [Bind("Id,TitleOfCertificate,Certificate,StemIds,Stems,ExamStemIds,ExamStems")] ExamDto examDto)
         {
             examDto.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
             Exam exam = _mapper.Map<Exam>(examDto);
@@ -112,25 +113,31 @@ namespace TeamAssignment4A.Services
         }
 
         public async Task<MyDTO> AddOrUpdate(int id, 
-            [Bind("Id,TitleOfCertificate,Certificate,ExamStemIds,ExamStems")] ExamDto examDto)
+            [Bind("Id,TitleOfCertificate,Certificate,StemIds,Stems,ExamStemIds,ExamStems")] ExamDto examDto)
         {            
             //Certificate certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);            
             //examDto.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
-            
-            
-            foreach(var examStem in examDto.ExamStems)
-            {
-
-            }
             Exam exam = _mapper.Map<Exam>(examDto);
-            exam.ExamStems = await _unit.ExamStem.GetStemsByExam(exam);
-
             EntityState state = _unit.Exam.AddOrUpdate(exam);
+            
+            if(state == EntityState.Added)
+            {
+                foreach (var stemId in examDto.StemIds)
+                {
+                    Stem stem = await _unit.Stem.GetAsync(stemId);
+                    ExamStem examStem = new ExamStem(exam, stem);
+                    _unit.ExamStem.AddOrUpdate(examStem);
+                    await _unit.SaveAsync();
+                }
+                Console.WriteLine(exam);
+                exam.ExamStems = await _unit.ExamStem.GetStemsByExam(exam);
+            }
+
             if (id != exam.Id)
             {
                 if (state == EntityState.Added)
                 {
-                    _myDTO.View = "Create";
+                    _myDTO.View = "CreateExamStems";
                 }
                 if (state == EntityState.Modified)
                 {
@@ -175,7 +182,7 @@ namespace TeamAssignment4A.Services
             {
                 if (state == EntityState.Added)
                 {
-                    _myDTO.View = "Create";
+                    _myDTO.View = "CreateExamStems";
                 }
                 if (state == EntityState.Modified)
                 {

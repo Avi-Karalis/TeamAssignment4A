@@ -32,9 +32,7 @@ namespace TeamAssignment4A.Data
             modelBuilder.Entity<Certificate>().HasIndex(c => c.TitleOfCertificate).IsUnique();
             modelBuilder.Entity<Topic>().HasIndex(c => c.Description).IsUnique();            
             modelBuilder.Entity<CandidateExam>().HasIndex(c => c.AssessmentTestCode).IsUnique();            
-        }
-
-        public DbSet<TeamAssignment4A.Dtos.ExamDto> ExamDto { get; set; }
+        }        
     }
 }
 

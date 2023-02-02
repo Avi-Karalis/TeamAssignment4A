@@ -13,5 +13,15 @@ namespace TeamAssignment4A.Models.JointTables
         public virtual Stem Stem { get; set; }
         public virtual IEnumerable<CandidateExamStem>? CandidateExamStems { get; set; }
 
+        public ExamStem()
+        {
+
+        }
+
+        public ExamStem(Exam exam, Stem stem)
+        {
+            Exam = exam;
+            Stem = stem;
+        }
     }
 }
