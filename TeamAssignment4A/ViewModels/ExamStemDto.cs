@@ -7,7 +7,7 @@ namespace TeamAssignment4A.Dtos
         public int Id { get; set; }        
         public int ExamId { get; set; }
         public  Exam Exam { get; set; }
-        public Stem StemId { get; set; }
+        public int StemId { get; set; }
         public  Stem Stem { get; set; }
     }
 }

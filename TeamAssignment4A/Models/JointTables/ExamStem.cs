@@ -11,6 +11,7 @@ namespace TeamAssignment4A.Models.JointTables
         // Navigation Properties
         public virtual Exam Exam { get; set; }
         public virtual Stem Stem { get; set; }
+        public virtual IEnumerable<CandidateExamStem>? CandidateExamStems { get; set; }
 
     }
 }

@@ -29,7 +29,7 @@ namespace TeamAssignment4A.Models
 
 
         // Navigation Properties
-        public virtual ICollection<Topic>? Topics { get; set; }
-        public virtual ICollection<Exam>? Exams { get; set; }
+        public virtual IEnumerable<Topic>? Topics { get; set; }
+        public virtual IEnumerable<Exam>? Exams { get; set; }
     }
 }

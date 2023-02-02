@@ -36,6 +36,7 @@ namespace TeamAssignment4A.Models.JointTables {
         // Navigation Properties
         public virtual Candidate Candidate { get; set; }
         public virtual Exam Exam { get; set; }
+        public virtual IEnumerable<CandidateExamStem>? CandidateExamStems { get; set; }
         
     }
 }

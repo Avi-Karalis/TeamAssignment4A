@@ -22,18 +22,10 @@ namespace TeamAssignment4A.Models
         [Display(Name = "Number Of Possible Marks")]
         public int NumberOfPossibleMarks { get; set; }
 
-        public Topic() {
-
-        }
-
-        public Topic(TopicCreateDto topicDto, Certificate certificate) {
-            this.Description = topicDto.Description;
-            this.NumberOfPossibleMarks = topicDto.NumberOfPossibleMarks;
-            this.Certificate = certificate;
-        }
+        
         // Navigation Properties
 
         public virtual Certificate Certificate { get; set; }        
-        public virtual ICollection<Stem>? Stems { get; set; }        
+        public virtual IEnumerable<Stem>? Stems { get; set; }        
     }
 }

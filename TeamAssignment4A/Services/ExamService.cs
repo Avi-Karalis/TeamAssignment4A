@@ -53,6 +53,12 @@ namespace TeamAssignment4A.Services
             return await _unit.ExamStem.GetStemIdsByExam(exam);
         }
 
+        public async Task<IEnumerable<Stem>?> GetStemIds(ExamDto examDto)
+        {
+            Exam exam = _mapper.Map<Exam>(examDto);
+            return await _unit.Stem.GetByCert(exam.Certificate);
+        }
+
         public async Task<MyDTO> GetForUpdate(int id)
         {
             _myDTO.View = "Edit";
@@ -72,12 +78,50 @@ namespace TeamAssignment4A.Services
             return _myDTO;
         }
 
+        public async Task<MyDTO> AddCert(int id,
+            [Bind("Id,TitleOfCertificate,Certificate,ExamStemIds,ExamStems")] ExamDto examDto)
+        {
+            examDto.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
+            Exam exam = _mapper.Map<Exam>(examDto);
+
+            _unit.Exam.AddOrUpdate(exam);
+            if (id != exam.Id)
+            {                
+                _myDTO.View = "Create";
+                _myDTO.Message = "The exam Id was compromised. The request could not be completed due to security reasons. Please try again later.";
+                _myDTO.ExamDto = examDto;
+                return _myDTO;
+            }
+            if (ModelState.IsValid)
+            {
+                _myDTO.Message = "The requested Title of Certificate has been added successfully.";
+                await _unit.SaveAsync();
+                _myDTO.View = "CreateExamStems";
+                _myDTO.ExamDto = examDto;
+                //IEnumerable<Exam> exams = await _unit.Exam.GetAllAsync();
+                //_myDTO.ExamDtos = _mapper.Map<List<ExamDto>>(exams);
+                return _myDTO;
+            }
+            else
+            {                
+                _myDTO.View = "Create";                
+                _myDTO.Message = "Invalid entries. Please try again later.";
+                _myDTO.ExamDto = examDto;
+            }
+            return _myDTO;
+        }
+
         public async Task<MyDTO> AddOrUpdate(int id, 
             [Bind("Id,TitleOfCertificate,Certificate,ExamStemIds,ExamStems")] ExamDto examDto)
         {            
             //Certificate certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);            
-            examDto.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
+            //examDto.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
             
+            
+            foreach(var examStem in examDto.ExamStems)
+            {
+
+            }
             Exam exam = _mapper.Map<Exam>(examDto);
             exam.ExamStems = await _unit.ExamStem.GetStemsByExam(exam);
 

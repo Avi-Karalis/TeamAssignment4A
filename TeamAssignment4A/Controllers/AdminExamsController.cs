@@ -51,34 +51,61 @@ namespace TeamAssignment4A.Controllers
             return View($"{myDTO.View}", myDTO.ExamDto);
         }        
 
-        // GET: Exams/Create
+        // GET: Exams/Create(TitleOfCert)
         [HttpGet]
         [ProducesResponseType(typeof(ExamDto), 200)]
         public IActionResult Create()
         {            
             ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");            
-            ViewBag.ExamStems = new SelectList(_db.ExamStems, "Id", "Id");
+            //ViewBag.ExamStems = new SelectList(_db.ExamStems, "Id", "Id");
             return View();
-        }        
+        }
 
-        // POST: Exams/Create
+        // POST: Exams/Create(TitleOfCert)
         [HttpPost]
         [ProducesResponseType(typeof(ExamDto), 200)]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int id, 
-            [Bind("Id,TitleOfCertificate,Certificate,ExamStemIds,ExamStems")] ExamDto examDto)
+        public async Task<IActionResult> Create(int id, [Bind("Id,TitleOfCertificate," +
+            "Certificate,StemIds,Stems,ExamStemIds,ExamStems")] ExamDto examDto)
+        {
+            MyDTO myDTO = await _service.AddCert(id, examDto);
+            ViewBag.Message = myDTO.Message;
+            if (myDTO.View == "CreateExamStems")
+            {
+                return View($"{myDTO.View}", myDTO.ExamDto);
+            }            
+            ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
+            //IEnumerable<int> selections = await _service.GetExamStemIds(examDto);
+            //ViewBag.ExamStems = new SelectList(_db.ExamStems, "Id", "Id");
+            return View($"{myDTO.View}", myDTO.ExamDto);
+        }
+
+        // GET: Exams/Create(ExamStems)
+        [HttpGet]
+        [ProducesResponseType(typeof(ExamDto), 200)]
+        public async Task<IActionResult> CreateExamStems(ExamDto examDto)
+        {
+            //ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
+            //ViewBag.SelectedCert = examDto.TitleOfCertificate;
+            ViewBag.StemIds = new SelectList(await _service.GetStemIds(examDto));//, "Id", "Id");
+            return View(examDto);
+        }
+
+        // POST: Exams/Create(ExamStems)
+        [HttpPost]
+        [ProducesResponseType(typeof(ExamDto), 200)]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateExamStems(int id, [Bind("Id,TitleOfCertificate," +
+            "Certificate,StemIds,Stems,ExamStemIds,ExamStems")] ExamDto examDto)
         {
             MyDTO myDTO = await _service.AddOrUpdate(id, examDto);
             ViewBag.Message = myDTO.Message;
             if (myDTO.View == "Index")
             {
                 return View($"{myDTO.View}", myDTO.ExamDtos);
-            }            
-            ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
-            //IEnumerable<int> selections = await _service.GetExamStemIds(examDto);
-            ViewBag.ExamStems = new SelectList(_db.ExamStems, "Id", "Id");
-            return View($"{myDTO.View}", myDTO.ExamDto);
-        }        
+            }
+            return View($"{myDTO.View}", myDTO.ExamDto);            
+        }
 
         // GET: Exams/Edit/5
         [HttpGet]

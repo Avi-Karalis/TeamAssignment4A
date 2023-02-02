@@ -41,7 +41,7 @@ namespace TeamAssignment4A.Models
         // Navigation Properties
 
         public virtual Topic Topic { get; set; }
-        public virtual ICollection<ExamStem>? ExamStems { get; set; }
+        public virtual IEnumerable<ExamStem>? ExamStems { get; set; }
 
     }
 }

@@ -90,6 +90,7 @@ namespace TeamAssignment4A.Models
 
         
         // Navigation Property        
-        public virtual ICollection<CandidateExam>? CandidateExams { get; set; }
+        public virtual IEnumerable<CandidateExam>? CandidateExams { get; set; }
+        public virtual IEnumerable<CandidateExamStem>? CandidateExamStems { get; set; }
     }
 }

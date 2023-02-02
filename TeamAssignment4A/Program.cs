@@ -16,7 +16,7 @@ namespace TeamAssignment4A {
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            var connectionString = builder.Configuration.GetConnectionString("OnLineServerTest") ?? throw new InvalidOperationException("Connection string 'OnLineServerAve' not found.");
+            var connectionString = builder.Configuration.GetConnectionString("OnLineServerTest2") ?? throw new InvalidOperationException("Connection string 'OnLineServerAve' not found.");
             builder.Services.AddDbContext<WebAppDbContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
