@@ -16,7 +16,7 @@ namespace TeamAssignment4A.Data
 
         }
 
-        //public virtual DbSet<AppUser> User { get; set; } = default!;
+        public virtual DbSet<AppUser> User { get; set; } = default!;
         public virtual DbSet<Candidate> Candidates { get; set; } = default!;
         public virtual DbSet<Certificate> Certificates { get; set; } = default!;
         public virtual DbSet<Exam> Exams { get; set; } = default!;
