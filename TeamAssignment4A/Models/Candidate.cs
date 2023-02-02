@@ -4,11 +4,11 @@ using System.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 using System.Data.SqlTypes;
 using TeamAssignment4A.Models.JointTables;
-
+using Microsoft.AspNetCore.Identity;
 
 namespace TeamAssignment4A.Models
 {
-    public class Candidate {
+    public class Candidate : IdentityUser {
         //Basic properties for each Candidate
 
         [Key]

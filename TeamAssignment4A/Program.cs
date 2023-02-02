@@ -25,7 +25,7 @@ namespace TeamAssignment4A {
             builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<WebAppDbContext>();
             builder.Services.AddControllersWithViews();
-            builder.Services.AddScoped<IdentityDbContext<AppUser>, WebAppDbContext>();
+            builder.Services.AddScoped<IdentityDbContext<Candidate>, WebAppDbContext>();
             builder.Services.AddScoped<UnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<CandidateService, CandidateService>();
             builder.Services.AddScoped<CertificateService, CertificateService>();

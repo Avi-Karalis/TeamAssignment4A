@@ -3,11 +3,12 @@ using TeamAssignment4A.Models;
 using TeamAssignment4A.Models.JointTables;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using TeamAssignment4A.Models.IdentityUsers;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace TeamAssignment4A.Data
 {
-    public class WebAppDbContext : IdentityDbContext<AppUser>
+    public class WebAppDbContext : IdentityDbContext<Candidate>
     {
         
         public WebAppDbContext(DbContextOptions<WebAppDbContext> options) : base(options)
@@ -15,7 +16,7 @@ namespace TeamAssignment4A.Data
 
         }
 
-        public virtual DbSet<AppUser> User { get; set; } = default!;
+        //public virtual DbSet<AppUser> User { get; set; } = default!;
         public virtual DbSet<Candidate> Candidates { get; set; } = default!;
         public virtual DbSet<Certificate> Certificates { get; set; } = default!;
         public virtual DbSet<Exam> Exams { get; set; } = default!;
