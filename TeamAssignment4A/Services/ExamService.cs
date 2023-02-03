@@ -54,10 +54,10 @@ namespace TeamAssignment4A.Services
             return await _unit.ExamStem.GetStemIdsByExam(exam);
         }
 
-        public async Task<IEnumerable<Stem>?> GetStemIds(ExamDto examDto)
+        public async Task<IEnumerable<int>?> GetStemIds(ExamDto examDto)
         {
             Exam exam = _mapper.Map<Exam>(examDto);
-            return await _unit.Stem.GetByCert(exam.Certificate);
+            return await _unit.Stem.GetStemIdsByCert(exam.Certificate);
         }
 
         public async Task<MyDTO> GetForUpdate(int id)
@@ -114,9 +114,9 @@ namespace TeamAssignment4A.Services
 
         public async Task<MyDTO> AddOrUpdate(int id, 
             [Bind("Id,TitleOfCertificate,Certificate,StemIds,Stems,ExamStemIds,ExamStems")] ExamDto examDto)
-        {            
-            //Certificate certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);            
-            //examDto.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
+        {
+            Certificate certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
+            examDto.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
             Exam exam = _mapper.Map<Exam>(examDto);
             EntityState state = _unit.Exam.AddOrUpdate(exam);
             
@@ -129,6 +129,7 @@ namespace TeamAssignment4A.Services
                     _unit.ExamStem.AddOrUpdate(examStem);
                     await _unit.SaveAsync();
                 }
+                Console.WriteLine(exam);
                 Console.WriteLine(exam);
                 exam.ExamStems = await _unit.ExamStem.GetStemsByExam(exam);
             }

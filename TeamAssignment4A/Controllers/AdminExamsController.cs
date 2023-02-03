@@ -72,9 +72,11 @@ namespace TeamAssignment4A.Controllers
             ViewBag.Message = myDTO.Message;
             if (myDTO.View == "CreateExamStems")
             {
+                ViewBag.Certificate = examDto.Certificate;
+                ViewBag.StemIds = new SelectList(await _service.GetStemIds(examDto));
                 return View($"{myDTO.View}", myDTO.ExamDto);
             }            
-            ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
+            //ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
             //IEnumerable<int> selections = await _service.GetExamStemIds(examDto);
             //ViewBag.ExamStems = new SelectList(_db.ExamStems, "Id", "Id");
             return View($"{myDTO.View}", myDTO.ExamDto);
@@ -87,7 +89,7 @@ namespace TeamAssignment4A.Controllers
         {
             //ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
             //ViewBag.SelectedCert = examDto.TitleOfCertificate;
-            ViewBag.StemIds = new SelectList(await _service.GetStemIds(examDto));//, "Id", "Id");
+            //ViewBag.StemIds = new SelectList(await _service.GetStemIds(examDto));//, "Id", "Id");
             return View(examDto);
         }
 
