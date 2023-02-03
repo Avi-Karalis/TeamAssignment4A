@@ -12,63 +12,7 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            @*<div class="form-group">
-                <label asp-for="AssessmentTestCode" class="control-label"></label>
-                <input asp-for="AssessmentTestCode" class="form-control" />
-                <span asp-validation-for="AssessmentTestCode" class="text-danger"></span>
-            </div>*@
-            @*<input type="hidden" asp-for="AssessmentTestCode" />*@
-            @*<div class="form-group">
-                <dt class="col-sm-6 rightalign">
-                    @Html.DisplayNameFor(model => model.AssessmentTestCode)
-                </dt>
-                <dd class="col-sm-6">
-                    @Html.DisplayFor(model => model.AssessmentTestCode)
-                </dd>
-            </div>*@
-            @*<div class="form-group">
-                <label asp-for="AssessmentTestCode" class="control-label"></label>
-                <input asp-for="AssessmentTestCode" class="form-control" readonly value="@Model.AssessmentTestCode" />
-                <span asp-validation-for="AssessmentTestCode" class="text-danger"></span>
-            </div>*@
-            @*<div class="form-group">
-                <dt class="col-sm-6 rightalign">
-                    @Html.DisplayNameFor(model => model.ExaminationDate)
-                </dt>
-                <dd class="col-sm-6">
-                    @Html.DisplayFor(model => model.ExaminationDate)
-                </dd>
-            </div>*@
-            @*<div class="form-group">
-                <label asp-for="ExaminationDate" class="control-label"></label>
-                <div>
-                    <input asp-for="ExaminationDate" class="form-control" type="date" placeholder="Enter PhotoId date" />
-                    <span asp-validation-for="ExaminationDate" class="text-danger"></span>
-                </div>
-            </div>*@
-            @*<div class="form-group">
-                <label asp-for="ScoreReportDate" class="control-label"></label>
-                <div>
-                    <input asp-for="ScoreReportDate" class="form-control" type="date" placeholder="Enter PhotoId date" />
-                    <span asp-validation-for="ScoreReportDate" class="text-danger"></span>
-                </div>
-            </div>*@
             
-            @*<div class="form-group">
-                <label asp-for="CandidateScore" class="control-label"></label>
-                <input asp-for="CandidateScore" class="form-control" />
-                <span asp-validation-for="CandidateScore" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PercentageScore" class="control-label"></label>
-                <input asp-for="PercentageScore" class="form-control" />
-                <span asp-validation-for="PercentageScore" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AssessmentResultLabel" class="control-label"></label>
-                <input asp-for="AssessmentResultLabel" class="form-control" />
-                <span asp-validation-for="AssessmentResultLabel" class="text-danger"></span>
-            </div>*@
             <div class="form-group">
                 <label asp-for="TitleOfCertificate" class="control-label"></label>
                 <select asp-for="TitleOfCertificate" class="form-control" asp-items="@ViewBag.Certificates"></select>

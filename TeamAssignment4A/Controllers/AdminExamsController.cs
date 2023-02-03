@@ -74,7 +74,7 @@ namespace TeamAssignment4A.Controllers
             {
                 ViewBag.Certificate = examDto.Certificate;
                 ViewBag.StemIds = new SelectList(await _service.GetStemIds(examDto));
-                return View($"{myDTO.View}", myDTO.ExamDto);
+                return RedirectToAction($"{myDTO.View}", myDTO.ExamDto);
             }            
             //ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
             //IEnumerable<int> selections = await _service.GetExamStemIds(examDto);
@@ -90,7 +90,16 @@ namespace TeamAssignment4A.Controllers
             //ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
             //ViewBag.SelectedCert = examDto.TitleOfCertificate;
             //ViewBag.StemIds = new SelectList(await _service.GetStemIds(examDto));//, "Id", "Id");
-            return View(examDto);
+            MyDTO myDTO = await _service.GetByExam(examDto);
+            ViewBag.Message = myDTO.Message;
+            //IEnumerable<int> selections = await _service.GetExamStemIds(examDto);
+            //ViewBag.ExamStems = new SelectList(_db.ExamStems, "Id", "Id");
+            if (myDTO.View == "Index")
+            {
+                return View($"{myDTO.View}", myDTO.ExamDtos);
+            }
+            ViewBag.StemIds = new SelectList(await _service.GetStemIds(myDTO.ExamDto));
+            return View($"{myDTO.View}", myDTO.ExamDto);            
         }
 
         // POST: Exams/Create(ExamStems)
@@ -100,7 +109,7 @@ namespace TeamAssignment4A.Controllers
         public async Task<IActionResult> CreateExamStems(int id, [Bind("Id,TitleOfCertificate," +
             "Certificate,StemIds,Stems,ExamStemIds,ExamStems")] ExamDto examDto)
         {
-            MyDTO myDTO = await _service.AddOrUpdate(id, examDto);
+            MyDTO myDTO = await _service.AddStems(id, examDto);
             ViewBag.Message = myDTO.Message;
             if (myDTO.View == "Index")
             {
@@ -134,7 +143,7 @@ namespace TeamAssignment4A.Controllers
         public async Task<IActionResult> Edit(int id, 
             [Bind("Id,TitleOfCertificate,Certificate,StemIds,Stems,ExamStemIds,ExamStems")] ExamDto examDto)
         {
-            MyDTO myDTO = await _service.AddOrUpdate(id, examDto);
+            MyDTO myDTO = await _service.Update(id, examDto);
             ViewBag.Message = myDTO.Message;
             if (myDTO.View == "Index")
             {

@@ -12,6 +12,7 @@
     <div class="col-md-4">
         <form asp-action="CreateExamStems">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <dt class="col-sm-6 rightalign">
                     @Html.DisplayNameFor(model => model.TitleOfCertificate)
@@ -20,11 +21,10 @@
                     @Html.DisplayFor(model => model.TitleOfCertificate)
                 </dd>                
             </div>
-            <div>
-                <input type="hidden" asp-for="Id" />
-                <input type="hidden" asp-for="TitleOfCertificate" />
-                <input type="hidden" asp-for="Certificate" value="@Model.Certificate" />
-            </div>
+           
+            <input type="hidden" asp-for="TitleOfCertificate" />
+            <input type="hidden" asp-for="Certificate" value="@Model.Certificate" />
+            
             @*<div class="form-group">
                 <label asp-for="TitleOfCertificate" class="control-label"></label>
                 <input asp-for="TitleOfCertificate" class="form-control" />
@@ -47,16 +47,11 @@
                     @*<a asp-action="Index" class="custom-font btn btn-primary">Back to List</a>*@
                 </div>
             </p>
-            @*<div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>*@
+            
         </form>
     </div>
 </div>
 
-@*<div>
-    <a asp-action="Index">Back to List</a>
-</div>*@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

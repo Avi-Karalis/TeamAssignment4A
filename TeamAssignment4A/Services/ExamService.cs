@@ -41,6 +41,26 @@ namespace TeamAssignment4A.Services
             }
             return _myDTO;
         }
+
+        public async Task<MyDTO> GetByExam(ExamDto examDto)
+        {
+            if (examDto.Id == null || _db.Exams == null || await _unit.Exam.GetAsync(examDto.Id) == null)
+            {
+                _myDTO.View = "Index";
+                _myDTO.Message = "An unexpected error occured. Please try again later.";
+                var exams = await _unit.Exam.GetAllAsync();
+                _myDTO.ExamDtos = _mapper.Map<List<ExamDto>>(exams);
+            }
+            else
+            {
+                _myDTO.View = "CreateExamStems";
+                Exam exam = await _unit.Exam.GetAsync(examDto.Id);
+                _myDTO.ExamDto = _mapper.Map<ExamDto>(exam);
+                _myDTO.ExamDto.StemIds = await _unit.Stem.GetStemIdsByCert(exam.Certificate);
+            }
+            return _myDTO;
+        }
+
         public async Task<IEnumerable<ExamDto>?> GetAll()
         {
             var exams = await _unit.Exam.GetAllAsync();
@@ -98,6 +118,7 @@ namespace TeamAssignment4A.Services
                 _myDTO.Message = "The requested Title of Certificate has been added successfully.";
                 await _unit.SaveAsync();
                 _myDTO.View = "CreateExamStems";
+                examDto = _mapper.Map<ExamDto>(exam);
                 _myDTO.ExamDto = examDto;
                 //IEnumerable<Exam> exams = await _unit.Exam.GetAllAsync();
                 //_myDTO.ExamDtos = _mapper.Map<List<ExamDto>>(exams);
@@ -112,10 +133,9 @@ namespace TeamAssignment4A.Services
             return _myDTO;
         }
 
-        public async Task<MyDTO> AddOrUpdate(int id, 
+        public async Task<MyDTO> AddStems(int id, 
             [Bind("Id,TitleOfCertificate,Certificate,StemIds,Stems,ExamStemIds,ExamStems")] ExamDto examDto)
-        {
-            Certificate certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
+        {            
             examDto.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
             Exam exam = _mapper.Map<Exam>(examDto);
             EntityState state = _unit.Exam.AddOrUpdate(exam);
@@ -158,21 +178,76 @@ namespace TeamAssignment4A.Services
                 if (state == EntityState.Modified && !await _unit.Exam.Exists(exam.Id))
                 {
                     _myDTO.Message = "The requested exam could not be found. Please try again later.";
+                }                
+                await _unit.SaveAsync();
+                _myDTO.View = "Index";
+                IEnumerable<Exam> exams = await _unit.Exam.GetAllAsync();
+                _myDTO.ExamDtos = _mapper.Map<List<ExamDto>>(exams);
+                return _myDTO;
+            }
+            else
+            {
+                if (state == EntityState.Added)
+                {
+                    _myDTO.View = "CreateExamStems";
                 }
-                //if (await _unit.Exam.CodeExists(exam.Id, exam.AssessmentTestCode))
-                //{
-                //    if (state == EntityState.Added)
-                //    {
-                //        _myDTO.View = "Create";
-                //    }
-                //    if (state == EntityState.Modified)
-                //    {
-                //        _myDTO.View = "Edit";
-                //    }
-                //    _myDTO.Message = "This exam assessment test code already exists. Please try providing a different code.";
-                //    _myDTO.ExamDto = examDto;
-                //    return _myDTO;
-                //}
+                if (state == EntityState.Modified)
+                {
+                    _myDTO.View = "Edit";
+                }
+                _myDTO.Message = "Invalid entries. Please try again later.";
+                _myDTO.ExamDto = examDto;
+            }
+            return _myDTO;
+        }
+
+        public async Task<MyDTO> Update(int id,
+            [Bind("Id,TitleOfCertificate,Certificate,StemIds,Stems,ExamStemIds,ExamStems")] ExamDto examDto)
+        {
+            Certificate certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
+            examDto.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
+            Exam exam = _mapper.Map<Exam>(examDto);
+            EntityState state = _unit.Exam.AddOrUpdate(exam);
+
+            if (state == EntityState.Added)
+            {
+                foreach (var stemId in examDto.StemIds)
+                {
+                    Stem stem = await _unit.Stem.GetAsync(stemId);
+                    ExamStem examStem = new ExamStem(exam, stem);
+                    _unit.ExamStem.AddOrUpdate(examStem);
+                    await _unit.SaveAsync();
+                }
+                Console.WriteLine(exam);
+                Console.WriteLine(exam);
+                exam.ExamStems = await _unit.ExamStem.GetStemsByExam(exam);
+            }
+
+            if (id != exam.Id)
+            {
+                if (state == EntityState.Added)
+                {
+                    _myDTO.View = "CreateExamStems";
+                }
+                if (state == EntityState.Modified)
+                {
+                    _myDTO.View = "Edit";
+                }
+                _myDTO.Message = "The exam Id was compromised. The request could not be completed due to security reasons. Please try again later.";
+                _myDTO.ExamDto = examDto;
+                return _myDTO;
+            }
+            if (ModelState.IsValid)
+            {
+                _myDTO.Message = "The requested exam has been added successfully.";
+                if (state == EntityState.Modified)
+                {
+                    _myDTO.Message = "The requested exam has been updated successfully.";
+                }
+                if (state == EntityState.Modified && !await _unit.Exam.Exists(exam.Id))
+                {
+                    _myDTO.Message = "The requested exam could not be found. Please try again later.";
+                }                
                 await _unit.SaveAsync();
                 _myDTO.View = "Index";
                 IEnumerable<Exam> exams = await _unit.Exam.GetAllAsync();
