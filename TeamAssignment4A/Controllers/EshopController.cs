@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,18 +14,19 @@ using TeamAssignment4A.Models;
 using TeamAssignment4A.Models.JointTables;
 
 namespace TeamAssignment4A.Controllers {
+    [Authorize]
     public class EshopController : Controller {
         private readonly WebAppDbContext _context;
 
         public EshopController(WebAppDbContext context) {
             _context = context;
         }
-
+        [AllowAnonymous]
         // GET: Eshop
         public async Task<IActionResult> Index() {
             return View(await _context.CandidateExams.ToListAsync());
         }
-
+        [AllowAnonymous]
         // GET: Eshop/Details/5
         public async Task<IActionResult> Details(int? id) {
             if (id == null || _context.CandidateExams == null) {

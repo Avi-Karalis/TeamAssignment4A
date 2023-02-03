@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using TeamAssignment4A.Models;
 
 namespace TeamAssignment4A.Controllers {
+    [AllowAnonymous]
     public class HomeController : Controller {
         private readonly ILogger<HomeController> _logger;
 

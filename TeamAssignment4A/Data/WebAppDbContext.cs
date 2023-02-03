@@ -2,21 +2,21 @@
 using TeamAssignment4A.Models;
 using TeamAssignment4A.Models.JointTables;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using TeamAssignment4A.Models.IdentityUsers;
 using Microsoft.AspNetCore.Identity;
-
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.Extensions.Options;
+using Duende.IdentityServer.EntityFramework.Options;
 
 namespace TeamAssignment4A.Data
 {
-    public class WebAppDbContext : IdentityDbContext<Candidate>
+    public class WebAppDbContext : ApiAuthorizationDbContext<IdentityUser>
     {
         
-        public WebAppDbContext(DbContextOptions<WebAppDbContext> options) : base(options)
-        {
+        public WebAppDbContext(DbContextOptions options ,IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions) {
 
         }
 
-        public virtual DbSet<AppUser> User { get; set; } = default!;
+        public virtual DbSet<IdentityUser> User { get; set; } = default!;
         public virtual DbSet<Candidate> Candidates { get; set; } = default!;
         public virtual DbSet<Certificate> Certificates { get; set; } = default!;
         public virtual DbSet<Exam> Exams { get; set; } = default!;

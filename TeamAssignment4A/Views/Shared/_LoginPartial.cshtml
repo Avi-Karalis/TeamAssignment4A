@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using TeamAssignment4A.Models
-@inject SignInManager<Candidate> SignInManager
-@inject UserManager<Candidate> UserManager
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))

@@ -8,21 +8,24 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TeamAssignment4A.Models.IdentityUsers;
+using Microsoft.Extensions.Logging;
 
 namespace TeamAssignment4A.Areas.Identity.Pages.Account.Manage
 {
-    public class SetPasswordModel : PageModel
+    public class ChangePasswordModel : PageModel
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly SignInManager<AppUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly ILogger<ChangePasswordModel> _logger;
 
-        public SetPasswordModel(
-            UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager)
+        public ChangePasswordModel(
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
+            ILogger<ChangePasswordModel> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _logger = logger;
         }
 
         /// <summary>
@@ -45,6 +48,15 @@ namespace TeamAssignment4A.Areas.Identity.Pages.Account.Manage
         /// </summary>
         public class InputModel
         {
+            /// <summary>
+            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+            ///     directly from your code. This API may change or be removed in future releases.
+            /// </summary>
+            [Required]
+            [DataType(DataType.Password)]
+            [Display(Name = "Current password")]
+            public string OldPassword { get; set; }
+
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -74,10 +86,9 @@ namespace TeamAssignment4A.Areas.Identity.Pages.Account.Manage
             }
 
             var hasPassword = await _userManager.HasPasswordAsync(user);
-
-            if (hasPassword)
+            if (!hasPassword)
             {
-                return RedirectToPage("./ChangePassword");
+                return RedirectToPage("./SetPassword");
             }
 
             return Page();
@@ -96,10 +107,10 @@ namespace TeamAssignment4A.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var addPasswordResult = await _userManager.AddPasswordAsync(user, Input.NewPassword);
-            if (!addPasswordResult.Succeeded)
+            var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
+            if (!changePasswordResult.Succeeded)
             {
-                foreach (var error in addPasswordResult.Errors)
+                foreach (var error in changePasswordResult.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
@@ -107,7 +118,8 @@ namespace TeamAssignment4A.Areas.Identity.Pages.Account.Manage
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your password has been set.";
+            _logger.LogInformation("User changed their password successfully.");
+            StatusMessage = "Your password has been changed.";
 
             return RedirectToPage();
         }
