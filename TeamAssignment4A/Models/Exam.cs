@@ -8,34 +8,14 @@ using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models.JointTables;
 
 
-namespace TeamAssignment4A.Models {
-    public class Exam {
-        public int Id { get; set; }
+namespace TeamAssignment4A.Models
+{
+    public class Exam 
+    {
+        [Key]
         [Required]
-        [Display(Name = "Assessment Test Code")]
-        public string AssessmentTestCode { get; set; }
-
-
-        [Display(Name = "Examination Date")]
-        [Column(TypeName = "Date")]
-        public DateTime? ExaminationDate { get; set; }
-
-
-        [Display(Name = "Score Report Date")]
-        [Column(TypeName = "Date")]
-        public DateTime? ScoreReportDate { get; set; }
-
-
-        [Display(Name = "Candidate Score")]
-        public int? CandidateScore { get; set; }
-
-
-        [Display(Name = "Percentage Score")]
-        public string? PercentageScore { get; set; }
-
-
-        [Display(Name = "Assessment Result Label")]
-        public string? AssessmentResultLabel { get; set; }
+        [Display(Name = "Exam Id")]
+        public int Id { get; set; }        
 
         public Exam() {
 
@@ -54,8 +34,8 @@ namespace TeamAssignment4A.Models {
         // Navigation Properties
 
         public virtual Certificate Certificate { get; set; }
-        public virtual Candidate Candidate { get; set; }
-        public virtual ICollection<ExamStem>? ExamStems { get; set; }
+        public virtual IEnumerable<CandidateExam>? CandidateExams { get; set; }        
+        public virtual IEnumerable<ExamStem>? ExamStems { get; set; }
     }
 
 }

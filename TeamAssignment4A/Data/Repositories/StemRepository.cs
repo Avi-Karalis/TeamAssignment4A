@@ -12,12 +12,19 @@ namespace TeamAssignment4A.Data.Repositories
         }
         public async Task<Stem?> GetAsync(int id)
         {
-            return await _db.Stems.Include(stem => stem.Topic).FirstOrDefaultAsync(x => x.Id == id);
+            return await _db.Stems.Include(stem => stem.Topic)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<IEnumerable<Stem>?> GetAllAsync()
         {
             return await _db.Stems.Include(stem => stem.Topic).ToListAsync<Stem>();
+        }
+
+        public async Task<IEnumerable<int>?> GetStemIdsByCert(Certificate certificate)
+        {
+            return await _db.Stems.Where(stem => stem.Topic.Certificate == certificate)
+                .Select(stem => stem.Id).ToListAsync();
         }
 
         public EntityState AddOrUpdate(Stem stem)

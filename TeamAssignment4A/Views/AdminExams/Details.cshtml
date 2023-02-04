@@ -8,12 +8,12 @@
 <hr />
 <div class="custom-font fadein">
     <dl class="row">
-        <dt class="col-sm-6 rightalign">
+        @*<dt class="col-sm-6 rightalign">
             @Html.DisplayNameFor(model => model.AssessmentTestCode)
         </dt>
         <dd class = "col-sm-6">
             @Html.DisplayFor(model => model.AssessmentTestCode)
-        </dd>
+        </dd>*@
         @*<dt class="col-sm-6 rightalign">
             @Html.DisplayNameFor(model => model.ExaminationDate)
         </dt>
@@ -49,7 +49,16 @@
         </dt>
         <dd class = "col-sm-6">
             @Html.DisplayFor(model => model.TitleOfCertificate)
-        </dd>        
+        </dd>
+        @foreach (var examStemId in Model.ExamStemIds)
+        {
+            <dt class="col-sm-6 rightalign">
+                @Html.DisplayNameFor(model => model.ExamStemIds)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => examStemId)
+            </dd>
+        }
     </dl>
 </div>
 <div class="center-adjust">

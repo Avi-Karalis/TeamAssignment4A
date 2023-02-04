@@ -9,12 +9,16 @@
 
   <ItemGroup>
     <Compile Remove="Data\Migrations\**" />
+    <Compile Remove="Views\ExamStems\**" />
     <Compile Remove="wwwroot\uploader\**" />
     <Content Remove="Data\Migrations\**" />
+    <Content Remove="Views\ExamStems\**" />
     <Content Remove="wwwroot\uploader\**" />
     <EmbeddedResource Remove="Data\Migrations\**" />
+    <EmbeddedResource Remove="Views\ExamStems\**" />
     <EmbeddedResource Remove="wwwroot\uploader\**" />
     <None Remove="Data\Migrations\**" />
+    <None Remove="Views\ExamStems\**" />
     <None Remove="wwwroot\uploader\**" />
   </ItemGroup>
 

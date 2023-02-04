@@ -6,7 +6,8 @@ using TeamAssignment4A.Models.JointTables;
 
 namespace TeamAssignment4A.Models
 {
-    public class Certificate {
+    public class Certificate 
+    {
         //Basic Info for Certificate
         [Key]
         [Required]
@@ -28,7 +29,7 @@ namespace TeamAssignment4A.Models
 
 
         // Navigation Properties
-        public virtual ICollection<Topic>? Topics { get; set; }
-        public virtual ICollection<Exam>? Exams { get; set; }
+        public virtual IEnumerable<Topic>? Topics { get; set; }
+        public virtual IEnumerable<Exam>? Exams { get; set; }
     }
 }

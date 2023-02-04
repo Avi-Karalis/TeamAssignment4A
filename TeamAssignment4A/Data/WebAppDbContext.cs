@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.Extensions.Options;
 using Duende.IdentityServer.EntityFramework.Options;
+using TeamAssignment4A.Models.IdentityUsers;
+using TeamAssignment4A.Dtos;
+
 
 namespace TeamAssignment4A.Data
 {
@@ -23,15 +26,16 @@ namespace TeamAssignment4A.Data
         public virtual DbSet<Topic> Topics { get; set; } = default!;
         public virtual DbSet<Stem> Stems { get; set; } = default!;        
         public virtual DbSet<ExamStem> ExamStems { get; set; } = default!;        
+        public virtual DbSet<CandidateExamStem> CandidateExamStems { get; set; } = default!;
         public virtual DbSet<CandidateExam> CandidateExams { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);            
             modelBuilder.Entity<Certificate>().HasIndex(c => c.TitleOfCertificate).IsUnique();
-            modelBuilder.Entity<Topic>().HasIndex(c => c.Description).IsUnique();
-            modelBuilder.Entity<Exam>().HasIndex(c => c.AssessmentTestCode).IsUnique();
-        }
+            modelBuilder.Entity<Topic>().HasIndex(c => c.Description).IsUnique();            
+            modelBuilder.Entity<CandidateExam>().HasIndex(c => c.AssessmentTestCode).IsUnique();            
+        }        
     }
 }
 

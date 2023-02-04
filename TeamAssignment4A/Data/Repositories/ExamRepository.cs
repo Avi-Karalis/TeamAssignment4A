@@ -12,12 +12,21 @@ namespace TeamAssignment4A.Data.Repositories
         }
         public async Task<Exam?> GetAsync(int id)
         {
-            return await _db.Exams.Include(exam => exam.Certificate).FirstOrDefaultAsync(x => x.Id == id);
-        }        
+            return await _db.Exams.Include(exam => exam.Certificate)
+                .Include(exam => exam.ExamStems).FirstOrDefaultAsync(x => x.Id == id);
+        }
+        
+        public async Task<Exam>? GetByCert(Certificate certificate)
+        {
+            return await _db.Exams.Include(exam => exam.Certificate)
+                .Include(exam => exam.CandidateExams).Include(exam => exam.ExamStems)
+                .FirstOrDefaultAsync(exam => exam.Certificate == certificate);
+        }
 
         public async Task<IEnumerable<Exam>?> GetAllAsync()
         {
-            return await _db.Exams.Include(exam => exam.Certificate).ToListAsync<Exam>();            
+            return await _db.Exams.Include(exam => exam.Certificate)
+                .Include(exam => exam.ExamStems).ToListAsync<Exam>();            
         }
 
         public EntityState AddOrUpdate(Exam exam)
@@ -34,11 +43,6 @@ namespace TeamAssignment4A.Data.Repositories
         public async Task<bool> Exists(int id)
         {
             return await _db.Exams.AnyAsync(e => e.Id == id);
-        }
-
-        public async Task<bool> CodeExists(int id, string code)
-        {
-            return await _db.Exams.AnyAsync(e => e.AssessmentTestCode == code && e.Id != id);
-        }
+        }        
     }
 }

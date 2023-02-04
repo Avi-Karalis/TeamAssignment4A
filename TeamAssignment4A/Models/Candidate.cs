@@ -6,8 +6,11 @@ using System.Data.SqlTypes;
 using TeamAssignment4A.Models.JointTables;
 using Microsoft.AspNetCore.Identity;
 
-namespace TeamAssignment4A.Models {
-    public class Candidate {
+
+namespace TeamAssignment4A.Models
+{
+    public class Candidate 
+    {
         //Basic properties for each Candidate
 
         [Key]
@@ -44,7 +47,7 @@ namespace TeamAssignment4A.Models {
         public DateTime Birthdate { get; set; }
 
         [Required]
-        [Display(Name = "E-mail address")]
+        [Display(Name = "E-mail Address")]
         public string Email { get; set; }
 
 
@@ -88,9 +91,8 @@ namespace TeamAssignment4A.Models {
         
         public string? IdentityUserID { get; set; }
         // Navigation Property        
-        public virtual ICollection<CandidateExam>? CandidateExams { get; set; }
-
-
+        public virtual IEnumerable<CandidateExam>? CandidateExams { get; set; }
+        public virtual IEnumerable<CandidateExamStem>? CandidateExamStems { get; set; }
     }
 
 }

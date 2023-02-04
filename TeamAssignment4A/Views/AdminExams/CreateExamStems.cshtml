@@ -1,0 +1,58 @@
+﻿@model TeamAssignment4A.Dtos.ExamDto
+
+@{
+    ViewData["Title"] = "CreateExamStems";
+}
+
+<h3 class="custom-font fadein center-adjust">Creating Examination</h3>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateExamStems">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @*<input type="hidden" asp-for="Id" />*@
+            <div class="form-group">
+                <dt class="col-sm-6 rightalign">
+                    @Html.DisplayNameFor(model => model.TitleOfCertificate)
+                </dt>
+                <dd class = "col-sm-6">
+                    @Html.DisplayFor(model => model.TitleOfCertificate)
+                </dd>                
+            </div>
+           
+            <input type="hidden" asp-for="TitleOfCertificate" />
+            <input type="hidden" asp-for="Certificate" value="@Model.Certificate" />
+            
+            @*<div class="form-group">
+                <label asp-for="TitleOfCertificate" class="control-label"></label>
+                <input asp-for="TitleOfCertificate" class="form-control" />
+                <span asp-validation-for="TitleOfCertificate" class="text-danger"></span>
+            </div>*@
+            @if(Model.TitleOfCertificate != null)
+            {
+                @for(int i = 0; i < 4; i++)
+                {
+                    <div class="form-group">
+                        <label asp-for="StemIds" class="control-label"></label>
+                        <select asp-for="StemIds" class="form-control" asp-items="ViewBag.StemIds"></select>
+                        <span asp-validation-for="StemIds" class="text-danger"></span>
+                    </div>
+                }
+            }
+            <p>
+                <div class="form-groupcenter-adjust">
+                    <input type="submit" value="Save" class="custom-font btn btn-warning" /> |
+                    @*<a asp-action="Index" class="custom-font btn btn-primary">Back to List</a>*@
+                </div>
+            </p>
+            
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

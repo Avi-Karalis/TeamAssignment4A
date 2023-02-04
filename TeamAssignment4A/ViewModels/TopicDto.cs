@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
-using TeamAssignment4A.Models.JointTables;
 using TeamAssignment4A.Models;
 
 namespace TeamAssignment4A.Dtos
