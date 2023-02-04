@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using Fare;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using RandomDataGenerator.FieldOptions;
-using RandomDataGenerator.Randomizers;
 using TeamAssignment4A.Data;
 using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models;
@@ -38,7 +35,7 @@ namespace TeamAssignment4A.Services
                 _myDTO.View = "Details";
                 Exam exam = await _unit.Exam.GetAsync(id);
                 _myDTO.ExamDto = _mapper.Map<ExamDto>(exam);
-                _myDTO.ExamDto.ExamStemIds = await _unit.ExamStem.GetStemIdsByExam(exam);
+                _myDTO.ExamDto.ExamStemIds = await _unit.ExamStem.GetStemIdsByExam(exam) as List<int>;
             }
             return _myDTO;
         }
@@ -57,7 +54,7 @@ namespace TeamAssignment4A.Services
                 _myDTO.View = "CreateExamStems";
                 Exam exam = await _unit.Exam.GetAsync(examDto.Id);
                 _myDTO.ExamDto = _mapper.Map<ExamDto>(exam);
-                _myDTO.ExamDto.StemIds = await _unit.Stem.GetStemIdsByCert(exam.Certificate);
+                _myDTO.ExamDto.StemIds = await _unit.Stem.GetStemIdsByCert(exam.Certificate) as List<int>;
             }
             return _myDTO;
         }
@@ -92,6 +89,7 @@ namespace TeamAssignment4A.Services
             }
             Exam exam = await _unit.Exam.GetAsync(id);
             _myDTO.ExamDto = _mapper.Map<ExamDto>(exam);
+            _myDTO.ExamDto.ExamStemIds = await _unit.ExamStem.GetStemIdsByExam(exam) as List<int>;
             if (_myDTO.ExamDto == null)
             {
                 _myDTO.View = "Index";
@@ -181,25 +179,21 @@ namespace TeamAssignment4A.Services
 
         public async Task<MyDTO> Update(int id,
             [Bind("Id,TitleOfCertificate,Certificate,StemIds,Stems,ExamStemIds,ExamStems")] ExamDto examDto)
-        {
-            //Certificate certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
+        {            
             examDto.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
-            Exam exam = _mapper.Map<Exam>(examDto);
-            _unit.Exam.AddOrUpdate(exam);
-
-            //if (state == EntityState.Added)
-            //{
-            //    foreach (var stemId in examDto.StemIds)
-            //    {
-            //        Stem stem = await _unit.Stem.GetAsync(stemId);
-            //        ExamStem examStem = new ExamStem(exam, stem);
-            //        _unit.ExamStem.AddOrUpdate(examStem);
-            //        await _unit.SaveAsync();
-            //    }
-            //    Console.WriteLine(exam);
-            //    Console.WriteLine(exam);
-            //    exam.ExamStems = await _unit.ExamStem.GetStemsByExam(exam);
-            //}
+            Exam exam = await _unit.Exam.GetByCert(examDto.Certificate);
+            exam.ExamStems = await _unit.ExamStem.GetStemsByExam(exam);            
+            
+            List<int> stemIds = examDto.StemIds;
+            examDto = _mapper.Map<ExamDto>(exam);
+            for(int i = 0; i < examDto.ExamStems.Count(); i++)
+            { 
+                Stem stem = await _unit.Stem.GetAsync(stemIds[i]);
+                examDto.ExamStems[i].Stem = stem; 
+                exam = _mapper.Map<Exam>(examDto);
+                _unit.ExamStem.AddOrUpdate(exam.ExamStems.FirstOrDefault(x => x == examDto.ExamStems[i]));                
+            }
+            await _unit.SaveAsync();            
 
             if (id != exam.Id)
             {                

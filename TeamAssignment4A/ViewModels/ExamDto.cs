@@ -16,16 +16,16 @@ namespace TeamAssignment4A.Dtos
 
         [NotMapped]
         [Display(Name = "Stem Id")]
-        public IEnumerable<int> StemIds { get; set; }
+        public List<int> StemIds { get; set; }
 
         [Display(Name = "Stems")]
-        public IEnumerable<Stem> Stems { get; set; }
+        public List<Stem> Stems { get; set; }
 
         [NotMapped]
         [Display(Name = "Exam Stem Id")]
-        public IEnumerable<int> ExamStemIds { get; set; }
+        public List<int> ExamStemIds { get; set; }
 
         [Display(Name = "Exam Stems")]
-        public IEnumerable<ExamStem> ExamStems { get; set; }
+        public List<ExamStem> ExamStems { get; set; }
     }
 }

@@ -118,7 +118,7 @@ namespace TeamAssignment4A.Controllers
             ViewBag.Message = myDTO.Message;
             ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
             //IEnumerable<int> selections = await _service.GetExamStemIds(myDTO.ExamDto);
-            ViewBag.ExamStems = new SelectList(await _service.GetStemIds(myDTO.ExamDto));
+            ViewBag.Stems = new SelectList(await _service.GetStemIds(myDTO.ExamDto));
             if (myDTO.View == "Index")
             {
                 return View($"{myDTO.View}", myDTO.ExamDtos);

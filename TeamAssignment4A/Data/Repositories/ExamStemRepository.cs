@@ -4,7 +4,7 @@ using TeamAssignment4A.Models.JointTables;
 
 namespace TeamAssignment4A.Data.Repositories
 {
-    public class ExamStemRepository : IGenericRepository<ExamStem>
+    public class ExamStemRepository //: IGenericRepository<ExamStem>
     {
         private readonly WebAppDbContext _db;
         public ExamStemRepository(WebAppDbContext context)
@@ -17,16 +17,22 @@ namespace TeamAssignment4A.Data.Repositories
                 .Include(exs => exs.Stem).FirstOrDefaultAsync(x => x.Id == id);
         }        
 
-        public async Task<IEnumerable<ExamStem>?> GetAllAsync()
-        {
-            return await _db.ExamStems.Include(exs => exs.Exam)
-                .Include(exs => exs.Stem).ToListAsync<ExamStem>();
-        }
+        //public async Task<IEnumerable<ExamStem>?> GetAllAsync()
+        //{
+        //    return await _db.ExamStems.Include(exs => exs.Exam)
+        //        .Include(exs => exs.Stem).ToListAsync<ExamStem>();
+        //}
+
+        //public async Task<IEnumerable<ExamStem>?> GetAllByExam(Exam exam)
+        //{
+        //    return await _db.ExamStems.Where(exs => exs.Exam == exam).
+        //        Include(exs => exs.Exam).Include(exs => exs.Stem).ToListAsync<ExamStem>();
+        //}
 
         public async Task<IEnumerable<ExamStem>?> GetStemsByExam(Exam exam)
         {
-            return await _db.ExamStems.Include(exs => exs.Exam).Include(exs => exs.Stem)
-                .Where(exs => exs.Exam == exam).ToListAsync();
+            return await _db.ExamStems.Where(exs => exs.Exam == exam).
+                Include(exs => exs.Exam).Include(exs => exs.Stem).ToListAsync<ExamStem>();
         }
         public async Task<IEnumerable<int>?> GetStemIdsByExam(Exam exam)
         {
