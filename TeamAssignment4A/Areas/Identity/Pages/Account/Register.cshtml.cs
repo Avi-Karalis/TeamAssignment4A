@@ -32,20 +32,22 @@ namespace TeamAssignment4A.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IServiceProvider _serviceProvider;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
-        {
+            IEmailSender emailSender,
+            IServiceProvider serviceProvider) {
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _serviceProvider = serviceProvider;
         }
 
         /// <summary>
@@ -109,7 +111,7 @@ namespace TeamAssignment4A.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public async Task<IActionResult> OnPostAsync(IServiceProvider serviceProvider,string returnUrl = null )
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null )
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -119,10 +121,10 @@ namespace TeamAssignment4A.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                var candidateId = await EnsureUser(serviceProvider, Input.Password, Input.Email);
                 var result = await _userManager.CreateAsync(user, Input.Password);
+                var candidateId = await EnsureUser(_serviceProvider, Input.Password, Input.Email);
+                await EnsureRole(_serviceProvider, candidateId, Constants.ContactCandidateRole);
 
-                await EnsureRole(serviceProvider, candidateId, Constants.ContactCandidateRole);
 
                 if (result.Succeeded)
                 {
