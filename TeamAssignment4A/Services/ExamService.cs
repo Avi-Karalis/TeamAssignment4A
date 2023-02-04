@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Fare;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RandomDataGenerator.FieldOptions;
@@ -104,8 +105,8 @@ namespace TeamAssignment4A.Services
         {
             examDto.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
             Exam exam = _mapper.Map<Exam>(examDto);
-
             _unit.Exam.AddOrUpdate(exam);
+
             if (id != exam.Id)
             {                
                 _myDTO.View = "Create";
@@ -120,8 +121,6 @@ namespace TeamAssignment4A.Services
                 _myDTO.View = "CreateExamStems";
                 examDto = _mapper.Map<ExamDto>(exam);
                 _myDTO.ExamDto = examDto;
-                //IEnumerable<Exam> exams = await _unit.Exam.GetAllAsync();
-                //_myDTO.ExamDtos = _mapper.Map<List<ExamDto>>(exams);
                 return _myDTO;
             }
             else
@@ -138,44 +137,30 @@ namespace TeamAssignment4A.Services
         {            
             examDto.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
             Exam exam = _mapper.Map<Exam>(examDto);
-            EntityState state = _unit.Exam.AddOrUpdate(exam);
-            
-            if(state == EntityState.Added)
+            _unit.Exam.AddOrUpdate(exam);
+                        
+            foreach (var stemId in examDto.StemIds)
             {
-                foreach (var stemId in examDto.StemIds)
-                {
-                    Stem stem = await _unit.Stem.GetAsync(stemId);
-                    ExamStem examStem = new ExamStem(exam, stem);
-                    _unit.ExamStem.AddOrUpdate(examStem);
-                    await _unit.SaveAsync();
-                }
-                Console.WriteLine(exam);
-                Console.WriteLine(exam);
-                exam.ExamStems = await _unit.ExamStem.GetStemsByExam(exam);
+                Stem stem = await _unit.Stem.GetAsync(stemId);
+                ExamStem examStem = new ExamStem(exam, stem);
+                _unit.ExamStem.AddOrUpdate(examStem);
+                await _unit.SaveAsync();
             }
+            Console.WriteLine(exam);
+            Console.WriteLine(exam);
+            exam.ExamStems = await _unit.ExamStem.GetStemsByExam(exam);
 
             if (id != exam.Id)
-            {
-                if (state == EntityState.Added)
-                {
-                    _myDTO.View = "CreateExamStems";
-                }
-                if (state == EntityState.Modified)
-                {
-                    _myDTO.View = "Edit";
-                }
+            {                
+                _myDTO.View = "CreateExamStems";                
                 _myDTO.Message = "The exam Id was compromised. The request could not be completed due to security reasons. Please try again later.";
                 _myDTO.ExamDto = examDto;
                 return _myDTO;
             }
             if (ModelState.IsValid)
             {                 
-                _myDTO.Message = "The requested exam has been added successfully.";                
-                if (state == EntityState.Modified)
-                {
-                    _myDTO.Message = "The requested exam has been updated successfully.";
-                }
-                if (state == EntityState.Modified && !await _unit.Exam.Exists(exam.Id))
+                _myDTO.Message = "The requested exam has been added successfully."; 
+                if (!await _unit.Exam.Exists(exam.Id))
                 {
                     _myDTO.Message = "The requested exam could not be found. Please try again later.";
                 }                
@@ -186,15 +171,8 @@ namespace TeamAssignment4A.Services
                 return _myDTO;
             }
             else
-            {
-                if (state == EntityState.Added)
-                {
-                    _myDTO.View = "CreateExamStems";
-                }
-                if (state == EntityState.Modified)
-                {
-                    _myDTO.View = "Edit";
-                }
+            {                
+                _myDTO.View = "CreateExamStems";
                 _myDTO.Message = "Invalid entries. Please try again later.";
                 _myDTO.ExamDto = examDto;
             }
@@ -204,47 +182,36 @@ namespace TeamAssignment4A.Services
         public async Task<MyDTO> Update(int id,
             [Bind("Id,TitleOfCertificate,Certificate,StemIds,Stems,ExamStemIds,ExamStems")] ExamDto examDto)
         {
-            Certificate certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
+            //Certificate certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
             examDto.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
             Exam exam = _mapper.Map<Exam>(examDto);
-            EntityState state = _unit.Exam.AddOrUpdate(exam);
+            _unit.Exam.AddOrUpdate(exam);
 
-            if (state == EntityState.Added)
-            {
-                foreach (var stemId in examDto.StemIds)
-                {
-                    Stem stem = await _unit.Stem.GetAsync(stemId);
-                    ExamStem examStem = new ExamStem(exam, stem);
-                    _unit.ExamStem.AddOrUpdate(examStem);
-                    await _unit.SaveAsync();
-                }
-                Console.WriteLine(exam);
-                Console.WriteLine(exam);
-                exam.ExamStems = await _unit.ExamStem.GetStemsByExam(exam);
-            }
+            //if (state == EntityState.Added)
+            //{
+            //    foreach (var stemId in examDto.StemIds)
+            //    {
+            //        Stem stem = await _unit.Stem.GetAsync(stemId);
+            //        ExamStem examStem = new ExamStem(exam, stem);
+            //        _unit.ExamStem.AddOrUpdate(examStem);
+            //        await _unit.SaveAsync();
+            //    }
+            //    Console.WriteLine(exam);
+            //    Console.WriteLine(exam);
+            //    exam.ExamStems = await _unit.ExamStem.GetStemsByExam(exam);
+            //}
 
             if (id != exam.Id)
-            {
-                if (state == EntityState.Added)
-                {
-                    _myDTO.View = "CreateExamStems";
-                }
-                if (state == EntityState.Modified)
-                {
-                    _myDTO.View = "Edit";
-                }
+            {                
+                _myDTO.View = "Edit";
                 _myDTO.Message = "The exam Id was compromised. The request could not be completed due to security reasons. Please try again later.";
                 _myDTO.ExamDto = examDto;
                 return _myDTO;
             }
             if (ModelState.IsValid)
             {
-                _myDTO.Message = "The requested exam has been added successfully.";
-                if (state == EntityState.Modified)
-                {
-                    _myDTO.Message = "The requested exam has been updated successfully.";
-                }
-                if (state == EntityState.Modified && !await _unit.Exam.Exists(exam.Id))
+                _myDTO.Message = "The requested exam has been updated successfully.";                
+                if (!await _unit.Exam.Exists(exam.Id))
                 {
                     _myDTO.Message = "The requested exam could not be found. Please try again later.";
                 }                
@@ -255,15 +222,8 @@ namespace TeamAssignment4A.Services
                 return _myDTO;
             }
             else
-            {
-                if (state == EntityState.Added)
-                {
-                    _myDTO.View = "CreateExamStems";
-                }
-                if (state == EntityState.Modified)
-                {
-                    _myDTO.View = "Edit";
-                }
+            {                
+                _myDTO.View = "Edit";
                 _myDTO.Message = "Invalid entries. Please try again later.";
                 _myDTO.ExamDto = examDto;
             }
