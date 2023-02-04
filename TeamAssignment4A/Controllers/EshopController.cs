@@ -34,7 +34,7 @@ namespace TeamAssignment4A.Controllers {
             }
 
             var candidateExam = await _context.CandidateExams
-                .FirstOrDefaultAsync(m => m.CandidateExamId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (candidateExam == null) {
                 return NotFound();
             }
@@ -61,7 +61,7 @@ namespace TeamAssignment4A.Controllers {
                 Candidate candidate = _context.Candidates.Find(buyCertificateDTO.CandidateId);
                 string assessmentTestCode = RandomizerFactory.GetRandomizer(new FieldOptionsIBAN()).Generate();
                 DateTime examinationDate = buyCertificateDTO.ExaminationDate;
-                Exam exam = new Exam(assessmentTestCode, examinationDate, certificate, candidate);
+                Exam exam = new Exam(certificate);
                 _context.Add(exam);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Eshop", new { id = exam.Id });

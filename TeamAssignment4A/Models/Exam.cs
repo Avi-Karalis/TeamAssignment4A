@@ -21,10 +21,7 @@ namespace TeamAssignment4A.Models
 
         }
 
-        public Exam(string assessmentTestCode, DateTime examinationDate, Certificate certificate, Candidate candidate) {
-            AssessmentTestCode = assessmentTestCode;
-            ExaminationDate = examinationDate;
-            Candidate = candidate;
+        public Exam(Certificate certificate) {
             Certificate = certificate;
         }
 

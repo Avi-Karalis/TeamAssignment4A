@@ -720,19 +720,11 @@ namespace TeamAssignment4A.Migrations
 
             modelBuilder.Entity("TeamAssignment4A.Models.Exam", b =>
                 {
-                    b.HasOne("TeamAssignment4A.Models.Candidate", "Candidate")
-                        .WithMany()
-                        .HasForeignKey("CandidateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("TeamAssignment4A.Models.Certificate", "Certificate")
                         .WithMany("Exams")
                         .HasForeignKey("CertificateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Candidate");
 
                     b.Navigation("Certificate");
                 });
@@ -746,7 +738,7 @@ namespace TeamAssignment4A.Migrations
                         .IsRequired();
 
                     b.HasOne("TeamAssignment4A.Models.Exam", "Exam")
-                        .WithMany()
+                        .WithMany("CandidateExams")
                         .HasForeignKey("ExamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -840,6 +832,8 @@ namespace TeamAssignment4A.Migrations
 
             modelBuilder.Entity("TeamAssignment4A.Models.Exam", b =>
                 {
+                    b.Navigation("CandidateExams");
+
                     b.Navigation("ExamStems");
                 });
 
