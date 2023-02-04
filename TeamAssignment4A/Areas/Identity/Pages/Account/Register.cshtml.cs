@@ -17,7 +17,10 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using TeamAssignment4A.Authorization;
+using TeamAssignment4A.Data;
 
 namespace TeamAssignment4A.Areas.Identity.Pages.Account
 {
@@ -106,7 +109,7 @@ namespace TeamAssignment4A.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(IServiceProvider serviceProvider,string returnUrl = null )
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -116,7 +119,10 @@ namespace TeamAssignment4A.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                var candidateId = await EnsureUser(serviceProvider, Input.Password, Input.Email);
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
+                await EnsureRole(serviceProvider, candidateId, Constants.ContactCandidateRole);
 
                 if (result.Succeeded)
                 {
@@ -175,6 +181,57 @@ namespace TeamAssignment4A.Areas.Identity.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<IdentityUser>)_userStore;
+        }
+
+        private static async Task<string> EnsureUser(IServiceProvider serviceProvider,
+                                                    string testUserPw, string UserName) {
+            var userManager = serviceProvider.GetService<UserManager<IdentityUser>>();
+
+            var user = await userManager.FindByNameAsync(UserName);
+            if (user == null) {
+                user = new IdentityUser {
+                    UserName = UserName,
+                    EmailConfirmed = true
+                };
+                await userManager.CreateAsync(user, testUserPw);
+            }
+
+            if (user == null) {
+                throw new Exception("The password is probably not strong enough!");
+            }
+
+            return user.Id;
+        }
+
+        private static async Task<IdentityResult> EnsureRole(IServiceProvider serviceProvider,
+                                                                      string uid, string role) {
+            var roleManager = serviceProvider.GetService<RoleManager<IdentityRole>>();
+
+            if (roleManager == null) {
+                throw new Exception("roleManager null");
+            }
+
+            IdentityResult IR;
+            if (!await roleManager.RoleExistsAsync(role)) {
+                IR = await roleManager.CreateAsync(new IdentityRole(role));
+            }
+
+            var userManager = serviceProvider.GetService<UserManager<IdentityUser>>();
+
+            //if (userManager == null)
+            //{
+            //    throw new Exception("userManager is null");
+            //}
+
+            var user = await userManager.FindByIdAsync(uid);
+
+            if (user == null) {
+                throw new Exception("The testUserPw password was probably not strong enough!");
+            }
+
+            IR = await userManager.AddToRoleAsync(user, role);
+
+            return IR;
         }
     }
 }
