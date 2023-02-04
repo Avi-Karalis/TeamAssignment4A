@@ -8,7 +8,8 @@ using TeamAssignment4A.Models.JointTables;
 
 namespace TeamAssignment4A.Models
 {
-    public class Candidate {
+    public class Candidate 
+    {
         //Basic properties for each Candidate
 
         [Key]
@@ -45,7 +46,7 @@ namespace TeamAssignment4A.Models
         public DateTime Birthdate { get; set; }
 
         [Required]
-        [Display(Name = "E-mail address")]
+        [Display(Name = "E-mail Address")]
         public string Email { get; set; }
 
         
@@ -89,6 +90,7 @@ namespace TeamAssignment4A.Models
 
         
         // Navigation Property        
-        public virtual ICollection<CandidateExam>? CandidateExams { get; set; }
+        public virtual IEnumerable<CandidateExam>? CandidateExams { get; set; }
+        public virtual IEnumerable<CandidateExamStem>? CandidateExamStems { get; set; }
     }
 }

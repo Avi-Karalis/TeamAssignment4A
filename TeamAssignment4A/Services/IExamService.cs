@@ -4,9 +4,14 @@ using TeamAssignment4A.Models;
 
 namespace TeamAssignment4A.Services
 {
-    public interface IExamService : IGenericService<ExamDto>
+    public interface IExamService 
     {
-        new Task<IEnumerable<ExamDto>?> GetAll();
-        new Task<MyDTO> AddOrUpdate(int id, ExamDto examDto);
+        Task<MyDTO> Get(int id);
+        Task<IEnumerable<ExamDto>?> GetAll();
+        Task<MyDTO> AddStems(int id, ExamDto examDto);
+        Task<MyDTO> GetForUpdate(int id);
+        Task<MyDTO> Update(int id, ExamDto examDto);
+        Task<MyDTO> GetForDelete(int id);
+        Task<MyDTO> Delete(int id);                
     }
 }
