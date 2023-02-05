@@ -192,12 +192,12 @@ namespace TeamAssignment4A.Services
         public async Task<MyDTO> Update(int id,
             [Bind("Id,TitleOfCertificate,Certificate,StemIds,Stems,ExamStemIds,ExamStems")] ExamDto examDto)
         {            
-            examDto.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
-            Exam exam = await _unit.Exam.GetByCert(examDto.Certificate);
-            exam.ExamStems = await _unit.ExamStem.GetStemsByExam(exam);            
-            
+            //examDto.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
+            //exam.ExamStems = await _unit.ExamStem.GetStemsByExam(exam);            
+            Exam exam = await _unit.Exam.GetAsync(examDto.Id);
             List<int> stemIds = examDto.StemIds;
             examDto = _mapper.Map<ExamDto>(exam);
+            
             for(int i = 0; i < examDto.ExamStems.Count(); i++)
             { 
                 Stem stem = await _unit.Stem.GetAsync(stemIds[i]);
@@ -205,7 +205,7 @@ namespace TeamAssignment4A.Services
                 exam = _mapper.Map<Exam>(examDto);
                 _unit.ExamStem.AddOrUpdate(exam.ExamStems.FirstOrDefault(x => x == examDto.ExamStems[i]));                
             }
-            await _unit.SaveAsync();            
+            //await _unit.SaveAsync();            
 
             if (id != exam.Id)
             {                
