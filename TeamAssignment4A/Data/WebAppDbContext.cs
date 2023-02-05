@@ -35,7 +35,13 @@ namespace TeamAssignment4A.Data
             modelBuilder.Entity<Certificate>().HasIndex(c => c.TitleOfCertificate).IsUnique();
             modelBuilder.Entity<Topic>().HasIndex(c => c.Description).IsUnique();            
             modelBuilder.Entity<CandidateExam>().HasIndex(c => c.AssessmentTestCode).IsUnique();            
-        }        
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.EnableSensitiveDataLogging();
+            base.OnConfiguring(optionsBuilder);
+        }
     }
 }
 

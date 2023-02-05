@@ -30,7 +30,8 @@ namespace TeamAssignment4A.Data.Repositories
         }
 
         public EntityState AddOrUpdate(Exam exam)
-        {            
+        {
+            var state = _db.Entry(exam).State;
             _db.Exams.Update(exam);
             return _db.Entry(exam).State;
         }

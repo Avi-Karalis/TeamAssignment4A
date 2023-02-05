@@ -32,11 +32,15 @@ namespace TeamAssignment4A.Services
             else
             {
                 _myDTO.View = "Details";
-                ExamStem examStem = await _unit.ExamStem.GetAsync(id);
-                _myDTO.ExamStem = examStem;
+                _myDTO.ExamStem = await _unit.ExamStem.GetAsync(id);
             }
             return _myDTO;
-        }        
+        } 
+        
+        public async Task<IEnumerable<ExamStem>?> GetAll()
+        {
+            return await _unit.ExamStem.GetAllAsync();
+        }
 
         // Get all Exam Stems that have a specific Exam
         public async Task<IEnumerable<ExamStem>?> GetByExam(Exam exam)
@@ -51,14 +55,15 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested exam stem could not be found. Please try again later.";
+                _myDTO.ExamStems = await _unit.ExamStem.GetAllAsync();
                 return _myDTO;
             }
-            ExamStem examStem = await _unit.ExamStem.GetAsync(id);
-            _myDTO.ExamStem = _mapper.Map<ExamStem>(examStem);
+            _myDTO.ExamStem = await _unit.ExamStem.GetAsync(id);
             if (_myDTO.ExamStem == null)
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested exam stem could not be found. Please try again later.";
+                _myDTO.ExamStems = await _unit.ExamStem.GetAllAsync();
             }
             return _myDTO;
         }
@@ -94,8 +99,7 @@ namespace TeamAssignment4A.Services
                 }                
                 await _unit.SaveAsync();
                 _myDTO.View = "Index";
-                IEnumerable<ExamStem> examStems = await _unit.ExamStem.GetStemsByExam(examStem.Exam);
-                _myDTO.ExamStems = _mapper.Map<List<ExamStem>>(examStems);
+                _myDTO.ExamStems = await _unit.ExamStem.GetStemsByExam(examStem.Exam);
                 return _myDTO;
             }
             else
@@ -152,8 +156,7 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested exam stem could not be found. Please try again later.";
-                IEnumerable<ExamStem> examStems = await _unit.ExamStem.GetAllAsync();
-                _myDTO.ExamStems = _mapper.Map<List<ExamStem>>(examStems);
+                _myDTO.ExamStems = await _unit.ExamStem.GetAllAsync();
                 return _myDTO;
             }
             ExamStem examStem = await _unit.ExamStem.GetAsync(id);
@@ -162,8 +165,7 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested exam stem could not be found. Please try again later.";
-                IEnumerable<ExamStem> examStems = await _unit.ExamStem.GetAllAsync();
-                _myDTO.ExamStems = _mapper.Map<List<ExamStem>>(examStems);
+                _myDTO.ExamStems = await _unit.ExamStem.GetAllAsync();
             }
             return _myDTO;
         }
@@ -179,9 +181,8 @@ namespace TeamAssignment4A.Services
             }
             ExamStem examStem = await _unit.ExamStem.GetAsync(id);
             _unit.ExamStem.Delete(examStem);
-            await _unit.SaveAsync();
-            IEnumerable<ExamStem> examStems = await _unit.ExamStem.GetAllAsync();
-            _myDTO.ExamStems = _mapper.Map<List<ExamStem>>(examStems);
+            await _unit.SaveAsync(); 
+            _myDTO.ExamStems = await _unit.ExamStem.GetAllAsync();
             return _myDTO;
         }
     }

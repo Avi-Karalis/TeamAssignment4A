@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Fare;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TeamAssignment4A.Data;
 using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models;
@@ -94,7 +95,7 @@ namespace TeamAssignment4A.Services
             }
             Exam exam = await _unit.Exam.GetAsync(id);
             _myDTO.ExamDto = _mapper.Map<ExamDto>(exam);
-            _myDTO.ExamDto.ExamStemIds = await _unit.ExamStem.GetStemIdsByExam(exam) as List<int>;
+            _myDTO.ExamDto.ExamStems = await _unit.ExamStem.GetStemsByExam(exam) as List<ExamStem>;
             if (_myDTO.ExamDto == null)
             {
                 _myDTO.View = "Index";
@@ -108,7 +109,12 @@ namespace TeamAssignment4A.Services
         {
             examDto.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
             Exam exam = _mapper.Map<Exam>(examDto);
+            var state = _db.Entry(exam).State;
             _unit.Exam.AddOrUpdate(exam);
+            state = _db.Entry(exam).State;
+            
+            
+
 
             if (id != exam.Id)
             {                
@@ -121,6 +127,9 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.Message = "The requested Title of Certificate has been added successfully.";
                 await _unit.SaveAsync();
+                state = _db.Entry(exam).State;
+                _db.Entry(exam).State = EntityState.Detached;
+                state = _db.Entry(exam).State;
                 _myDTO.View = "CreateExamStems";
                 examDto = _mapper.Map<ExamDto>(exam);
                 _myDTO.ExamDto = examDto;
@@ -139,19 +148,23 @@ namespace TeamAssignment4A.Services
             [Bind("Id,TitleOfCertificate,Certificate,StemIds,Stems,ExamStemIds,ExamStems")] ExamDto examDto)
         {            
             examDto.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
-            Exam exam = _mapper.Map<Exam>(examDto);
-            _unit.Exam.AddOrUpdate(exam);
+            //Exam exam = _mapper.Map<Exam>(examDto);
+            Exam exam = await _unit.Exam.GetAsync(examDto.Id);//_db.Exams.Find(examDto.Id);
+            //_mapper.Map(examDto, exam);
+            //_db.Exams.Attach(exam);
+            //_db.Entry(exam).State = EntityState.Modified;
+            //_db.Entry(exam).State = EntityState.Detached;
+            //var state = _db.Entry(exam).State;
+            //_db.Entry(exam).State = EntityState.Modified;
                         
             foreach (var stemId in examDto.StemIds)
             {
                 Stem stem = await _unit.Stem.GetAsync(stemId);
                 ExamStem examStem = new ExamStem(exam, stem);
                 _unit.ExamStem.AddOrUpdate(examStem);
-                await _unit.SaveAsync();
             }
-            Console.WriteLine(exam);
-            Console.WriteLine(exam);
-            exam.ExamStems = await _unit.ExamStem.GetStemsByExam(exam);
+            _unit.Exam.AddOrUpdate(exam);
+                await _unit.SaveAsync();
 
             if (id != exam.Id)
             {                

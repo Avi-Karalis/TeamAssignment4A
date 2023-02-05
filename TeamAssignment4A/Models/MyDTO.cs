@@ -19,6 +19,8 @@ namespace TeamAssignment4A.Models
         public IEnumerable<ExamDto>? ExamDtos { get; set; }
         public ExamStem? ExamStem { get; set; }
         public IEnumerable<ExamStem>? ExamStems { get; set; }
+        public CandidateExam? CandidateExam { get; set; }
+        public IEnumerable<CandidateExam>? CandidateExams { get; set; }
 
     }
 }

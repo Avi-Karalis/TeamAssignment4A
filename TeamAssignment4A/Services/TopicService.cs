@@ -64,6 +64,8 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested topic could not be found. Please try again later.";
+                var topics = await _unit.Topic.GetAllAsync();
+                _myDTO.TopicDtos = _mapper.Map<List<TopicDto>>(topics);
             }
             return _myDTO;
         }
