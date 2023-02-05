@@ -16,9 +16,11 @@ namespace TeamAssignment4A.Controllers
     public class CandidatesController : Controller
     {
         private readonly CandidateService _service;
+        private MyDTO _myDTO;
         public CandidatesController(CandidateService service)
         {
             _service = service;
+            _myDTO= new MyDTO();
         }
 
         // GET: Candidates
@@ -30,13 +32,13 @@ namespace TeamAssignment4A.Controllers
         // GET: Candidates/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            MyDTO myDTO = await _service.Get(id);
-            ViewBag.Message = myDTO.Message;
-            if (myDTO.View == "Index")
+            _myDTO = await _service.Get(id);
+            ViewBag.Message = _myDTO.Message;
+            if (_myDTO.View == "Index")
             {
-                return View($"{myDTO.View}", myDTO.Candidates);
+                return View($"{_myDTO.View}", _myDTO.Candidates);
             }
-            return View($"{myDTO.View}", myDTO.Candidate);
+            return View($"{_myDTO.View}", _myDTO.Candidate);
         }
 
         // GET: Candidates/Create
@@ -53,25 +55,25 @@ namespace TeamAssignment4A.Controllers
             "Birthdate,Email,LandlineNumber,MobileNumber,Address1,Address2,PostalCode,Town,Province,PhotoIdType,PhotoIdNumber," +
             "PhotoIdDate")] Candidate candidate)
         {
-            MyDTO myDTO = await _service.AddOrUpdate(id, candidate);
-            ViewBag.Message = myDTO.Message;
-            if (myDTO.View == "Index")
+            _myDTO = await _service.AddOrUpdate(id, candidate);
+            ViewBag.Message = _myDTO.Message;
+            if (_myDTO.View == "Index")
             {
-                return View($"{myDTO.View}", myDTO.Candidates);
+                return View($"{_myDTO.View}", _myDTO.Candidates);
             }
-            return View($"{myDTO.View}", myDTO.Candidate);
+            return View($"{_myDTO.View}", _myDTO.Candidate);
         }
 
         // GET: Candidates/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            MyDTO myDTO = await _service.GetForUpdate(id);
-            ViewBag.Message = myDTO.Message;
-            if (myDTO.View == "Index")
+            _myDTO = await _service.GetForUpdate(id);
+            ViewBag.Message = _myDTO.Message;
+            if (_myDTO.View == "Index")
             {
-                return View($"{myDTO.View}", myDTO.Candidates);
+                return View($"{_myDTO.View}", _myDTO.Candidates);
             }
-            return View($"{myDTO.View}", myDTO.Candidate);
+            return View($"{_myDTO.View}", _myDTO.Candidate);
         }
 
         // POST: Candidates/Edit/5
@@ -80,25 +82,25 @@ namespace TeamAssignment4A.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,Gender,NativeLanguage,CountryOfResidence,Birthdate,Email,LandlineNumber,MobileNumber,Address1,Address2,PostalCode,Town,Province,PhotoIdType,PhotoIdNumber,PhotoIdDate")] Candidate candidate)
         {
-            MyDTO myDTO = await _service.AddOrUpdate(id, candidate);
-            ViewBag.Message = myDTO.Message;
-            if (myDTO.View == "Index")
+            _myDTO = await _service.AddOrUpdate(id, candidate);
+            ViewBag.Message = _myDTO.Message;
+            if (_myDTO.View == "Index")
             {
-                return View($"{myDTO.View}", myDTO.Candidates);
+                return View($"{_myDTO.View}", _myDTO.Candidates);
             }
-            return View($"{myDTO.View}", myDTO.Candidates);
+            return View($"{_myDTO.View}", _myDTO.Candidates);
         }
 
         // GET: Candidates/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            MyDTO myDTO = await _service.GetForDelete(id);
-            ViewBag.Message = myDTO.Message;
-            if (myDTO.View == "Index")
+            _myDTO = await _service.GetForDelete(id);
+            ViewBag.Message = _myDTO.Message;
+            if (_myDTO.View == "Index")
             {
-                return View($"{myDTO.View}", myDTO.Candidates);
+                return View($"{_myDTO.View}", _myDTO.Candidates);
             }
-            return View($"{myDTO.View}", myDTO.Candidate);
+            return View($"{_myDTO.View}", _myDTO.Candidate);
         }
 
         // POST: Candidates/Delete/5
@@ -106,9 +108,9 @@ namespace TeamAssignment4A.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            MyDTO myDTO = await _service.Delete(id);
-            ViewBag.Message = myDTO.Message;
-            return View($"{myDTO.View}", myDTO.Candidates);
+            _myDTO = await _service.Delete(id);
+            ViewBag.Message = _myDTO.Message;
+            return View($"{_myDTO.View}", _myDTO.Candidates);
         }        
     }
 }

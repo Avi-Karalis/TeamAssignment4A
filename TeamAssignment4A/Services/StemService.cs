@@ -26,6 +26,8 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested stem could not be found. Please try again later.";
+                var stems = await _unit.Stem.GetAllAsync();
+                _myDTO.StemDtos = _mapper.Map<List<StemDto>>(stems);
             }
             else
             {
@@ -43,6 +45,11 @@ namespace TeamAssignment4A.Services
             return _myDTO.StemDtos;
         }
 
+        public async Task<IEnumerable<Topic>?> GetTopics()
+        {
+            return await _unit.Topic.GetAllAsync();
+        }
+
         public async Task<MyDTO> GetForUpdate(int id)
         {
             _myDTO.View = "Edit";
@@ -50,6 +57,8 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested stem could not be found. Please try again later.";
+                var stems = await _unit.Stem.GetAllAsync();
+                _myDTO.StemDtos = _mapper.Map<List<StemDto>>(stems);
                 return _myDTO;
             }
             Stem stem = await _unit.Stem.GetAsync(id);
@@ -62,7 +71,8 @@ namespace TeamAssignment4A.Services
             return _myDTO;
         }
 
-        public async Task<MyDTO> AddOrUpdate(int id, [Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,TopicDescription,Topic")] StemDto stemDto)
+        public async Task<MyDTO> AddOrUpdate(int id, [Bind("Id,Question,OptionA,OptionB,OptionC," +
+            "OptionD,CorrectAnswer,TopicDescription,Topic")] StemDto stemDto)
         {            
             Topic topic = await _unit.Topic.GetAsyncByDesc(stemDto.TopicDescription);
             stemDto.Topic = topic;                

@@ -16,9 +16,11 @@ namespace TeamAssignment4A.Controllers
     public class CertificatesController : Controller
     {       
         private readonly CertificateService _service;
+        private MyDTO _myDTO;
         public CertificatesController(CertificateService service)
         {            
-            _service = service;        
+            _service = service;
+            _myDTO= new MyDTO();
         }        
 
         // GET: Certificates
@@ -30,13 +32,13 @@ namespace TeamAssignment4A.Controllers
         // GET: Certificates/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            MyDTO myDTO = await _service.Get(id);
-            ViewBag.Message = myDTO.Message;
-            if(myDTO.View == "Index")
+            _myDTO = await _service.Get(id);
+            ViewBag.Message = _myDTO.Message;
+            if(_myDTO.View == "Index")
             {
-                return View($"{myDTO.View}", myDTO.Certificates);
+                return View($"{_myDTO.View}", _myDTO.Certificates);
             }
-            return View($"{myDTO.View}", myDTO.Certificate);           
+            return View($"{_myDTO.View}", _myDTO.Certificate);           
         }
 
         // GET: Certificates/Create
@@ -50,25 +52,25 @@ namespace TeamAssignment4A.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int id, [Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
         {
-            MyDTO myDTO = await _service.AddOrUpdate(id, certificate);
-            ViewBag.Message = myDTO.Message;
-            if (myDTO.View == "Index")
+            _myDTO = await _service.AddOrUpdate(id, certificate);
+            ViewBag.Message = _myDTO.Message;
+            if (_myDTO.View == "Index")
             {
-                return View($"{myDTO.View}", myDTO.Certificates);
+                return View($"{_myDTO.View}", _myDTO.Certificates);
             }
-            return View($"{myDTO.View}", myDTO.Certificate);
+            return View($"{_myDTO.View}", _myDTO.Certificate);
         }
 
         // GET: Certificates/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            MyDTO myDTO = await _service.GetForUpdate(id);
-            ViewBag.Message = myDTO.Message;
-            if (myDTO.View == "Index")
+            _myDTO = await _service.GetForUpdate(id);
+            ViewBag.Message = _myDTO.Message;
+            if (_myDTO.View == "Index")
             {
-                return View($"{myDTO.View}", myDTO.Certificates);
+                return View($"{_myDTO.View}", _myDTO.Certificates);
             }
-            return View($"{myDTO.View}", myDTO.Certificate);
+            return View($"{_myDTO.View}", _myDTO.Certificate);
         }
 
         // POST: Certificates/Edit/5        
@@ -76,25 +78,25 @@ namespace TeamAssignment4A.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
         {
-            MyDTO myDTO = await _service.AddOrUpdate(id, certificate);
-            ViewBag.Message = myDTO.Message;
-            if (myDTO.View == "Index")
+            _myDTO = await _service.AddOrUpdate(id, certificate);
+            ViewBag.Message = _myDTO.Message;
+            if (_myDTO.View == "Index")
             {
-                return View($"{myDTO.View}", myDTO.Certificates);
+                return View($"{_myDTO.View}", _myDTO.Certificates);
             }
-            return View($"{myDTO.View}", myDTO.Certificate);          
+            return View($"{_myDTO.View}", _myDTO.Certificate);          
         }
 
         // GET: Certificates/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            MyDTO myDTO = await _service.GetForDelete(id);
-            ViewBag.Message = myDTO.Message;
-            if (myDTO.View == "Index")
+            _myDTO = await _service.GetForDelete(id);
+            ViewBag.Message = _myDTO.Message;
+            if (_myDTO.View == "Index")
             {
-                return View($"{myDTO.View}", myDTO.Certificates);
+                return View($"{_myDTO.View}", _myDTO.Certificates);
             }
-            return View($"{myDTO.View}", myDTO.Certificate);
+            return View($"{_myDTO.View}", _myDTO.Certificate);
         }
 
         // POST: Certificates/Delete/5
@@ -102,9 +104,9 @@ namespace TeamAssignment4A.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            MyDTO myDTO = await _service.Delete(id);
-            ViewBag.Message = myDTO.Message;
-            return View($"{myDTO.View}", myDTO.Certificates);
+            _myDTO = await _service.Delete(id);
+            ViewBag.Message = _myDTO.Message;
+            return View($"{_myDTO.View}", _myDTO.Certificates);
         }        
     }
 }

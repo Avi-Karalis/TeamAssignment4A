@@ -15,19 +15,13 @@ namespace TeamAssignment4A.Data.Repositories
         {
             return await _db.ExamStems.Include(exs => exs.Exam)
                 .Include(exs => exs.Stem).FirstOrDefaultAsync(x => x.Id == id);
-        }        
+        }
 
-        //public async Task<IEnumerable<ExamStem>?> GetAllAsync()
-        //{
-        //    return await _db.ExamStems.Include(exs => exs.Exam)
-        //        .Include(exs => exs.Stem).ToListAsync<ExamStem>();
-        //}
-
-        //public async Task<IEnumerable<ExamStem>?> GetAllByExam(Exam exam)
-        //{
-        //    return await _db.ExamStems.Where(exs => exs.Exam == exam).
-        //        Include(exs => exs.Exam).Include(exs => exs.Stem).ToListAsync<ExamStem>();
-        //}
+        public async Task<IEnumerable<ExamStem>?> GetAllAsync()
+        {
+            return await _db.ExamStems.Include(exs => exs.Exam)
+                .Include(exs => exs.Stem).ToListAsync<ExamStem>();
+        }
 
         public async Task<IEnumerable<ExamStem>?> GetStemsByExam(Exam exam)
         {

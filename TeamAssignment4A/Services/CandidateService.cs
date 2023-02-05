@@ -22,6 +22,7 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested candidate could not be found. Please try again later.";
+                _myDTO.Candidates = await _unit.Candidate.GetAllAsync();
             }
             else
             {

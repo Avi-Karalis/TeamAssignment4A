@@ -19,12 +19,10 @@ namespace TeamAssignment4A.Controllers
     [Authorize]
     public class AdminExamsController : Controller
     {
-        private readonly WebAppDbContext _db;
         private readonly ExamService _service;        
 
-        public AdminExamsController(WebAppDbContext context, ExamService service)
+        public AdminExamsController(ExamService service)
         {
-            _db = context;
             _service = service;
         }        
 
@@ -54,9 +52,9 @@ namespace TeamAssignment4A.Controllers
         // GET: Exams/Create(TitleOfCert)
         [HttpGet]
         [ProducesResponseType(typeof(ExamDto), 200)]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {            
-            ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");                        
+            ViewBag.Certificates = new SelectList(await _service.GetCerts(), "TitleOfCertificate", "TitleOfCertificate");                        
             return View();
         }
 
@@ -71,7 +69,6 @@ namespace TeamAssignment4A.Controllers
             ViewBag.Message = myDTO.Message;
             if (myDTO.View == "CreateExamStems")
             {
-                ViewBag.Certificate = examDto.Certificate;
                 ViewBag.StemIds = new SelectList(await _service.GetStemIds(examDto));
                 return RedirectToAction($"{myDTO.View}", myDTO.ExamDto);
             }  
@@ -90,7 +87,6 @@ namespace TeamAssignment4A.Controllers
                 return View($"{myDTO.View}", myDTO.ExamDtos);
             }
             ViewBag.StemIds = new SelectList(myDTO.ExamDto.StemIds);
-            //ViewBag.StemIds = new SelectList(await _service.GetStemIds(myDTO.ExamDto));
             return View($"{myDTO.View}", myDTO.ExamDto);            
         }
 
@@ -118,8 +114,7 @@ namespace TeamAssignment4A.Controllers
         {
             MyDTO myDTO = await _service.GetForUpdate(id);
             ViewBag.Message = myDTO.Message;
-            ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
-            //IEnumerable<int> selections = await _service.GetExamStemIds(myDTO.ExamDto);
+            ViewBag.Certificates = new SelectList(await _service.GetCerts(), "TitleOfCertificate", "TitleOfCertificate");
             ViewBag.Stems = new SelectList(await _service.GetStemIds(myDTO.ExamDto));
             if (myDTO.View == "Index")
             {
@@ -141,8 +136,7 @@ namespace TeamAssignment4A.Controllers
             {
                 return View($"{myDTO.View}", myDTO.ExamDtos);
             }
-            ViewBag.Certificates = new SelectList(_db.Certificates, "TitleOfCertificate", "TitleOfCertificate");
-            //IEnumerable<int> selections = await _service.GetExamStemIds(myDTO.ExamDto);
+            ViewBag.Certificates = new SelectList(await _service.GetCerts(), "TitleOfCertificate", "TitleOfCertificate");
             ViewBag.ExamStems = new SelectList(await _service.GetStemIds(myDTO.ExamDto));
             return View($"{myDTO.View}", myDTO.ExamDto);
         }        

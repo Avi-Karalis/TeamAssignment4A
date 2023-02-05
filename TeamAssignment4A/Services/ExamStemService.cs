@@ -27,6 +27,7 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested exam stem could not be found. Please try again later.";
+                _myDTO.ExamStems = await _unit.ExamStem.GetAllAsync();
             }
             else
             {
@@ -144,44 +145,44 @@ namespace TeamAssignment4A.Services
         //    }
         //}
 
-        //public async Task<MyDTO> GetForDelete(int id)
-        //{
-        //    _myDTO.View = "Delete";
-        //    if (id == null || _db.ExamStems == null)
-        //    {
-        //        _myDTO.View = "Index";
-        //        _myDTO.Message = "The requested exam stem could not be found. Please try again later.";
-        //        IEnumerable<ExamStem> examStems = await _unit.ExamStem.GetAllAsync();
-        //        _myDTO.ExamStems = _mapper.Map<List<ExamStem>>(examStems);
-        //        return _myDTO;
-        //    }
-        //    ExamStem examStem = await _unit.ExamStem.GetAsync(id);
-        //    _myDTO.ExamStem = _mapper.Map<ExamStem>(examStem);
-        //    if (_myDTO.ExamStem == null)
-        //    {
-        //        _myDTO.View = "Index";
-        //        _myDTO.Message = "The requested exam stem could not be found. Please try again later.";
-        //        IEnumerable<ExamStem> examStems = await _unit.ExamStem.GetAllAsync();
-        //        _myDTO.ExamStems = _mapper.Map<List<ExamStem>>(examStems);
-        //    }
-        //    return _myDTO;
-        //}
+        public async Task<MyDTO> GetForDelete(int id)
+        {
+            _myDTO.View = "Delete";
+            if (id == null || _db.ExamStems == null)
+            {
+                _myDTO.View = "Index";
+                _myDTO.Message = "The requested exam stem could not be found. Please try again later.";
+                IEnumerable<ExamStem> examStems = await _unit.ExamStem.GetAllAsync();
+                _myDTO.ExamStems = _mapper.Map<List<ExamStem>>(examStems);
+                return _myDTO;
+            }
+            ExamStem examStem = await _unit.ExamStem.GetAsync(id);
+            _myDTO.ExamStem = _mapper.Map<ExamStem>(examStem);
+            if (_myDTO.ExamStem == null)
+            {
+                _myDTO.View = "Index";
+                _myDTO.Message = "The requested exam stem could not be found. Please try again later.";
+                IEnumerable<ExamStem> examStems = await _unit.ExamStem.GetAllAsync();
+                _myDTO.ExamStems = _mapper.Map<List<ExamStem>>(examStems);
+            }
+            return _myDTO;
+        }
 
-        //public async Task<MyDTO> Delete(int id)
-        //{
-        //    _myDTO.View = "Index";
-        //    _myDTO.Message = "The requested exam stem has been deleted successfully.";
-        //    if (!await _unit.ExamStem.Exists(id))
-        //    {
-        //        _myDTO.Message = "The requested exam stem could not be found. Please try again later.";
-        //        return _myDTO;
-        //    }
-        //    ExamStem examStem = await _unit.ExamStem.GetAsync(id);
-        //    _unit.ExamStem.Delete(examStem);
-        //    await _unit.SaveAsync();
-        //    IEnumerable<ExamStem> examStems = await _unit.ExamStem.GetAllAsync();
-        //    _myDTO.ExamStems = _mapper.Map<List<ExamStem>>(examStems);
-        //    return _myDTO;
-        //}        
+        public async Task<MyDTO> Delete(int id)
+        {
+            _myDTO.View = "Index";
+            _myDTO.Message = "The requested exam stem has been deleted successfully.";
+            if (!await _unit.ExamStem.Exists(id))
+            {
+                _myDTO.Message = "The requested exam stem could not be found. Please try again later.";
+                return _myDTO;
+            }
+            ExamStem examStem = await _unit.ExamStem.GetAsync(id);
+            _unit.ExamStem.Delete(examStem);
+            await _unit.SaveAsync();
+            IEnumerable<ExamStem> examStems = await _unit.ExamStem.GetAllAsync();
+            _myDTO.ExamStems = _mapper.Map<List<ExamStem>>(examStems);
+            return _myDTO;
+        }
     }
 }

@@ -78,6 +78,11 @@ namespace TeamAssignment4A.Services
             return await _unit.Stem.GetStemIdsByCert(exam.Certificate);
         }
 
+        public async Task<IEnumerable<Certificate>?> GetCerts()
+        {
+            return await _unit.Certificate.GetAllAsync();
+        }
+
         public async Task<MyDTO> GetForUpdate(int id)
         {
             _myDTO.View = "Edit";

@@ -42,6 +42,11 @@ namespace TeamAssignment4A.Services
             return _myDTO.TopicDtos;
         }
 
+        public async Task<IEnumerable<Certificate>?> GetCerts()
+        {
+            return await _unit.Certificate.GetAllAsync();
+        }
+
         public async Task<MyDTO> GetForUpdate(int id)
         {
             _myDTO.View = "Edit";
