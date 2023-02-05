@@ -12,13 +12,11 @@ namespace TeamAssignment4A.Services
     {
         private WebAppDbContext _db;
         private UnitOfWork _unit;
-        private readonly IMapper _mapper;
         private MyDTO _myDTO;
-        public ExamStemService(WebAppDbContext db, UnitOfWork unit, IMapper mapper)
+        public ExamStemService(WebAppDbContext db, UnitOfWork unit)
         {
             _db = db;
             _unit = unit;
-            _mapper = mapper;
             _myDTO = new MyDTO();
         }
         public async Task<MyDTO> Get(int id)
@@ -158,9 +156,8 @@ namespace TeamAssignment4A.Services
                 _myDTO.Message = "The requested exam stem could not be found. Please try again later.";
                 _myDTO.ExamStems = await _unit.ExamStem.GetAllAsync();
                 return _myDTO;
-            }
-            ExamStem examStem = await _unit.ExamStem.GetAsync(id);
-            _myDTO.ExamStem = _mapper.Map<ExamStem>(examStem);
+            } 
+            _myDTO.ExamStem = await _unit.ExamStem.GetAsync(id);
             if (_myDTO.ExamStem == null)
             {
                 _myDTO.View = "Index";

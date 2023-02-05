@@ -70,48 +70,27 @@ namespace TeamAssignment4A.Services
             return _myDTO;
         }
 
-        public async Task<MyDTO> AddOrUpdate(int id, [Bind("Id,Description,NumberOfPossibleMarks,TitleOfCertificate,Certificate")] TopicDto topicDto)
+        public async Task<MyDTO> Add(int id, [Bind("Id,Description,NumberOfPossibleMarks," +
+            "TitleOfCertificate,Certificate")] TopicDto topicDto)
         {
             Certificate certificate = await _unit.Certificate.GetAsyncByTilteOfCert(topicDto.TitleOfCertificate);
             topicDto.Certificate = certificate;
             Topic topic = _mapper.Map<Topic>(topicDto);
+            _unit.Topic.AddOrUpdate(topic);
 
-            EntityState state = _unit.Topic.AddOrUpdate(topic);
             if (id != topic.Id)
             {
-                if (state == EntityState.Added)
-                {
-                    _myDTO.View = "Create";
-                }
-                if (state == EntityState.Modified)
-                {
-                    _myDTO.View = "Edit";
-                }
+                _myDTO.View = "Create";                
                 _myDTO.Message = "The topic Id was compromised. The request could not be completed due to security reasons. Please try again later.";
                 _myDTO.TopicDto = topicDto;
                 return _myDTO;
             }
             if (ModelState.IsValid)
             {
-                _myDTO.Message = "The requested topic has been added successfully.";
-                if (state == EntityState.Modified)
-                {
-                    _myDTO.Message = "The requested topic has been updated successfully.";
-                }
-                if (state == EntityState.Modified && !await _unit.Topic.Exists(topic.Id))
-                {
-                    _myDTO.Message = "The requested topic could not be found. Please try again later.";
-                }
+                _myDTO.Message = "The requested topic has been added successfully.";                
                 if (await _unit.Topic.DescriptionExists(topic.Id, topic.Description))
                 {
-                    if (state == EntityState.Added)
-                    {
-                        _myDTO.View = "Create";
-                    }
-                    if (state == EntityState.Modified)
-                    {
-                        _myDTO.View = "Edit";
-                    }
+                    _myDTO.View = "Create";
                     _myDTO.Message = "This topic description already exists. Please try providing a different description.";
                     _myDTO.TopicDto = topicDto;                    
                     return _myDTO;
@@ -124,14 +103,49 @@ namespace TeamAssignment4A.Services
             }
             else
             {
-                if (state == EntityState.Added)
+                _myDTO.View = "Create";
+                _myDTO.Message = "Invalid entries. Please try again later.";
+                _myDTO.TopicDto = topicDto;
+            }
+            return _myDTO;
+        }
+
+        public async Task<MyDTO> Update(int id, [Bind("Id,Description,NumberOfPossibleMarks," +
+            "TitleOfCertificate,Certificate")] TopicDto topicDto)
+        {
+            Topic topic = await _unit.Topic.GetAsync(topicDto.Id);
+            _unit.Topic.AddOrUpdate(topic);
+
+            if (id != topic.Id)
+            {
+                _myDTO.View = "Edit";
+                _myDTO.Message = "The topic Id was compromised. The request could not be completed due to security reasons. Please try again later.";
+                _myDTO.TopicDto = topicDto;
+                return _myDTO;
+            }
+            if (ModelState.IsValid)
+            {
+                _myDTO.Message = "The requested topic has been updated successfully.";
+                if (!await _unit.Topic.Exists(topic.Id))
                 {
-                    _myDTO.View = "Create";
+                    _myDTO.Message = "The requested topic could not be found. Please try again later.";
                 }
-                if (state == EntityState.Modified)
+                if (await _unit.Topic.DescriptionExists(topic.Id, topic.Description))
                 {
                     _myDTO.View = "Edit";
+                    _myDTO.Message = "This topic description already exists. Please try providing a different description.";
+                    _myDTO.TopicDto = topicDto;
+                    return _myDTO;
                 }
+                await _unit.SaveAsync();
+                _myDTO.View = "Index";
+                IEnumerable<Topic> topics = await _unit.Topic.GetAllAsync();
+                _myDTO.TopicDtos = _mapper.Map<List<TopicDto>>(topics);
+                return _myDTO;
+            }
+            else
+            {
+                _myDTO.View = "Edit";
                 _myDTO.Message = "Invalid entries. Please try again later.";
                 _myDTO.TopicDto = topicDto;
             }
