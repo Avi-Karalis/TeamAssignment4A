@@ -27,6 +27,11 @@ namespace TeamAssignment4A.Data.Repositories
                 .Select(stem => stem.Id).ToListAsync();
         }
 
+        public async Task<IEnumerable<Stem>?> GetStemsByTopic(string description)
+        {
+            return await _db.Stems.Where(stem => stem.Topic.Description == description).ToListAsync();
+        }
+
         public EntityState AddOrUpdate(Stem stem)
         {
             _db.Stems.Update(stem);

@@ -17,6 +17,7 @@ namespace TeamAssignment4A.Profiles
                 .ForMember(dest => dest.NumberOfPossibleMarks, opt => opt.MapFrom(src => src.NumberOfPossibleMarks))
                 .ForMember(dest => dest.TitleOfCertificate, opt => opt.MapFrom(src => src.Certificate.TitleOfCertificate))
                 .ForMember(dest => dest.Certificate, opt => opt.MapFrom(src => src.Certificate))
+                .ForMember(dest => dest.Stems, opt => opt.MapFrom(src => src.Stems))
                 .ReverseMap();
                
 

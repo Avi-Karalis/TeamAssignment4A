@@ -113,8 +113,22 @@ namespace TeamAssignment4A.Services
         public async Task<MyDTO> Update(int id, [Bind("Id,Description,NumberOfPossibleMarks," +
             "TitleOfCertificate,Certificate")] TopicDto topicDto)
         {
+
+            //Certificate certificate = await _unit.Certificate.GetAsyncByTilteOfCert(topicDto.TitleOfCertificate);
+            //topicDto.Certificate = certificate;
+            //Topic topic = await _unit.Topic.GetAsync(topicDto.Id);
+            //EntityState state = _db.Entry(topic).State;
+            //_unit.Topic.AddOrUpdate(topic);
+            //topic = _mapper.Map<Topic>(topicDto);
+            Certificate certificate = await _unit.Certificate.GetAsyncByTilteOfCert(topicDto.TitleOfCertificate);
+            topicDto.Certificate = certificate;
+            topicDto.Stems = await _unit.Stem.GetStemsByTopic(topicDto.Description) as List<Stem>;
             Topic topic = await _unit.Topic.GetAsync(topicDto.Id);
-            _unit.Topic.AddOrUpdate(topic);
+            _mapper.Map(topicDto, topic);
+            EntityState state = _db.Entry(topic).State;
+            _db.Topics.Attach(topic);
+            state = _db.Entry(topic).State;
+            _db.Entry(topic).State = EntityState.Modified;
 
             if (id != topic.Id)
             {

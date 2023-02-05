@@ -17,6 +17,7 @@ namespace TeamAssignment4A.Dtos
         public string TitleOfCertificate { get; set; }
 
         public Certificate Certificate { get; set; }
+        public List<Stem> Stems { get; set; }
 
     }
 }
