@@ -3,14 +3,13 @@
 @{
     ViewData["Title"] = "Index";
 }
-
 <h2 class="custom-font fadein center-adjust">Candidate List</h2>
 
-<p class="center-adjust">
+<p class="center-adjust" style="margin-right:700px">
     <a asp-action="Create" class=" custom-font btn btn-info">Create New</a>
 </p>
 <table class="table">
-    <thead class=" sticky-header text-nowrap  text-center navbar-dark bg-primary"
+    <thead class=" accordion-header text-nowrap  text-center navbar-dark bg-primary"
            onclick="scrollToTop()" style="cursor:pointer;"
            data-toggle="tooltip" data-placement="top" title="click to scroll to top">
         <tr style="border-style:hidden;">
@@ -18,23 +17,23 @@
 
                 @Html.DisplayNameFor(model => model.FirstName)
             </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.MiddleName)
+            @* <th>
+            @Html.DisplayNameFor(model => model.MiddleName)
             </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.LastName)
             </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.Gender)
+            @* <th>
+            @Html.DisplayNameFor(model => model.Gender)
             </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.NativeLanguage)
             </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.CountryOfResidence)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Birthdate)
+            @* <th>
+            @Html.DisplayNameFor(model => model.CountryOfResidence)
+            </th>*@
+            @*  <th>
+            @Html.DisplayNameFor(model => model.Birthdate)
             </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Email)
@@ -81,23 +80,23 @@
                     @Html.DisplayFor(modelItem => item.FirstName)
                 </td>
                 @*<td>
-                    @Html.DisplayFor(modelItem => item.MiddleName)
-                </td>*@
+            @Html.DisplayFor(modelItem => item.MiddleName)
+            </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.LastName)
                 </td>
-                @*<td>
-                    @Html.DisplayFor(modelItem => item.Gender)
-                </td>*@
+                @* <td>
+            @Html.DisplayFor(modelItem => item.Gender)
+            </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.NativeLanguage)
                 </td>
-                @*<td>
-                    @Html.DisplayFor(modelItem => item.CountryOfResidence)
-                </td>*@
-                @*<td>
-                    @Html.DisplayFor(modelItem => item.Birthdate)
-                </td>*@
+                @* <td>
+            @Html.DisplayFor(modelItem => item.CountryOfResidence)
+            </td>*@
+                @* <td>
+            @Html.DisplayFor(modelItem => item.Birthdate)
+            </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
@@ -132,9 +131,9 @@
             @Html.DisplayFor(modelItem => item.PhotoIdDate)
             </td>*@
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary w-100 mb-2">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-success w-100 mb-2">Details</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger w-100 mb-2">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-edit w-100 mb-2">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-details w-100 mb-2">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-delete w-100 mb-2">Delete</a>
                 </td>
             </tr>
         }
