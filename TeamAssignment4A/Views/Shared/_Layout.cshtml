@@ -15,126 +15,85 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.0/classic/ckeditor.js"></script>   
 
 
-    <style>
-
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-        }
-
-        .sidenav {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 1;
-            top: 0;
-            left: 0;
-            background-color: #222222;
-            overflow-x: hidden;
-            transition: 0.1s;
-            padding-top: 60px;
-            border-radius: 0 5px 5px 0;
-        }
-
-            .sidenav a {
-                padding: 8px 8px 8px 32px;
-                text-decoration: none;
-                font-size: 20px;
-                color: white;
-                transition: 0.3s;
-                text-align: left;
-                margin-left: 18px;
-            }
-
-                .sidenav a:hover {
-                    color: white;
-                }
-
-
-        #main {
-            transition: margin-left .5s;
-            padding: 16px;
-        }
-
-        .typing-text {
-            text-shadow: 2px 2px 2px #333;
-        }
-    </style>
+    
 </head>
 <body>
 
     <header>
 
-        <div class="  container">
-            <nav class=" bg-primary">
-                <div id="mySidenav" class="sidenav">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li>
-                            <button class="button-nav" onclick="toggleNav()">
-                                <span class="icon">
-                                    <svg viewBox="0 0 175 80" width="40" height="40">
-                                        <rect width="80" height="15" fill="#f0f0f0" rx="10"></rect>
-                                        <rect y="30" width="80" height="15" fill="#f0f0f0" rx="10"></rect>
-                                        <rect y="60" width="80" height="15" fill="#f0f0f0" rx="10"></rect>
-                                    </svg>
-                                </span>
-                                <span class="text">MENU</span>
-                            </button>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"> &#x1F3E0 Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Candidates" asp-action="Index">Candidates</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Certificates" asp-action="Index">Certificates</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Topics" asp-action="Index">Topics</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Stems" asp-action="Index">Stems</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="CandidateExams" asp-action="Index">Exams(Candidate)</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="AdminExams" asp-action="Index">Exams(Admin)</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Exams" asp-action="Create">Exams(Create)</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Eshop" asp-action="Index">E-Shop</a>
-                        </li>
-                        <li>
-
-                            <label class="switch">
-                                <input type="checkbox" id="togBtn" onclick="myFunction()">
-                                <div class="slider round"></div>
-                            </label>
-
-
-                        </li>
-                        @* <li>
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-
-                        </li>
-                        <li>
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                        </li>*@
-
-                    </ul>
-
-        </div>
-           
-                    <partial name="_LoginPartial" />
-            </nav>
-        </div>
+        <span style="float:right" <partial name="_LoginPartial" /></span>
         
     </header>
+
+    <div class="  container">
+        <nav class=" bg-primary">
+            <div id="mySidenav" class="sidenav">
+                <ul class="navbar-nav flex-grow-1">
+                    <li>
+                        <button class="button-nav" onclick="toggleNav()">
+                            <span class="icon">
+                                <svg viewBox="0 0 175 80" width="40" height="40">
+                                    <rect width="80" height="15" fill="#f0f0f0" rx="10"></rect>
+                                    <rect y="30" width="80" height="15" fill="#f0f0f0" rx="10"></rect>
+                                    <rect y="60" width="80" height="15" fill="#f0f0f0" rx="10"></rect>
+                                </svg>
+                            </span>
+                            <span class="text">MENU</span>
+                        </button>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Candidates" asp-action="Index">Candidates</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Certificates" asp-action="Index">Certificates</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Topics" asp-action="Index">Topics</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Stems" asp-action="Index">Stems</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="CandidateExams" asp-action="Index">Exams(Candidate)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="AdminExams" asp-action="Index">Exams(Admin)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Exams" asp-action="Create">Exams(Create)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Eshop" asp-action="Index">E-Shop</a>
+                    </li>
+                    <li>
+
+                        <label class="switch">
+                            <input type="checkbox" id="togBtn" onclick="myFunction()">
+                            <div class="slider round"></div>
+                        </label>
+
+
+                    </li>
+                    @* <li>
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+
+                    </li>
+                    <li>
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </li>*@
+
+                </ul>
+
+            </div>
+
+           
+        </nav>
+    </div>
+    
     @if (@ViewBag.Message != null)
     {
         <div class="alert alert-dismissible alert-info">
@@ -150,7 +109,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - TeamAssignment4A - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+           <a style="color:white"> &copy; 2023 - TeamAssignment4A - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
    

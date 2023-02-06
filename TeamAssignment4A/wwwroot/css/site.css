@@ -165,30 +165,30 @@ button > a {
     box-shadow:  0 0 6px 3px #48abe0 ,0 0 6px 2px #48abe0 inset;
 }
 */
-
+/*drop shadow on select on form*/
 .form-control:focus {
     box-shadow: 0 0 3px #48abe0 inset, 0 0 6px 2px #48abe0 inset, 0 0 9px 4px #48abe0 inset, 5px 5px 5px rgba(0,0,0,0.2);
 }
-
+/*drop shadow on hover on form*/
 .form-control:hover {
     box-shadow: 0 0 3px #48abe0 inset, 0 0 6px 2px #48abe0 inset, 0 0 9px 4px #48abe0 inset, 5px 5px 5px rgba(0,0,0,0.2);
 }
-
+/*drop shadow on hover on nav-link*/
 .nav-link:hover {
     text-shadow: 0 0 20px #3498db, 0 0 30px #3498db, 0 0 40px #FFFFFF;
 }
 
-
+/*dark mode*/
 .dark-mode {
     background-color: white;
     color: white;
     background-image: url(../Themes/websitebg.png);
 }
-
+/*drop shadow on hover on navbar-brand*/
 .navbar-brand:hover {
     text-shadow: 0 0 20px #3498db, 0 0 30px #3498db, 0 0 40px #FFFFFF;
 }
-
+/* dark mode button switch*/
 .switch {
     position: relative;
     display: flex;
@@ -197,11 +197,11 @@ button > a {
     height: 34px;
     margin-left: 40px;
 }
-
+    /* dark mode button switch*/
     .switch input {
         display: none;
     }
-
+/* dark mode button switch*/
 .slider {
     position: absolute;
     cursor: pointer;
@@ -214,7 +214,7 @@ button > a {
     transition: .4s;
     border-radius: 34px;
 }
-
+    /* dark mode button switch*/
     .slider:before {
         position: absolute;
         content: "";
@@ -227,22 +227,22 @@ button > a {
         transition: .4s;
         border-radius: 50%;
     }
-
+/* dark mode button switch*/
 input:checked + .slider {
     background-color: cornflowerblue;
 }
-
+/* dark mode button switch*/
 input:focus + .slider {
     box-shadow: 0 0 1px #2196F3;
 }
-
+/* dark mode button switch*/
 input:checked + .slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
 }
 
-/*------ ADDED CSS ---------*/
+/* dark mode button switch*/
 .slider:after {
     content: "\1F31E";
     color: white;
@@ -254,7 +254,7 @@ input:checked + .slider:before {
     font-size: 26px;
     font-family: Verdana, sans-serif;
 }
-
+/* dark mode button switch*/
 input:checked + .slider:after {
     content: '\1F312';
     transform: translate(-50%-50%);
@@ -265,7 +265,7 @@ input:checked + .slider:after {
 }
 
 
-
+/* dark mode button switch*/
 @keyframes fadein {
     from {
         opacity: 0;
@@ -277,32 +277,32 @@ input:checked + .slider:after {
 }
 
 
-
+/*light mode*/
 .btn-edit {
     background-color: #5cb85c;
     color: white;
 }
-
+/*light mode*/
 .btn-details {
     background-color: #0275d8;
     color: white;
 }
-
+/*light mode*/
 .btn-delete {
     background-color: #d9534f;
     color: white;
 }
-
+/*dark mode*/
 .dark-mode .btn-edit {
     background-color: darkgreen;
     color: white;
 }
-
+/*dark mode*/
 .dark-mode .btn-details {
     background-color: darkblue;
     color: white;
 }
-
+/*dark mode*/
 .dark-mode .btn-delete {
     background-color: darkred;
     color: white;
@@ -332,11 +332,11 @@ input:checked + .slider:after {
     background: #040f16;
     color: #f5f5f5;
 }
-
+/*side nav button*/
     .button-nav:hover {
         box-shadow: 0 0 20px 0px #03436b;
     }
-
+    /*side nav button*/
     .button-nav .icon {
         position: absolute;
         height: 40px;
@@ -346,24 +346,68 @@ input:checked + .slider:after {
         align-items: center;
         transition: all 0.5s;
     }
-
+    /*side nav button*/
     .button-nav .text {
         transform: translateX(55px);
     }
-
+    /*side nav button*/
     /*.button-nav:hover .icon {
         width: 175px;
     }
 */
+    /*side nav button*/
     /*.button-nav:hover .text {
         transition: all 0.5s;
         opacity: 0;
     }*/
-
+    /*side nav button*/
     .button-nav:focus {
         outline: none;
     }
-
+/*side nav button*/
    /* .button-nav:active .icon {
         transform: scale(0.85);
     }*/
+   /*side nav container*/
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+/*side nav*/
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #222222;
+    overflow-x: hidden;
+    transition: 0.1s;
+    padding-top: 60px;
+    border-radius: 0 5px 5px 0;
+}
+    /*side nav*/
+    .sidenav a {
+        padding: 8px 8px 8px 0px;
+        text-decoration: none;
+        font-size: 16px;
+        color: white;
+        transition: 0.3s;
+        text-align: left;
+        margin-left: 18px;
+    }
+        /*side nav*/
+        .sidenav a:hover {
+            color: white;
+        }
+
+/*side nav*/
+#main {
+    transition: margin-left .5s;
+    padding: 16px;
+}
+/*PeopleCert Operations Menu drop shadow*/
+.typing-text {
+    text-shadow: 2px 2px 2px #333;
+}
