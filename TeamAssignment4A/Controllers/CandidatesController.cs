@@ -12,7 +12,7 @@ using TeamAssignment4A.Services;
 
 namespace TeamAssignment4A.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class CandidatesController : Controller
     {
         private readonly CandidateService _service;

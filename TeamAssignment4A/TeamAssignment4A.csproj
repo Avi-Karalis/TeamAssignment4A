@@ -20,6 +20,7 @@
     <None Remove="Data\Migrations\**" />
     <None Remove="Views\ExamStems\**" />
     <None Remove="wwwroot\uploader\**" />
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
