@@ -59,11 +59,11 @@
             </div>
         </nav>
     </header>
-    @if (@ViewBag.Message != null)
+    @if (@ViewBag.MessageForAlert != null)
     {
         <div class="alert alert-dismissible alert-info">
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            @ViewBag.Message
+            @ViewBag.MessageForAlert
         </div>
     }
     <div class="container">

@@ -114,11 +114,15 @@ namespace TeamAssignment4A.Services
             "TitleOfCertificate,Certificate")] TopicDto topicDto)
         {
             Topic topic = await _unit.Topic.GetAsync(topicDto.Id);
-            topic.Description = topicDto.Description;
-            topic.NumberOfPossibleMarks = topicDto.NumberOfPossibleMarks;
-            topic.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(topicDto.TitleOfCertificate);
+            topicDto.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(topicDto.TitleOfCertificate);
+            topicDto.Stems = await _unit.Stem.GetStemsByTopic(topic.Description) as List<Stem>;
+            topic = _mapper.Map<Topic>(topicDto);
             _unit.Topic.AddOrUpdate(topic);
-            topicDto = _mapper.Map<TopicDto>(topic);
+            //topic.Description = topicDto.Description;
+            //topic.NumberOfPossibleMarks = topicDto.NumberOfPossibleMarks;
+            //topic.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(topicDto.TitleOfCertificate);
+            //_db.Entry(topic).State = EntityState.Modified;
+            //topicDto = _mapper.Map<TopicDto>(topic);
 
             if (id != topic.Id)
             {
