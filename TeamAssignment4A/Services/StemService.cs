@@ -67,28 +67,23 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested stem could not be found. Please try again later.";
+                var stems = await _unit.Stem.GetAllAsync();
+                _myDTO.StemDtos = _mapper.Map<List<StemDto>>(stems);
             }
             return _myDTO;
         }
 
-        public async Task<MyDTO> AddOrUpdate(int id, [Bind("Id,Question,OptionA,OptionB,OptionC," +
+        public async Task<MyDTO> Add(int id, [Bind("Id,Question,OptionA,OptionB,OptionC," +
             "OptionD,CorrectAnswer,TopicDescription,Topic")] StemDto stemDto)
         {            
             Topic topic = await _unit.Topic.GetAsyncByDesc(stemDto.TopicDescription);
             stemDto.Topic = topic;                
             Stem stem = _mapper.Map<Stem>(stemDto);
 
-            EntityState state = _unit.Stem.AddOrUpdate(stem);
+            _unit.Stem.AddOrUpdate(stem);
             if (id != stem.Id)
             {
-                if (state == EntityState.Added)
-                {
-                    _myDTO.View = "Create";
-                }
-                if (state == EntityState.Modified)
-                {
-                    _myDTO.View = "Edit";
-                }
+                _myDTO.View = "Create";
                 _myDTO.Message = "The stem Id was compromised. The request could not be completed due to security reasons. Please try again later.";
                 _myDTO.StemDto = stemDto;
                 return _myDTO;
@@ -96,11 +91,46 @@ namespace TeamAssignment4A.Services
             if (ModelState.IsValid)
             {
                 _myDTO.Message = "The requested stem has been added successfully.";
-                if (state == EntityState.Modified)
-                {
-                    _myDTO.Message = "The requested stem has been updated successfully.";
-                }
-                if (state == EntityState.Modified && !await _unit.Stem.Exists(stem.Id))
+                await _unit.SaveAsync();
+                _myDTO.View = "Index";
+                IEnumerable<Stem> stems = await _unit.Stem.GetAllAsync();
+                _myDTO.StemDtos = _mapper.Map<List<StemDto>>(stems);
+                return _myDTO;
+            }
+            else
+            {
+                _myDTO.View = "Create";
+                _myDTO.Message = "Invalid entries. Please try again later.";
+                _myDTO.StemDto = stemDto;
+            }
+            return _myDTO;
+        }
+
+        public async Task<MyDTO> Update(int id, [Bind("Id,Question,OptionA,OptionB,OptionC," +
+            "OptionD,CorrectAnswer,TopicDescription,Topic")] StemDto stemDto)
+        {
+            Stem stem = await _unit.Stem.GetAsync(stemDto.Id);
+            stem.Question = stemDto.Question;
+            stem.OptionA = stemDto.OptionA;
+            stem.OptionB = stemDto.OptionB;
+            stem.OptionC = stemDto.OptionC;
+            stem.OptionD = stemDto.OptionD;
+            stem.CorrectAnswer = stemDto.CorrectAnswer;
+            stem.Topic = await _unit.Topic.GetAsyncByDesc(stemDto.TopicDescription);
+            _unit.Stem.AddOrUpdate(stem);
+            stemDto = _mapper.Map<StemDto>(stem);
+            
+            if (id != stem.Id)
+            {
+                _myDTO.View = "Edit";
+                _myDTO.Message = "The stem Id was compromised. The request could not be completed due to security reasons. Please try again later.";
+                _myDTO.StemDto = stemDto;
+                return _myDTO;
+            }
+            if (ModelState.IsValid)
+            {
+                _myDTO.Message = "The requested stem has been updated successfully.";
+                if (!await _unit.Stem.Exists(stem.Id))
                 {
                     _myDTO.Message = "The requested Stem could not be found. Please try again later.";
                 }
@@ -112,14 +142,7 @@ namespace TeamAssignment4A.Services
             }
             else
             {
-                if (state == EntityState.Added)
-                {
-                    _myDTO.View = "Create";
-                }
-                if (state == EntityState.Modified)
-                {
-                    _myDTO.View = "Edit";
-                }
+                _myDTO.View = "Edit";
                 _myDTO.Message = "Invalid entries. Please try again later.";
                 _myDTO.StemDto = stemDto;
             }

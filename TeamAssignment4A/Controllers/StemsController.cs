@@ -71,7 +71,7 @@ namespace TeamAssignment4A.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int id, [Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,TopicDescription,Topic")] StemDto stemDto) 
         {
-            _myDTO = await _service.AddOrUpdate(id, stemDto);
+            _myDTO = await _service.Add(id, stemDto);
             ViewBag.Message = _myDTO.Message;
             if (_myDTO.View == "Index")
             {
@@ -111,7 +111,7 @@ namespace TeamAssignment4A.Controllers {
         [ProducesResponseType(typeof(StemDto), 200)]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,TopicDescription,Topic")] StemDto stemDto) 
         {
-            _myDTO = await _service.AddOrUpdate(id, stemDto);
+            _myDTO = await _service.Update(id, stemDto);
             ViewBag.Message = _myDTO.Message;
             if (_myDTO.View == "Index")
             {
