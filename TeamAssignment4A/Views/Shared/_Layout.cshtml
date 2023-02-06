@@ -37,9 +37,9 @@
         }
 
             .sidenav a {
-                padding: 8px 8px 8px 32px;
+                padding: 8px 8px 8px 0px;
                 text-decoration: none;
-                font-size: 20px;
+                font-size: 17px;
                 color: white;
                 transition: 0.3s;
                 text-align: left;
@@ -83,10 +83,10 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><span style="font-size:22px">&#x2302</span> Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Candidates" asp-action="Index">Candidates</a>
+                            <a class="nav-link" asp-area="" asp-controller="Candidates" asp-action="Index"> Candidates</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Certificates" asp-action="Index">Certificates</a>
@@ -149,7 +149,7 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
+        <div class="container" style="color:white">
             &copy; 2023 - TeamAssignment4A - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
