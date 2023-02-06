@@ -46,8 +46,11 @@ namespace TeamAssignment4A {
 
             //Authorization Handler and roles
 
-            builder.Services.AddSingleton<IAuthorizationHandler, AdminAuthorizationHandler>();
-            builder.Services.AddScoped<IAuthorizationHandler, QAAuthorizationHandler>();
+            builder.Services.AddTransient<IAuthorizationHandler, AdminAuthorizationHandler>();
+            builder.Services.AddTransient<IAuthorizationHandler, QAAuthorizationHandler>();
+            builder.Services.AddTransient<IAuthorizationHandler, MarkerAuthorizationHandler>();
+            builder.Services.AddTransient<IAuthorizationHandler, CandidateAuthorizationHandler>();
+            
 
             builder.Services.AddScoped<IdentityDbContext<IdentityUser>, WebAppDbContext>();
             builder.Services.AddScoped<UnitOfWork, UnitOfWork>();
@@ -99,11 +102,12 @@ namespace TeamAssignment4A {
             }
 
             app.UseHttpsRedirection();
-            //app.UseStaticFiles();
+            
             app.UseStaticFiles(new StaticFileOptions {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Images")),
                 RequestPath = new PathString("/Images")
             });
+            app.UseStaticFiles();
             app.UseRouting();
 
             app.UseCors("AllowAll");

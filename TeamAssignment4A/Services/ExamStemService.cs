@@ -43,7 +43,7 @@ namespace TeamAssignment4A.Services
         // Get all Exam Stems that have a specific Exam
         public async Task<IEnumerable<ExamStem>?> GetByExam(Exam exam)
         {  
-            return await _unit.ExamStem.GetStemsByExam(exam);
+            return await _unit.ExamStem.GetExamStemsByExam(exam);
         }
 
         public async Task<MyDTO> GetForUpdate(int id)
@@ -97,7 +97,7 @@ namespace TeamAssignment4A.Services
                 }                
                 await _unit.SaveAsync();
                 _myDTO.View = "Index";
-                _myDTO.ExamStems = await _unit.ExamStem.GetStemsByExam(examStem.Exam);
+                _myDTO.ExamStems = await _unit.ExamStem.GetExamStemsByExam(examStem.Exam);
                 return _myDTO;
             }
             else

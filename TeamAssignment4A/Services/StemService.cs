@@ -79,8 +79,8 @@ namespace TeamAssignment4A.Services
             Topic topic = await _unit.Topic.GetAsyncByDesc(stemDto.TopicDescription);
             stemDto.Topic = topic;                
             Stem stem = _mapper.Map<Stem>(stemDto);
-
             _unit.Stem.AddOrUpdate(stem);
+
             if (id != stem.Id)
             {
                 _myDTO.View = "Create";
@@ -110,6 +110,7 @@ namespace TeamAssignment4A.Services
             "OptionD,CorrectAnswer,TopicDescription,Topic")] StemDto stemDto)
         {
             Stem stem = await _unit.Stem.GetAsync(stemDto.Id);
+            _unit.Stem.AddOrUpdate(stem);
             stem.Question = stemDto.Question;
             stem.OptionA = stemDto.OptionA;
             stem.OptionB = stemDto.OptionB;
@@ -117,8 +118,6 @@ namespace TeamAssignment4A.Services
             stem.OptionD = stemDto.OptionD;
             stem.CorrectAnswer = stemDto.CorrectAnswer;
             stem.Topic = await _unit.Topic.GetAsyncByDesc(stemDto.TopicDescription);
-            _unit.Stem.AddOrUpdate(stem);
-            stemDto = _mapper.Map<StemDto>(stem);
             
             if (id != stem.Id)
             {
