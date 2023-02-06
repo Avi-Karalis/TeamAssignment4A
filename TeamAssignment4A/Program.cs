@@ -104,6 +104,7 @@ namespace TeamAssignment4A {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Images")),
                 RequestPath = new PathString("/Images")
             });
+            app.UseStaticFiles();
             app.UseRouting();
 
             app.UseCors("AllowAll");
