@@ -25,7 +25,7 @@ body {
     margin-bottom: 60px;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 200;
-    background-image: url(../Themes/peakpx.jpg);
+    background-image: url(../Themes/websitewhite.png);
     background-position: center center;
     background-attachment: fixed;
     background-size: cover;
@@ -151,7 +151,7 @@ button > a {
     table-layout: fixed;
     word-wrap: break-word;
     border-radius: 30px;
-    background-color: #0005;
+    background-color: #0009;
     width: 900px;
     margin-left: 200px;
 }
@@ -182,7 +182,7 @@ button > a {
 .dark-mode {
     background-color: white;
     color: white;
-    background-image: url(../Themes/windows-11-dark-mode-abstract-background-black-background-1920x1200-8710.jpg);
+    background-image: url(../Themes/websitebg.png);
 }
 
 .navbar-brand:hover {
@@ -351,19 +351,19 @@ input:checked + .slider:after {
         transform: translateX(55px);
     }
 
-    .button-nav:hover .icon {
+    /*.button-nav:hover .icon {
         width: 175px;
     }
-
-    .button-nav:hover .text {
+*/
+    /*.button-nav:hover .text {
         transition: all 0.5s;
         opacity: 0;
-    }
+    }*/
 
     .button-nav:focus {
         outline: none;
     }
 
-    .button-nav:active .icon {
+   /* .button-nav:active .icon {
         transform: scale(0.85);
-    }
+    }*/
