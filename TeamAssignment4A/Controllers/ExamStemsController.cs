@@ -13,7 +13,7 @@ using TeamAssignment4A.Models.JointTables;
 
 namespace TeamAssignment4A.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin, Candidate, QA")]
     public class ExamStemsController : Controller
     {
         private readonly WebAppDbContext _context;

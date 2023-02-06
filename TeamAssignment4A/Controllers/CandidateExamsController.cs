@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Data;
 using TeamAssignment4A.Data;
 using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models;
@@ -9,6 +11,7 @@ using TeamAssignment4A.Services;
 
 namespace TeamAssignment4A.Controllers
 {
+    [Authorize(Roles = "Admin, QA, Candidate")]
     public class CandidateExamsController : Controller
     {
         private readonly WebAppDbContext _db;
@@ -26,12 +29,14 @@ namespace TeamAssignment4A.Controllers
         }
         
         [HttpGet]
+        [Authorize(Roles = "Admin, QA, Candidate")]
         [ProducesResponseType(typeof(CandidateExam), 200)]
         public async Task<IActionResult> Index()
         {
             return View(await _examService.GetAll());            
         }
 
+        [Authorize(Roles = "Admin, Candidate")]
         [HttpGet, ActionName("sitforexam")]
         [ProducesResponseType(typeof(ExamStem), 200)]
         public async Task<IActionResult> SitForExam(Exam exam)
@@ -42,6 +47,7 @@ namespace TeamAssignment4A.Controllers
             return View(examStems);
         }
 
+        [Authorize(Roles = "Admin, Candidate")]
         [HttpPost, ActionName("submitexam")]
         [ProducesResponseType(typeof(ExamStem), 200)]
         public async Task<IActionResult> SubmitExam(int examId,

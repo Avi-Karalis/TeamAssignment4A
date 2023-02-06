@@ -13,7 +13,7 @@ using TeamAssignment4A.Models;
 using TeamAssignment4A.Services;
 
 namespace TeamAssignment4A.Controllers {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class StemsController : Controller 
     {
         private readonly StemService _service;
