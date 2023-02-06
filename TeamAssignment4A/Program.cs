@@ -50,6 +50,7 @@ namespace TeamAssignment4A {
             builder.Services.AddTransient<IAuthorizationHandler, QAAuthorizationHandler>();
             builder.Services.AddTransient<IAuthorizationHandler, MarkerAuthorizationHandler>();
             builder.Services.AddTransient<IAuthorizationHandler, CandidateAuthorizationHandler>();
+            
 
             builder.Services.AddTransient<IdentityDbContext<IdentityUser>, WebAppDbContext>();
             builder.Services.AddTransient<UnitOfWork, UnitOfWork>();
@@ -101,7 +102,7 @@ namespace TeamAssignment4A {
             }
 
             app.UseHttpsRedirection();
-            //app.UseStaticFiles();
+            
             app.UseStaticFiles(new StaticFileOptions {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Images")),
                 RequestPath = new PathString("/Images")

@@ -40,6 +40,7 @@ namespace TeamAssignment4A.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.EnableSensitiveDataLogging();
+            //optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);        
             base.OnConfiguring(optionsBuilder);
         }
     }

@@ -13,7 +13,7 @@ namespace TeamAssignment4A.Data.Repositories
         public async Task<Topic?> GetAsync(int id)
         {
             return await _db.Topics.Include(topic => topic.Certificate)
-                .Include(topic => topic.Stems).AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+                .Include(topic => topic.Stems).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Topic?> GetAsyncByDesc(string topicDescription)
