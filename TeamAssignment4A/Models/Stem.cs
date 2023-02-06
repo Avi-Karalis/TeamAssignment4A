@@ -6,7 +6,8 @@ using TeamAssignment4A.Models.JointTables;
 
 namespace TeamAssignment4A.Models
 {
-    public class Stem {
+    public class Stem 
+    {
         [Key]
         [Required]
         [Display(Name = "Stem Id")]
@@ -40,7 +41,7 @@ namespace TeamAssignment4A.Models
         // Navigation Properties
 
         public virtual Topic Topic { get; set; }
-        public virtual ICollection<ExamStem>? ExamStems { get; set; }
+        public virtual IEnumerable<ExamStem>? ExamStems { get; set; }
 
     }
 }

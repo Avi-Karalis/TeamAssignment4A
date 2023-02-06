@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,46 +11,39 @@ using RandomDataGenerator.Randomizers;
 using TeamAssignment4A.Data;
 using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models;
+using TeamAssignment4A.Models.JointTables;
 
-namespace TeamAssignment4A.Controllers
-{
-    public class ExamsController : Controller
-    {
+namespace TeamAssignment4A.Controllers {
+    [Authorize]
+    public class EshopController : Controller {
         private readonly WebAppDbContext _context;
 
-        public ExamsController(WebAppDbContext context)
-        {
+        public EshopController(WebAppDbContext context) {
             _context = context;
         }
-
-        // GET: Exams
-        public async Task<IActionResult> Index()
-        {
-            
-            return View(await _context.Exams.ToListAsync());
+        [AllowAnonymous]
+        // GET: Eshop
+        public async Task<IActionResult> Index() {
+            return View(await _context.CandidateExams.ToListAsync());
         }
-
-        // GET: Exams/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Exams == null)
-            {
+        [AllowAnonymous]
+        // GET: Eshop/Details/5
+        public async Task<IActionResult> Details(int? id) {
+            if (id == null || _context.CandidateExams == null) {
                 return NotFound();
             }
 
-            var exam = await _context.Exams
+            var candidateExam = await _context.CandidateExams
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (exam == null)
-            {
+            if (candidateExam == null) {
                 return NotFound();
             }
 
-            return View(exam);
+            return View(candidateExam);
         }
 
-        // GET: Exams/Create
-        public IActionResult Create()
-        {
+        // GET: EShop/BuyExam
+        public IActionResult BuyExam() {
             ViewBag.Certificates = new SelectList(_context.Certificates, "Id", "TitleOfCertificate");
             ViewBag.Candidates = new SelectList(_context.Candidates, "Id", "LastName");
             return View();
@@ -61,33 +54,32 @@ namespace TeamAssignment4A.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CertificateId, CandidateId")] ExamCreateDTO examDTO)
-        {
+        public async Task<IActionResult> BuyExam([Bind("CertificateId, ΕxaminationDate, CandidateId")] BuyCertificateDTO buyCertificateDTO) {
             if (ModelState.IsValid) {
-                Certificate certificate = _context.Certificates.Find(examDTO.CertificateId);
-                Candidate candidate = _context.Candidates.Find(examDTO.CandidateId);
+                
+                Certificate certificate = _context.Certificates.Find(buyCertificateDTO.CertificateId);
+                Candidate candidate = _context.Candidates.Find(buyCertificateDTO.CandidateId);
                 string assessmentTestCode = RandomizerFactory.GetRandomizer(new FieldOptionsIBAN()).Generate();
-                Exam exam = new Exam(assessmentTestCode, certificate, candidate);
+                DateTime examinationDate = buyCertificateDTO.ExaminationDate;
+                Exam exam = new Exam(certificate);
                 _context.Add(exam);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("TakeExam", "ExamStems", new { id = exam.Id });
+                return RedirectToAction("Index", "Eshop", new { id = exam.Id });
             }
-            return View(examDTO);
+            return View(buyCertificateDTO);
         }
 
+
         // GET: Exams/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Exams == null)
-            {
+        public async Task<IActionResult> Edit(int? id) {
+            if (id == null || _context.Exams == null) {
                 return NotFound();
             }
 
             var exam = await _context.Exams.FindAsync(id);
             ViewBag.Certificates = new SelectList(_context.Certificates, "Id", "TitleOfCertificate");
             ViewBag.Candidates = new SelectList(_context.Candidates, "Id", "LastName");
-            if (exam == null)
-            {
+            if (exam == null) {
                 return NotFound();
             }
             return View(exam);
@@ -98,28 +90,19 @@ namespace TeamAssignment4A.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,AssessmentTestCode,ExaminationDate,ScoreReportDate,CandidateScore,PercentageScore,AssessmentResultLabel")] Exam exam)
-        {
-            if (id != exam.Id)
-            {
+        public async Task<IActionResult> Edit(int id, [Bind("Id,AssessmentTestCode,ExaminationDate,ScoreReportDate,CandidateScore,PercentageScore,AssessmentResultLabel")] Exam exam) {
+            if (id != exam.Id) {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
+            if (ModelState.IsValid) {
+                try {
                     _context.Update(exam);
                     await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ExamExists(exam.Id))
-                    {
+                } catch (DbUpdateConcurrencyException) {
+                    if (!ExamExists(exam.Id)) {
                         return NotFound();
-                    }
-                    else
-                    {
+                    } else {
                         throw;
                     }
                 }
@@ -127,19 +110,15 @@ namespace TeamAssignment4A.Controllers
             }
             return View(exam);
         }
-
         // GET: Exams/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Exams == null)
-            {
+        public async Task<IActionResult> Delete(int? id) {
+            if (id == null || _context.Exams == null) {
                 return NotFound();
             }
 
             var exam = await _context.Exams
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (exam == null)
-            {
+            if (exam == null) {
                 return NotFound();
             }
 
@@ -149,15 +128,12 @@ namespace TeamAssignment4A.Controllers
         // POST: Exams/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Exams == null)
-            {
+        public async Task<IActionResult> DeleteConfirmed(int id) {
+            if (_context.Exams == null) {
                 return Problem("Entity set 'WebAppDbContext.Exams'  is null.");
             }
             var exam = await _context.Exams.FindAsync(id);
-            if (exam != null)
-            {
+            if (exam != null) {
                 _context.Exams.Remove(exam);
             }
 
@@ -165,8 +141,7 @@ namespace TeamAssignment4A.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ExamExists(int id)
-        {
+        private bool ExamExists(int id) {
             return _context.Exams.Any(e => e.Id == id);
         }
     }

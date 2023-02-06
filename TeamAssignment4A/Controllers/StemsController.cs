@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,20 +13,18 @@ using TeamAssignment4A.Models;
 using TeamAssignment4A.Services;
 
 namespace TeamAssignment4A.Controllers {
+    [Authorize]
     public class StemsController : Controller 
     {
-        private readonly WebAppDbContext _db;
-        private readonly TopicService _topicService;
         private readonly StemService _service;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private MyDTO _myDTO;
         
-        public StemsController(WebAppDbContext db, TopicService topicService, 
-            StemService service, IWebHostEnvironment webHostEnvironment) 
+        public StemsController(StemService service, IWebHostEnvironment webHostEnvironment) 
         {
-            _db = db;
-            _topicService = topicService;
             _service = service;
-            _webHostEnvironment = webHostEnvironment;            
+            _webHostEnvironment = webHostEnvironment; 
+            _myDTO = new MyDTO();
         }
 
         // GET: Stems
@@ -41,13 +40,13 @@ namespace TeamAssignment4A.Controllers {
         [ProducesResponseType(typeof(StemDto), 200)]
         public async Task<IActionResult> Details(int id)
         {
-            MyDTO myDTO = await _service.Get(id);
-            ViewBag.Message = myDTO.Message;
-            if (myDTO.View == "Index")
+            _myDTO = await _service.Get(id);
+            ViewBag.Message = _myDTO.Message;
+            if (_myDTO.View == "Index")
             {
-                return View($"{myDTO.View}", myDTO.StemDtos);
+                return View($"{_myDTO.View}", _myDTO.StemDtos);
             }
-            return View($"{myDTO.View}", myDTO.StemDto);
+            return View($"{_myDTO.View}", _myDTO.StemDto);
         }       
 
         // GET: Stems/Create
@@ -61,7 +60,7 @@ namespace TeamAssignment4A.Controllers {
                 new SelectListItem { Value = "C", Text = "C" },
                 new SelectListItem { Value = "D", Text = "D" }
             };                        
-            ViewBag.Topics = new SelectList(await _topicService.GetAll(), "Description", "Description");
+            ViewBag.Topics = new SelectList(await _service.GetTopics(), "Description", "Description");
             return View();
         }
 
@@ -72,13 +71,14 @@ namespace TeamAssignment4A.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int id, [Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,TopicDescription,Topic")] StemDto stemDto) 
         {
-            MyDTO myDTO = await _service.AddOrUpdate(id, stemDto);
-            ViewBag.Message = myDTO.Message;
-            if (myDTO.View == "Index")
+            _myDTO = await _service.Add(id, stemDto);
+            ViewBag.Message = _myDTO.Message;
+            if (_myDTO.View == "Index")
             {
-                return View($"{myDTO.View}", myDTO.StemDtos);
+                return View($"{_myDTO.View}", _myDTO.StemDtos);
             }
-            return View($"{myDTO.View}", myDTO.StemDto);
+            ViewBag.Topics = new SelectList(await _service.GetTopics(), "Description", "Description");
+            return View($"{_myDTO.View}", _myDTO.StemDto);
         }
 
         // GET: Stems/Edit/5
@@ -86,20 +86,20 @@ namespace TeamAssignment4A.Controllers {
         [ProducesResponseType(typeof(StemDto), 200)]
         public async Task<IActionResult> Edit(int id) 
         {
-            MyDTO myDTO = await _service.GetForUpdate(id);
-            ViewBag.Message = myDTO.Message;
+            _myDTO = await _service.GetForUpdate(id);
+            ViewBag.Message = _myDTO.Message;
             ViewBag.Options = new List<SelectListItem>{
                 new SelectListItem { Value = "A", Text = "A" },
                 new SelectListItem { Value = "B", Text = "B" },
                 new SelectListItem { Value = "C", Text = "C" },
                 new SelectListItem { Value = "D", Text = "D" }
             };                                    
-            ViewBag.Topics = new SelectList(await _topicService.GetAll(), "Description", "Description");
-            if (myDTO.View == "Index")
+            ViewBag.Topics = new SelectList(await _service.GetTopics(), "Description", "Description");
+            if (_myDTO.View == "Index")
             {
-                return View($"{myDTO.View}", myDTO.StemDtos);
+                return View($"{_myDTO.View}", _myDTO.StemDtos);
             }
-            return View($"{myDTO.View}", myDTO.StemDto);
+            return View($"{_myDTO.View}", _myDTO.StemDto);
             
             
         }
@@ -111,13 +111,14 @@ namespace TeamAssignment4A.Controllers {
         [ProducesResponseType(typeof(StemDto), 200)]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,TopicDescription,Topic")] StemDto stemDto) 
         {
-            MyDTO myDTO = await _service.AddOrUpdate(id, stemDto);
-            ViewBag.Message = myDTO.Message;
-            if (myDTO.View == "Index")
+            _myDTO = await _service.Update(id, stemDto);
+            ViewBag.Message = _myDTO.Message;
+            if (_myDTO.View == "Index")
             {
-                return View($"{myDTO.View}", myDTO.StemDtos);
+                return View($"{_myDTO.View}", _myDTO.StemDtos);
             }
-            return View($"{myDTO.View}", myDTO.StemDto);
+            ViewBag.Topics = new SelectList(await _service.GetTopics(), "Description", "Description");
+            return View($"{_myDTO.View}", _myDTO.StemDto);
         }
 
         // GET: Stems/Delete/5
@@ -125,13 +126,13 @@ namespace TeamAssignment4A.Controllers {
         [ProducesResponseType(typeof(StemDto), 200)]
         public async Task<IActionResult> Delete(int id) 
         {
-            MyDTO myDTO = await _service.GetForDelete(id);
-            ViewBag.Message = myDTO.Message;
-            if (myDTO.View == "Index")
+            _myDTO = await _service.GetForDelete(id);
+            ViewBag.Message = _myDTO.Message;
+            if (_myDTO.View == "Index")
             {
-                return View($"{myDTO.View}", myDTO.StemDtos);
+                return View($"{_myDTO.View}", _myDTO.StemDtos);
             }
-            return View($"{myDTO.View}", myDTO.StemDto);
+            return View($"{_myDTO.View}", _myDTO.StemDto);
         }
 
         // POST: Stems/Delete/5
@@ -140,9 +141,9 @@ namespace TeamAssignment4A.Controllers {
         [ProducesResponseType(typeof(StemDto), 200)]
         public async Task<IActionResult> DeleteConfirmed(int id) 
         {
-            MyDTO myDTO = await _service.Delete(id);
-            ViewBag.Message = myDTO.Message;
-            return View($"{myDTO.View}", myDTO.StemDtos);
+            _myDTO = await _service.Delete(id);
+            ViewBag.Message = _myDTO.Message;
+            return View($"{_myDTO.View}", _myDTO.StemDtos);
         }
     }
 }

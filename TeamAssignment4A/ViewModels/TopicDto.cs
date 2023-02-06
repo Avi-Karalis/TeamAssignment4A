@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
-using TeamAssignment4A.Models.JointTables;
 using TeamAssignment4A.Models;
 
 namespace TeamAssignment4A.Dtos
@@ -19,6 +17,7 @@ namespace TeamAssignment4A.Dtos
         public string TitleOfCertificate { get; set; }
 
         public Certificate Certificate { get; set; }
+        public List<Stem> Stems { get; set; }
 
     }
 }

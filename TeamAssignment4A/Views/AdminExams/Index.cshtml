@@ -14,9 +14,9 @@
            onclick="scrollToTop()" style="cursor:pointer;"
            data-toggle="tooltip" data-placement="top" title="click to scroll to top">
         <tr style="border-style:hidden;">
-            <th style="border-top-left-radius: 100px; border-bottom-left-radius: 100px;">
+            @*<th style="border-top-left-radius: 100px; border-bottom-left-radius: 100px;">
                 @Html.DisplayNameFor(model => model.AssessmentTestCode)
-            </th>
+            </th>*@
             @*<th>
                 @Html.DisplayNameFor(model => model.ExaminationDate)
             </th>*@
@@ -34,16 +34,17 @@
             </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.TitleOfCertificate)
-            </th>
+            </th>         
+
             <th style="border-top-right-radius: 100px; border-bottom-right-radius: 100px;">Options</th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr class="text-center">
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.AssessmentTestCode)
-            </td>
+            </td>*@
             @*<td>
                 @Html.DisplayFor(modelItem => item.ExaminationDate)
             </td>*@

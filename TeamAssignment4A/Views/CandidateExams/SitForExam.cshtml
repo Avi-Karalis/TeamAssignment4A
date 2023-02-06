@@ -1,0 +1,82 @@
+﻿@model IEnumerable<TeamAssignment4A.Models.JointTables.CandidateExamStem>
+
+@{
+    ViewData["Title"] = "SitForExam";
+}
+
+<h3 class="custom-font fadein center-adjust">Examination</h3>
+<div class="sticky-header go-to-top hide-on-load text-nowrap my-round-button text-center navbar-dark bg-info"
+    onclick="scrollToTop()">
+    Go to top
+</div>
+<hr />
+
+<div class="row custom-font fadein center-adjust">
+    <form asp-action="SubmitExam" class="col-sm-2 text-center">
+        @foreach (var item in Model)
+        {
+            <div>
+                <input type="hidden" asp-for="@item.CandidateExam.Id" />
+                @*@Html.HiddenFor(modelItem => item.Stem.Id)
+                @Html.HiddenFor(modelItem => item.Exam.Id)*@
+                <div class="text-nowrap text-center navbar-dark bg-primary" style="border-top-right-radius: 100px; 
+                                            border-bottom-right-radius: 100px; border-top-left-radius: 100px; 
+                                            border-bottom-left-radius: 100px">
+                    @Html.DisplayNameFor(modelItem => item.ExamStem.Stem.Question)
+                    <br>
+                    @Html.Raw(item.ExamStem.Stem.Question)
+                    @*@Html.HiddenFor(modelItem => item.Stem.Question)*@
+                </div> <br />
+                <div class="text-nowrap text-center" style="border-top-right-radius: 100px; 
+                                            border-bottom-right-radius: 100px; border-top-left-radius: 100px; 
+                                            border-bottom-left-radius: 100px">
+                    @Html.DisplayNameFor(modelItem => item.ExamStem.Stem.OptionA)
+                    <br>
+                    @Html.Raw(item.ExamStem.Stem.OptionA)
+                    @*@Html.HiddenFor(modelItem => item.Stem.OptionA)*@
+                </div> <br />
+                <div class="text-nowrap text-center" style="border-top-right-radius: 100px; 
+                                            border-bottom-right-radius: 100px; border-top-left-radius: 100px; 
+                                            border-bottom-left-radius: 100px">
+                    @Html.DisplayNameFor(modelItem => item.ExamStem.Stem.OptionB)
+                    <br>
+                    @Html.Raw(item.ExamStem.Stem.OptionB)
+                    @*@Html.HiddenFor(modelItem => item.Stem.OptionB)*@
+                </div> <br />
+                <div class="text-nowrap text-center" style="border-top-right-radius: 100px; 
+                                            border-bottom-right-radius: 100px; border-top-left-radius: 100px; 
+                                            border-bottom-left-radius: 100px">
+                    @Html.DisplayNameFor(modelItem => item.ExamStem.Stem.OptionC)
+                    <br>
+                    @Html.Raw(item.ExamStem.Stem.OptionC)
+                    @*@Html.HiddenFor(modelItem => item.Stem.OptionC)*@
+                </div> <br />
+                <div class="text-nowrap text-center" style="border-top-right-radius: 100px; 
+                                            border-bottom-right-radius: 100px; border-top-left-radius: 100px; 
+                                            border-bottom-left-radius: 100px">
+                    @Html.DisplayNameFor(modelItem => item.ExamStem.Stem.OptionD)
+                    <br>
+                    @Html.Raw(item.ExamStem.Stem.OptionD)
+                    @*@Html.HiddenFor(modelItem => item.Stem.OptionD)*@
+                </div> <br />
+                <div class="form-group" style="text-decoration: underline;" >
+                    <label asp-for="@item.SubmittedAnswer" class="control-label"></label> <br /> 
+                    <select asp-for="@item.SubmittedAnswer" class="form-control" asp-items="@ViewBag.Selections"></select>
+                    <span asp-validation-for="@item.SubmittedAnswer" class="text-danger"></span>
+                </div>                
+            </div> 
+        }
+        <input type="submit" value="Submit" class="btn btn-warning" />
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+

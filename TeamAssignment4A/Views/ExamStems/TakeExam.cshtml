@@ -61,7 +61,7 @@
                 @Html.Raw(Model.ExamQuestions[i].OptionD)
                 @Html.HiddenFor(m => m.ExamQuestions[i].OptionD)
             </div>
-                <div style="text-decoration: underline;" class="">
+            <div style="text-decoration: underline;" class="">
                 @Html.DisplayNameFor(m => Model.ExamQuestions[i].Answer)
                 <br>
                     <hr>
@@ -69,7 +69,7 @@
                 @Html.DropDownListFor(m => m.ExamQuestions[i].Answer,@ViewBag.Selections as SelectList, "Select Answer")
                @* @Html.TextBoxFor(m => Model.ExamQuestions[i].Answer)*@
             </div>
-                <hr>
+            <hr>
             
  @*
             <div>@Html.TextBoxFor(m => Model.ExamQuestions[i].Question, new { @readonly = true })</div>

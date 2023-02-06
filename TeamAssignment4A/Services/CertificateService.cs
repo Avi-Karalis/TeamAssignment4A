@@ -21,10 +21,11 @@ namespace TeamAssignment4A.Services
         }
         public async Task<MyDTO> Get(int id)
         {
-            if(id == null || _db.Certificates == null || await _unit.Certificate.GetAsync(id) == null)
+            if (id == null || _db.Certificates == null || await _unit.Certificate.GetAsync(id) == null)
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested certificate could not be found. Please try again later.";
+                _myDTO.Certificates = await _unit.Certificate.GetAllAsync();
             }
             else
             {

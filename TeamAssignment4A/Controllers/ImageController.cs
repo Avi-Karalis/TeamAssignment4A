@@ -5,9 +5,10 @@ using System.IO;
 using System.Threading.Tasks;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TeamAssignment4A.Controllers {
-
+    [AllowAnonymous]
     public class ImageController : Controller {
         //private readonly IHostingEnvironment _hostingEnvironment;
         //public ImageController(IHostingEnvironment hostingEnvironment) {
