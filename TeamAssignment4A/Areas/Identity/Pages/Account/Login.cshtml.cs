@@ -14,6 +14,10 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using Duende.IdentityServer.Extensions;
+using System.Security.Cryptography;
 
 namespace TeamAssignment4A.Areas.Identity.Pages.Account
 {
@@ -21,11 +25,12 @@ namespace TeamAssignment4A.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
-
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        private readonly UserManager<IdentityUser> _userManager;
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, UserManager<IdentityUser> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -115,6 +120,11 @@ namespace TeamAssignment4A.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    
+                    var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    HttpContext.Session.SetString("Id", userid);
+
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
