@@ -52,20 +52,24 @@ namespace TeamAssignment4A.Controllers {
             return View($"{_myDTO.View}", _myDTO.Certificate);
         }
 
-        // GET: EShop/BuyExam
-
-        public IActionResult BuyExam() {
+        // GET: EShop/BuyExamVoucher
+        [AllowAnonymous]
+        [HttpGet]
+        [ProducesResponseType(typeof(CandidateExam), 200)]
+        public async Task<IActionResult> BuyExamVoucher(Certificate certificate) 
+        {
+            ViewBag.AssessmentTestCode = RandomizerFactory.GetRandomizer(new FieldOptionsIBAN()).Generate(); 
             ViewBag.Certificates = new SelectList(_context.Certificates, "Id", "TitleOfCertificate");
             ViewBag.Candidates = new SelectList(_context.Candidates, "Id", "LastName");
             return View();
         }
 
         // POST: Exams/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> BuyExam([Bind("CertificateId, ΕxaminationDate, CandidateId")] BuyCertificateDTO buyCertificateDTO) {
+        [ProducesResponseType(typeof(Certificate), 200)]
+        public async Task<IActionResult> BuyExamVoucher([Bind("CertificateId, ΕxaminationDate, CandidateId")] BuyCertificateDTO buyCertificateDTO) {
             if (ModelState.IsValid) {
                 
                 Certificate certificate = _context.Certificates.Find(buyCertificateDTO.CertificateId);
