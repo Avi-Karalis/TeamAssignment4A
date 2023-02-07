@@ -15,6 +15,9 @@ html {
     }
 }
 
+.h2{
+    margin-left:40px;
+}
 html {
     position: relative;
     min-height: 100%;
@@ -308,6 +311,10 @@ input:checked + .slider:after {
     color: white;
 }
 
+.dark-mode .my-div a{
+    background-color:#0006;
+}
+
 
 
 /*
@@ -407,6 +414,17 @@ input:checked + .slider:after {
     transition: margin-left .5s;
     padding: 16px;
 }
+
+ .my-div{
+          margin-left:30px;  
+       float:right;
+        }
+ .my-div a{
+     background-color:#0009;
+     font-weight:bold;
+         
+ }
+
 /*PeopleCert Operations Menu drop shadow*/
 .typing-text {
     text-shadow: 2px 2px 2px #333;
