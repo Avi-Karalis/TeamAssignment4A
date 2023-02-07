@@ -35,14 +35,6 @@ namespace TeamAssignment4A.Profiles
                 .ForMember(dest => dest.Topic, opt => opt.MapFrom(src => src.Topic))
                 .ReverseMap();
 
-            CreateMap<ExamStem, ExamStemDto>();
-
-            CreateMap<ExamStem, ExamStemDto>()
-                .ForMember(dest => dest.StemId, opt => opt.MapFrom(src => src.Stem.Id))
-                .ForMember(dest => dest.Stem, opt => opt.MapFrom(src => src.Stem))
-                .ForMember(dest => dest.ExamId, opt => opt.MapFrom(src => src.Exam.Id))
-                .ForMember(dest => dest.Exam, opt => opt.MapFrom(src => src.Exam))
-                .ReverseMap();
 
             CreateMap<Exam, ExamDto>();
 
@@ -63,7 +55,18 @@ namespace TeamAssignment4A.Profiles
                 .ForPath(dest => dest.Stem.OptionD, opt => opt.MapFrom(src => src.OptionD))
                 .ForPath(dest => dest.Stem.CorrectAnswer, opt => opt.MapFrom(src => src.CorrectAnswer))
                 .ForPath(dest => dest.Stem.Topic, opt => opt.MapFrom(src => src.Topic))
-                .ReverseMap();            
+                .ReverseMap();
+            
+            CreateMap<ExamStem, CandidateExamStem>();
+
+            CreateMap<ExamStem, CandidateExamStem>()
+                .ForPath(dest => dest.ExamStem.Stem.Question, opt => opt.MapFrom(src => src.Stem.Question))
+                .ForPath(dest => dest.ExamStem.Stem.OptionA, opt => opt.MapFrom(src => src.Stem.OptionA))
+                .ForPath(dest => dest.ExamStem.Stem.OptionB, opt => opt.MapFrom(src => src.Stem.OptionB))
+                .ForPath(dest => dest.ExamStem.Stem.OptionC, opt => opt.MapFrom(src => src.Stem.OptionC))
+                .ForPath(dest => dest.ExamStem.Stem.OptionD, opt => opt.MapFrom(src => src.Stem.OptionD))
+                .ForPath(dest => dest.ExamStem.Stem.CorrectAnswer, opt => opt.MapFrom(src => src.Stem.CorrectAnswer))
+                .ReverseMap();
         }
     }
 }

@@ -14,6 +14,7 @@ namespace TeamAssignment4A.Services
         public ExamRepository Exam { get; set; }
         public ExamStemRepository ExamStem { get; set; }
         public CandidateExamRepository CandidateExam { get; set; }
+        public CandidateExamStemRepository CandidateExamStem { get; set; }
         public UnitOfWork(WebAppDbContext db)
         {
             _db = db;
@@ -25,6 +26,7 @@ namespace TeamAssignment4A.Services
             Exam = new ExamRepository(db);
             ExamStem = new ExamStemRepository(db);
             CandidateExam = new CandidateExamRepository(db);
+            CandidateExamStem = new CandidateExamStemRepository(db);
         }
 
         public async Task<int> SaveAsync() 

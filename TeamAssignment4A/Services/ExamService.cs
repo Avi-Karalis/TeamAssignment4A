@@ -156,12 +156,12 @@ namespace TeamAssignment4A.Services
                 Stem stem = await _unit.Stem.GetAsync(stemId);
                 ExamStem examStem = new ExamStem(exam, stem);
                 EntityState state = _db.Entry(examStem).State;
-                _db.Entry(examStem.Stem).State = EntityState.Detached;
-                _db.Entry(examStem.Stem.Topic).State = EntityState.Detached;
+                //_db.Entry(examStem.Stem).State = EntityState.Detached;
+                //_db.Entry(examStem.Stem.Topic).State = EntityState.Detached;
                 _unit.ExamStem.AddOrUpdate(examStem);
-                state = _db.Entry(examStem).State;
-                await _unit.SaveAsync();
-                state = _db.Entry(examStem).State;
+                //state = _db.Entry(examStem).State;
+                //await _unit.SaveAsync();
+                //state = _db.Entry(examStem).State;
             }
             _unit.Exam.AddOrUpdate(exam);
 
