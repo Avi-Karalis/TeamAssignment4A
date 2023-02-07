@@ -7,8 +7,7 @@
 <h3 class="custom-font fadein center-adjust">Certificate Details</h3>
 <hr />
 
-<div>
-
+<div class="custom-font fadein bg-dark-for-light-mode">
     <dl class="row">
         <dt class="col-sm-6 rightalign">
             @Html.DisplayNameFor(model => model.TitleOfCertificate)
@@ -29,7 +28,6 @@
             @Html.DisplayFor(model => model.MaximumScore)
         </dd>
     </dl>
-   
 </div>
 <div class="center-adjust">
     <a asp-action="Edit" asp-route-id="@Model?.Id" style="width:95px;" class="custom-font btn btn-info col-sm-7">Edit</a> |
