@@ -3,7 +3,7 @@ using TeamAssignment4A.Models.JointTables;
 
 namespace TeamAssignment4A.Data.Repositories
 {
-    public class CandidateExamStemRepository : IGenericRepository<CandidateExamStem>
+    public class CandidateExamStemRepository 
     {
         private readonly WebAppDbContext _db;
         public CandidateExamStemRepository(WebAppDbContext context)

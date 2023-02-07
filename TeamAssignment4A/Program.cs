@@ -61,6 +61,7 @@ namespace TeamAssignment4A {
             builder.Services.AddScoped<ExamService, ExamService>();
             builder.Services.AddScoped<ExamStemService, ExamStemService>();
             builder.Services.AddScoped<CandidateExamService, CandidateExamService>();
+            builder.Services.AddScoped<EShopService, EShopService>();
             builder.Services.AddAutoMapper(typeof(Program));
             
             builder.Services.AddCors(options => {

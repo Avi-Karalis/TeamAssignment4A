@@ -12,34 +12,44 @@ using TeamAssignment4A.Data;
 using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models;
 using TeamAssignment4A.Models.JointTables;
+using TeamAssignment4A.Services;
 
 namespace TeamAssignment4A.Controllers {
     [Authorize(Roles = "Admin, Candidate")]
-    public class EshopController : Controller {
+    public class EshopController : Controller 
+    {
         private readonly WebAppDbContext _context;
-
-        public EshopController(WebAppDbContext context) {
+        private readonly EShopService _service;
+        private MyDTO _myDTO;
+        public EshopController(WebAppDbContext context, EShopService service) 
+        {
             _context = context;
+            _service = service;
+            _myDTO = new MyDTO();
         }
-        [AllowAnonymous]
+
         // GET: Eshop
-        public async Task<IActionResult> Index() {
-            return View(await _context.CandidateExams.ToListAsync());
-        }
         [AllowAnonymous]
+        [HttpGet]
+        [ProducesResponseType(typeof(Certificate), 200)]
+        public async Task<IActionResult> Index() 
+        {
+            return View(await _service.GetAll());
+        }
+
         // GET: Eshop/Details/5
-        public async Task<IActionResult> Details(int? id) {
-            if (id == null || _context.CandidateExams == null) {
-                return NotFound();
+        [AllowAnonymous]
+        [HttpGet]
+        [ProducesResponseType(typeof(Certificate), 200)]
+        public async Task<IActionResult> Details(int id) 
+        {
+            _myDTO = await _service.Get(id);
+            ViewBag.Message = _myDTO.Message;
+            if (_myDTO.View == "Index")
+            {
+                return View($"{_myDTO.View}", _myDTO.Certificates);
             }
-
-            var candidateExam = await _context.CandidateExams
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (candidateExam == null) {
-                return NotFound();
-            }
-
-            return View(candidateExam);
+            return View($"{_myDTO.View}", _myDTO.Certificate);
         }
 
         // GET: EShop/BuyExam
