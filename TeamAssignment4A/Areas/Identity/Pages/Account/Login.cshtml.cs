@@ -121,8 +121,8 @@ namespace TeamAssignment4A.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User logged in.");
                     
-                    var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                    HttpContext.Session.SetString("Id", userid);
+                    //var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    //HttpContext.Session.SetString("Id", userid);
 
 
                     return LocalRedirect(returnUrl);
