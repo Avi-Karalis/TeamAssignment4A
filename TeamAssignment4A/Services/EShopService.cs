@@ -23,7 +23,7 @@ namespace TeamAssignment4A.Services
             if (id == null || _db.Certificates == null || await _unit.Certificate.GetAsync(id) == null)
             {
                 _myDTO.View = "Index";
-                _myDTO.Message = "The requested certificate could not be found. Please try again later.";
+                _myDTO.Message = "The requested Certificate could not be found. Please try again later.";
                 _myDTO.Certificates = await _unit.Certificate.GetAllAsync();
             }
             else

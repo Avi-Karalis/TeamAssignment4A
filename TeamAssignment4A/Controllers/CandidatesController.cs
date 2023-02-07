@@ -18,18 +18,15 @@ namespace TeamAssignment4A.Controllers
     {
         private readonly CandidateService _service;
         private MyDTO _myDTO;
-        private WebAppDbContext _db;
-        public CandidatesController(CandidateService service, WebAppDbContext db)
+        public CandidatesController(CandidateService service)
         {
             _service = service;
             _myDTO= new MyDTO();
-            _db = db;
         }
 
         // GET: Candidates
         public async Task<IActionResult> Index()
         {
-            
             return View(await _service.GetAll());
         }
 
@@ -46,11 +43,9 @@ namespace TeamAssignment4A.Controllers
         }
 
         // GET: Candidates/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var listOfUsers =  _db.Users.ToList();
-            listOfUsers = listOfUsers.Where(user => user.Email != null).ToList();
-            ViewBag.IdentityUsers = new SelectList(listOfUsers, "Id", "Email");
+            ViewBag.IdentityUsers = new SelectList(await _service.GetUsers(), "Email", "Email");
             return View();
         }
 
@@ -60,7 +55,7 @@ namespace TeamAssignment4A.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int id, [Bind("Id,FirstName,MiddleName,LastName,Gender,NativeLanguage,CountryOfResidence," +
             "Birthdate,Email,LandlineNumber,MobileNumber,Address1,Address2,PostalCode,Town,Province,PhotoIdType,PhotoIdNumber," +
-            "PhotoIdDate, IdentityUserID")] Candidate candidate)
+            "PhotoIdDate,IdentityUser")] Candidate candidate)
         {
             _myDTO = await _service.AddOrUpdate(id, candidate);
             ViewBag.Message = _myDTO.Message;

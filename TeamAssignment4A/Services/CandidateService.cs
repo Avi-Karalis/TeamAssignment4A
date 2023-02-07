@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TeamAssignment4A.Data;
 using TeamAssignment4A.Models;
@@ -35,6 +36,11 @@ namespace TeamAssignment4A.Services
         public async Task<IEnumerable<Candidate>?> GetAll()
         {
             return await _unit.Candidate.GetAllAsync();
+        }
+
+        public async Task<IEnumerable<IdentityUser>?> GetUsers()
+        {
+            return await _db.Users.Where(user => user.Email != null).ToListAsync<IdentityUser>();
         }
 
         public async Task<MyDTO> GetForUpdate(int id)

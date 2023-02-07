@@ -1,8 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
-using Microsoft.EntityFrameworkCore;
-using System.Data.SqlTypes;
 using TeamAssignment4A.Models.JointTables;
 using Microsoft.AspNetCore.Identity;
 
@@ -89,9 +86,8 @@ namespace TeamAssignment4A.Models
         [Column(TypeName = "Date")]
         public DateTime PhotoIdDate { get; set; }
 
-        [Required]
-        public string IdentityUserID { get; set; }
-        // Navigation Property        
+        
+        // Navigation Properties       
         public virtual IdentityUser IdentityUser { get; set; }
         public virtual IEnumerable<CandidateExam>? CandidateExams { get; set; }
         public virtual IEnumerable<CandidateExamStem>? CandidateExamStems { get; set; }
