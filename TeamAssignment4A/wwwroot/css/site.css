@@ -417,7 +417,7 @@ input:checked + .slider:after {
 .bg-dark-for-light-mode {
     background-color: #0006;
 }
-
+/*create button positioning*/
 .create-btn-pst {
     margin-right: 700px;
 }
