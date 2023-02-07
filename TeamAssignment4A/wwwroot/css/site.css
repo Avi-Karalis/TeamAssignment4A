@@ -71,6 +71,8 @@ button > a {
 
 .custom-font {
     font-family: Arial, Helvetica, sans-serif;
+    color: black;
+   
 }
 
 .table {
@@ -122,6 +124,11 @@ button > a {
     align-items: center;
 }
 
+.left-adjust{
+   position:relative;
+   top:5px;
+   left:242px;
+}
 
 .rightalign {
     text-align: right;
@@ -131,6 +138,7 @@ button > a {
 .typing-text {
     white-space: nowrap;
 }
+
 
 
 
@@ -154,9 +162,10 @@ button > a {
     table-layout: fixed;
     word-wrap: break-word;
     border-radius: 30px;
-    background-color: #0009;
+    font-weight:bold;
     width: 900px;
     margin-left: 200px;
+    color:black;
 }
 
 /*select*/
@@ -280,47 +289,90 @@ input:checked + .slider:after {
 }
 
 
+
+.privacyButton{
+    color:blue;
+}
+
 /*light mode*/
 .btn-edit {
-    background-color: #5cb85c;
-    color: white;
+    font-weight:bold;
+    background-color: green;
+    color: black;
 }
 /*light mode*/
 .btn-details {
+    font-weight: bold;
     background-color: #0275d8;
-    color: white;
+    color: black;
 }
 /*light mode*/
 .btn-delete {
+    font-weight: bold;
     background-color: #d9534f;
-    color: white;
+    color: black;
 }
 /*dark mode*/
 .dark-mode .btn-edit {
+    font-weight: bold;
     background-color: darkgreen;
     color: white;
 }
 /*dark mode*/
 .dark-mode .btn-details {
+    font-weight: bold;
     background-color: darkblue;
     color: white;
 }
 /*dark mode*/
 .dark-mode .btn-delete {
+    font-weight: bold;
     background-color: darkred;
     color: white;
 }
 
-.dark-mode .my-div a{
-    background-color:#0006;
+
+.dark-mode .textLogin{
+    color:white;
 }
 
 
+.dark-mode .containerFooter{
+    color:white;
+}
 
+.dark-mode .typing-text{
+    color:white;
+}
+
+.dark-mode .buttonLogin{
+    color:white;
+}
+
+.dark-mode .buttonLogin:hover:before{
+    background-color:white;
+}
+
+.dark-mode .custom-font {
+    color: white;
+}
+
+.dark-mode .custom-font-black{
+    color:black;
+}
+
+
+.dark-mode .table{
+    font-weight:bold;
+    color:white;
+}
+
+.dark-mode .privacyButton{
+    color:lightblue;
+}
 /*
     button-nav. is sidenav button
 */
-
 .button-nav {
     z-index: 1;
     position: fixed;
@@ -415,20 +467,89 @@ input:checked + .slider:after {
     padding: 16px;
 }
 
-.my-div {
-   
-    
+.divLogout {
     position: absolute;
     top: 0;
     right: 10px;
 }
- .my-div a{
-     background-color:#0009;
-     font-weight:bold;
-         
- }
+    .divLogout a {
+        font-weight: bold;
+    }
+
+
+.textLogin {
+    color: black;
+}
+
+.containerFooter{
+    text-align:center;
+    color:black;
+}
+
+.btnLogout {
+    position:absolute;
+    top:26px;
+    right:26px;
+    padding: 1.3em 3em;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #000;
+    background-color: #fff;
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    outline: none;
+}
+
+    .btnLogout:hover {
+        background-color: darkred;
+        box-shadow: 0px 10px 20px rgb(141, 118, 118);
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .btnLogout:active {
+        transform: translateY(-1px);
+    }
+
+.buttonLogin {
+    align-items: center;
+    background-color: transparent;
+    color: black;
+    cursor: pointer;
+    display: flex;
+    font-family: ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.5;
+    text-decoration: none;
+    text-transform: uppercase;
+    outline: 0;
+    border: 0;
+    padding: 1rem;
+}
+
+    .buttonLogin:before {
+        background-color: #fff;
+        content: "";
+        display: inline-block;
+        height: 1px;
+        margin-right: 10px;
+        transition: all .42s cubic-bezier(.25,.8,.25,1);
+        width: 0;
+    }
+
+    .buttonLogin:hover:before {
+        background-color: black;
+        width: 3rem;
+    }
 
 /*PeopleCert Operations Menu drop shadow*/
 .typing-text {
-    text-shadow: 2px 2px 2px #333;
+    color:grey;
+    text-shadow: 2px 2px 2px black;
 }
