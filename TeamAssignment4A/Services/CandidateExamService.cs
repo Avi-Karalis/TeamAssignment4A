@@ -7,7 +7,7 @@ using TeamAssignment4A.Models;
 
 namespace TeamAssignment4A.Services
 {
-    public class CandidateExamService : ControllerBase
+    public class CandidateExamService : ControllerBase, ICandidateExamService
     {
         private WebAppDbContext _db;
         private UnitOfWork _unit;
@@ -35,6 +35,7 @@ namespace TeamAssignment4A.Services
             return cExStems;
         }
 
+        // Submit a Candidate's Exam
         public async Task<MyDTO> SubmitAnswers([Bind("Id,SubmittedAnswer," +
                 "Score,Candidate,ExamStem,CandidateExam")] IEnumerable<CandidateExamStem> cExStems)
         {
@@ -45,35 +46,41 @@ namespace TeamAssignment4A.Services
                 _myDTO.CandidateExamStems = cExStems;
                 return _myDTO;
             }
+
+            _myDTO.View = "Index";
             _myDTO.Message = "Your Exam has been submitted successfully.";
-            _unit.CandidateExam.AddOrUpdate(cExStems.First().CandidateExam);
+            
             foreach (var cExStem in cExStems)
             {
-                _unit.CandidateExamStem.AddOrUpdate(cExStem);
-                if (ModelState.IsValid)
-                {   
-                    await _unit.SaveAsync();
-                    _myDTO.View = "Index";
-                    IEnumerable<Exam> exams = await _unit.Exam.GetAllAsync();
-                    _myDTO.ExamDtos = _mapper.Map<List<ExamDto>>(exams);
+                if (!ModelState.IsValid)
+                {
+                    _myDTO.View = "sitforexam";
+                    _myDTO.Message = "A question was left unanswered. Please check your exam" +
+                        " for unfilled answers.";
+                    _myDTO.CandidateExamStems = cExStems;
                     return _myDTO;
                 }
                 else
                 {
-                    _myDTO.View = "CreateExamStems";
-                    _myDTO.Message = "Invalid entries. Please try again later.";
-                    _myDTO.ExamDto = examDto;
+                    _unit.CandidateExamStem.AddOrUpdate(cExStem);
                 }
             }
             if (await _unit.CandidateExam.AlreadySubmitted(cExStems.First().CandidateExam.Id))
             {
-                _myDTO.Message = "You tried to submit an already submitted Exam. The operation failed.";
+                _myDTO.View = "Index";
+                _myDTO.Message = "The Exam you tried to submit is already submitted. The operation failed.";
+                return _myDTO;
             }
 
-            return _myDTO;
-            
+            _unit.CandidateExam.AddOrUpdate(cExStems.First().CandidateExam);
+            await _unit.SaveAsync();
+            return _myDTO;            
         }
 
+
+
+
+        // We have to evaluate which of the following methods are needed -----------------------
         public async Task<MyDTO> Get(int id)
         {
             if (id == null || _db.CandidateExams == null || await _unit.CandidateExam.GetAsync(id) == null)

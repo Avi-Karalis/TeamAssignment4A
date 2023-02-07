@@ -21,7 +21,6 @@ namespace TeamAssignment4A.Models
         public IEnumerable<ExamStem>? ExamStems { get; set; }
         public CandidateExam? CandidateExam { get; set; }
         public IEnumerable<CandidateExam>? CandidateExams { get; set; }
-        public CandidateExamStem? CandidateExamStem { get; set; }
         public IEnumerable<CandidateExamStem>? CandidateExamStems { get; set; }
 
     }

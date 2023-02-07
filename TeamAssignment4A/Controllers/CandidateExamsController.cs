@@ -47,14 +47,14 @@ namespace TeamAssignment4A.Controllers
         [Authorize(Roles = "Admin, Candidate")]
         [HttpGet, ActionName("sitforexam")]
         [ProducesResponseType(typeof(CandidateExamStem), 200)]
-        public async Task<IActionResult> SitForExam(CandidateExam exam)
+        public async Task<IActionResult> SitForExam(CandidateExam candExam)
         {
             List<string> selections = new List<string> { "A", "B", "C", "D" };
             ViewBag.Selections = new SelectList(selections);
-            return View(await _service.GetByExam(exam));
+            return View(await _service.GetByExam(candExam));
         }
 
-            [Authorize(Roles = "Admin, Candidate")]
+        [Authorize(Roles = "Admin, Candidate")]
         [HttpPost, ActionName("submitexam")]
         [ProducesResponseType(typeof(CandidateExam), 200)]
         public async Task<IActionResult> SubmitExam([Bind("Id,SubmittedAnswer," +
@@ -67,7 +67,7 @@ namespace TeamAssignment4A.Controllers
                 return RedirectToAction($"{myDTO.View}", myDTO.CandidateExamStems);
                 
             }
-            return View($"{myDTO.View}", myDTO.CandidateExamStems);
+            return RedirectToAction($"{myDTO.View}", "Home");
         }
     }
 }

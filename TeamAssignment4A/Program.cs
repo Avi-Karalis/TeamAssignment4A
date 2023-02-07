@@ -42,7 +42,7 @@ namespace TeamAssignment4A {
 
 
 
-                builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews();
 
             //Authorization Handler and roles
 
