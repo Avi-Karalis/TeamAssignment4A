@@ -415,10 +415,13 @@ input:checked + .slider:after {
     padding: 16px;
 }
 
- .my-div{
-          margin-left:30px;  
-       float:right;
-        }
+.my-div {
+   
+    
+    position: absolute;
+    top: 0;
+    right: 10px;
+}
  .my-div a{
      background-color:#0009;
      font-weight:bold;
