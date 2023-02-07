@@ -16,6 +16,7 @@ using Duende.IdentityServer.Stores;
 using TeamAssignment4A.Authorization;
 using System.Security.Cryptography.X509Certificates;
 
+
 namespace TeamAssignment4A {
     public class Program {
         public void Configure(IApplicationBuilder app) {
@@ -40,7 +41,7 @@ namespace TeamAssignment4A {
             builder.Services.AddIdentityServer().AddSigningCredential(certificate)
             .AddApiAuthorization<IdentityUser, WebAppDbContext>();
 
-
+            
 
             builder.Services.AddControllersWithViews();
 
@@ -71,7 +72,10 @@ namespace TeamAssignment4A {
                     .AllowAnyMethod();
                 });
             });
-
+            builder.Services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(45);
+                options.Cookie.HttpOnly = true;
+            });
 
 
             var app = builder.Build();
@@ -103,7 +107,7 @@ namespace TeamAssignment4A {
             }
 
             app.UseHttpsRedirection();
-            
+            app.UseSession();
             app.UseStaticFiles(new StaticFileOptions {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Images")),
                 RequestPath = new PathString("/Images")

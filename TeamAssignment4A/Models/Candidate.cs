@@ -88,9 +88,11 @@ namespace TeamAssignment4A.Models
         [Display(Name = "Photo Id Date")]
         [Column(TypeName = "Date")]
         public DateTime PhotoIdDate { get; set; }
-        
-        public string? IdentityUserID { get; set; }
+
+        [Required]
+        public string IdentityUserID { get; set; }
         // Navigation Property        
+        public virtual IdentityUser IdentityUser { get; set; }
         public virtual IEnumerable<CandidateExam>? CandidateExams { get; set; }
         public virtual IEnumerable<CandidateExamStem>? CandidateExamStems { get; set; }
     }

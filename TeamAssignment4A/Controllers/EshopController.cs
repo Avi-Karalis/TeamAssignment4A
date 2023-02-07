@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -18,14 +19,17 @@ namespace TeamAssignment4A.Controllers {
     [Authorize(Roles = "Admin, Candidate")]
     public class EshopController : Controller 
     {
+        
         private readonly WebAppDbContext _context;
         private readonly EShopService _service;
         private MyDTO _myDTO;
-        public EshopController(WebAppDbContext context, EShopService service) 
+        private readonly UserManager<IdentityUser> _userManager;
+        public EshopController(WebAppDbContext context, EShopService service,UserManager<IdentityUser> userManager) 
         {
             _context = context;
             _service = service;
             _myDTO = new MyDTO();
+            _userManager = userManager;
         }
 
         // GET: Eshop
@@ -60,7 +64,7 @@ namespace TeamAssignment4A.Controllers {
         {
             ViewBag.AssessmentTestCode = RandomizerFactory.GetRandomizer(new FieldOptionsIBAN()).Generate(); 
             ViewBag.Certificates = new SelectList(_context.Certificates, "Id", "TitleOfCertificate");
-            ViewBag.Candidates = new SelectList(_context.Candidates, "Id", "LastName");
+            //ViewBag.Candidates = new SelectList(_context.Candidates, "Id", "LastName");
             return View();
         }
 
@@ -71,15 +75,18 @@ namespace TeamAssignment4A.Controllers {
         [ProducesResponseType(typeof(Certificate), 200)]
         public async Task<IActionResult> BuyExamVoucher([Bind("CertificateId, ΕxaminationDate, CandidateId")] BuyCertificateDTO buyCertificateDTO) {
             if (ModelState.IsValid) {
-                
-                Certificate certificate = _context.Certificates.Find(buyCertificateDTO.CertificateId);
-                Candidate candidate = _context.Candidates.Find(buyCertificateDTO.CandidateId);
-                string assessmentTestCode = RandomizerFactory.GetRandomizer(new FieldOptionsIBAN()).Generate();
-                DateTime examinationDate = buyCertificateDTO.ExaminationDate;
-                Exam exam = new Exam(certificate);
-                _context.Add(exam);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Eshop", new { id = exam.Id });
+                if (User.Identity.IsAuthenticated) {
+                    var user = await _userManager.GetUserAsync(User);
+                    var UserId = user.Id;
+                    Certificate certificate = _context.Certificates.Find(buyCertificateDTO.CertificateId);
+                    Candidate candidate = _context.Candidates.Where(candidate => candidate.IdentityUserID == UserId).First();
+                    string assessmentTestCode = RandomizerFactory.GetRandomizer(new FieldOptionsIBAN()).Generate();
+                    DateTime examinationDate = buyCertificateDTO.ExaminationDate;
+                    Exam exam = new Exam(certificate);
+                    _context.Add(exam);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index", "Eshop", new { id = exam.Id });
+                }
             }
             return View(buyCertificateDTO);
         }
