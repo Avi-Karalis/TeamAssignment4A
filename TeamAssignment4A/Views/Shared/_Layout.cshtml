@@ -18,10 +18,8 @@
    
 </head>
 <body>
-
     <header>
-
-        <div class="  container">
+        <div class="container">
             <nav class=" bg-primary">
                 <div id="mySidenav" class="sidenav">
                     <ul class="navbar-nav flex-grow-1">
@@ -37,7 +35,6 @@
                                 <span class="text">MENU</span>
                             </button>
                         </li>
-
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><span style="font-size:22px">&#x2302</span> Home</a>
                         </li>
@@ -66,34 +63,16 @@
                             <a class="nav-link" asp-area="" asp-controller="Eshop" asp-action="Index">E-Shop</a>
                         </li>
                         <li>
-
                             <label class="switch">
                                 <input type="checkbox" id="togBtn" onclick="myFunction()">
                                 <div class="slider round"></div>
                             </label>
-
-
                         </li>
-                        @* <li>
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-
-                        </li>
-                        <li>
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                        </li>*@
-
                     </ul>
-
         </div>
-           
-                   
             </nav>
-           
-            
         </div>
-        
     </header>
-
     <div class="  container">
         <nav class=" bg-primary">
             <div id="mySidenav" class="sidenav">
@@ -110,7 +89,6 @@
                             <span class="text">MENU</span>
                         </button>
                     </li>
-
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
@@ -139,32 +117,18 @@
                         <a class="nav-link" asp-area="" asp-controller="Eshop" asp-action="Index">E-Shop</a>
                     </li>
                     <li>
-
                         <label class="switch">
                             <input type="checkbox" id="togBtn" onclick="myFunction()">
                             <div class="slider round"></div>
                         </label>
-
-
                     </li>
-                    @* <li>
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-
-                    </li>
-                    <li>
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                    </li>*@
-
                 </ul>
-
             </div>
-
             <div class="my-div">
                 <a><partial name="_LoginPartial" /></a>
             </div>
         </nav>
     </div>
-    
     @if (@ViewBag.Message != null)
     {
         <div class="alert alert-dismissible alert-info">

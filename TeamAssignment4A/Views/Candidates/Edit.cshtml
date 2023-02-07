@@ -6,8 +6,7 @@
 
 <h3 class="custom-font fadein center-adjust">Editing Candidate</h3>
 <hr />
-<div class="row custom-font fadein center-adjust" style="background-color:#0006">
-    @*<div class="col-md-4">*@
+<div class="row custom-font fadein center-adjust bg-dark-for-light-mode">
     <form asp-action="Edit" class="row g-12">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
@@ -119,15 +118,16 @@
                 <span asp-validation-for="PhotoIdDate" class="text-danger"></span>
             </div>
         </div>
-        <p>
-            <div class="form-group center-adjust">
-                <input type="submit" value="Save" class="custom-font btn btn-info" /> |
-                <a asp-action="Index" class="custom-font btn btn-primary">Back to List</a>
-            </div>
-        </p>
+        
     </form>
-    @*</div>*@
 </div>
+<p>
+    <div class="form-group center-adjust">
+        <input type="submit" value="Save" class="custom-font btn btn-info" /> |
+        <a asp-action="Index" class="custom-font btn btn-primary">Back to List</a>
+    </div>
+</p>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
