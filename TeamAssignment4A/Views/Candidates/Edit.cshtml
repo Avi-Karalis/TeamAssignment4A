@@ -119,15 +119,16 @@
                 <span asp-validation-for="PhotoIdDate" class="text-danger"></span>
             </div>
         </div>
-        <p>
-            <div class="form-group center-adjust">
-                <input type="submit" value="Save" class="custom-font btn btn-info" /> |
-                <a asp-action="Index" class="custom-font btn btn-primary">Back to List</a>
-            </div>
-        </p>
+        
     </form>
-    @*</div>*@
 </div>
+<p>
+    <div class="form-group center-adjust">
+        <input type="submit" value="Save" class="custom-font btn btn-info" /> |
+        <a asp-action="Index" class="custom-font btn btn-primary">Back to List</a>
+    </div>
+</p>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

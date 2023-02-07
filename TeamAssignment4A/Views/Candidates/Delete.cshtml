@@ -6,7 +6,7 @@
 
 <h3 class="custom-font fadein center-adjust">Deleting Candidate</h3>
 <hr />
-<div class="custom-font fadein">
+<div class="custom-font fadein bg-dark-for-light-mode">
     <dl class="row">
         <dt class="col-sm-6 rightalign">
             @Html.DisplayNameFor(model => model.FirstName)
@@ -117,6 +117,9 @@
             @Html.DisplayFor(model => model.PhotoIdDate)
         </dd>
     </dl>
+  
+</div>
+<p>
     <div class="center-adjust">
         <form asp-action="Delete">
             <input type="hidden" asp-for="Id" />
@@ -124,4 +127,4 @@
             <a asp-action="Index" style="width:110px;" class="btn btn-primary col-sm-6">Back to List</a>
         </form>
     </div>
-</div>
+</p>

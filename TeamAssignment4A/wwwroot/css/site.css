@@ -1,13 +1,16 @@
+/*basic rules for html*/
 html {
     font-size: 14px;
+    position: relative;
+    min-height: 100%;
 }
-
+/*adaptation with screen size changing*/
 @media (max-width: 500px) {
     .container {
         width: 40%;
     }
 }
-
+/*adaptation with screen size changing*/
 @media only screen and (max-width: 767px) {
     .table {
         display: block;
@@ -17,10 +20,6 @@ html {
 
 .h2{
     margin-left:40px;
-}
-html {
-    position: relative;
-    min-height: 100%;
 }
 
 body {
@@ -168,15 +167,6 @@ button > a {
     color:black;
 }
 
-/*select*/
-/*.form-control:focus {
-    box-shadow: 0 0 6px 3px #48abe0,0 0 6px 2px #48abe0 inset;
-}
-
-.form-control:hover {
-    box-shadow:  0 0 6px 3px #48abe0 ,0 0 6px 2px #48abe0 inset;
-}
-*/
 /*drop shadow on select on form*/
 .form-control:focus {
     box-shadow: 0 0 3px #48abe0 inset, 0 0 6px 2px #48abe0 inset, 0 0 9px 4px #48abe0 inset, 5px 5px 5px rgba(0,0,0,0.2);
@@ -209,10 +199,10 @@ button > a {
     height: 34px;
     margin-left: 40px;
 }
-    /* dark mode button switch*/
-    .switch input {
-        display: none;
-    }
+/* dark mode button switch*/
+.switch input {
+     display: none;
+}
 /* dark mode button switch*/
 .slider {
     position: absolute;
@@ -226,18 +216,18 @@ button > a {
     transition: .4s;
     border-radius: 34px;
 }
-    /* dark mode button switch*/
-    .slider:before {
-        position: absolute;
-        content: "";
-        height: 25px;
-        width: 25px;
-        left: 4px;
-        bottom: 4px;
-        background-color: lightgrey;
-        -webkit-transition: .4s;
-        transition: .4s;
-        border-radius: 50%;
+/* dark mode button switch*/
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 25px;
+    width: 25px;
+    left: 4px;
+    bottom: 4px;
+    background-color: lightgrey;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%;
     }
 /* dark mode button switch*/
 input:checked + .slider {
@@ -276,8 +266,7 @@ input:checked + .slider:after {
     left: 0%;
 }
 
-
-/* dark mode button switch*/
+/*fade in animation rules*/
 @keyframes fadein {
     from {
         opacity: 0;
@@ -392,42 +381,30 @@ input:checked + .slider:after {
     color: #f5f5f5;
 }
 /*side nav button*/
-    .button-nav:hover {
-        box-shadow: 0 0 20px 0px #03436b;
-    }
-    /*side nav button*/
-    .button-nav .icon {
-        position: absolute;
-        height: 40px;
-        width: 70px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: all 0.5s;
-    }
-    /*side nav button*/
-    .button-nav .text {
-        transform: translateX(55px);
-    }
-    /*side nav button*/
-    /*.button-nav:hover .icon {
-        width: 175px;
-    }
-*/
-    /*side nav button*/
-    /*.button-nav:hover .text {
-        transition: all 0.5s;
-        opacity: 0;
-    }*/
-    /*side nav button*/
-    .button-nav:focus {
-        outline: none;
-    }
+.button-nav:hover {
+    box-shadow: 0 0 20px 0px #03436b;
+}
 /*side nav button*/
-   /* .button-nav:active .icon {
-        transform: scale(0.85);
-    }*/
-   /*side nav container*/
+.button-nav .icon {
+     position: absolute;
+     height: 40px;
+     width: 70px;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     transition: all 0.5s;
+ }
+/*side nav button*/
+.button-nav .text {
+     transform: translateX(55px);
+ }
+
+/*side nav button*/
+.button-nav:focus {
+     outline: none;
+}
+
+/*side nav container*/
 .container {
     max-width: 1280px;
     margin: 0 auto;
@@ -446,20 +423,20 @@ input:checked + .slider:after {
     padding-top: 60px;
     border-radius: 0 5px 5px 0;
 }
-    /*side nav*/
-    .sidenav a {
-        padding: 8px 8px 8px 0px;
-        text-decoration: none;
-        font-size: 16px;
-        color: white;
-        transition: 0.3s;
-        text-align: left;
-        margin-left: 18px;
-    }
-        /*side nav*/
-        .sidenav a:hover {
-            color: white;
-        }
+/*side nav*/
+.sidenav a {
+    padding: 8px 8px 8px 0px;
+    text-decoration: none;
+    font-size: 16px;
+    color: white;
+    transition: 0.3s;
+    text-align: left;
+    margin-left: 18px;
+}
+/*side nav*/
+.sidenav a:hover {
+     color: white;
+}
 
 /*side nav*/
 #main {
@@ -552,4 +529,24 @@ input:checked + .slider:after {
 .typing-text {
     color:grey;
     text-shadow: 2px 2px 2px black;
+}
+
+/*rounding left side rule*/
+.left-side-rounding {
+    border-top-left-radius: 100px;
+    border-bottom-left-radius: 100px;
+}
+/*rounding left side rule*/
+.right-side-rounding {
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+}
+
+/*dark background form some views*/
+.bg-dark-for-light-mode {
+    background-color: #0006;
+}
+/*create button positioning*/
+.create-btn-pst {
+    margin-right: 700px;
 }
