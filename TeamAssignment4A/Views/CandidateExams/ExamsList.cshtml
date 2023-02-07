@@ -1,0 +1,39 @@
+﻿@model IEnumerable<TeamAssignment4A.Models.JointTables.CandidateExam>
+
+@{
+    ViewData["Title"] = "ExamsList";
+}
+
+<h1>ExamsList</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AssessmentTestCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExaminationDate)
+            </th>
+            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssessmentTestCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExaminationDate)
+            </td>
+            
+            <td>
+                <a asp-action="SitForExam" asp-route-id="@item.Id">Begin Examination</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

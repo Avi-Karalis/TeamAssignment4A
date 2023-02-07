@@ -36,7 +36,7 @@ namespace TeamAssignment4A.Controllers
             return View();
         }
 
-        [HttpGet]
+        [HttpGet, ActionName("examslist")]
         [Authorize(Roles = "Admin, QA, Candidate")]
         [ProducesResponseType(typeof(CandidateExam), 200)]
         public async Task<IActionResult> CandidateExamsList(int candidateId)
