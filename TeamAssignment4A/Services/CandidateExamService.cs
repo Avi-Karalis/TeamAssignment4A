@@ -41,7 +41,7 @@ namespace TeamAssignment4A.Services
         {
             if(cExStems == null)
             {
-                _myDTO.View = "sitforexam";
+                _myDTO.View = "SitForExam";
                 _myDTO.Message = "Your answers failed to submit. Please try again later.";
                 _myDTO.CandidateExamStems = cExStems;
                 return _myDTO;
@@ -54,7 +54,7 @@ namespace TeamAssignment4A.Services
             {
                 if (!ModelState.IsValid)
                 {
-                    _myDTO.View = "sitforexam";
+                    _myDTO.View = "SitForExam";
                     _myDTO.Message = "A question was left unanswered. Please check your exam" +
                         " for unfilled answers.";
                     _myDTO.CandidateExamStems = cExStems;

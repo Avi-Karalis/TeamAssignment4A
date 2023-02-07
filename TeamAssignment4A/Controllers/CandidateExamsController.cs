@@ -36,7 +36,7 @@ namespace TeamAssignment4A.Controllers
             return View();
         }
 
-        [HttpGet, ActionName("examslist")]
+        [HttpGet, ActionName("CandidateExamsList")]
         [Authorize(Roles = "Admin, QA, Candidate")]
         [ProducesResponseType(typeof(CandidateExam), 200)]
         public async Task<IActionResult> CandidateExamsList(int candidateId)
@@ -45,7 +45,7 @@ namespace TeamAssignment4A.Controllers
         }
 
         [Authorize(Roles = "Admin, Candidate")]
-        [HttpGet, ActionName("sitforexam")]
+        [HttpGet, ActionName("SitForExam")]
         [ProducesResponseType(typeof(CandidateExamStem), 200)]
         public async Task<IActionResult> SitForExam(CandidateExam candExam)
         {
@@ -55,7 +55,7 @@ namespace TeamAssignment4A.Controllers
         }
 
         [Authorize(Roles = "Admin, Candidate")]
-        [HttpPost, ActionName("submitexam")]
+        [HttpPost, ActionName("SubmitExam")]
         [ProducesResponseType(typeof(CandidateExam), 200)]
         public async Task<IActionResult> SubmitExam([Bind("Id,SubmittedAnswer," +
                 "Score,Candidate,ExamStem,CandidateExam")] IEnumerable<CandidateExamStem> cExStems)
