@@ -577,27 +577,28 @@ input:checked + .slider:after {
         }
 
         .login-box .user-box input:focus ~ label,
-        .login-box .user-box input:valid ~ label {
+        .login-box .user-box input:not(:focus):not(:placeholder-shown) ~ label.on-top {
             top: -20px;
             left: 0;
             color: #fff;
             font-size: 12px;
         }
 
-    .login-box form button {
-        position: relative;
-        display: inline-block;
-        padding: 10px 20px;
-        font-weight: bold;
-        color: #fff;
-        font-size: 16px;
-        text-decoration: none;
-        text-transform: uppercase;
-        overflow: hidden;
-        transition: .5s;
-        margin-top: 40px;
-        letter-spacing: 3px
-    }
+
+        .login-box form button {
+            position: relative;
+            display: inline-block;
+            padding: 10px 20px;
+            font-weight: bold;
+            color: #fff;
+            font-size: 16px;
+            text-decoration: none;
+            text-transform: uppercase;
+            overflow: hidden;
+            transition: .5s;
+            margin-top: 40px;
+            letter-spacing: 3px
+        }
 
     .login-box button:hover {
         background: #fff;
@@ -694,12 +695,12 @@ input:checked + .slider:after {
     font-size: 14px;
 }
 
-.login-box a.buttonLogin {
+.login-box button.buttonLogin {
     color: #fff;
     text-decoration: none;
 }
 
-    .login-box a.buttonLogin:hover {
+    .login-box button.buttonLogin:hover {
         background: transparent;
         color: #aaa;
         border-radius: 5px;

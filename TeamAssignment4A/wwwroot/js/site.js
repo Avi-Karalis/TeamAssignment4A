@@ -135,6 +135,19 @@ switchEl.addEventListener("change", function () {
     localStorage.setItem("switchState", this.checked);
 });
 
+
+
+
+
+$('.login-box .user-box input').on('input', function () {
+    if ($(this).val().length > 0) {
+        $(this).siblings('label').addClass('on-top');
+    } else {
+        $(this).siblings('label').removeClass('on-top');
+    }
+});
+
+
 type();
 
 
