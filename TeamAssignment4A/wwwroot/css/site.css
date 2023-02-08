@@ -288,7 +288,9 @@ input:checked + .slider:after {
     }
 }
 
-
+.custom-font-black{
+    color:black;
+}
 
 .privacyButton{
     color:blue;
@@ -531,6 +533,14 @@ input:checked + .slider:after {
 
     .btnLogout:active {
         transform: translateY(-1px);
+    }
+
+    .login-box .buttonLogin{
+        color:white;
+    }
+
+    .login-box .buttonLogin:hover:before{
+        background-color:white;
     }
 
 .buttonLogin {
