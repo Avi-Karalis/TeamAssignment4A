@@ -46,7 +46,7 @@ namespace TeamAssignment4A.Models
 
         public ExamQuestion(Stem stem, int examId)
         {
-            ExamId = examId;
+            CandidateExamId = examId;
             StemId = stem.Id;
             Question = stem.Question;
             OptionA = stem.OptionA;
