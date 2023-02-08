@@ -8,7 +8,7 @@ namespace TeamAssignment4A.Models
 
         [Required]
         [Display(Name = "Exam Id")]
-        public int ExamId { get; set; }
+        public int CandidateExamId { get; set; }
 
         [Required]
         [Display(Name = "Stem Id")]
