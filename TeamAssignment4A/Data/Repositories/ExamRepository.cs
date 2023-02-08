@@ -12,7 +12,7 @@ namespace TeamAssignment4A.Data.Repositories
         }
         public async Task<Exam?> GetAsync(int id)
         {
-            return await _db.Exams.AsNoTracking().Include(exam => exam.Certificate)
+            return await _db.Exams.Include(exam => exam.Certificate)
                 .Include(exam => exam.ExamStems).FirstOrDefaultAsync(x => x.Id == id);
         }
         

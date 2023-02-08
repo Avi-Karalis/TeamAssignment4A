@@ -7,7 +7,7 @@ using TeamAssignment4A.Models;
 
 namespace TeamAssignment4A.Services
 {
-    public class CandidateExamService : ControllerBase
+    public class CandidateExamService : ControllerBase, ICandidateExamService
     {
         private WebAppDbContext _db;
         private UnitOfWork _unit;
@@ -20,28 +20,81 @@ namespace TeamAssignment4A.Services
             _mapper = mapper;
             _myDTO = new MyDTO();
         }
+
+        // Get all Exams that a specific Candidate has not sat for yet
+        public async Task<IEnumerable<CandidateExam>?> GetAll(int candidateId)
+        {
+            return await _unit.CandidateExam.GetAllAsync(candidateId);
+        }
+
+        // Get all Candidate Exam Stems that belong to a specific Candidate Exam
+        public async Task<IEnumerable<CandidateExamStem>?> GetByExam(CandidateExam canExam)
+        {
+            IEnumerable<ExamStem> exStems = await _unit.ExamStem.GetExamStemsByExam(canExam.Exam);
+            IEnumerable<CandidateExamStem> cExStems = _mapper.Map<List<CandidateExamStem>>(exStems);
+            return cExStems;
+        }
+
+        // Submit a Candidate's Exam
+        public async Task<MyDTO> SubmitAnswers([Bind("Id,SubmittedAnswer," +
+                "Score,Candidate,ExamStem,CandidateExam")] IEnumerable<CandidateExamStem> cExStems)
+        {
+            if(cExStems == null)
+            {
+                _myDTO.View = "SitForExam";
+                _myDTO.Message = "Your answers failed to submit. Please try again later.";
+                _myDTO.CandidateExamStems = cExStems;
+                return _myDTO;
+            }
+
+            _myDTO.View = "Index";
+            _myDTO.Message = "Your Exam has been submitted successfully.";
+            
+            foreach (var cExStem in cExStems)
+            {
+                if (!ModelState.IsValid)
+                {
+                    _myDTO.View = "SitForExam";
+                    _myDTO.Message = "A question was left unanswered. Please check your exam" +
+                        " for unfilled answers.";
+                    _myDTO.CandidateExamStems = cExStems;
+                    return _myDTO;
+                }
+                else
+                {
+                    _unit.CandidateExamStem.AddOrUpdate(cExStem);
+                }
+            }
+            if (await _unit.CandidateExam.AlreadySubmitted(cExStems.First().CandidateExam.Id))
+            {
+                _myDTO.View = "Index";
+                _myDTO.Message = "The Exam you tried to submit is already submitted. The operation failed.";
+                return _myDTO;
+            }
+
+            _unit.CandidateExam.AddOrUpdate(cExStems.First().CandidateExam);
+            await _unit.SaveAsync();
+            return _myDTO;            
+        }
+
+
+
+
+        // We have to evaluate which of the following methods are needed -----------------------
         public async Task<MyDTO> Get(int id)
         {
             if (id == null || _db.CandidateExams == null || await _unit.CandidateExam.GetAsync(id) == null)
             {
                 _myDTO.View = "Index";
-                _myDTO.Message = "The requested Candidate Exam could not be found. Please try again later."; 
-                _myDTO.CandidateExams = await _unit.CandidateExam.GetAllAsync();
+                _myDTO.Message = "The requested Candidate Exam could not be found. Please try again later.";
+                _myDTO.CandidateExams = await _unit.CandidateExam.GetAllAsync(id);
             }
             else
             {
                 _myDTO.View = "Details";
-                _myDTO.CandidateExam = await _unit.CandidateExam.GetAsync(id);                
+                _myDTO.CandidateExam = await _unit.CandidateExam.GetAsync(id);
             }
             return _myDTO;
-        }
-
-
-
-        public async Task<IEnumerable<CandidateExam>?> GetAll()
-        { 
-            _myDTO.CandidateExams = await _unit.CandidateExam.GetAllAsync();
-            return _myDTO.CandidateExams;
         }
 
 
@@ -53,13 +106,13 @@ namespace TeamAssignment4A.Services
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested Candidate Exam could not be found. Please try again later.";
                 return _myDTO;
-            } 
+            }
             _myDTO.CandidateExam = await _unit.CandidateExam.GetAsync(id);
             if (_myDTO.CandidateExam == null)
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested exam could not be found. Please try again later.";
-                _myDTO.CandidateExams = await _unit.CandidateExam.GetAllAsync();
+                _myDTO.CandidateExams = await _unit.CandidateExam.GetAllAsync(id);
             }
             return _myDTO;
         }
@@ -69,23 +122,10 @@ namespace TeamAssignment4A.Services
             "ScoreReportDate,CandidateScore,PercentageScore,AssessmentResultLabel,Candidate,Exam," +
             "CandidateExamStem")] CandidateExam candidateExam)
         {
-            //examDto.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
-            //Exam exam = _mapper.Map<Exam>(examDto);
-            //_unit.Exam.AddOrUpdate(exam);
-
-            //foreach (var stemId in examDto.StemIds)
-            //{
-            //    Stem stem = await _unit.Stem.GetAsync(stemId);
-            //    ExamStem examStem = new ExamStem(exam, stem);
-            //    _unit.ExamStem.AddOrUpdate(examStem);
-            //    await _unit.SaveAsync();
-            //}            
-            //exam.ExamStems = await _unit.ExamStem.GetStemsByExam(exam);
-
             if (id != candidateExam.Id)
             {
                 // I have to change this!!! --------------------------
-                _myDTO.View = "Create"; 
+                _myDTO.View = "Create";
                 _myDTO.Message = "The Candidate Exam Id was compromised. The request could not be completed due to security reasons. Please try again later.";
                 _myDTO.CandidateExam = candidateExam;
                 return _myDTO;
@@ -116,21 +156,6 @@ namespace TeamAssignment4A.Services
             "ScoreReportDate,CandidateScore,PercentageScore,AssessmentResultLabel,Candidate,Exam," +
             "CandidateExamStem")] CandidateExam candidateExam)
         {
-            //examDto.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
-            //Exam exam = await _unit.Exam.GetByCert(examDto.Certificate);
-            //exam.ExamStems = await _unit.ExamStem.GetStemsByExam(exam);
-
-            //List<int> stemIds = examDto.StemIds;
-            //examDto = _mapper.Map<ExamDto>(exam);
-            //for (int i = 0; i < examDto.ExamStems.Count(); i++)
-            //{
-            //    Stem stem = await _unit.Stem.GetAsync(stemIds[i]);
-            //    examDto.ExamStems[i].Stem = stem;
-            //    exam = _mapper.Map<Exam>(examDto);
-            //    _unit.ExamStem.AddOrUpdate(exam.ExamStems.FirstOrDefault(x => x == examDto.ExamStems[i]));
-            //}
-            //await _unit.SaveAsync();
-
             if (id != candidateExam.Id)
             {
                 _myDTO.View = "Edit";
@@ -165,8 +190,8 @@ namespace TeamAssignment4A.Services
             if (id == null || _db.CandidateExams == null)
             {
                 _myDTO.View = "Index";
-                _myDTO.Message = "The requested Candidate Exam could not be found. Please try again later."; 
-                _myDTO.CandidateExams = await _unit.CandidateExam.GetAllAsync();
+                _myDTO.Message = "The requested Candidate Exam could not be found. Please try again later.";
+                _myDTO.CandidateExams = await _unit.CandidateExam.GetAllAsync(id);
                 return _myDTO;
             }
             _myDTO.CandidateExam = await _unit.CandidateExam.GetAsync(id);
@@ -174,7 +199,7 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested Candidate Exam could not be found. Please try again later.";
-                _myDTO.CandidateExams = await _unit.CandidateExam.GetAllAsync();
+                _myDTO.CandidateExams = await _unit.CandidateExam.GetAllAsync(id);
             }
             return _myDTO;
         }
@@ -191,7 +216,7 @@ namespace TeamAssignment4A.Services
             CandidateExam candidateExam = await _unit.CandidateExam.GetAsync(id);
             _unit.CandidateExam.Delete(candidateExam);
             await _unit.SaveAsync();
-            _myDTO.CandidateExams = await _unit.CandidateExam.GetAllAsync();
+            _myDTO.CandidateExams = await _unit.CandidateExam.GetAllAsync(id);
             return _myDTO;
         }
     }

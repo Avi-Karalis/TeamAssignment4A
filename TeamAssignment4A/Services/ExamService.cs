@@ -155,13 +155,7 @@ namespace TeamAssignment4A.Services
             {
                 Stem stem = await _unit.Stem.GetAsync(stemId);
                 ExamStem examStem = new ExamStem(exam, stem);
-                EntityState state = _db.Entry(examStem).State;
-                _db.Entry(examStem.Stem).State = EntityState.Detached;
-                _db.Entry(examStem.Stem.Topic).State = EntityState.Detached;
                 _unit.ExamStem.AddOrUpdate(examStem);
-                state = _db.Entry(examStem).State;
-                await _unit.SaveAsync();
-                state = _db.Entry(examStem).State;
             }
             _unit.Exam.AddOrUpdate(exam);
 
@@ -205,14 +199,9 @@ namespace TeamAssignment4A.Services
             for(int i = 0; i < examDto.ExamStems.Count(); i++)
             { 
                 Stem stem = await _unit.Stem.GetAsync(stemIds[i]);
-                examDto.ExamStems[i].Stem = stem; 
+                examDto.ExamStems[i].Stem = stem;
                 exam = _mapper.Map<Exam>(examDto);
-                EntityState state = _db.Entry(exam.ExamStems.FirstOrDefault(x => x == examDto.ExamStems[i])).State;
-                _unit.ExamStem.AddOrUpdate(exam.ExamStems.FirstOrDefault(x => x == examDto.ExamStems[i]));
-                //_unit.ExamStem.AddOrUpdate(examStem);
-                state = _db.Entry(exam.ExamStems.FirstOrDefault(x => x == examDto.ExamStems[i])).State;
-                await _unit.SaveAsync();
-                state = _db.Entry(exam.ExamStems.FirstOrDefault(x => x == examDto.ExamStems[i])).State;
+                _unit.ExamStem.AddOrUpdate(exam.ExamStems.FirstOrDefault(x => x == examDto.ExamStems[i]));                
             }       
 
             if (id != exam.Id)

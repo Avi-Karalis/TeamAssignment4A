@@ -399,8 +399,7 @@ namespace TeamAssignment4A.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("IdentityUserID")
-                        .IsRequired()
+                    b.Property<string>("IdentityUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LandlineNumber")
@@ -446,7 +445,7 @@ namespace TeamAssignment4A.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdentityUserID");
+                    b.HasIndex("IdentityUserId");
 
                     b.ToTable("Candidates");
                 });
@@ -471,9 +470,6 @@ namespace TeamAssignment4A.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("TitleOfCertificate")
-                        .IsUnique();
 
                     b.ToTable("Certificates");
                 });
@@ -509,7 +505,7 @@ namespace TeamAssignment4A.Migrations
 
                     b.Property<string>("AssessmentTestCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CandidateId")
                         .HasColumnType("int");
@@ -523,6 +519,9 @@ namespace TeamAssignment4A.Migrations
                     b.Property<DateTime?>("ExaminationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("MarkerUserName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PercentageScore")
                         .HasColumnType("nvarchar(max)");
 
@@ -530,9 +529,6 @@ namespace TeamAssignment4A.Migrations
                         .HasColumnType("Date");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AssessmentTestCode")
-                        .IsUnique();
 
                     b.HasIndex("CandidateId");
 
@@ -552,7 +548,7 @@ namespace TeamAssignment4A.Migrations
                     b.Property<int>("CandidateExamId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CandidateId")
+                    b.Property<int?>("CandidateId")
                         .HasColumnType("int");
 
                     b.Property<int>("ExamStemId")
@@ -664,9 +660,6 @@ namespace TeamAssignment4A.Migrations
 
                     b.HasIndex("CertificateId");
 
-                    b.HasIndex("Description")
-                        .IsUnique();
-
                     b.ToTable("Topics");
                 });
 
@@ -725,9 +718,7 @@ namespace TeamAssignment4A.Migrations
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
                         .WithMany()
-                        .HasForeignKey("IdentityUserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdentityUserId");
 
                     b.Navigation("IdentityUser");
                 });
@@ -770,19 +761,15 @@ namespace TeamAssignment4A.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TeamAssignment4A.Models.Candidate", "Candidate")
+                    b.HasOne("TeamAssignment4A.Models.Candidate", null)
                         .WithMany("CandidateExamStems")
-                        .HasForeignKey("CandidateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CandidateId");
 
                     b.HasOne("TeamAssignment4A.Models.JointTables.ExamStem", "ExamStem")
                         .WithMany("CandidateExamStems")
                         .HasForeignKey("ExamStemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Candidate");
 
                     b.Navigation("CandidateExam");
 

@@ -18,8 +18,11 @@ namespace TeamAssignment4A.Data {
             var qaId = await EnsureUser(serviceProvider, userPasswords.QAPassword, "QA@QA.QA");
             await EnsureRole(serviceProvider, qaId, Constants.ContactQARole);
 
-            var markerId = await EnsureUser(serviceProvider, userPasswords.MarkerPassword, "Marker@Marker.Marker");
-            await EnsureRole(serviceProvider, markerId, Constants.ContactMarkerRole);
+            var markerAnnaId = await EnsureUser(serviceProvider, userPasswords.MarkerAnnaPassword, "MarkerAnna@Marker.Marker");
+            await EnsureRole(serviceProvider, markerAnnaId, Constants.ContactMarkerRole);
+            
+            var markerTomId = await EnsureUser(serviceProvider, userPasswords.MarkerTomPassword, "MarkerTom@Marker.Marker");
+            await EnsureRole(serviceProvider, markerTomId, Constants.ContactMarkerRole);
 
 
         }

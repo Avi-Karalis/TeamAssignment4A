@@ -13,57 +13,73 @@ using TeamAssignment4A.Data;
 using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models;
 using TeamAssignment4A.Models.JointTables;
+using TeamAssignment4A.Services;
 
 namespace TeamAssignment4A.Controllers {
     [Authorize(Roles = "Admin, Candidate")]
-    public class EshopController : Controller {
+    public class EshopController : Controller 
+    {
+        
         private readonly WebAppDbContext _context;
+        private readonly EShopService _service;
+        private MyDTO _myDTO;
         private readonly UserManager<IdentityUser> _userManager;
-        public EshopController(WebAppDbContext context, UserManager<IdentityUser> userManager) {
+        public EshopController(WebAppDbContext context, EShopService service,UserManager<IdentityUser> userManager) 
+        {
             _context = context;
+            _service = service;
+            _myDTO = new MyDTO();
             _userManager = userManager;
         }
-        [AllowAnonymous]
+
         // GET: Eshop
-        public async Task<IActionResult> Index() {
-            return View(await _context.CandidateExams.ToListAsync());
-        }
         [AllowAnonymous]
-        // GET: Eshop/Details/5
-        public async Task<IActionResult> Details(int? id) {
-            if (id == null || _context.CandidateExams == null) {
-                return NotFound();
-            }
-
-            var candidateExam = await _context.CandidateExams
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (candidateExam == null) {
-                return NotFound();
-            }
-
-            return View(candidateExam);
+        [HttpGet]
+        [ProducesResponseType(typeof(Certificate), 200)]
+        public async Task<IActionResult> Index() 
+        {
+            return View(await _service.GetAll());
         }
 
-        // GET: EShop/BuyExam
+        // GET: Eshop/Details/5
+        [AllowAnonymous]
+        [HttpGet]
+        [ProducesResponseType(typeof(Certificate), 200)]
+        public async Task<IActionResult> Details(int id) 
+        {
+            _myDTO = await _service.Get(id);
+            ViewBag.Message = _myDTO.Message;
+            if (_myDTO.View == "Index")
+            {
+                return View($"{_myDTO.View}", _myDTO.Certificates);
+            }
+            return View($"{_myDTO.View}", _myDTO.Certificate);
+        }
 
-        public IActionResult BuyExam() {
+        // GET: EShop/BuyExamVoucher
+        [AllowAnonymous]
+        [HttpGet]
+        [ProducesResponseType(typeof(CandidateExam), 200)]
+        public async Task<IActionResult> BuyExamVoucher(Certificate certificate) 
+        {
+            ViewBag.AssessmentTestCode = RandomizerFactory.GetRandomizer(new FieldOptionsIBAN()).Generate(); 
             ViewBag.Certificates = new SelectList(_context.Certificates, "Id", "TitleOfCertificate");
             //ViewBag.Candidates = new SelectList(_context.Candidates, "Id", "LastName");
             return View();
         }
 
         // POST: Exams/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> BuyExam([Bind("CertificateId, ΕxaminationDate")] BuyCertificateDTO buyCertificateDTO) {
+        [ProducesResponseType(typeof(Certificate), 200)]
+        public async Task<IActionResult> BuyExamVoucher([Bind("CertificateId, ΕxaminationDate, CandidateId")] BuyCertificateDTO buyCertificateDTO) {
             if (ModelState.IsValid) {
                 if (User.Identity.IsAuthenticated) {
                     var user = await _userManager.GetUserAsync(User);
                     var UserId = user.Id;
                     Certificate certificate = _context.Certificates.Find(buyCertificateDTO.CertificateId);
-                    Candidate candidate = _context.Candidates.Where(candidate => candidate.IdentityUserID == UserId).First();
+                    //Candidate candidate = _context.Candidates.Where(candidate => candidate.IdentityUserID == UserId).First();
                     string assessmentTestCode = RandomizerFactory.GetRandomizer(new FieldOptionsIBAN()).Generate();
                     DateTime examinationDate = buyCertificateDTO.ExaminationDate;
                     Exam exam = new Exam(certificate);
