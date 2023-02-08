@@ -74,11 +74,6 @@ button > a {
    
 }
 
-.table {
-    animation: fadein 1.5s;
-}
-
-
 .btn:hover {
     box-shadow: 0px 0px 10px #ddd;
 }
@@ -94,7 +89,6 @@ button > a {
         filter: brightness(115%) blur(0px);
         box-shadow: 0px 0px 0px #ddd;
     }
-
 
 .btn-primary {
     animation: fadein 1.5s;
@@ -115,20 +109,19 @@ button > a {
 .btn-warning {
     animation: fadein 1s;
 }
-
-
+/*Position rules*/
 .center-adjust {
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
+/*Position rules*/
 .left-adjust{
    position:relative;
    top:5px;
    left:242px;
 }
-
+/*Position rules*/
 .rightalign {
     text-align: right;
     text-decoration: underline;
@@ -137,9 +130,6 @@ button > a {
 .typing-text {
     white-space: nowrap;
 }
-
-
-
 
 .col-md-4 text:hover {
     color: #fdec6e;
@@ -150,21 +140,19 @@ button > a {
     transition: all 0.2s ease-in;
 }
 
-
-
-
 .button {
     text-align: center;
 }
 
 .table {
+    animation: fadein 1.5s;
     table-layout: fixed;
     word-wrap: break-word;
     border-radius: 30px;
-    font-weight:bold;
+    font-weight: bold;
     width: 900px;
     margin-left: 200px;
-    color:black;
+    color: black;
 }
 
 /*drop shadow on select on form*/
@@ -482,17 +470,18 @@ input:checked + .slider:after {
     outline: none;
 }
 
-    .btnLogout:hover {
-        background-color: darkred;
-        box-shadow: 0px 10px 20px rgb(141, 118, 118);
-        color: #fff;
-        transform: translateY(-2px);
-    }
-
-    .btnLogout:active {
-        transform: translateY(-1px);
-    }
-
+/*log out button rules*/
+.btnLogout:hover {
+    background-color: darkred;
+    box-shadow: 0px 10px 20px rgb(141, 118, 118);
+    color: #fff;
+    transform: translateY(-2px);
+}
+    /*log out button rules*/
+.btnLogout:active {
+    transform: translateY(-1px);
+}
+/*log in button rules*/
 .buttonLogin {
     align-items: center;
     background-color: transparent;
@@ -509,21 +498,21 @@ input:checked + .slider:after {
     border: 0;
     padding: 1rem;
 }
-
-    .buttonLogin:before {
-        background-color: #fff;
-        content: "";
-        display: inline-block;
-        height: 1px;
-        margin-right: 10px;
-        transition: all .42s cubic-bezier(.25,.8,.25,1);
-        width: 0;
-    }
-
-    .buttonLogin:hover:before {
-        background-color: black;
-        width: 3rem;
-    }
+ /*log in button rules*/
+.buttonLogin:before {
+    background-color: #fff;
+    content: "";
+    display: inline-block;
+    height: 1px;
+    margin-right: 10px;
+    transition: all .42s cubic-bezier(.25,.8,.25,1);
+    width: 0;
+}
+ /*log in button rules*/
+.buttonLogin:hover:before {
+    background-color: black;
+    width: 3rem;
+}
 
 .login-box {
     position: absolute;
