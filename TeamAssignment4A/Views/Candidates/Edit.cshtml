@@ -122,7 +122,7 @@
             <div class="form-group">
                 <div>
                     <label asp-for="UserEmail" class="control-label"></label>
-                    <select asp-for="UserEmail" class="form-control" asp-items="@ViewBag.IdentityUsers"></select>
+                    <input asp-for="UserEmail" class="form-control" placeholder="Enter User Email" />
                     <span asp-validation-for="UserEmail" class="text-danger"></span>
                 </div>
             </div>

@@ -44,10 +44,6 @@ namespace TeamAssignment4A.Services
             return _mapper.Map<List<CandidateDto>>(await _unit.Candidate.GetAllAsync());
         }
 
-        public async Task<IEnumerable<IdentityUser>?> GetUsers()
-        {
-            return await _unit.User.GetAllAsync();
-        }
 
         public async Task<MyDTO> GetForUpdate(int id)
         {
@@ -92,7 +88,8 @@ namespace TeamAssignment4A.Services
             if (id != candidate.Id)
             {
                 _myDTO.View = "Create";
-                _myDTO.Message = "The candidate Id was compromised. The request could not be completed due to security reasons. Please try again later.";
+                _myDTO.Message = "The candidate Id was compromised. The request could " +
+                    "not be completed due to security reasons. Please try again later.";
                 _myDTO.Candidate = candidateDto;
                 return _myDTO;
             }
@@ -104,7 +101,8 @@ namespace TeamAssignment4A.Services
                 if (await _unit.Candidate.EmailExists(candidate.Id, candidate.Email))
                 {
                     _myDTO.View = "Create";
-                    _myDTO.Message = "This email address is already used. Please try providing a different email address.";
+                    _myDTO.Message = "This email address has already been claimed. " +
+                        "Please try providing a different one.";
                     _myDTO.Candidate = candidateDto;
                     return _myDTO;
                 }
@@ -129,9 +127,29 @@ namespace TeamAssignment4A.Services
             Candidate candidate = await _unit.Candidate.GetAsync(candidateDto.Id);
             IdentityUser user = await _unit.User.GetById(candidate.IdentityUser.Id);
             candidateDto.User = user;   
+            candidateDto.User.Email = candidateDto.UserEmail;   
             
-            candidate = _mapper.Map<Candidate>(candidateDto);
-            // Attention the mapper malfunctions!!!!++++++++++++++++++
+            candidate.FirstName = candidateDto.FirstName;
+            candidate.MiddleName = candidateDto.MiddleName;
+            candidate.LastName = candidateDto.LastName;
+            candidate.Gender = candidateDto.Gender;
+            candidate.NativeLanguage = candidateDto.NativeLanguage;
+            candidate.CountryOfResidence = candidateDto.CountryOfResidence;
+            candidate.Birthdate = candidateDto.Birthdate;
+            candidate.Email = candidateDto.Email;
+            candidate.LandlineNumber = candidateDto.LandlineNumber;
+            candidate.MobileNumber = candidateDto.MobileNumber;
+            candidate.Address1 = candidateDto.Address1;
+            candidate.Address2 = candidateDto.Address2;
+            candidate.PostalCode = candidateDto.PostalCode;
+            candidate.Town = candidateDto.Town;
+            candidate.Province = candidateDto.Province;
+            candidate.PhotoIdType = candidateDto.PhotoIdType;
+            candidate.PhotoIdNumber = candidateDto.PhotoIdNumber;
+            candidate.PhotoIdDate = candidateDto.PhotoIdDate;
+            candidate.IdentityUser = candidateDto.User;
+            candidate.CandidateExams = candidateDto.CandidateExams;
+            candidate.CandidateExamStems = candidateDto.CandidateExamStems;
 
             _unit.Candidate.AddOrUpdate(candidate);
 
@@ -147,7 +165,8 @@ namespace TeamAssignment4A.Services
             if (id != candidate.Id)
             {
                 _myDTO.View = "Edit";
-                _myDTO.Message = "The candidate Id was compromised. The request could not be completed due to security reasons. Please try again later.";
+                _myDTO.Message = "The candidate Id was compromised. The request could " +
+                    "not be completed due to security reasons. Please try again later.";
                 _myDTO.Candidate = candidateDto;
                 return _myDTO;
             }
@@ -158,13 +177,15 @@ namespace TeamAssignment4A.Services
 
                 if (!await _unit.Candidate.Exists(candidate.Id))
                 {
-                    _myDTO.Message = "The requested candidate could not be found. Please try again later.";
+                    _myDTO.Message = "The requested candidate could not be found. " +
+                        "Please try again later.";
                     return _myDTO;
                 }
                 if (await _unit.Candidate.EmailExists(candidate.Id, candidate.Email))
                 {
                     _myDTO.View = "Edit";
-                    _myDTO.Message = "This email address is already used. Please try providing a different email address.";
+                    _myDTO.Message = "This email address has already been claimed. " +
+                        "Please try providing a different one.";
                     _myDTO.Candidate = candidateDto;
                     return _myDTO;
                 }

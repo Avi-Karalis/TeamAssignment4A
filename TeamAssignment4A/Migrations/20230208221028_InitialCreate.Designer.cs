@@ -12,7 +12,7 @@ using TeamAssignment4A.Data;
 namespace TeamAssignment4A.Migrations
 {
     [DbContext(typeof(WebAppDbContext))]
-    [Migration("20230208153719_InitialCreate")]
+    [Migration("20230208221028_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -473,9 +473,6 @@ namespace TeamAssignment4A.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TitleOfCertificate")
-                        .IsUnique();
-
                     b.ToTable("Certificates");
                 });
 
@@ -510,7 +507,7 @@ namespace TeamAssignment4A.Migrations
 
                     b.Property<string>("AssessmentTestCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CandidateId")
                         .HasColumnType("int");
@@ -534,9 +531,6 @@ namespace TeamAssignment4A.Migrations
                         .HasColumnType("Date");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AssessmentTestCode")
-                        .IsUnique();
 
                     b.HasIndex("CandidateId");
 
@@ -667,9 +661,6 @@ namespace TeamAssignment4A.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CertificateId");
-
-                    b.HasIndex("Description")
-                        .IsUnique();
 
                     b.ToTable("Topics");
                 });

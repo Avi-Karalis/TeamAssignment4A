@@ -8,7 +8,6 @@ namespace TeamAssignment4A.Services
     {
         Task<MyDTO> Get(int id);
         Task<IEnumerable<CandidateDto>?> GetAll();
-        Task<IEnumerable<IdentityUser>?> GetUsers();
         Task<MyDTO> Add(int id, CandidateDto candidateDto);
         Task<MyDTO> GetForUpdate(int id);
         Task<MyDTO> Update(int id, CandidateDto candidateDto);

@@ -29,14 +29,7 @@ namespace TeamAssignment4A.Data
         public virtual DbSet<CandidateExamStem> CandidateExamStems { get; set; } = default!;
         public virtual DbSet<CandidateExam> CandidateExams { get; set; } = default!;
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);            
-            modelBuilder.Entity<Certificate>().HasIndex(c => c.TitleOfCertificate).IsUnique();
-            modelBuilder.Entity<Topic>().HasIndex(t => t.Description).IsUnique();            
-            modelBuilder.Entity<CandidateExam>().HasIndex(ce=> ce.AssessmentTestCode).IsUnique();
-        }
-
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.EnableSensitiveDataLogging();       

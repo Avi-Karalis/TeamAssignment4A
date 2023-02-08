@@ -77,6 +77,12 @@ namespace TeamAssignment4A.Controllers {
             {
                 return View($"{_myDTO.View}", _myDTO.StemDtos);
             }
+            ViewBag.Options = new List<SelectListItem>{
+                new SelectListItem { Value = "A", Text = "A" },
+                new SelectListItem { Value = "B", Text = "B" },
+                new SelectListItem { Value = "C", Text = "C" },
+                new SelectListItem { Value = "D", Text = "D" }
+            };
             ViewBag.Topics = new SelectList(await _service.GetTopics(), "Description", "Description");
             return View($"{_myDTO.View}", _myDTO.StemDto);
         }
@@ -117,6 +123,12 @@ namespace TeamAssignment4A.Controllers {
             {
                 return View($"{_myDTO.View}", _myDTO.StemDtos);
             }
+            ViewBag.Options = new List<SelectListItem>{
+                new SelectListItem { Value = "A", Text = "A" },
+                new SelectListItem { Value = "B", Text = "B" },
+                new SelectListItem { Value = "C", Text = "C" },
+                new SelectListItem { Value = "D", Text = "D" }
+            };
             ViewBag.Topics = new SelectList(await _service.GetTopics(), "Description", "Description");
             return View($"{_myDTO.View}", _myDTO.StemDto);
         }

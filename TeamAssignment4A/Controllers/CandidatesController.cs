@@ -84,7 +84,6 @@ namespace TeamAssignment4A.Controllers
             {
                 return View($"{_myDTO.View}", _myDTO.Candidates);
             }
-            ViewBag.IdentityUsers = new SelectList(await _service.GetUsers(), "Email", "Email");
             return View($"{_myDTO.View}", _myDTO.Candidate);
         }
 
@@ -104,7 +103,6 @@ namespace TeamAssignment4A.Controllers
             {
                 return View($"{_myDTO.View}", _myDTO.Candidates);
             }
-            ViewBag.IdentityUsers = new SelectList(await _service.GetUsers(), "Email", "Email");
             return View($"{_myDTO.View}", _myDTO.Candidate);
         }
 

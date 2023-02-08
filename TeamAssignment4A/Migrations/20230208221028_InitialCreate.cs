@@ -308,7 +308,7 @@ namespace TeamAssignment4A.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AssessmentTestCode = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AssessmentTestCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ExaminationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ScoreReportDate = table.Column<DateTime>(type: "Date", nullable: true),
                     CandidateScore = table.Column<int>(type: "int", nullable: true),
@@ -460,12 +460,6 @@ namespace TeamAssignment4A.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CandidateExams_AssessmentTestCode",
-                table: "CandidateExams",
-                column: "AssessmentTestCode",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CandidateExams_CandidateId",
                 table: "CandidateExams",
                 column: "CandidateId");
@@ -494,12 +488,6 @@ namespace TeamAssignment4A.Migrations
                 name: "IX_Candidates_IdentityUserId",
                 table: "Candidates",
                 column: "IdentityUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Certificates_TitleOfCertificate",
-                table: "Certificates",
-                column: "TitleOfCertificate",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_DeviceCodes_DeviceCode",
@@ -561,12 +549,6 @@ namespace TeamAssignment4A.Migrations
                 name: "IX_Topics_CertificateId",
                 table: "Topics",
                 column: "CertificateId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Topics_Description",
-                table: "Topics",
-                column: "Description",
-                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
