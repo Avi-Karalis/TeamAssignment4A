@@ -29,7 +29,7 @@ namespace TeamAssignment4A.Controllers
             return View(await _context.ExamStems.ToListAsync());
         }
 
-        //Take an exam
+        //Take an candidateExam
         public async Task<IActionResult> TakeExam(int id) {
             Exam exam = _context.Exams.Include(e => e.Certificate).Where(e => e.Id == id).FirstOrDefault();
             List <Stem> listOfStemsToBeExamined = _context.Stems.Include(s => s.Topic).Where(c => c.Topic.Certificate.Id == exam.Certificate.Id).ToList();
@@ -52,12 +52,12 @@ namespace TeamAssignment4A.Controllers
         public async Task<IActionResult> ExamSubmit(ExamSubmissionDTO examSubmissionDTO) {
 
             if (ModelState.IsValid) {
-                CandidateExam exam = _context.CandidateExams.Find(examSubmissionDTO.ExamQuestions.FirstOrDefault().CandidateExamId);
+                CandidateExam candidateExam = _context.CandidateExams.Find(examSubmissionDTO.ExamQuestions.FirstOrDefault().CandidateExamId);
                 foreach (var examQuestion in examSubmissionDTO.ExamQuestions) {
                     CandidateExamStem candidateExamStem = new CandidateExamStem();
                     candidateExamStem.SubmittedAnswer = examQuestion.Answer;
 
-                    candidateExamStem.CandidateExam = exam;
+                    candidateExamStem.CandidateExam = candidateExam;
                     candidateExamStem.ExamStem.Stem = _context.Stems.Find(examQuestion.StemId);
                     if (examQuestion.Answer == candidateExamStem.ExamStem.Stem.CorrectAnswer) {
                         candidateExamStem.Score = 25;
@@ -67,16 +67,16 @@ namespace TeamAssignment4A.Controllers
                     _context.Add(candidateExamStem);
 
                 }
-                exam.ExaminationDate = DateTime.Now;
+                candidateExam.ExaminationDate = DateTime.Now;
 
-                if (exam.CandidateScore >= exam.Exam.Certificate.PassingGrade) {
-                    exam.AssessmentResultLabel = "Pass";
+                if (candidateExam.CandidateScore >= candidateExam.Exam.Certificate.PassingGrade) {
+                    candidateExam.AssessmentResultLabel = "Pass";
                 } else {
-                    exam.AssessmentResultLabel = "Fail";
+                    candidateExam.AssessmentResultLabel = "Fail";
                 }
-                var percent = (exam.CandidateScore / 100) * 100;
-                exam.PercentageScore = Convert.ToString(percent) + "%";
-                _context.Update(exam);
+                var percent = (candidateExam.CandidateScore / 100) * 100;
+                candidateExam.PercentageScore = Convert.ToString(percent) + "%";
+                _context.Update(candidateExam);
                 _context.SaveChanges();
 
                 return RedirectToAction("Index", "Home");
