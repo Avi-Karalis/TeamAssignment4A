@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TeamAssignment4A.Models.Candidate>
+﻿@model IEnumerable<TeamAssignment4A.Dtos.CandidateDto>
 
 @{
     ViewData["Title"] = "Index";
@@ -18,57 +18,19 @@
 
                 @Html.DisplayNameFor(model => model.FirstName)
             </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.MiddleName)
-            </th>*@
+            
             <th>
                 @Html.DisplayNameFor(model => model.LastName)
             </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.Gender)
-            </th>*@
+            
             <th>
                 @Html.DisplayNameFor(model => model.NativeLanguage)
             </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.CountryOfResidence)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Birthdate)
-            </th>*@
+            
             <th>
                 @Html.DisplayNameFor(model => model.Email)
             </th>
-            @* <th>
-            @Html.DisplayNameFor(model => model.LandlineNumber)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.MobileNumber)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.Address1)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.Address2)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.PostalCode)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.Town)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.Province)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.PhotoIdType)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.PhotoIdNumber)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.PhotoIdDate)
-            </th>*@
+            
             <th style="border-top-right-radius: 100px; border-bottom-right-radius: 100px;">Options</th>
         </tr>
     </thead>
@@ -80,57 +42,19 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.FirstName)
                 </td>
-                @*<td>
-                    @Html.DisplayFor(modelItem => item.MiddleName)
-                </td>*@
+                
                 <td>
                     @Html.DisplayFor(modelItem => item.LastName)
                 </td>
-                @*<td>
-                    @Html.DisplayFor(modelItem => item.Gender)
-                </td>*@
+                
                 <td>
                     @Html.DisplayFor(modelItem => item.NativeLanguage)
                 </td>
-                @*<td>
-                    @Html.DisplayFor(modelItem => item.CountryOfResidence)
-                </td>*@
-                @*<td>
-                    @Html.DisplayFor(modelItem => item.Birthdate)
-                </td>*@
+                
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
-                @*<td>
-            @Html.DisplayFor(modelItem => item.LandlineNumber)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.MobileNumber)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.Address1)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.Address2)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.PostalCode)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.Town)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.Province)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.PhotoIdType)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.PhotoIdNumber)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.PhotoIdDate)
-            </td>*@
+                
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary w-100 mb-2">Edit</a>
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-success w-100 mb-2">Details</a>

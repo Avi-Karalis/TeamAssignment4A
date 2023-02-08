@@ -44,7 +44,7 @@ namespace TeamAssignment4A.Services
 
         public async Task<IEnumerable<IdentityUser>?> GetUsers()
         {
-            return await _db.Users.Where(user => user.Email != null).ToListAsync<IdentityUser>();
+            return await _unit.User.GetAllAsync();
         }
 
         public async Task<MyDTO> GetForUpdate(int id)
@@ -69,7 +69,14 @@ namespace TeamAssignment4A.Services
             "CountryOfResidence,Birthdate,Email,LandlineNumber,MobileNumber,Address1,Address2,PostalCode,Town," +
             "Province,PhotoIdType,PhotoIdNumber,PhotoIdDateUserEmail,User,CandidateExams,CandidateExamStems")] CandidateDto candidateDto)
         {
-            candidateDto.User = _db.Users.FirstOrDefault(user => user.Email == candidateDto.UserEmail);
+            IdentityUser user = await _unit.User.GetAsync(candidateDto.Email);
+            if(user == null)
+            {
+                user = await _unit.User.AddAsync(candidateDto.Email);
+            }
+            //await _unit.SaveAsync();
+            //candidateDto.User = _db.Users.FirstOrDefault(user => user.Email == candidateDto.UserEmail);
+            candidateDto.User = user;
             Candidate candidate = _mapper.Map<Candidate>(candidateDto);
             EntityState state = _unit.Candidate.AddOrUpdate(candidate);
             if (id != candidate.Id)
