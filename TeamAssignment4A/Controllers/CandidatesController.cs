@@ -64,7 +64,7 @@ namespace TeamAssignment4A.Controllers
             "Birthdate,Email,LandlineNumber,MobileNumber,Address1,Address2,PostalCode,Town,Province,PhotoIdType,PhotoIdNumber," +
             "PhotoIdDate,UserEmail,User,CandidateExams,CandidateExamStems")] CandidateDto candidateDto)
         {
-            _myDTO = await _service.AddOrUpdate(id, candidateDto);
+            _myDTO = await _service.Add(id, candidateDto);
             ViewBag.Message = _myDTO.Message;
             if (_myDTO.View == "Index")
             {
@@ -96,9 +96,9 @@ namespace TeamAssignment4A.Controllers
         public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName," +
             "LastName,Gender,NativeLanguage,CountryOfResidence,Birthdate,Email,LandlineNumber," +
             "MobileNumber,Address1,Address2,PostalCode,Town,Province,PhotoIdType,PhotoIdNumber," +
-            "PhotoIdDateUserEmail,User,CandidateExams,CandidateExamStems")] CandidateDto candidateDto)
+            "PhotoIdDate,UserEmail,User,CandidateExams,CandidateExamStems")] CandidateDto candidateDto)
         {
-            _myDTO = await _service.AddOrUpdate(id, candidateDto);
+            _myDTO = await _service.Update(id, candidateDto);
             ViewBag.Message = _myDTO.Message;
             if (_myDTO.View == "Index")
             {

@@ -13,13 +13,13 @@ namespace TeamAssignment4A.Data.Repositories
         }
         public async Task<Candidate?> GetAsync(int id)
         {
-            return await _db.Candidates.Include(cand => cand.CandidateExams)
+            return await _db.Candidates.Include(cand => cand.CandidateExams).Include(cand => cand.IdentityUser)
                 .Include(cand => cand.CandidateExamStems).FirstOrDefaultAsync(x => x.Id == id);
         }        
 
         public async Task<IEnumerable<Candidate>?> GetAllAsync()
         {
-            return await _db.Candidates.Include(cand => cand.CandidateExams)
+            return await _db.Candidates.Include(cand => cand.CandidateExams).Include(cand => cand.IdentityUser)
                 .Include(cand => cand.CandidateExamStems).ToListAsync<Candidate>();
         }
 
@@ -37,6 +37,11 @@ namespace TeamAssignment4A.Data.Repositories
         public async Task<bool> Exists(int id)
         {
             return await _db.Candidates.AnyAsync(e => e.Id == id);
+        }
+
+        public async Task<bool> EmailExists(int id, string email)
+        {
+            return await _db.Candidates.AnyAsync(e => e.Email == email && e.Id != id);
         }
     }
 }

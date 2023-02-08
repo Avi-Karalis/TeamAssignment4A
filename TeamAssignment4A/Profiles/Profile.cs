@@ -30,7 +30,6 @@ namespace TeamAssignment4A.Profiles
                 .ForMember(dest => dest.PhotoIdType, opt => opt.MapFrom(src => src.PhotoIdType))
                 .ForMember(dest => dest.PhotoIdNumber, opt => opt.MapFrom(src => src.PhotoIdNumber))
                 .ForMember(dest => dest.PhotoIdDate, opt => opt.MapFrom(src => src.PhotoIdDate))
-                .ForMember(dest => dest.UserEmail, opt => opt.MapFrom(src => src.IdentityUser.Email))
                 .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.IdentityUser))
                 .ForMember(dest => dest.CandidateExams, opt => opt.MapFrom(src => src.CandidateExams))
                 .ForMember(dest => dest.CandidateExamStems, opt => opt.MapFrom(src => src.CandidateExamStems))

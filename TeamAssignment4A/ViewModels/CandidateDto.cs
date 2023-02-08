@@ -82,6 +82,7 @@ namespace TeamAssignment4A.Dtos
         public DateTime PhotoIdDate { get; set; }
 
         [Required]
+        [Display(Name = "User Email")]
         public string UserEmail { get; set; }
 
         public IdentityUser User { get; set; }

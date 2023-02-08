@@ -32,7 +32,9 @@ namespace TeamAssignment4A.Services
             else
             {
                 _myDTO.View = "Details";
-                _myDTO.Candidate = _mapper.Map<CandidateDto>(await _unit.Candidate.GetAsync(id));
+                Candidate candidate = await _unit.Candidate.GetAsync(id);
+                _myDTO.Candidate = _mapper.Map<CandidateDto>(candidate);
+                _myDTO.Candidate.UserEmail = candidate.IdentityUser.Email;
             }
             return _myDTO;
         }
@@ -56,7 +58,9 @@ namespace TeamAssignment4A.Services
                 _myDTO.Message = "The requested candidate could not be found. Please try again later.";
                 return _myDTO;
             }
-            _myDTO.Candidate = _mapper.Map<CandidateDto>(await _unit.Candidate.GetAsync(id));
+            Candidate candidate = await _unit.Candidate.GetAsync(id);
+            _myDTO.Candidate = _mapper.Map<CandidateDto>(candidate);
+            _myDTO.Candidate.UserEmail = candidate.IdentityUser.Email;
             if (_myDTO.Candidate == null)
             {
                 _myDTO.View = "Index";
@@ -65,30 +69,29 @@ namespace TeamAssignment4A.Services
             return _myDTO;
         }
 
-        public async Task<MyDTO> AddOrUpdate(int id, [Bind("Id,FirstName,MiddleName,LastName,Gender,NativeLanguage," +
+        public async Task<MyDTO> Add(int id, [Bind("Id,FirstName,MiddleName,LastName,Gender,NativeLanguage," +
             "CountryOfResidence,Birthdate,Email,LandlineNumber,MobileNumber,Address1,Address2,PostalCode,Town," +
-            "Province,PhotoIdType,PhotoIdNumber,PhotoIdDateUserEmail,User,CandidateExams,CandidateExamStems")] CandidateDto candidateDto)
+            "Province,PhotoIdType,PhotoIdNumber,PhotoIdDate,UserEmail,User,CandidateExams,CandidateExamStems")] 
+            CandidateDto candidateDto)
         {
-            IdentityUser user = await _unit.User.GetAsync(candidateDto.Email);
-            if(user == null)
-            {
-                user = await _unit.User.AddAsync(candidateDto.Email);
-            }
-            //await _unit.SaveAsync();
-            //candidateDto.User = _db.Users.FirstOrDefault(user => user.Email == candidateDto.UserEmail);
+            IdentityUser user = await _unit.User.AddAsync(candidateDto.Email);
             candidateDto.User = user;
+            
             Candidate candidate = _mapper.Map<Candidate>(candidateDto);
-            EntityState state = _unit.Candidate.AddOrUpdate(candidate);
+            _unit.Candidate.AddOrUpdate(candidate);
+
+            if (candidateDto.Email != candidateDto.UserEmail)
+            {
+                _myDTO.View = "Create";
+                _myDTO.Message = "The fields Email and UserEmail must " +
+                    "have the same inputs!";
+                _myDTO.Candidate = candidateDto;
+                return _myDTO;
+            }
+            
             if (id != candidate.Id)
             {
-                if (state == EntityState.Added)
-                {
-                    _myDTO.View = "Create";
-                }
-                if (state == EntityState.Modified)
-                {
-                    _myDTO.View = "Edit";
-                }
+                _myDTO.View = "Create";
                 _myDTO.Message = "The candidate Id was compromised. The request could not be completed due to security reasons. Please try again later.";
                 _myDTO.Candidate = candidateDto;
                 return _myDTO;
@@ -96,29 +99,83 @@ namespace TeamAssignment4A.Services
             if (ModelState.IsValid)
             {
                 _myDTO.Message = "The requested candidate has been added successfully.";
-                if (state == EntityState.Modified)
+                _myDTO.View = "Index";
+
+                if (await _unit.Candidate.EmailExists(candidate.Id, candidate.Email))
                 {
-                    _myDTO.Message = "The requested candidate has been updated successfully.";
-                }
-                if (state == EntityState.Modified && !await _unit.Candidate.Exists(candidate.Id))
-                {
-                    _myDTO.Message = "The requested candidate could not be found. Please try again later.";
+                    _myDTO.View = "Create";
+                    _myDTO.Message = "This email address is already used. Please try providing a different email address.";
+                    _myDTO.Candidate = candidateDto;
+                    return _myDTO;
                 }
                 await _unit.SaveAsync();
-                _myDTO.View = "Index";
-                _myDTO.Candidates = _mapper.Map<List<CandidateDto>>(await _unit.Candidate.GetAllAsync());
-                return _myDTO;
+                _myDTO.Candidates = _mapper.Map<List<CandidateDto>>
+                                    (await _unit.Candidate.GetAllAsync());
             }
             else
             {
-                if (state == EntityState.Added)
+                _myDTO.View = "Create";
+                _myDTO.Message = "Invalid entries. Please try again later.";
+                _myDTO.Candidate = candidateDto;
+            }
+            return _myDTO;
+        }
+
+        public async Task<MyDTO> Update(int id, [Bind("Id,FirstName,MiddleName,LastName,Gender,NativeLanguage," +
+            "CountryOfResidence,Birthdate,Email,LandlineNumber,MobileNumber,Address1,Address2,PostalCode,Town," +
+            "Province,PhotoIdType,PhotoIdNumber,PhotoIdDate,UserEmail,User,CandidateExams,CandidateExamStems")]
+            CandidateDto candidateDto)
+        {
+            Candidate candidate = await _unit.Candidate.GetAsync(candidateDto.Id);
+            IdentityUser user = await _unit.User.GetById(candidate.IdentityUser.Id);
+            candidateDto.User = user;   
+            
+            candidate = _mapper.Map<Candidate>(candidateDto);
+            // Attention the mapper malfunctions!!!!++++++++++++++++++
+
+            _unit.Candidate.AddOrUpdate(candidate);
+
+            if (candidateDto.Email != candidateDto.UserEmail)
+            {
+                _myDTO.View = "Edit";
+                _myDTO.Message = "The fields Email and UserEmail must " +
+                    "have the same inputs!";
+                _myDTO.Candidate = candidateDto;
+                return _myDTO;
+            }
+
+            if (id != candidate.Id)
+            {
+                _myDTO.View = "Edit";
+                _myDTO.Message = "The candidate Id was compromised. The request could not be completed due to security reasons. Please try again later.";
+                _myDTO.Candidate = candidateDto;
+                return _myDTO;
+            }
+            if (ModelState.IsValid)
+            {
+                _myDTO.Message = "The requested candidate has been updated successfully.";
+                _myDTO.View = "Index";
+
+                if (!await _unit.Candidate.Exists(candidate.Id))
                 {
-                    _myDTO.View = "Create";
+                    _myDTO.Message = "The requested candidate could not be found. Please try again later.";
+                    return _myDTO;
                 }
-                if (state == EntityState.Modified)
+                if (await _unit.Candidate.EmailExists(candidate.Id, candidate.Email))
                 {
                     _myDTO.View = "Edit";
+                    _myDTO.Message = "This email address is already used. Please try providing a different email address.";
+                    _myDTO.Candidate = candidateDto;
+                    return _myDTO;
                 }
+
+                await _unit.SaveAsync();
+                _myDTO.Candidates = _mapper.Map<List<CandidateDto>>
+                                    (await _unit.Candidate.GetAllAsync());
+            }
+            else
+            {
+                _myDTO.View = "Edit";
                 _myDTO.Message = "Invalid entries. Please try again later.";
                 _myDTO.Candidate = candidateDto;
             }
@@ -153,8 +210,10 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.Message = "The requested candidate could not be found. Please try again later.";
                 return _myDTO;
-            }            
-            _unit.Candidate.Delete(await _unit.Candidate.GetAsync(id));
+            }
+            Candidate candidate = await _unit.Candidate.GetAsync(id);
+            _unit.User.Delete(candidate.IdentityUser);
+            _unit.Candidate.Delete(candidate);
             await _unit.SaveAsync();
             _myDTO.Candidates = _mapper.Map<List<CandidateDto>>(await _unit.Candidate.GetAllAsync());
             return _myDTO;

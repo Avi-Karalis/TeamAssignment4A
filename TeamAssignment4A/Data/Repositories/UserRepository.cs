@@ -12,10 +12,16 @@ namespace TeamAssignment4A.Data.Repositories
             _db = context;
         }
 
-        // Get User by specific e-mail
-        public async Task<IdentityUser?> GetAsync(string email)
+        // Get User by e-mail
+        public async Task<IdentityUser?> GetByEmail(string email)
         {
             return await _db.Users.FirstOrDefaultAsync(x => x.Email == email);
+        }
+
+        // Get User by Id
+        public async Task<IdentityUser?> GetById(string UserId)
+        {
+            return await _db.Users.FirstOrDefaultAsync(x => x.Id == UserId);
         }
 
         // Get those Users who have e-mail
@@ -31,6 +37,11 @@ namespace TeamAssignment4A.Data.Repositories
             user.Email = email;
             await _db.Users.AddAsync(user);
             return user;
-        }     
+        }  
+        
+        public void Delete(IdentityUser user)
+        {
+            _db.Users.Remove(user);
+        }
     }
 }
