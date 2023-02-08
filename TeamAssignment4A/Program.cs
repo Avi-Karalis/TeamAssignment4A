@@ -90,7 +90,8 @@ namespace TeamAssignment4A {
                 var userPasswords = new UserPasswords() {
                     AdminPassword = builder.Configuration.GetValue<string>("AdminPW"),
                     QAPassword = builder.Configuration.GetValue<string>("QAPW"),
-                    MarkerPassword = builder.Configuration.GetValue<string>("MarkerPW")
+                    MarkerAnnaPassword = builder.Configuration.GetValue<string>("MarkerAnnaPW"),
+                    MarkerTomPassword = builder.Configuration.GetValue<string>("MarkerTomPW")
                 };
                await SeedData.Initialize(services, userPasswords);
             }

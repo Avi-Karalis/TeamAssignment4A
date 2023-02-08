@@ -79,7 +79,7 @@ namespace TeamAssignment4A.Controllers {
                     var user = await _userManager.GetUserAsync(User);
                     var UserId = user.Id;
                     Certificate certificate = _context.Certificates.Find(buyCertificateDTO.CertificateId);
-                    Candidate candidate = _context.Candidates.Where(candidate => candidate.IdentityUserID == UserId).First();
+                    //Candidate candidate = _context.Candidates.Where(candidate => candidate.IdentityUserID == UserId).First();
                     string assessmentTestCode = RandomizerFactory.GetRandomizer(new FieldOptionsIBAN()).Generate();
                     DateTime examinationDate = buyCertificateDTO.ExaminationDate;
                     Exam exam = new Exam(certificate);

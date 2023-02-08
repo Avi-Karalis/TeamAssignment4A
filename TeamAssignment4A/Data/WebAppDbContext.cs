@@ -19,7 +19,7 @@ namespace TeamAssignment4A.Data
 
         }
 
-        public virtual DbSet<IdentityUser> User { get; set; } = default!;
+        public virtual DbSet<IdentityUser> Users { get; set; } = default!;
         public virtual DbSet<Candidate> Candidates { get; set; } = default!;
         public virtual DbSet<Certificate> Certificates { get; set; } = default!;
         public virtual DbSet<Exam> Exams { get; set; } = default!;

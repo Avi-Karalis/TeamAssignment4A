@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TeamAssignment4A.Data;
+using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models;
 using TeamAssignment4A.Services;
 
@@ -25,12 +26,16 @@ namespace TeamAssignment4A.Controllers
         }
 
         // GET: Candidates
+        [HttpGet]
+        [ProducesResponseType(typeof(CandidateDto), 200)]
         public async Task<IActionResult> Index()
         {
             return View(await _service.GetAll());
         }
 
         // GET: Candidates/Details/5
+        [HttpGet]
+        [ProducesResponseType(typeof(CandidateDto), 200)]
         public async Task<IActionResult> Details(int id)
         {
             _myDTO = await _service.Get(id);
@@ -43,6 +48,8 @@ namespace TeamAssignment4A.Controllers
         }
 
         // GET: Candidates/Create
+        [HttpGet]
+        [ProducesResponseType(typeof(CandidateDto), 200)]
         public async Task<IActionResult> Create()
         {
             ViewBag.IdentityUsers = new SelectList(await _service.GetUsers(), "Email", "Email");
@@ -53,11 +60,12 @@ namespace TeamAssignment4A.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ProducesResponseType(typeof(CandidateDto), 200)]
         public async Task<IActionResult> Create(int id, [Bind("Id,FirstName,MiddleName,LastName,Gender,NativeLanguage,CountryOfResidence," +
             "Birthdate,Email,LandlineNumber,MobileNumber,Address1,Address2,PostalCode,Town,Province,PhotoIdType,PhotoIdNumber," +
-            "PhotoIdDate,IdentityUser")] Candidate candidate)
+            "PhotoIdDate,UserEmail,User,CandidateExams,CandidateExamStems")] CandidateDto candidateDto)
         {
-            _myDTO = await _service.AddOrUpdate(id, candidate);
+            _myDTO = await _service.AddOrUpdate(id, candidateDto);
             ViewBag.Message = _myDTO.Message;
             if (_myDTO.View == "Index")
             {
@@ -67,6 +75,8 @@ namespace TeamAssignment4A.Controllers
         }
 
         // GET: Candidates/Edit/5
+        [HttpGet]
+        [ProducesResponseType(typeof(CandidateDto), 200)]
         public async Task<IActionResult> Edit(int id)
         {
             _myDTO = await _service.GetForUpdate(id);
@@ -82,9 +92,13 @@ namespace TeamAssignment4A.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,Gender,NativeLanguage,CountryOfResidence,Birthdate,Email,LandlineNumber,MobileNumber,Address1,Address2,PostalCode,Town,Province,PhotoIdType,PhotoIdNumber,PhotoIdDate")] Candidate candidate)
+        [ProducesResponseType(typeof(CandidateDto), 200)]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName," +
+            "LastName,Gender,NativeLanguage,CountryOfResidence,Birthdate,Email,LandlineNumber," +
+            "MobileNumber,Address1,Address2,PostalCode,Town,Province,PhotoIdType,PhotoIdNumber," +
+            "PhotoIdDateUserEmail,User,CandidateExams,CandidateExamStems")] CandidateDto candidateDto)
         {
-            _myDTO = await _service.AddOrUpdate(id, candidate);
+            _myDTO = await _service.AddOrUpdate(id, candidateDto);
             ViewBag.Message = _myDTO.Message;
             if (_myDTO.View == "Index")
             {
@@ -94,6 +108,8 @@ namespace TeamAssignment4A.Controllers
         }
 
         // GET: Candidates/Delete/5
+        [HttpGet]
+        [ProducesResponseType(typeof(CandidateDto), 200)]
         public async Task<IActionResult> Delete(int id)
         {
             _myDTO = await _service.GetForDelete(id);
@@ -108,6 +124,7 @@ namespace TeamAssignment4A.Controllers
         // POST: Candidates/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [ProducesResponseType(typeof(CandidateDto), 200)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             _myDTO = await _service.Delete(id);

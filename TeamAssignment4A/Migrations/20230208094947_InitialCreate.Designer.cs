@@ -12,8 +12,8 @@ using TeamAssignment4A.Data;
 namespace TeamAssignment4A.Migrations
 {
     [DbContext(typeof(WebAppDbContext))]
-    [Migration("20230204171743_Initial_create")]
-    partial class Initial_create
+    [Migration("20230208094947_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -401,8 +401,8 @@ namespace TeamAssignment4A.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("IdentityUserID")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("IdentityUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LandlineNumber")
                         .IsRequired()
@@ -446,6 +446,8 @@ namespace TeamAssignment4A.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IdentityUserId");
 
                     b.ToTable("Candidates");
                 });
@@ -522,6 +524,9 @@ namespace TeamAssignment4A.Migrations
                     b.Property<DateTime?>("ExaminationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("MarkerUserName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PercentageScore")
                         .HasColumnType("nvarchar(max)");
 
@@ -551,7 +556,7 @@ namespace TeamAssignment4A.Migrations
                     b.Property<int>("CandidateExamId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CandidateId")
+                    b.Property<int?>("CandidateId")
                         .HasColumnType("int");
 
                     b.Property<int>("ExamStemId")
@@ -720,6 +725,15 @@ namespace TeamAssignment4A.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TeamAssignment4A.Models.Candidate", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId");
+
+                    b.Navigation("IdentityUser");
+                });
+
             modelBuilder.Entity("TeamAssignment4A.Models.Exam", b =>
                 {
                     b.HasOne("TeamAssignment4A.Models.Certificate", "Certificate")
@@ -758,19 +772,15 @@ namespace TeamAssignment4A.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TeamAssignment4A.Models.Candidate", "Candidate")
+                    b.HasOne("TeamAssignment4A.Models.Candidate", null)
                         .WithMany("CandidateExamStems")
-                        .HasForeignKey("CandidateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CandidateId");
 
                     b.HasOne("TeamAssignment4A.Models.JointTables.ExamStem", "ExamStem")
                         .WithMany("CandidateExamStems")
                         .HasForeignKey("ExamStemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Candidate");
 
                     b.Navigation("CandidateExam");
 

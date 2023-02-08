@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TeamAssignment4A.Data;
+using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models;
 
 namespace TeamAssignment4A.Services
@@ -11,11 +13,13 @@ namespace TeamAssignment4A.Services
         private UnitOfWork _unit;
         private WebAppDbContext _db;
         private MyDTO _myDTO;
-        public CandidateService(UnitOfWork unit, WebAppDbContext db)
+        private readonly IMapper _mapper;
+        public CandidateService(UnitOfWork unit, WebAppDbContext db, IMapper mapper)
         {
             _unit = unit;
             _db = db;
             _myDTO = new MyDTO();
+            _mapper = mapper;
         }
         public async Task<MyDTO> Get(int id)
         {
@@ -23,19 +27,19 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested candidate could not be found. Please try again later.";
-                _myDTO.Candidates = await _unit.Candidate.GetAllAsync();
+                _myDTO.Candidates = _mapper.Map<List<CandidateDto>>(await _unit.Candidate.GetAllAsync());
             }
             else
             {
                 _myDTO.View = "Details";
-                _myDTO.Candidate = await _unit.Candidate.GetAsync(id);
+                _myDTO.Candidate = _mapper.Map<CandidateDto>(await _unit.Candidate.GetAsync(id));
             }
             return _myDTO;
         }
 
-        public async Task<IEnumerable<Candidate>?> GetAll()
+        public async Task<IEnumerable<CandidateDto>?> GetAll()
         {
-            return await _unit.Candidate.GetAllAsync();
+            return _mapper.Map<List<CandidateDto>>(await _unit.Candidate.GetAllAsync());
         }
 
         public async Task<IEnumerable<IdentityUser>?> GetUsers()
@@ -52,7 +56,7 @@ namespace TeamAssignment4A.Services
                 _myDTO.Message = "The requested candidate could not be found. Please try again later.";
                 return _myDTO;
             }
-            _myDTO.Candidate = await _unit.Candidate.GetAsync(id);
+            _myDTO.Candidate = _mapper.Map<CandidateDto>(await _unit.Candidate.GetAsync(id));
             if (_myDTO.Candidate == null)
             {
                 _myDTO.View = "Index";
@@ -63,8 +67,10 @@ namespace TeamAssignment4A.Services
 
         public async Task<MyDTO> AddOrUpdate(int id, [Bind("Id,FirstName,MiddleName,LastName,Gender,NativeLanguage," +
             "CountryOfResidence,Birthdate,Email,LandlineNumber,MobileNumber,Address1,Address2,PostalCode,Town," +
-            "Province,PhotoIdType,PhotoIdNumber,PhotoIdDate")] Candidate candidate)
+            "Province,PhotoIdType,PhotoIdNumber,PhotoIdDateUserEmail,User,CandidateExams,CandidateExamStems")] CandidateDto candidateDto)
         {
+            candidateDto.User = _db.Users.FirstOrDefault(user => user.Email == candidateDto.UserEmail);
+            Candidate candidate = _mapper.Map<Candidate>(candidateDto);
             EntityState state = _unit.Candidate.AddOrUpdate(candidate);
             if (id != candidate.Id)
             {
@@ -77,7 +83,7 @@ namespace TeamAssignment4A.Services
                     _myDTO.View = "Edit";
                 }
                 _myDTO.Message = "The candidate Id was compromised. The request could not be completed due to security reasons. Please try again later.";
-                _myDTO.Candidate = candidate;
+                _myDTO.Candidate = candidateDto;
                 return _myDTO;
             }
             if (ModelState.IsValid)
@@ -93,7 +99,7 @@ namespace TeamAssignment4A.Services
                 }
                 await _unit.SaveAsync();
                 _myDTO.View = "Index";
-                _myDTO.Candidates = await _unit.Candidate.GetAllAsync();
+                _myDTO.Candidates = _mapper.Map<List<CandidateDto>>(await _unit.Candidate.GetAllAsync());
                 return _myDTO;
             }
             else
@@ -107,7 +113,7 @@ namespace TeamAssignment4A.Services
                     _myDTO.View = "Edit";
                 }
                 _myDTO.Message = "Invalid entries. Please try again later.";
-                _myDTO.Candidate = candidate;
+                _myDTO.Candidate = candidateDto;
             }
             return _myDTO;
         }
@@ -119,15 +125,15 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested candidate could not be found. Please try again later.";
-                _myDTO.Candidates = await _unit.Candidate.GetAllAsync();
+                _myDTO.Candidates = _mapper.Map<List<CandidateDto>>(await _unit.Candidate.GetAllAsync());
                 return _myDTO;
             }
-            _myDTO.Candidate = await _unit.Candidate.GetAsync(id);
+            _myDTO.Candidate = _mapper.Map<CandidateDto>(await _unit.Candidate.GetAsync(id));
             if (_myDTO.Candidate == null)
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested candidate could not be found. Please try again later.";
-                _myDTO.Candidates = await _unit.Candidate.GetAllAsync();
+                _myDTO.Candidates = _mapper.Map<List<CandidateDto>>(await _unit.Candidate.GetAllAsync());
             }
             return _myDTO;
         }
@@ -140,11 +146,10 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.Message = "The requested candidate could not be found. Please try again later.";
                 return _myDTO;
-            }
-            _myDTO.Candidate = await _unit.Candidate.GetAsync(id);
-            _unit.Candidate.Delete(_myDTO.Candidate);
+            }            
+            _unit.Candidate.Delete(await _unit.Candidate.GetAsync(id));
             await _unit.SaveAsync();
-            _myDTO.Candidates = await _unit.Candidate.GetAllAsync();
+            _myDTO.Candidates = _mapper.Map<List<CandidateDto>>(await _unit.Candidate.GetAllAsync());
             return _myDTO;
         }
     }

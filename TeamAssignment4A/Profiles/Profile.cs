@@ -8,7 +8,35 @@ namespace TeamAssignment4A.Profiles
     public class Profile: AutoMapper.Profile
     {        
         public Profile()
-        {  
+        {
+            CreateMap<Candidate, CandidateDto>();
+
+            CreateMap<Candidate, CandidateDto>()
+
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
+                .ForMember(dest => dest.MiddleName, opt => opt.MapFrom(src => src.MiddleName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender))
+                .ForMember(dest => dest.CountryOfResidence, opt => opt.MapFrom(src => src.CountryOfResidence))
+                .ForMember(dest => dest.Birthdate, opt => opt.MapFrom(src => src.Birthdate))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.LandlineNumber, opt => opt.MapFrom(src => src.LandlineNumber))
+                .ForMember(dest => dest.MobileNumber, opt => opt.MapFrom(src => src.MobileNumber))
+                .ForMember(dest => dest.Address1, opt => opt.MapFrom(src => src.Address1))
+                .ForMember(dest => dest.Address2, opt => opt.MapFrom(src => src.Address2))
+                .ForMember(dest => dest.PostalCode, opt => opt.MapFrom(src => src.PostalCode))
+                .ForMember(dest => dest.Town, opt => opt.MapFrom(src => src.Town))
+                .ForMember(dest => dest.Province, opt => opt.MapFrom(src => src.Province))
+                .ForMember(dest => dest.PhotoIdType, opt => opt.MapFrom(src => src.PhotoIdType))
+                .ForMember(dest => dest.PhotoIdNumber, opt => opt.MapFrom(src => src.PhotoIdNumber))
+                .ForMember(dest => dest.PhotoIdDate, opt => opt.MapFrom(src => src.PhotoIdDate))
+                .ForMember(dest => dest.UserEmail, opt => opt.MapFrom(src => src.IdentityUser.Email))
+                .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.IdentityUser))
+                .ForMember(dest => dest.CandidateExams, opt => opt.MapFrom(src => src.CandidateExams))
+                .ForMember(dest => dest.CandidateExamStems, opt => opt.MapFrom(src => src.CandidateExamStems))
+                .ReverseMap();
+
+
             CreateMap<Topic,TopicDto>();
 
             CreateMap<Topic, TopicDto>()
