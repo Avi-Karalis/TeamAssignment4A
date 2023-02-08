@@ -300,18 +300,35 @@ input:checked + .slider:after {
     background-color: green;
     color: black;
 }
+
+.btn-edit:hover{
+    background-color:green;
+}
+
 /*light mode*/
 .btn-details {
     font-weight: bold;
     background-color: #0275d8;
     color: black;
 }
+
+    .btn-details:hover {
+        background-color: #0275d8;
+    }
+
+
 /*light mode*/
 .btn-delete {
     font-weight: bold;
     background-color: #d9534f;
     color: black;
 }
+
+    .btn-delete:hover {
+        background-color: #d9534f;
+    }
+
+
 /*dark mode*/
 .dark-mode .btn-edit {
     font-weight: bold;
@@ -620,7 +637,8 @@ input:checked + .slider:after {
             overflow: hidden;
             transition: .5s;
             margin-top: 40px;
-            letter-spacing: 3px
+            letter-spacing: 3px;
+            background-color:transparent
         }
 
     .login-box button:hover {
