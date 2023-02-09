@@ -3,6 +3,7 @@ html {
     font-size: 14px;
     position: relative;
     min-height: 100%;
+    margin-top:10px;
 }
 /*adaptation with screen size changing*/
 @media (max-width: 500px) {
@@ -254,16 +255,7 @@ input:checked + .slider:after {
     left: 0%;
 }
 
-/*fade in animation rules*/
-@keyframes fadein {
-    from {
-        opacity: 0;
-    }
 
-    to {
-        opacity: 1;
-    }
-}
 
 .custom-font-black{
     color:black;
@@ -746,4 +738,35 @@ input:checked + .slider:after {
 /*create button positioning*/
 .create-btn-pst {
     margin-right: 700px;
+}
+
+.center-middle-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20vh;
+    
+}
+
+cstm-fadein {
+    animation: fadein 1s;
+}
+
+.center-middle-text1 {
+    display: flex;
+    align-items: center;
+    height: 30vh;
+    flex-direction: column;
+    animation: fadein 3.5;
+}
+
+/*fade in animation rules*/
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }

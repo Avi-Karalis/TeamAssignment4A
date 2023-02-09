@@ -41,7 +41,7 @@ $(function () {
 });
 
 
-const text = "PeopleCert Operations Menu";
+const text = "PeopleCert Certifications";
 const typingDelay = 100; // delay between each character
 const newTextDelay = 12000; // delay between current and next text
 let index = 0;
@@ -78,27 +78,6 @@ function toggleNav() {
         openNav();
     }
 }
-
-////save sideBars potition
-//function toggleNav() {
-//    var mySidenav = document.getElementById("mySidenav");
-//    if (mySidenav.style.width === "160px") {
-//        localStorage.setItem("navbarWidth", "0");
-//        closeNav();
-//    } else {
-//        localStorage.setItem("navbarWidth", "160px");
-//        openNav();
-//    }
-//}
-
-//window.onload = function () {
-//    var navbarWidth = localStorage.getItem("navbarWidth");
-//    if (navbarWidth === "160px") {
-//        openNav();
-//    } else {
-//        closeNav();
-//    }
-//};
 
 //dark mode function
 function myFunction() {
