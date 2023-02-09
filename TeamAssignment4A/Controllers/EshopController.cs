@@ -17,14 +17,14 @@ using TeamAssignment4A.Services;
 
 namespace TeamAssignment4A.Controllers {
     [Authorize(Roles = "Admin, Candidate")]
-    public class EshopController : Controller 
+    public class EShopController : Controller 
     {
         
         private readonly WebAppDbContext _context;
         private readonly EShopService _service;
         private MyDTO _myDTO;
         private readonly UserManager<IdentityUser> _userManager;
-        public EshopController(WebAppDbContext context, EShopService service,UserManager<IdentityUser> userManager) 
+        public EShopController(WebAppDbContext context, EShopService service,UserManager<IdentityUser> userManager) 
         {
             _context = context;
             _service = service;
@@ -35,13 +35,12 @@ namespace TeamAssignment4A.Controllers {
         // GET: Eshop
         [AllowAnonymous]
         [HttpGet]
-        [ProducesResponseType(typeof(Certificate), 200)]
         public IActionResult Index()
         {
             return View();
         }
 
-        // GET: Certificates List
+        // GET: EShop/Certificates List
         [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(typeof(Certificate), 200)]
@@ -50,7 +49,7 @@ namespace TeamAssignment4A.Controllers {
             return View(await _service.GetAll());
         }
 
-        // GET: Certificates List/Details/5
+        // GET: EShop/CertificatesList/Details/5
         [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(typeof(Certificate), 200)]
@@ -58,7 +57,7 @@ namespace TeamAssignment4A.Controllers {
         {
             _myDTO = await _service.GetCert(id);
             ViewBag.Message = _myDTO.Message;
-            if (_myDTO.View == "Index")
+            if (_myDTO.View == "ListOfCertificates")
             {
                 return View($"{_myDTO.View}", _myDTO.Certificates);
             }
@@ -71,13 +70,18 @@ namespace TeamAssignment4A.Controllers {
         [ProducesResponseType(typeof(CandidateExam), 200)]
         public async Task<IActionResult> BuyExamVoucher(int id) 
         {
-            _myDTO = await _service.GetExam(id)
+            _myDTO = await _service.GetExam(id);
             ViewBag.Message = _myDTO.Message;
             if (_myDTO.View == "Index")
             {
+                return View($"{_myDTO.View}");
+            }
+            else if(_myDTO.View == "ListOfCertificates")
+            {
                 return View($"{_myDTO.View}", _myDTO.Certificates);
             }
-            return View($"{_myDTO.View}", _myDTO.Certificate);
+            // Last return has _myDTO.View = "BuyExamVoucher"
+            return View($"{_myDTO.View}", _myDTO.CandidateExam);
         }
 
         // POST: EShop/BuyExamVoucher
@@ -85,102 +89,121 @@ namespace TeamAssignment4A.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ProducesResponseType(typeof(CandidateExam), 200)]
-        public async Task<IActionResult> BuyExamVoucher(
+        public async Task<IActionResult> BuyExamVoucher(int id,
             [Bind("Id,AssessmentTestCode,ExaminationDate,ScoreReportDate," +
                 "CandidateScore,PercentageScore,AssessmentResultLabel,MarkerUserName," +
                 "Candidate,Exam,CandidateExamStems")] CandidateExam candidateExam) 
         {
-            if (ModelState.IsValid) {
-                if (User.Identity.IsAuthenticated) {
-                    var user = await _userManager.GetUserAsync(User);
-                    var UserId = user.Id;
-                    Certificate certificate = _context.Certificates.Find(buyCertificateDTO.CertificateId);
-                    Candidate candidate = _context.Candidates.Where(candidate => candidate.IdentityUserID == UserId).First();
-                    string assessmentTestCode = RandomizerFactory.GetRandomizer(new FieldOptionsIBAN()).Generate();
-                    DateTime examinationDate = buyCertificateDTO.ExaminationDate;
-                    Exam exam = new Exam(certificate);
-                    _context.Add(exam);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction("Index", "Eshop", new { id = exam.Id });
-                }
+            _myDTO = await _service.BuyExam(id, candidateExam);
+            ViewBag.Message = _myDTO.Message;
+            if (_myDTO.View == "Index")
+            {
+                return View($"{_myDTO.View}");
             }
-            return View(buyCertificateDTO);
+            return View($"{_myDTO.View}", _myDTO.CandidateExam);
         }
 
-
-        // GET: Exams/Edit/5
-        public async Task<IActionResult> Edit(int? id) {
-            if (id == null || _context.Exams == null) {
-                return NotFound();
-            }
-
-            var exam = await _context.Exams.FindAsync(id);
-            ViewBag.Certificates = new SelectList(_context.Certificates, "Id", "TitleOfCertificate");
-            ViewBag.Candidates = new SelectList(_context.Candidates, "Id", "LastName");
-            if (exam == null) {
-                return NotFound();
-            }
-            return View(exam);
+        // GET: EShop/BookedExams
+        [AllowAnonymous]
+        [HttpGet]
+        [ProducesResponseType(typeof(CandidateExam), 200)]
+        public async Task<IActionResult> BookedExams()
+        {
+            return View(await _service.GetBooked());
         }
 
-        // POST: Exams/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // GET: EShop/ChangeDate/5
+        [AllowAnonymous]
+        [HttpGet]
+        [ProducesResponseType(typeof(CandidateExam), 200)]
+        public async Task<IActionResult> ChangeDate(int id) 
+        {
+            MyDTO myDTO = await _service.GetForUpdate(id);
+            ViewBag.Message = myDTO.Message;
+            if (myDTO.View == "BookedExams")
+            {
+                return View($"{myDTO.View}", myDTO.CandidateExams);
+            }
+            // Last return has _myDTO.View = "ChangeDate"
+            return View($"{myDTO.View}", myDTO.CandidateExam);
+        }
+        
+        // POST: EShop/ChangeDate/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,AssessmentTestCode,ExaminationDate,ScoreReportDate,CandidateScore,PercentageScore,AssessmentResultLabel")] Exam exam) {
-            if (id != exam.Id) {
-                return NotFound();
+        [ProducesResponseType(typeof(CandidateExam), 200)]
+        public async Task<IActionResult> ChangeDate(int id,
+            [Bind("Id,AssessmentTestCode,ExaminationDate,ScoreReportDate," +
+                "CandidateScore,PercentageScore,AssessmentResultLabel,MarkerUserName," +
+                "Candidate,Exam,CandidateExamStems")] CandidateExam candidateExam) 
+        {
+            MyDTO myDTO = await _service.UpdateDate(id, candidateExam);
+            ViewBag.Message = myDTO.Message;
+            if (myDTO.View == "Index")
+            {
+                return View($"{myDTO.View}");
             }
-
-            if (ModelState.IsValid) {
-                try {
-                    _context.Update(exam);
-                    await _context.SaveChangesAsync();
-                } catch (DbUpdateConcurrencyException) {
-                    if (!ExamExists(exam.Id)) {
-                        return NotFound();
-                    } else {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+            else if(myDTO.View == "ChangeDate")
+            {
+                return View($"{myDTO.View}", myDTO.CandidateExam);
             }
-            return View(exam);
-        }
-        // GET: Exams/Delete/5
-        public async Task<IActionResult> Delete(int? id) {
-            if (id == null || _context.Exams == null) {
-                return NotFound();
-            }
-
-            var exam = await _context.Exams
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (exam == null) {
-                return NotFound();
-            }
-
-            return View(exam);
+            // Last return has _myDTO.View = "BookedExams"
+            return View($"{myDTO.View}", myDTO.CandidateExams);
         }
 
-        // POST: Exams/Delete/5
+        // GET: EShop/Delete/5
+        [AllowAnonymous]
+        [HttpGet]
+        [ProducesResponseType(typeof(CandidateExam), 200)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            MyDTO myDTO = await _service.GetForDelete(id);
+            ViewBag.Message = myDTO.Message;
+            if (myDTO.View == "BookedExams")
+            {
+                return View($"{myDTO.View}", _myDTO.CandidateExams);
+            }
+            // Last return has _myDTO.View = "Delete"
+            return View($"{myDTO.View}", myDTO.CandidateExam);
+        }
+
+        // POST: EShop/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id) {
-            if (_context.Exams == null) {
-                return Problem("Entity set 'WebAppDbContext.Exams'  is null.");
-            }
-            var exam = await _context.Exams.FindAsync(id);
-            if (exam != null) {
-                _context.Exams.Remove(exam);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+        [ProducesResponseType(typeof(CandidateExam), 200)]
+        public async Task<IActionResult> DeleteConfirmed(int id) 
+        {
+            MyDTO myDTO = await _service.Delete(id);
+            ViewBag.Message = myDTO.Message;
+            // Return has _myDTO.View = "BookedExams"
+            return View($"{myDTO.View}", myDTO.CandidateExams);
         }
 
-        private bool ExamExists(int id) {
-            return _context.Exams.Any(e => e.Id == id);
+        // GET: EShop/MarkedCertifications
+        [AllowAnonymous]
+        [HttpGet]
+        [ProducesResponseType(typeof(CandidateExam), 200)]
+        public async Task<IActionResult> MarkedCertifications()
+        {
+            _myDTO = await _service.GetMarkedExams();
+            ViewBag.Message = _myDTO.Message;
+            return View(_myDTO.CandidateExams);
+        }
+
+        // GET: EShop/MarkedCertifications/Details/5
+        [AllowAnonymous]
+        [HttpGet]
+        [ProducesResponseType(typeof(CandidateExam), 200)]
+        public async Task<IActionResult> ExamDetails(int id)
+        {
+            _myDTO = await _service.GetMarkedExam(id);
+            ViewBag.Message = _myDTO.Message;
+            if (_myDTO.View == "MarkedCertifications")
+            {
+                return View($"{_myDTO.View}", _myDTO.CandidateExams);
+            }
+            // Last return has _myDTO.View = "ExamDetails"
+            return View($"{_myDTO.View}", _myDTO.CandidateExam);
         }
     }
 }
