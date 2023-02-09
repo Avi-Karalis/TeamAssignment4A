@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,10 +21,12 @@ namespace TeamAssignment4A.Controllers
     public class AdminExamsController : Controller
     {
         private readonly ExamService _service;        
+        private readonly WebAppDbContext _db;        
 
-        public AdminExamsController(ExamService service)
+        public AdminExamsController(ExamService service, WebAppDbContext db)
         {
             _service = service;
+            _db = db;
         }        
 
         // GET: Exams
@@ -164,6 +167,28 @@ namespace TeamAssignment4A.Controllers
             MyDTO myDTO = await _service.Delete(id);
             ViewBag.Message = myDTO.Message;
             return View($"{myDTO.View}", myDTO.ExamDtos);
-        }        
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AssignJob() {
+            var userRoles = _db.UserRoles.ToList();
+            var users = _db.Users.ToList();
+            var roles = _db.Roles.ToList();
+            var graders = from r in roles
+                          from u in users
+                          from ur in userRoles
+                          where u.Id == ur.UserId && r.Id == ur.RoleId
+                          select u;
+            
+
+
+            //ViewBag.Markers = new SelectList(_db.UserRoles.Join().Where(userRole => userRole.RoleId);
+            //ViewBag.Unmarked = new SelectList(_db.CandidateExams.ToList().Where(m => m.CandidateScore == null));
+            return View("Home", "Index");
+        }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult>
     }
 }
