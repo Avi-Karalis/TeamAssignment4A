@@ -357,6 +357,9 @@ input:checked + .slider:after {
     color:black;
 }
 
+.dark-mode .custom-font-black .control-label{
+    color:white;
+}
 
 .dark-mode .table{
     font-weight:bold;
