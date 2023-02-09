@@ -15,7 +15,12 @@ namespace TeamAssignment4A.Data.Repositories
             return await _db.Exams.Include(exam => exam.Certificate)
                 .Include(exam => exam.ExamStems).FirstOrDefaultAsync(x => x.Id == id);
         }
-        
+
+        public async Task<Exam?> GetByCertId(int certificateId)
+        {
+            return await _db.Exams.Include(exam => exam.Certificate).Include(exam => exam.ExamStems)
+                .FirstOrDefaultAsync(x => x.Certificate.Id == certificateId);
+        }
 
         public async Task<IEnumerable<Exam>?> GetAllAsync()
         {

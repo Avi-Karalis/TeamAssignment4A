@@ -36,18 +36,27 @@ namespace TeamAssignment4A.Controllers {
         [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(typeof(Certificate), 200)]
-        public async Task<IActionResult> Index() 
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        // GET: Certificates List
+        [AllowAnonymous]
+        [HttpGet]
+        [ProducesResponseType(typeof(Certificate), 200)]
+        public async Task<IActionResult> ListOfCertificates() 
         {
             return View(await _service.GetAll());
         }
 
-        // GET: Eshop/Details/5
+        // GET: Certificates List/Details/5
         [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(typeof(Certificate), 200)]
         public async Task<IActionResult> Details(int id) 
         {
-            _myDTO = await _service.Get(id);
+            _myDTO = await _service.GetCert(id);
             ViewBag.Message = _myDTO.Message;
             if (_myDTO.View == "Index")
             {
@@ -60,26 +69,33 @@ namespace TeamAssignment4A.Controllers {
         [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(typeof(CandidateExam), 200)]
-        public async Task<IActionResult> BuyExamVoucher(Certificate certificate) 
+        public async Task<IActionResult> BuyExamVoucher(int id) 
         {
-            ViewBag.AssessmentTestCode = RandomizerFactory.GetRandomizer(new FieldOptionsIBAN()).Generate(); 
-            ViewBag.Certificates = new SelectList(_context.Certificates, "Id", "TitleOfCertificate");
-            //ViewBag.Candidates = new SelectList(_context.Candidates, "Id", "LastName");
-            return View();
+            _myDTO = await _service.GetExam(id)
+            ViewBag.Message = _myDTO.Message;
+            if (_myDTO.View == "Index")
+            {
+                return View($"{_myDTO.View}", _myDTO.Certificates);
+            }
+            return View($"{_myDTO.View}", _myDTO.Certificate);
         }
 
-        // POST: Exams/Create
-        
+        // POST: EShop/BuyExamVoucher
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [ProducesResponseType(typeof(Certificate), 200)]
-        public async Task<IActionResult> BuyExamVoucher([Bind("CertificateId, ΕxaminationDate, CandidateId")] BuyCertificateDTO buyCertificateDTO) {
+        [ProducesResponseType(typeof(CandidateExam), 200)]
+        public async Task<IActionResult> BuyExamVoucher(
+            [Bind("Id,AssessmentTestCode,ExaminationDate,ScoreReportDate," +
+                "CandidateScore,PercentageScore,AssessmentResultLabel,MarkerUserName," +
+                "Candidate,Exam,CandidateExamStems")] CandidateExam candidateExam) 
+        {
             if (ModelState.IsValid) {
                 if (User.Identity.IsAuthenticated) {
                     var user = await _userManager.GetUserAsync(User);
                     var UserId = user.Id;
                     Certificate certificate = _context.Certificates.Find(buyCertificateDTO.CertificateId);
-                    //Candidate candidate = _context.Candidates.Where(candidate => candidate.IdentityUserID == UserId).First();
+                    Candidate candidate = _context.Candidates.Where(candidate => candidate.IdentityUserID == UserId).First();
                     string assessmentTestCode = RandomizerFactory.GetRandomizer(new FieldOptionsIBAN()).Generate();
                     DateTime examinationDate = buyCertificateDTO.ExaminationDate;
                     Exam exam = new Exam(certificate);

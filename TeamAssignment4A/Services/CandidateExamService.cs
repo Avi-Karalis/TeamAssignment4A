@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TeamAssignment4A.Data;
-using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models.JointTables;
 using TeamAssignment4A.Models;
 using Microsoft.AspNetCore.Identity;
