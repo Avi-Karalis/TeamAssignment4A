@@ -1,38 +1,23 @@
-﻿@model IEnumerable<TeamAssignment4A.Models.Certificate>
-
-@{
+﻿@{
     ViewData["Title"] = "Index";
 }
+<p></p>
 
-<h2 class="custom-font fadein center-adjust">Certificate List</h2>
+<div class="text-center">
 
+    <h1 class=" custom-font typing-text"></h1>
+    <h4 class="typing-text2"></h4>
 
-<table class="table">
-    <thead class=" sticky-header text-nowrap  text-center navbar-dark bg-primary"
-           onclick="scrollToTop()" style="cursor:pointer;"
-           data-toggle="tooltip" data-placement="top" title="click to scroll to top">
-        <tr style="border-style:hidden;">
-            <th style="border-top-left-radius: 100px; border-bottom-left-radius: 100px;">
-                @Html.DisplayNameFor(model => model.TitleOfCertificate)
-            </th>
-            
-            <th style="border-top-right-radius: 100px; border-bottom-right-radius: 100px;">Options</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr class="text-center">
+</div>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.TitleOfCertificate)
-                </td>
-                
-                <td>                    
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-success w-50 mb-2">Details</a>
-                    <a asp-action="BuyExam" asp-route-id="@item.Id" class="btn btn-danger w-50 mb-2">By Exam Voucher</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div>
+    <a asp-action="ListOfCertificates" style="width:160px;" 
+        class="custom-font btn btn-info col-sm-5">Browse Certificates</a> | 
+    
+    <a asp-action="BookedExams" style="width:140px;"
+        class="text-nowrap custom-font btn btn-primary col-sm-3">Booked Exams</a> | 
+
+    <a asp-action="MyCertifications" style="width:140px;" 
+        class="text-nowrap custom-font btn btn-primary col-sm-4">My Certifications</a>
+
+</div>

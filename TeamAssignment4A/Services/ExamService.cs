@@ -100,6 +100,8 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested exam could not be found. Please try again later.";
+                var exams = await _unit.Exam.GetAllAsync();
+                _myDTO.ExamDtos = _mapper.Map<List<ExamDto>>(exams);
                 return _myDTO;
             }
             Exam exam = await _unit.Exam.GetAsync(id);
@@ -109,6 +111,8 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested exam could not be found. Please try again later.";
+                var exams = await _unit.Exam.GetAllAsync();
+                _myDTO.ExamDtos = _mapper.Map<List<ExamDto>>(exams);
             }
             return _myDTO;
         }
@@ -207,22 +211,23 @@ namespace TeamAssignment4A.Services
             if (id != exam.Id)
             {                
                 _myDTO.View = "Edit";
-                _myDTO.Message = "The exam Id was compromised. The request could not be completed due to security reasons. Please try again later.";
+                _myDTO.Message = "The exam Id was compromised. The request could\nnot " +
+                    "be completed due to security reasons.\nPlease try again later.";
                 _myDTO.ExamDto = examDto;
                 return _myDTO;
             }
             if (ModelState.IsValid)
             {
-                _myDTO.Message = "The requested exam has been updated successfully.";                
+                _myDTO.View = "Index";
+                _myDTO.Message = "The requested exam has been updated successfully.";
+                IEnumerable<Exam> exams = await _unit.Exam.GetAllAsync();
+                _myDTO.ExamDtos = _mapper.Map<List<ExamDto>>(exams);
                 if (!await _unit.Exam.Exists(exam.Id))
                 {
                     _myDTO.Message = "The requested exam could not be found. Please try again later.";
+                    return _myDTO;
                 }                
                 await _unit.SaveAsync();
-                _myDTO.View = "Index";
-                IEnumerable<Exam> exams = await _unit.Exam.GetAllAsync();
-                _myDTO.ExamDtos = _mapper.Map<List<ExamDto>>(exams);
-                return _myDTO;
             }
             else
             {                
