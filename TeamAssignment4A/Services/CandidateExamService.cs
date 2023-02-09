@@ -4,6 +4,7 @@ using TeamAssignment4A.Data;
 using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models.JointTables;
 using TeamAssignment4A.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace TeamAssignment4A.Services
 {
@@ -13,18 +14,23 @@ namespace TeamAssignment4A.Services
         private UnitOfWork _unit;
         private readonly IMapper _mapper;
         private MyDTO _myDTO;
-        public CandidateExamService(WebAppDbContext db, UnitOfWork unit, IMapper mapper)
+        private readonly UserManager<IdentityUser> _userManager;
+        public CandidateExamService(WebAppDbContext db, UnitOfWork unit,
+            IMapper mapper, UserManager<IdentityUser> userManager)
         {
             _db = db;
             _unit = unit;
             _mapper = mapper;
             _myDTO = new MyDTO();
+            _userManager = userManager;
         }
 
         // Get all Exams that a specific Candidate has not sat for yet
-        public async Task<IEnumerable<CandidateExam>?> GetAll(int candidateId)
+        public async Task<IEnumerable<CandidateExam>?> GetAll()
         {
-            return await _unit.CandidateExam.GetAllAsync(candidateId);
+            IdentityUser? user = await _userManager.GetUserAsync(User);
+            Candidate? candidate = await _unit.Candidate.GetByUser(user);
+            return await _unit.CandidateExam.GetAllAsync(candidate.Id);
         }
 
         // Get all Candidate Exam Stems that belong to a specific Candidate Exam
@@ -35,6 +41,7 @@ namespace TeamAssignment4A.Services
             return cExStems;
         }
 
+        
         // Submit a Candidate's Exam
         public async Task<MyDTO> SubmitAnswers([Bind("Id,SubmittedAnswer," +
                 "Score,Candidate,ExamStem,CandidateExam")] IEnumerable<CandidateExamStem> cExStems)

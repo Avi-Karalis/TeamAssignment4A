@@ -14,34 +14,20 @@ namespace TeamAssignment4A.Controllers
     [Authorize(Roles = "Admin, QA, Candidate")]
     public class CandidateExamsController : Controller
     {
-        private readonly WebAppDbContext _db;
-        private readonly ExamService _examService;
-        private readonly ExamStemService _examStemService;
         private readonly CandidateExamService _service;
-        private readonly IMapper _mapper;
 
-        public CandidateExamsController(WebAppDbContext context, 
-            ExamStemService examStemService, CandidateExamService service, IMapper mapper)
+        public CandidateExamsController(CandidateExamService service)
         {
-            _db = context;
             _service = service;
-            _examStemService = examStemService;
-            _mapper = mapper;
         }
+
 
         [HttpGet]
         [Authorize(Roles = "Admin, QA, Candidate")]
+        [ProducesResponseType(typeof(CandidateExam), 200)]
         public async Task<IActionResult> Index()
         {
-            return View();
-        }
-
-        [HttpGet, ActionName("CandidateExamsList")]
-        [Authorize(Roles = "Admin, QA, Candidate")]
-        [ProducesResponseType(typeof(CandidateExam), 200)]
-        public async Task<IActionResult> CandidateExamsList(int candidateId)
-        {
-            return View(await _service.GetAll(candidateId));            
+            return View(await _service.GetAll());            
         }
 
         [Authorize(Roles = "Admin, Candidate")]

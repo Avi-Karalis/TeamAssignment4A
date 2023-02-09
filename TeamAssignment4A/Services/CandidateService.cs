@@ -75,15 +75,6 @@ namespace TeamAssignment4A.Services
             
             Candidate candidate = _mapper.Map<Candidate>(candidateDto);
             _unit.Candidate.AddOrUpdate(candidate);
-
-            if (candidateDto.Email != candidateDto.UserEmail)
-            {
-                _myDTO.View = "Create";
-                _myDTO.Message = "The fields Email and UserEmail must " +
-                    "have the same inputs!";
-                _myDTO.Candidate = candidateDto;
-                return _myDTO;
-            }
             
             if (id != candidate.Id)
             {
@@ -103,6 +94,14 @@ namespace TeamAssignment4A.Services
                     _myDTO.View = "Create";
                     _myDTO.Message = "This email address has already been claimed. " +
                         "Please try providing a different one.";
+                    _myDTO.Candidate = candidateDto;
+                    return _myDTO;
+                }
+                if (candidateDto.Email != candidateDto.UserEmail)
+                {
+                    _myDTO.View = "Create";
+                    _myDTO.Message = "The fields Email and User_Email must " +
+                        "have the same inputs!";
                     _myDTO.Candidate = candidateDto;
                     return _myDTO;
                 }
@@ -153,15 +152,6 @@ namespace TeamAssignment4A.Services
 
             _unit.Candidate.AddOrUpdate(candidate);
 
-            if (candidateDto.Email != candidateDto.UserEmail)
-            {
-                _myDTO.View = "Edit";
-                _myDTO.Message = "The fields Email and UserEmail must " +
-                    "have the same inputs!";
-                _myDTO.Candidate = candidateDto;
-                return _myDTO;
-            }
-
             if (id != candidate.Id)
             {
                 _myDTO.View = "Edit";
@@ -189,7 +179,14 @@ namespace TeamAssignment4A.Services
                     _myDTO.Candidate = candidateDto;
                     return _myDTO;
                 }
-
+                if (candidateDto.Email != candidateDto.UserEmail)
+                {
+                    _myDTO.View = "Edit";
+                    _myDTO.Message = "The fields Email and User_Email must " +
+                        "have the same inputs!";
+                    _myDTO.Candidate = candidateDto;
+                    return _myDTO;
+                }
                 await _unit.SaveAsync();
                 _myDTO.Candidates = _mapper.Map<List<CandidateDto>>
                                     (await _unit.Candidate.GetAllAsync());
