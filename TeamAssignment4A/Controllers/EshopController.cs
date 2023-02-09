@@ -20,11 +20,13 @@ namespace TeamAssignment4A.Controllers {
     public class EShopController : Controller 
     {
         
-        
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly EShopService _service;
         private MyDTO _myDTO;
-        public EShopController(EShopService service) 
+        public EShopController(EShopService service,
+            UserManager<IdentityUser> userManager) 
         {
+            _userManager = userManager;
             _service = service;
             _myDTO = new MyDTO();
         }
@@ -67,7 +69,8 @@ namespace TeamAssignment4A.Controllers {
         [ProducesResponseType(typeof(CandidateExam), 200)]
         public async Task<IActionResult> BuyExamVoucher(int id) 
         {
-            _myDTO = await _service.GetExam(id);
+            IdentityUser? user = await _userManager.GetUserAsync(User);
+            _myDTO = await _service.GetExam(id, user);
             ViewBag.Message = _myDTO.Message;
             if (_myDTO.View == "Index")
             {
@@ -81,8 +84,8 @@ namespace TeamAssignment4A.Controllers {
             return View($"{_myDTO.View}", _myDTO.CandidateExam);
         }
 
-        // POST: EShop/BuyExamVoucher
 
+        // POST: EShop/BuyExamVoucher
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ProducesResponseType(typeof(CandidateExam), 200)]
@@ -106,7 +109,8 @@ namespace TeamAssignment4A.Controllers {
         [ProducesResponseType(typeof(CandidateExam), 200)]
         public async Task<IActionResult> BookedExams()
         {
-            return View(await _service.GetBooked());
+            IdentityUser? user = await _userManager.GetUserAsync(User);
+            return View(await _service.GetBooked(user));
         }
 
         // GET: EShop/ChangeDate/5
@@ -115,7 +119,8 @@ namespace TeamAssignment4A.Controllers {
         [ProducesResponseType(typeof(CandidateExam), 200)]
         public async Task<IActionResult> ChangeDate(int id) 
         {
-            MyDTO myDTO = await _service.GetForUpdate(id);
+            IdentityUser? user = await _userManager.GetUserAsync(User);
+            MyDTO myDTO = await _service.GetForUpdate(id, user);
             ViewBag.Message = myDTO.Message;
             if (myDTO.View == "BookedExams")
             {
@@ -134,7 +139,8 @@ namespace TeamAssignment4A.Controllers {
                 "CandidateScore,PercentageScore,AssessmentResultLabel,MarkerUserName," +
                 "Candidate,Exam,CandidateExamStems")] CandidateExam candidateExam) 
         {
-            MyDTO myDTO = await _service.UpdateDate(id, candidateExam);
+            IdentityUser? user = await _userManager.GetUserAsync(User);
+            MyDTO myDTO = await _service.UpdateDate(id, candidateExam, user);
             ViewBag.Message = myDTO.Message;
             if (myDTO.View == "Index")
             {
@@ -154,7 +160,8 @@ namespace TeamAssignment4A.Controllers {
         [ProducesResponseType(typeof(CandidateExam), 200)]
         public async Task<IActionResult> Delete(int id)
         {
-            MyDTO myDTO = await _service.GetForDelete(id);
+            IdentityUser? user = await _userManager.GetUserAsync(User);
+            MyDTO myDTO = await _service.GetForDelete(id, user);
             ViewBag.Message = myDTO.Message;
             if (myDTO.View == "BookedExams")
             {
@@ -170,7 +177,8 @@ namespace TeamAssignment4A.Controllers {
         [ProducesResponseType(typeof(CandidateExam), 200)]
         public async Task<IActionResult> DeleteConfirmed(int id) 
         {
-            MyDTO myDTO = await _service.Delete(id);
+            IdentityUser? user = await _userManager.GetUserAsync(User);
+            MyDTO myDTO = await _service.Delete(id, user);
             ViewBag.Message = myDTO.Message;
             // Return has _myDTO.View = "BookedExams"
             return View($"{myDTO.View}", myDTO.CandidateExams);
@@ -182,7 +190,8 @@ namespace TeamAssignment4A.Controllers {
         [ProducesResponseType(typeof(CandidateExam), 200)]
         public async Task<IActionResult> MarkedCertifications()
         {
-            _myDTO = await _service.GetMarkedExams();
+            IdentityUser? user = await _userManager.GetUserAsync(User);
+            _myDTO = await _service.GetMarkedExams(user);
             ViewBag.Message = _myDTO.Message;
             return View(_myDTO.CandidateExams);
         }
@@ -193,7 +202,8 @@ namespace TeamAssignment4A.Controllers {
         [ProducesResponseType(typeof(CandidateExam), 200)]
         public async Task<IActionResult> ExamDetails(int id)
         {
-            _myDTO = await _service.GetMarkedExam(id);
+            IdentityUser? user = await _userManager.GetUserAsync(User);
+            _myDTO = await _service.GetMarkedExam(id, user);
             ViewBag.Message = _myDTO.Message;
             if (_myDTO.View == "MarkedCertifications")
             {
