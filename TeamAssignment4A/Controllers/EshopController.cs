@@ -20,16 +20,13 @@ namespace TeamAssignment4A.Controllers {
     public class EShopController : Controller 
     {
         
-        private readonly WebAppDbContext _context;
+        
         private readonly EShopService _service;
         private MyDTO _myDTO;
-        private readonly UserManager<IdentityUser> _userManager;
-        public EShopController(WebAppDbContext context, EShopService service,UserManager<IdentityUser> userManager) 
+        public EShopController(EShopService service) 
         {
-            _context = context;
             _service = service;
             _myDTO = new MyDTO();
-            _userManager = userManager;
         }
 
         // GET: Eshop
