@@ -9,14 +9,11 @@ namespace TeamAssignment4A.Services
 {
     public class CandidateExamService : ControllerBase, ICandidateExamService
     {
-        private WebAppDbContext _db;
         private UnitOfWork _unit;
         private readonly IMapper _mapper;
         private MyDTO _myDTO;
-        public CandidateExamService(WebAppDbContext db, UnitOfWork unit,
-            IMapper mapper)
+        public CandidateExamService(UnitOfWork unit, IMapper mapper)
         {
-            _db = db;
             _unit = unit;
             _mapper = mapper;
             _myDTO = new MyDTO();
