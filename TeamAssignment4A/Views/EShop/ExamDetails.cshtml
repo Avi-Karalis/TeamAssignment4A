@@ -1,0 +1,66 @@
+﻿@model TeamAssignment4A.Models.JointTables.CandidateExam
+
+@{
+    ViewData["Title"] = "ExamDetails";
+}
+
+<h3 class="custom-font fadein center-adjust">Certificate Details</h3>
+<hr />
+
+
+<div>
+    
+    <dl class="row">
+        <dt class="col-sm-6 rightalign">
+            @Html.DisplayNameFor(model => model.AssessmentTestCode)
+        </dt>
+        <dd class="col-sm-6">
+            @Html.DisplayFor(model => model.AssessmentTestCode)
+        </dd>
+        <dt class="col-sm-6 rightalign">
+            @Html.DisplayNameFor(model => model.Exam.Certificate.TitleOfCertificate)
+        </dt>
+        <dd class="col-sm-6">
+            @Html.DisplayFor(model => model.Exam.Certificate.TitleOfCertificate)
+        </dd>
+        <dt class="col-sm-6 rightalign">
+            @Html.DisplayNameFor(model => model.ExaminationDate)
+        </dt>
+        <dd class="col-sm-6">
+            @Html.DisplayFor(model => model.ExaminationDate)
+        </dd>
+        <dt class="col-sm-6 rightalign">
+            @Html.DisplayNameFor(model => model.ScoreReportDate)
+        </dt>
+        <dd class="col-sm-6">
+            @Html.DisplayFor(model => model.ScoreReportDate)
+        </dd>
+        <dt class="col-sm-6 rightalign">
+            @Html.DisplayNameFor(model => model.CandidateScore)
+        </dt>
+        <dd class="col-sm-6">
+            @Html.DisplayFor(model => model.CandidateScore)
+        </dd>
+        <dt class="col-sm-6 rightalign">
+            @Html.DisplayNameFor(model => model.PercentageScore)
+        </dt>
+        <dd class="col-sm-6">
+            @Html.DisplayFor(model => model.PercentageScore)
+        </dd>
+        <dt class="col-sm-6 rightalign">
+            @Html.DisplayNameFor(model => model.AssessmentResultLabel)
+        </dt>
+        <dd class="col-sm-6">
+            @Html.DisplayFor(model => model.AssessmentResultLabel)
+        </dd>
+        
+    </dl>
+</div>
+<div class="center-adjust">
+
+    <a asp-action="MarkedCertifications" style="width:140px;"
+       class="text-nowrap custom-font btn btn-primary col-sm-8">Browse your Certificates</a> |
+    
+    <a asp-action="Index" style="width:115px;" 
+        class="text-nowrap custom-font btn btn-primary col-sm-4">Back to e-Shop</a>
+</div>

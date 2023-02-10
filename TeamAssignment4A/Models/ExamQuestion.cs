@@ -8,7 +8,7 @@ namespace TeamAssignment4A.Models
 
         [Required]
         [Display(Name = "Exam Id")]
-        public int ExamId { get; set; }
+        public int CandidateExamId { get; set; }
 
         [Required]
         [Display(Name = "Stem Id")]
@@ -46,7 +46,7 @@ namespace TeamAssignment4A.Models
 
         public ExamQuestion(Stem stem, int examId)
         {
-            ExamId = examId;
+            CandidateExamId = examId;
             StemId = stem.Id;
             Question = stem.Question;
             OptionA = stem.OptionA;

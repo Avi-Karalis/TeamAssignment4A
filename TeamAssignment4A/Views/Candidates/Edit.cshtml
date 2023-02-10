@@ -1,4 +1,4 @@
-﻿@model TeamAssignment4A.Models.Candidate
+﻿@model TeamAssignment4A.Dtos.CandidateDto
 
 @{
     ViewData["Title"] = "Edit";
@@ -7,7 +7,7 @@
 <h3 class="custom-font fadein center-adjust">Editing Candidate</h3>
 <hr />
 <div class="row custom-font fadein center-adjust" >
-    @*<div class="col-md-4">*@
+    
     <form asp-action="Edit" class="row g-12">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
@@ -118,6 +118,12 @@
                 <input asp-for="PhotoIdDate" class="form-control" type="date" placeholder="Enter PhotoId date" />
                 <span asp-validation-for="PhotoIdDate" class="text-danger"></span>
             </div>
+            <div class="col-md-4">
+                <div>
+                    <label asp-for="UserEmail" class="control-label"></label>
+                    <input asp-for="UserEmail" class="form-control" placeholder="Enter User Email" />
+                    <span asp-validation-for="UserEmail" class="text-danger"></span>
+                </div>
         </div>
         
     </form>

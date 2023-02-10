@@ -33,10 +33,25 @@ namespace TeamAssignment4A.Models.JointTables {
         public string? AssessmentResultLabel { get; set; }
 
 
+        [Display(Name = "Marker User Name")]
+        public string? MarkerUserName { get; set; }
+
+
         // Navigation Properties
         public virtual Candidate Candidate { get; set; }
         public virtual Exam Exam { get; set; }
         public virtual IEnumerable<CandidateExamStem>? CandidateExamStems { get; set; }
-        
+
+        public CandidateExam()
+        {
+
+        }
+
+        public CandidateExam(Candidate candidate, Exam exam, string assessmentTestCode)
+        {
+            Candidate = candidate;
+            Exam = exam;
+            AssessmentTestCode = assessmentTestCode;
+        }
     }
 }
