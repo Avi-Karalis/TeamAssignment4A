@@ -13,7 +13,7 @@ namespace TeamAssignment4A.Data.Repositories
         }
         public async Task<ExamStem?> GetAsync(int id)
         {
-            return await _db.ExamStems.AsNoTracking().Include(exs => exs.Exam)
+            return await _db.ExamStems.Include(exs => exs.Exam)
                 .Include(exs => exs.Stem).FirstOrDefaultAsync(x => x.Id == id);
         }
 
@@ -27,7 +27,7 @@ namespace TeamAssignment4A.Data.Repositories
         // Get all Exam Stems for a specific exam
         public async Task<IEnumerable<ExamStem>?> GetExamStemsByExam(Exam exam)
         {
-            return await _db.ExamStems.AsNoTracking().Where(exs => exs.Exam == exam).
+            return await _db.ExamStems.Where(exs => exs.Exam == exam).
                 Include(exs => exs.Exam).Include(exs => exs.Stem).ToListAsync<ExamStem>();
         }
         public async Task<IEnumerable<int>?> GetStemIdsByExam(Exam exam)

@@ -91,6 +91,15 @@ namespace TeamAssignment4A.Services
             if (ModelState.IsValid)
             {
                 _myDTO.Message = "The requested stem has been added successfully.";
+                if (await _unit.Stem.QuestionExists(stem))
+                {
+                    _myDTO.View = "Create";
+                    _myDTO.Message = "This question has already been included " +
+                        "in the selected topic. Please try providing a different" +
+                        " question or topic.";
+                    _myDTO.StemDto = stemDto;
+                    return _myDTO;
+                }
                 await _unit.SaveAsync();
                 _myDTO.View = "Index";
                 IEnumerable<Stem> stems = await _unit.Stem.GetAllAsync();
@@ -132,6 +141,15 @@ namespace TeamAssignment4A.Services
                 if (!await _unit.Stem.Exists(stem.Id))
                 {
                     _myDTO.Message = "The requested Stem could not be found. Please try again later.";
+                }
+                if (await _unit.Stem.QuestionExists(stem))
+                {
+                    _myDTO.View = "Edit";
+                    _myDTO.Message = "This question has already been included " +
+                        "in the selected topic. Please try providing a different" +
+                        " question or topic.";
+                    _myDTO.StemDto = stemDto;
+                    return _myDTO;
                 }
                 await _unit.SaveAsync();
                 _myDTO.View = "Index";

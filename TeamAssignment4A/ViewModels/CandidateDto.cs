@@ -1,17 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using TeamAssignment4A.Models.JointTables;
-using Microsoft.AspNetCore.Identity;
 
-
-namespace TeamAssignment4A.Models
+namespace TeamAssignment4A.Dtos
 {
-    public class Candidate 
+    public class CandidateDto
     {
-        //Basic properties for each Candidate
-
-        [Key]
-        [Required]
         [Display(Name = "Candidate Number")]
         public int Id { get; set; }
 
@@ -86,14 +81,12 @@ namespace TeamAssignment4A.Models
         [Column(TypeName = "Date")]
         public DateTime PhotoIdDate { get; set; }
 
-        
-        // Navigation Properties       
-        public virtual IdentityUser IdentityUser { get; set; }
-        public virtual IEnumerable<CandidateExam>? CandidateExams { get; set; }
-        public virtual IEnumerable<CandidateExamStem>? CandidateExamStems { get; set; }
+        [Required]
+        [Display(Name = "User Email")]
+        public string UserEmail { get; set; }
+
+        public IdentityUser User { get; set; }
+        public List<CandidateExam>? CandidateExams { get; set; }
+        public List<CandidateExamStem>? CandidateExamStems { get; set; }
     }
-
 }
-
-
-

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Data;
@@ -14,52 +15,49 @@ namespace TeamAssignment4A.Controllers
     [Authorize(Roles = "Admin, QA, Candidate")]
     public class CandidateExamsController : Controller
     {
-        private readonly WebAppDbContext _db;
-        private readonly ExamService _examService;
-        private readonly ExamStemService _examStemService;
-        private readonly IMapper _mapper;
-
-        public CandidateExamsController(WebAppDbContext context,
-            ExamService service, ExamStemService examStemService, IMapper mapper)
+        private readonly CandidateExamService _service;
+        private readonly UserManager<IdentityUser> _userManager;
+        public CandidateExamsController(CandidateExamService service,
+            UserManager<IdentityUser> userManager)
         {
-            _db = context;
-            _examService = service;
-            _examStemService = examStemService;
-            _mapper = mapper;
+            _service = service;
+            _userManager = userManager;
         }
-        
+
+
         [HttpGet]
         [Authorize(Roles = "Admin, QA, Candidate")]
         [ProducesResponseType(typeof(CandidateExam), 200)]
         public async Task<IActionResult> Index()
         {
-            return View(await _examService.GetAll());            
+            IdentityUser? user = await _userManager.GetUserAsync(User);
+            return View(await _service.GetAll(user));            
         }
 
         [Authorize(Roles = "Admin, Candidate")]
-        [HttpGet, ActionName("sitforexam")]
-        [ProducesResponseType(typeof(ExamStem), 200)]
-        public async Task<IActionResult> SitForExam(Exam exam)
+        [HttpGet, ActionName("SitForExam")]
+        [ProducesResponseType(typeof(CandidateExamStem), 200)]
+        public async Task<IActionResult> SitForExam(CandidateExam candExam)
         {
             List<string> selections = new List<string> { "A", "B", "C", "D" };
             ViewBag.Selections = new SelectList(selections);
-            IEnumerable<ExamStem> examStems = await _examStemService.GetByExam(exam);            
-            return View(examStems);
+            return View(await _service.GetByExam(candExam));
         }
 
         [Authorize(Roles = "Admin, Candidate")]
-        [HttpPost, ActionName("submitexam")]
-        [ProducesResponseType(typeof(ExamStem), 200)]
-        public async Task<IActionResult> SubmitExam(int examId,
-                        [Bind("Id,SubmittedAnswer,Score,Exam,Stem")] IEnumerable<ExamStem> examStems)
+        [HttpPost, ActionName("SubmitExam")]
+        [ProducesResponseType(typeof(CandidateExam), 200)]
+        public async Task<IActionResult> SubmitExam([Bind("Id,SubmittedAnswer," +
+                "Score,Candidate,ExamStem,CandidateExam")] IEnumerable<CandidateExamStem> cExStems)
         {
-            //MyDTO myDTO = await _examStemService.SubmitExamStems(examId, examStems);
-            //ViewBag.Message = myDTO.Message;
-            //if (myDTO.View == "Index")
-            //{
-            //    return View($"{myDTO.View}", myDTO.Candidates);
-            //}
-            return View();
+            MyDTO myDTO = await _service.SubmitAnswers(cExStems);
+            ViewBag.Message = myDTO.Message;
+            if (myDTO.View == "sitforexam")
+            {
+                return RedirectToAction($"{myDTO.View}", myDTO.CandidateExamStems);
+                
+            }
+            return RedirectToAction($"{myDTO.View}", "Home");
         }
     }
 }

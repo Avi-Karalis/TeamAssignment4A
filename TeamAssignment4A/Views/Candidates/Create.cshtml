@@ -1,4 +1,4 @@
-﻿@model TeamAssignment4A.Models.Candidate
+﻿@model TeamAssignment4A.Dtos.CandidateDto
 
 @{
     ViewData["Title"] = "Create";
@@ -115,6 +115,13 @@
             <div>
                 <input asp-for="PhotoIdDate" class="form-control" type="date" placeholder="Enter PhotoId date" />
                 <span asp-validation-for="PhotoIdDate" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <div>
+                    <label asp-for="UserEmail" class="control-label"></label>
+                    <select asp-for="UserEmail" class="form-control" asp-items="@ViewBag.UserEmails"></select>
+                    <span asp-validation-for="UserEmail" class="text-danger"></span>
+                </div>
             </div>
         </div>
         

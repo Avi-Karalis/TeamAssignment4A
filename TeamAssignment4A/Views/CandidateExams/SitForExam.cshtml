@@ -16,7 +16,7 @@
         @foreach (var item in Model)
         {
             <div>
-                <input type="hidden" asp-for="@item.CandidateExam.Id" />
+                @*<input type="hidden" asp-for="@item.Id" />*@
                 @*@Html.HiddenFor(modelItem => item.Stem.Id)
                 @Html.HiddenFor(modelItem => item.Exam.Id)*@
                 <div class="text-nowrap text-center navbar-dark bg-primary" style="border-top-right-radius: 100px; 

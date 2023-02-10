@@ -84,8 +84,7 @@ namespace TeamAssignment4A.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             _myDTO = await _service.GetForUpdate(id);
-            ViewBag.Message = _myDTO.Message;            
-            ViewBag.Certificates = new SelectList(await _service.GetCerts(), "TitleOfCertificate", "TitleOfCertificate");
+            ViewBag.Message = _myDTO.Message; 
             if (_myDTO.View == "Index")
             {
                 return View($"{_myDTO.View}", _myDTO.TopicDtos);
@@ -106,7 +105,6 @@ namespace TeamAssignment4A.Controllers
             {
                 return View($"{_myDTO.View}", _myDTO.TopicDtos);
             }
-            ViewBag.Certificates = new SelectList(await _service.GetCerts(), "TitleOfCertificate", "TitleOfCertificate");
             return View($"{_myDTO.View}", _myDTO.TopicDto);            
         }
 

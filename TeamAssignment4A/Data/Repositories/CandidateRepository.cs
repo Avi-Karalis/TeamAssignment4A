@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using TeamAssignment4A.Data;
 using TeamAssignment4A.Models;
 
@@ -13,13 +14,19 @@ namespace TeamAssignment4A.Data.Repositories
         }
         public async Task<Candidate?> GetAsync(int id)
         {
-            return await _db.Candidates.Include(cand => cand.CandidateExams)
+            return await _db.Candidates.Include(cand => cand.CandidateExams).Include(cand => cand.IdentityUser)
                 .Include(cand => cand.CandidateExamStems).FirstOrDefaultAsync(x => x.Id == id);
-        }        
+        }
+
+        public async Task<Candidate?> GetByUser(IdentityUser user)
+        {
+            return await _db.Candidates.Include(cand => cand.CandidateExams).Include(cand => cand.IdentityUser)
+                .Include(cand => cand.CandidateExamStems).FirstOrDefaultAsync(x => x.IdentityUser == user);
+        }
 
         public async Task<IEnumerable<Candidate>?> GetAllAsync()
         {
-            return await _db.Candidates.Include(cand => cand.CandidateExams)
+            return await _db.Candidates.Include(cand => cand.CandidateExams).Include(cand => cand.IdentityUser)
                 .Include(cand => cand.CandidateExamStems).ToListAsync<Candidate>();
         }
 
@@ -38,5 +45,6 @@ namespace TeamAssignment4A.Data.Repositories
         {
             return await _db.Candidates.AnyAsync(e => e.Id == id);
         }
+
     }
 }

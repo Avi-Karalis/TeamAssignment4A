@@ -19,7 +19,7 @@ namespace TeamAssignment4A.Data
 
         }
 
-        public virtual DbSet<IdentityUser> User { get; set; } = default!;
+        public virtual DbSet<IdentityUser> Users { get; set; } = default!;
         public virtual DbSet<Candidate> Candidates { get; set; } = default!;
         public virtual DbSet<Certificate> Certificates { get; set; } = default!;
         public virtual DbSet<Exam> Exams { get; set; } = default!;
@@ -29,18 +29,10 @@ namespace TeamAssignment4A.Data
         public virtual DbSet<CandidateExamStem> CandidateExamStems { get; set; } = default!;
         public virtual DbSet<CandidateExam> CandidateExams { get; set; } = default!;
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);            
-            modelBuilder.Entity<Certificate>().HasIndex(c => c.TitleOfCertificate).IsUnique();
-            modelBuilder.Entity<Topic>().HasIndex(c => c.Description).IsUnique();            
-            modelBuilder.Entity<CandidateExam>().HasIndex(c => c.AssessmentTestCode).IsUnique();            
-        }
-
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.EnableSensitiveDataLogging();
-            //optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);        
+            optionsBuilder.EnableSensitiveDataLogging();       
             base.OnConfiguring(optionsBuilder);
         }
     }

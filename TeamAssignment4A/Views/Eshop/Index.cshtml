@@ -1,29 +1,24 @@
-﻿@model IEnumerable<TeamAssignment4A.Models.JointTables.CandidateExam>
-
-@{
+﻿@{
     ViewData["Title"] = "Index";
 }
+<p></p>
 
-<h1>Index</h1>
+<div class="text-center">
 
-<p class="left-adjust">
-    <a asp-action="BuyExam" class=" custom-font btn btn-info">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <h1 class=" custom-font typing-text"></h1>
+    <h4 class="typing-text2"></h4>
+
+</div>
+
+
+<div>
+    <a asp-action="ListOfCertificates" style="width:160px;" 
+        class="custom-font btn btn-info col-sm-5">Browse Certificates</a> | 
+    
+    <a asp-action="BookedExams" style="width:140px;"
+        class="text-nowrap custom-font btn btn-primary col-sm-3">Booked Exams</a> | 
+
+    <a asp-action="MarkedCertifications" style="width:140px;"
+       class="text-nowrap custom-font btn btn-primary col-sm-4">My Certifications</a>
+
+</div>

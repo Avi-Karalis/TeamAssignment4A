@@ -16,6 +16,7 @@ using Duende.IdentityServer.Stores;
 using TeamAssignment4A.Authorization;
 using System.Security.Cryptography.X509Certificates;
 
+
 namespace TeamAssignment4A {
     public class Program {
         public void Configure(IApplicationBuilder app) {
@@ -25,7 +26,7 @@ namespace TeamAssignment4A {
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            var connectionString = builder.Configuration.GetConnectionString("OnLineServerAve") ?? throw new InvalidOperationException("Connection string 'OnLineServerAve' not found.");
+            var connectionString = builder.Configuration.GetConnectionString("OnLineServerTest") ?? throw new InvalidOperationException("Connection string 'OnLineServerAve' not found.");
             builder.Services.AddDbContext<WebAppDbContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -40,27 +41,28 @@ namespace TeamAssignment4A {
             builder.Services.AddIdentityServer().AddSigningCredential(certificate)
             .AddApiAuthorization<IdentityUser, WebAppDbContext>();
 
+            
 
-
-                builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews();
 
             //Authorization Handler and roles
 
-            builder.Services.AddTransient<IAuthorizationHandler, AdminAuthorizationHandler>();
-            builder.Services.AddTransient<IAuthorizationHandler, QAAuthorizationHandler>();
-            builder.Services.AddTransient<IAuthorizationHandler, MarkerAuthorizationHandler>();
-            builder.Services.AddTransient<IAuthorizationHandler, CandidateAuthorizationHandler>();
+            builder.Services.AddSingleton<IAuthorizationHandler, AdminAuthorizationHandler>();
+            builder.Services.AddSingleton<IAuthorizationHandler, QAAuthorizationHandler>();
+            builder.Services.AddSingleton<IAuthorizationHandler, MarkerAuthorizationHandler>();
+            builder.Services.AddSingleton<IAuthorizationHandler, CandidateAuthorizationHandler>();
             
 
-            builder.Services.AddTransient<IdentityDbContext<IdentityUser>, WebAppDbContext>();
-            builder.Services.AddTransient<UnitOfWork, UnitOfWork>();
-            builder.Services.AddTransient<CandidateService, CandidateService>();
-            builder.Services.AddTransient<CertificateService, CertificateService>();
-            builder.Services.AddTransient<TopicService, TopicService>();
-            builder.Services.AddTransient<StemService, StemService>();
-            builder.Services.AddTransient<ExamService, ExamService>();
-            builder.Services.AddTransient<ExamStemService, ExamStemService>();
-            builder.Services.AddTransient<CandidateExamService, CandidateExamService>();
+            builder.Services.AddScoped<IdentityDbContext<IdentityUser>, WebAppDbContext>();
+            builder.Services.AddScoped<UnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<CandidateService, CandidateService>();
+            builder.Services.AddScoped<CertificateService, CertificateService>();
+            builder.Services.AddScoped<TopicService, TopicService>();
+            builder.Services.AddScoped<StemService, StemService>();
+            builder.Services.AddScoped<ExamService, ExamService>();
+            builder.Services.AddScoped<ExamStemService, ExamStemService>();
+            builder.Services.AddScoped<CandidateExamService, CandidateExamService>();
+            builder.Services.AddScoped<EShopService, EShopService>();
             builder.Services.AddAutoMapper(typeof(Program));
             
             builder.Services.AddCors(options => {
@@ -70,7 +72,10 @@ namespace TeamAssignment4A {
                     .AllowAnyMethod();
                 });
             });
-
+            builder.Services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(45);
+                options.Cookie.HttpOnly = true;
+            });
 
 
             var app = builder.Build();
@@ -85,7 +90,8 @@ namespace TeamAssignment4A {
                 var userPasswords = new UserPasswords() {
                     AdminPassword = builder.Configuration.GetValue<string>("AdminPW"),
                     QAPassword = builder.Configuration.GetValue<string>("QAPW"),
-                    MarkerPassword = builder.Configuration.GetValue<string>("MarkerPW")
+                    MarkerAnnaPassword = builder.Configuration.GetValue<string>("MarkerAnnaPW"),
+                    MarkerTomPassword = builder.Configuration.GetValue<string>("MarkerTomPW")
                 };
                await SeedData.Initialize(services, userPasswords);
             }
@@ -102,7 +108,7 @@ namespace TeamAssignment4A {
             }
 
             app.UseHttpsRedirection();
-            
+            app.UseSession();
             app.UseStaticFiles(new StaticFileOptions {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Images")),
                 RequestPath = new PathString("/Images")

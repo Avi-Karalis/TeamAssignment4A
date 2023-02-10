@@ -29,7 +29,7 @@ namespace TeamAssignment4A.Controllers
             return View(await _context.ExamStems.ToListAsync());
         }
 
-        //Take an exam
+        //Take an candidateExam
         public async Task<IActionResult> TakeExam(int id) {
             Exam exam = _context.Exams.Include(e => e.Certificate).Where(e => e.Id == id).FirstOrDefault();
             List <Stem> listOfStemsToBeExamined = _context.Stems.Include(s => s.Topic).Where(c => c.Topic.Certificate.Id == exam.Certificate.Id).ToList();
@@ -47,34 +47,42 @@ namespace TeamAssignment4A.Controllers
             return View(examSubmissionDTO);
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> ExamSubmit(ExamSubmissionDTO examSubmissionDTO) {
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ExamSubmit(ExamSubmissionDTO examSubmissionDTO) {
 
-        //    if (ModelState.IsValid) {
-        //    Exam exam = _context.Exams.Find(examSubmissionDTO.ExamQuestions.FirstOrDefault().ExamId);
-        //        foreach(var examQuestion in examSubmissionDTO.ExamQuestions) {
-        //            ExamStem examStem = new ExamStem();
-        //            examStem.SubmittedAnswer = examQuestion.Answer;
-                    
-        //            examStem.Exam = exam;
-        //            examStem.Stem = _context.Stems.Find(examQuestion.StemId);
-        //            if (examQuestion.Answer == examStem.Stem.CorrectAnswer) {
-        //                examStem.Score = 1;
-        //            } else {
-        //                examStem.Score = 0;
-        //            }
-        //            _context.Add(examStem);
-                    
-        //        }
-        //        exam.ExaminationDate = DateTime.Now;
-        //        _context.Update(exam);
-        //        _context.SaveChanges();
-                
-        //        return RedirectToAction("Index", "Home");
-        //    }
-        //    return View();
-        //}
+            if (ModelState.IsValid) {
+                CandidateExam candidateExam = _context.CandidateExams.Find(examSubmissionDTO.ExamQuestions.FirstOrDefault().CandidateExamId);
+                foreach (var examQuestion in examSubmissionDTO.ExamQuestions) {
+                    CandidateExamStem candidateExamStem = new CandidateExamStem();
+                    candidateExamStem.SubmittedAnswer = examQuestion.Answer;
+
+                    candidateExamStem.CandidateExam = candidateExam;
+                    candidateExamStem.ExamStem.Stem = _context.Stems.Find(examQuestion.StemId);
+                    if (examQuestion.Answer == candidateExamStem.ExamStem.Stem.CorrectAnswer) {
+                        candidateExamStem.Score = 25;
+                    } else {
+                        candidateExamStem.Score = 0;
+                    }
+                    _context.Add(candidateExamStem);
+
+                }
+                candidateExam.ExaminationDate = DateTime.Now;
+
+                if (candidateExam.CandidateScore >= candidateExam.Exam.Certificate.PassingGrade) {
+                    candidateExam.AssessmentResultLabel = "Pass";
+                } else {
+                    candidateExam.AssessmentResultLabel = "Fail";
+                }
+                var percent = (candidateExam.CandidateScore / 100) * 100;
+                candidateExam.PercentageScore = Convert.ToString(percent) + "%";
+                _context.Update(candidateExam);
+                _context.SaveChanges();
+
+                return RedirectToAction("Index", "Home");
+            }
+            return View();
+        }
 
         // GET: ExamStems/Details/5
         public async Task<IActionResult> Details(int? id)

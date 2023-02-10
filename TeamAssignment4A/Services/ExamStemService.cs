@@ -116,36 +116,7 @@ namespace TeamAssignment4A.Services
             return _myDTO;
         }
 
-        //public async Task<MyDTO> SubmitExamStems(int examId, IEnumerable<ExamStem> examStems)
-        //{
-        //    foreach(var examStem in examStems)
-        //    {
-        //        if (examId != examStem.Exam.Id)
-        //        {                    
-        //            _myDTO.Message = "The exam Id was compromised. " +
-        //                "The request could not be completed due to security reasons. " +
-        //                "Please try submitting your answers again later.";
-        //            _myDTO.ExamStems = examStems;
-        //            return _myDTO;
-        //        }
-        //        _unit.ExamStem.AddOrUpdate(examStem);
-
-        //    }            
-        //    if (examId != examStem.Id)
-        //    {
-        //        if (state == EntityState.Added)
-        //        {
-        //            _myDTO.View = "Create";
-        //        }
-        //        if (state == EntityState.Modified)
-        //        {
-        //            _myDTO.View = "Edit";
-        //        }
-        //        _myDTO.Message = "The exam stem Id was compromised. The request could not be completed due to security reasons. Please try again later.";
-        //        _myDTO.ExamStem = examStem;
-        //        return _myDTO;
-        //    }
-        //}
+        
 
         public async Task<MyDTO> GetForDelete(int id)
         {
