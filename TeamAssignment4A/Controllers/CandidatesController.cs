@@ -52,6 +52,7 @@ namespace TeamAssignment4A.Controllers
         [ProducesResponseType(typeof(CandidateDto), 200)]
         public async Task<IActionResult> Create()
         {
+            ViewBag.UserEmails = new SelectList(await _service.GetUsers(), "Email", "Email");
             return View();
         }
 
@@ -70,6 +71,7 @@ namespace TeamAssignment4A.Controllers
             {
                 return View($"{_myDTO.View}", _myDTO.Candidates);
             }
+            ViewBag.UserEmails = new SelectList(await _service.GetUsers(), "Email", "Email");
             return View($"{_myDTO.View}", _myDTO.Candidate);
         }
 

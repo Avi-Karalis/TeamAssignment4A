@@ -39,12 +39,17 @@ namespace TeamAssignment4A.Services
             return _myDTO;
         }
 
+        // Get all Candidates and map them to the Dto
         public async Task<IEnumerable<CandidateDto>?> GetAll()
         {
             return _mapper.Map<List<CandidateDto>>(await _unit.Candidate.GetAllAsync());
         }
 
-
+        // Get All Candidate Users
+        public async Task<IEnumerable<IdentityUser>?> GetUsers()
+        {
+            return await _unit.User.GetAllAsync();
+        }
         public async Task<MyDTO> GetForUpdate(int id)
         {
             _myDTO.View = "Edit";
@@ -70,7 +75,7 @@ namespace TeamAssignment4A.Services
             "Province,PhotoIdType,PhotoIdNumber,PhotoIdDate,UserEmail,User,CandidateExams,CandidateExamStems")] 
             CandidateDto candidateDto)
         {
-            IdentityUser user = await _unit.User.AddAsync(candidateDto.Email);
+            IdentityUser user = await _unit.User.GetByEmail(candidateDto.UserEmail);
             candidateDto.User = user;
             
             Candidate candidate = _mapper.Map<Candidate>(candidateDto);
@@ -89,7 +94,7 @@ namespace TeamAssignment4A.Services
                 _myDTO.Message = "The requested candidate has been added successfully.";
                 _myDTO.View = "Index";
 
-                if (await _unit.Candidate.EmailExists(candidate.Id, candidate.Email))
+                if (await _unit.User.EmailExists(candidate.IdentityUser.Id, candidate.IdentityUser.Email))
                 {
                     _myDTO.View = "Create";
                     _myDTO.Message = "This email address has already been claimed. " +
@@ -124,9 +129,12 @@ namespace TeamAssignment4A.Services
             CandidateDto candidateDto)
         {
             Candidate candidate = await _unit.Candidate.GetAsync(candidateDto.Id);
-            IdentityUser user = await _unit.User.GetById(candidate.IdentityUser.Id);
+            IdentityUser user = await _unit.User.GetByEmail(candidate.IdentityUser.Email);
             candidateDto.User = user;   
+            candidateDto.User.UserName = candidateDto.UserEmail;   
+            candidateDto.User.NormalizedUserName = candidateDto.UserEmail.ToUpper();   
             candidateDto.User.Email = candidateDto.UserEmail;   
+            candidateDto.User.NormalizedEmail = candidateDto.UserEmail.ToUpper();   
             
             candidate.FirstName = candidateDto.FirstName;
             candidate.MiddleName = candidateDto.MiddleName;
@@ -171,7 +179,7 @@ namespace TeamAssignment4A.Services
                         "Please try again later.";
                     return _myDTO;
                 }
-                if (await _unit.Candidate.EmailExists(candidate.Id, candidate.Email))
+                if (await _unit.User.EmailExists(candidate.IdentityUser.Id, candidate.IdentityUser.Email))
                 {
                     _myDTO.View = "Edit";
                     _myDTO.Message = "This email address has already been claimed. " +

@@ -71,7 +71,7 @@ namespace TeamAssignment4A.Services
             _myDTO.ExamDtos = _mapper.Map<List<ExamDto>>(exams);
             return _myDTO.ExamDtos;
         } 
-        
+
         // Get all Stems for a specific Exam
         public async Task<IEnumerable<int>?> GetExamStemIds(ExamDto examDto)
         {

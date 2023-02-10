@@ -14,24 +14,24 @@ namespace TeamAssignment4A.Data.Repositories
 
 
         // Get User by Id
-        public async Task<IdentityUser?> GetById(string UserId)
+        public async Task<IdentityUser?> GetByEmail(string UserEmail)
         {
-            return await _db.Users.FirstOrDefaultAsync(x => x.Id == UserId);
+            return await _db.Users.FirstOrDefaultAsync(x => x.Email == UserEmail);
         }
 
-
-        // Create a new User with e-mail
-        public async Task<IdentityUser> AddAsync(string email)
+        // Get all Users who have e-mail
+        public async Task<IEnumerable<IdentityUser>?> GetAllAsync()
         {
-            IdentityUser user = new IdentityUser();
-            user.Email = email;
-            await _db.Users.AddAsync(user);
-            return user;
-        }  
-        
+            return await _db.Users.Where(user => user.Email != null).ToListAsync<IdentityUser>();
+        }
+
         public void Delete(IdentityUser user)
         {
             _db.Users.Remove(user);
+        }
+        public async Task<bool> EmailExists(string id, string email)
+        {
+            return await _db.Users.AnyAsync(e => e.Email == email && e.Id != id);
         }
     }
 }

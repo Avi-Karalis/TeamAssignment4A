@@ -46,9 +46,5 @@ namespace TeamAssignment4A.Data.Repositories
             return await _db.Candidates.AnyAsync(e => e.Id == id);
         }
 
-        public async Task<bool> EmailExists(int id, string email)
-        {
-            return await _db.Candidates.AnyAsync(e => e.Email == email && e.Id != id);
-        }
     }
 }

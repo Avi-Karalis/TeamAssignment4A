@@ -13,19 +13,10 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <dt class="col-sm-6 rightalign">
-                    @Html.DisplayNameFor(model => model.TitleOfCertificate)
-                </dt>
-                <dd class="col-sm-6">
-                    @Html.DisplayFor(model => model.TitleOfCertificate)
-                </dd>
-            </div>
-            <input type="hidden" asp-for="TitleOfCertificate" />
-            @*<div class="form-group">
-                <label asp-for="TitleOfCertificate" class="control-label"></label>
-                <select asp-for="TitleOfCertificate" class="form-control" asp-items="@ViewBag.Certificates"></select>
+                <input type="hidden" asp-for="TitleOfCertificate" />
                 <span asp-validation-for="TitleOfCertificate" class="text-danger"></span>
-            </div>*@
+            </div>
+            
             @for (int i = 0; i < Model.ExamStems.Count(); i++)
             {
                 <div class="form-group">
