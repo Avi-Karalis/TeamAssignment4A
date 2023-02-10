@@ -1,0 +1,41 @@
+﻿@model TeamAssignment4A.Models.JointTables.CandidateExam
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h3 class="custom-font fadein center-adjust">
+    Are you sure you want to refund this exam?
+ </h3>
+
+
+<div>
+    <h4>Candidate Exam</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AssessmentTestCode)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AssessmentTestCode)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ExaminationDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ExaminationDate)
+        </dd>
+        
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Refund" style="width:100px;" class="btn btn-danger col-sm-3" /> |
+        
+        <a asp-action="BookedExams" style="width:110px;" 
+            class="btn btn-info col-sm-4">Booked Exams</a> | 
+
+        <a asp-action="Index" style="width:110px;" 
+            class="text-nowrap custom-font btn btn-primary col-sm-5">Back to e-Shop</a>
+    </form>
+</div>

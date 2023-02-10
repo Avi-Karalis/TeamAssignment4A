@@ -1,0 +1,39 @@
+﻿@model TeamAssignment4A.Models.Certificate
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h3 class="custom-font fadein center-adjust">Certificate Details</h3>
+<hr />
+
+
+<div>
+
+    <dl class="row">
+        <dt class="col-sm-6 rightalign">
+            @Html.DisplayNameFor(model => model.TitleOfCertificate)
+        </dt>
+        <dd class="col-sm-6">
+            @Html.DisplayFor(model => model.TitleOfCertificate)
+        </dd>
+        <dt class="col-sm-6 rightalign">
+            @Html.DisplayNameFor(model => model.PassingGrade)
+        </dt>
+        <dd class="col-sm-6">
+            @Html.DisplayFor(model => model.PassingGrade)
+        </dd>
+        <dt class="col-sm-6 rightalign">
+            @Html.DisplayNameFor(model => model.MaximumScore)
+        </dt>
+        <dd class="col-sm-6">
+            @Html.DisplayFor(model => model.MaximumScore)
+        </dd>
+    </dl>
+
+</div>
+<div class="center-adjust">
+    <a asp-action="BuyExamVoucher" asp-route-id="@Model?.Id" style="width:140px;" class="custom-font btn btn-info col-sm-7">Buy Exam Voucher</a> |
+    <a asp-action="ListOfCertificates" style="width:110px;" class="text-nowrap custom-font btn btn-primary col-sm-5">Back to Certificates</a>
+    <a asp-action="Index" style="width:110px;" class="text-nowrap custom-font btn btn-primary col-sm-5">Back to e-Shop</a>
+</div>
