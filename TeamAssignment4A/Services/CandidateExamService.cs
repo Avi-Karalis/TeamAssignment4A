@@ -9,25 +9,19 @@ namespace TeamAssignment4A.Services
 {
     public class CandidateExamService : ControllerBase, ICandidateExamService
     {
-        private WebAppDbContext _db;
         private UnitOfWork _unit;
         private readonly IMapper _mapper;
         private MyDTO _myDTO;
-        private readonly UserManager<IdentityUser> _userManager;
-        public CandidateExamService(WebAppDbContext db, UnitOfWork unit,
-            IMapper mapper, UserManager<IdentityUser> userManager)
+        public CandidateExamService(UnitOfWork unit, IMapper mapper)
         {
-            _db = db;
             _unit = unit;
             _mapper = mapper;
             _myDTO = new MyDTO();
-            _userManager = userManager;
         }
 
         // Get all Exams that a specific Candidate has not sat for yet
-        public async Task<IEnumerable<CandidateExam>?> GetAll()
+        public async Task<IEnumerable<CandidateExam>?> GetAll(IdentityUser user)
         {
-            IdentityUser? user = await _userManager.GetUserAsync(User);
             Candidate? candidate = await _unit.Candidate.GetByUser(user);
             return await _unit.CandidateExam.GetBooked(candidate.Id);
         }

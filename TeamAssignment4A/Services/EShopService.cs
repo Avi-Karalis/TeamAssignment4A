@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using RandomDataGenerator.FieldOptions;
 using RandomDataGenerator.Randomizers;
 using TeamAssignment4A.Data;
-using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models;
 using TeamAssignment4A.Models.JointTables;
 
@@ -14,17 +13,12 @@ namespace TeamAssignment4A.Services
     {
         private WebAppDbContext _db;
         private UnitOfWork _unit;
-        private readonly IMapper _mapper;
         private MyDTO _myDTO;
-        private readonly UserManager<IdentityUser> _userManager;
-        public EShopService(WebAppDbContext db, UnitOfWork unit, 
-            UserManager<IdentityUser> userManager, IMapper mapper)
+        public EShopService(WebAppDbContext db, UnitOfWork unit)
         {
             _db = db;
             _unit = unit;
-            _mapper = mapper;
             _myDTO = new MyDTO();
-            _userManager = userManager;
         }
 
         // Get Certificate by its Id
@@ -52,13 +46,12 @@ namespace TeamAssignment4A.Services
     
         // Get Candidate_Exam template filled with Candidate, Exam
         // and AssessmentTestCode fields
-        public async Task<MyDTO> GetExam(int id)
+        public async Task<MyDTO> GetExam(int id,IdentityUser user)
         {
-            IdentityUser? user = await _userManager.GetUserAsync(User);
             Candidate? candidate = await _unit.Candidate.GetByUser(user);
             Exam? exam = await _unit.Exam.GetByCertId(id);
             
-            if(candidate != null)
+            if(candidate == null)
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "There was a problem while retrieving your User Id.\n" +
@@ -66,7 +59,7 @@ namespace TeamAssignment4A.Services
                     "please contact our support team.";
                 return _myDTO;
             }
-            else if(exam != null)
+            else if(exam == null)
             {
                 _myDTO.View = "ListOfCertificates";
                 _myDTO.Message = "The requested certificate could not be retrieved.\n" +
@@ -91,14 +84,13 @@ namespace TeamAssignment4A.Services
         }
 
         // Get Marked Exam for a specific User
-        public async Task<MyDTO> GetMarkedExam(int id)
+        public async Task<MyDTO> GetMarkedExam(int id, IdentityUser user)
         {
             if (id == null || _db.CandidateExams == null || await _unit.CandidateExam.GetAsync(id) == null)
             {
                 _myDTO.View = "MarkedCertifications";
                 _myDTO.Message = "The requested Certification could not be found." +
-                    "\nPlease try again later.";
-                IdentityUser? user = await _userManager.GetUserAsync(User);
+                    "\nPlease try again later.";               
                 Candidate? candidate = await _unit.Candidate.GetByUser(user);
                 _myDTO.CandidateExams = await _unit.CandidateExam.GetMarkedExams(candidate);
             }
@@ -144,22 +136,20 @@ namespace TeamAssignment4A.Services
     
         // Get booked exams for a Candidate that he has not already sat for
         // in order for them to change the examination date
-        public async Task<IEnumerable<CandidateExam>?> GetBooked()
+        public async Task<IEnumerable<CandidateExam>?> GetBooked(IdentityUser user)
         {
-            IdentityUser? user = await _userManager.GetUserAsync(User);
             Candidate? candidate = await _unit.Candidate.GetByUser(user);
             return await _unit.CandidateExam.GetBooked(candidate.Id);
         }
 
         // Get the specific exam that the user wants to update
-        public async Task<MyDTO> GetForUpdate(int id)
+        public async Task<MyDTO> GetForUpdate(int id, IdentityUser user)
         {
             _myDTO.View = "ChangeDate";
             if (id == null || _db.CandidateExams == null)
             {
                 _myDTO.View = "BookedExams";
                 _myDTO.Message = "The requested exam could not be found. Please try again later.";
-                IdentityUser? user = await _userManager.GetUserAsync(User);
                 Candidate? candidate = await _unit.Candidate.GetByUser(user);
                 _myDTO.CandidateExams = await _unit.CandidateExam.GetBooked(candidate.Id);
                 return _myDTO;
@@ -171,7 +161,6 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.View = "BookedExams";
                 _myDTO.Message = "The requested exam could not be found. Please try again later.";
-                IdentityUser? user = await _userManager.GetUserAsync(User);
                 Candidate? candidate = await _unit.Candidate.GetByUser(user);
                 _myDTO.CandidateExams = await _unit.CandidateExam.GetBooked(candidate.Id);
             }
@@ -181,7 +170,7 @@ namespace TeamAssignment4A.Services
         // Change the Examination date
         public async Task<MyDTO> UpdateDate(int id, [Bind("Id,AssessmentTestCode,ExaminationDate,ScoreReportDate," +
                 "CandidateScore,PercentageScore,AssessmentResultLabel,MarkerUserName," +
-                "Candidate,Exam,CandidateExamStems")] CandidateExam candidateExam)
+                "Candidate,Exam,CandidateExamStems")] CandidateExam candidateExam, IdentityUser user)
         {
             if (id != candidateExam.Id)
             {
@@ -200,7 +189,6 @@ namespace TeamAssignment4A.Services
                     _myDTO.View = "BookedExams";
                     _myDTO.Message = "The requested exam could not be found." +
                         "\nPlease try again later.";
-                    IdentityUser? user = await _userManager.GetUserAsync(User);
                     Candidate? candidate = await _unit.Candidate.GetByUser(user);
                     _myDTO.CandidateExams = await _unit.CandidateExam.GetBooked(candidate.Id);
                     return _myDTO;
@@ -219,7 +207,7 @@ namespace TeamAssignment4A.Services
         }
 
         // Find the exam you want to delete in the database
-        public async Task<MyDTO> GetForDelete(int id)
+        public async Task<MyDTO> GetForDelete(int id, IdentityUser user)
         {
             _myDTO.View = "Delete";
             if (id == null || _db.CandidateExams == null)
@@ -227,7 +215,6 @@ namespace TeamAssignment4A.Services
                 _myDTO.View = "BookedExams";
                 _myDTO.Message = "The requested exam could not be found." +
                     "\nPlease try again later.";
-                IdentityUser? user = await _userManager.GetUserAsync(User);
                 Candidate? candidate = await _unit.Candidate.GetByUser(user);
                 _myDTO.CandidateExams = await _unit.CandidateExam.GetBooked(candidate.Id);
                 return _myDTO;
@@ -239,7 +226,6 @@ namespace TeamAssignment4A.Services
                 _myDTO.View = "BookedExams";
                 _myDTO.Message = "The requested exam could not be found." +
                     "\nPlease try again later.";
-                IdentityUser? user = await _userManager.GetUserAsync(User);
                 Candidate? candidate = await _unit.Candidate.GetByUser(user);
                 _myDTO.CandidateExams = await _unit.CandidateExam.GetBooked(candidate.Id);
             }
@@ -247,13 +233,10 @@ namespace TeamAssignment4A.Services
         }
 
         // Delete the selected exam
-        public async Task<MyDTO> Delete(int id)
+        public async Task<MyDTO> Delete(int id, IdentityUser user)
         {
             _myDTO.View = "BookedExams";
             _myDTO.Message = "The requested exam has been refunded successfully.";
-            IdentityUser? user = await _userManager.GetUserAsync(User);
-            Candidate? candidate = await _unit.Candidate.GetByUser(user);
-            _myDTO.CandidateExams = await _unit.CandidateExam.GetBooked(candidate.Id);
             if (!await _unit.Exam.Exists(id))
             {
                 _myDTO.Message = "The requested exam could not be found." +
@@ -263,13 +246,14 @@ namespace TeamAssignment4A.Services
             CandidateExam candidateExam = await _unit.CandidateExam.GetAsync(id);
             _unit.CandidateExam.Delete(candidateExam);
             await _unit.SaveAsync();
+            Candidate? candidate = await _unit.Candidate.GetByUser(user);
+            _myDTO.CandidateExams = await _unit.CandidateExam.GetBooked(candidate.Id);
             return _myDTO;
         }
 
         // Get all marked exams of a candidate
-        public async Task<MyDTO> GetMarkedExams()
+        public async Task<MyDTO> GetMarkedExams(IdentityUser user)
         {
-            IdentityUser? user = await _userManager.GetUserAsync(User);
             Candidate? candidate = await _unit.Candidate.GetByUser(user);
             _myDTO.CandidateExams = await _unit.CandidateExam.GetMarkedExams(candidate);
             if (_myDTO.CandidateExams == null)

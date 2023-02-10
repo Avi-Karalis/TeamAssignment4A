@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Data;
@@ -15,10 +16,12 @@ namespace TeamAssignment4A.Controllers
     public class CandidateExamsController : Controller
     {
         private readonly CandidateExamService _service;
-
-        public CandidateExamsController(CandidateExamService service)
+        private readonly UserManager<IdentityUser> _userManager;
+        public CandidateExamsController(CandidateExamService service,
+            UserManager<IdentityUser> userManager)
         {
             _service = service;
+            _userManager = userManager;
         }
 
 
@@ -27,7 +30,8 @@ namespace TeamAssignment4A.Controllers
         [ProducesResponseType(typeof(CandidateExam), 200)]
         public async Task<IActionResult> Index()
         {
-            return View(await _service.GetAll());            
+            IdentityUser? user = await _userManager.GetUserAsync(User);
+            return View(await _service.GetAll(user));            
         }
 
         [Authorize(Roles = "Admin, Candidate")]
