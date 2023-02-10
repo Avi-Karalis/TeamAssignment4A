@@ -12,31 +12,36 @@
     <div class="col-md-4">
         <form asp-action="BuyExamVoucher">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+
             <div class="form-group">
-                <label asp-for="@Model.Candidate.Email" class="control-label"></label>
-                <input type="hidden" asp-for="@Model.Candidate.Email" class="form-control" />
-                <span asp-validation-for="@Model.Candidate.Email" class="text-danger"></span>
+                <label asp-for="Exam.Certificate.TitleOfCertificate" class="control-label"></label>
+                <input readonly asp-for="Exam.Certificate.TitleOfCertificate" class="form-control" />
+                <span asp-validation-for="Exam.Certificate.TitleOfCertificate" class="text-danger"></span>
+                
             </div>
-            <div class="form-group">
-                <label asp-for="@Model.Exam.Id" class="control-label"></label>
-                <input readonly asp-for="@Model.Exam.Id" class="form-control" />
-                <span asp-validation-for="@Model.Exam.Id" class="text-danger"></span>
-            </div>
+                        
             <div class="form-group">
                 <label asp-for="AssessmentTestCode" class="control-label"></label>
                 <input readonly asp-for="AssessmentTestCode" class="form-control" />
                 <span asp-validation-for="AssessmentTestCode" class="text-danger"></span>
             </div>
             
-            <div class="form-group">
+            <div class="col-md-4">
                 <label asp-for="ExaminationDate" class="control-label"></label>
-                <input asp-for="ExaminationDate" class="form-control" type="datetime" placeholder="Choose a date for the exam" />
+                <input asp-for="ExaminationDate" class="form-control"  placeholder="Choose a date for the exam" />
                 <span asp-validation-for="ExaminationDate" class="text-danger"></span>
             </div>
             
+            <div>
+                <input type="hidden" asp-for="Candidate.Id" class="form-control" />
+                
+                <input type="hidden" asp-for="Exam.Id" class="form-control" />
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
+
         </form>
     </div>
 </div>

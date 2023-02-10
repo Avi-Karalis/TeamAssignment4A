@@ -15,9 +15,9 @@ namespace TeamAssignment4A.Data.Repositories
         // Get Examination by Id
         public async Task<CandidateExam?> GetAsync(int id)
         {
-            return await _db.CandidateExams.Include(ce => ce.Exam)
-                .Include(ce => ce.Candidate).Include(ce => ce.CandidateExamStems)
-                .FirstOrDefaultAsync(ce => ce.Id == id);
+            return await _db.CandidateExams.Include(ce => ce.Exam).Include(ce => ce.Exam.ExamStems)
+                .Include(ce => ce.Exam.Certificate).Include(ce => ce.Candidate)
+                .Include(ce => ce.CandidateExamStems).FirstOrDefaultAsync(ce => ce.Id == id);
         }
 
         // Get all Examinations that a specific Candidate has not already sat for
@@ -25,7 +25,7 @@ namespace TeamAssignment4A.Data.Repositories
         {
             return await _db.CandidateExams
                 .Where(ce => (ce.Candidate.Id == candidateId && ce.ExaminationDate != null) && ce.CandidateScore == null)
-                .Include(ce => ce.Exam).Include(ce => ce.Candidate)
+                .Include(ce => ce.Exam).Include(ce => ce.Candidate).Include(ce => ce.Exam.ExamStems)
                 .Include(ce => ce.CandidateExamStems).ToListAsync<CandidateExam>();
         }
 

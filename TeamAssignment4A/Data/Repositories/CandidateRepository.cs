@@ -18,6 +18,14 @@ namespace TeamAssignment4A.Data.Repositories
                 .Include(cand => cand.CandidateExamStems).FirstOrDefaultAsync(x => x.Id == id);
         }
 
+        // Get Candidate without including the CandidateExam entity
+        // This is used when creating a Candidadate's Exam
+        public async Task<Candidate?> GetCandForExam(int id)
+        {
+            return await _db.Candidates.Include(cand => cand.IdentityUser)
+                .Include(cand => cand.CandidateExamStems).FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         public async Task<Candidate?> GetByUser(IdentityUser user)
         {
             return await _db.Candidates.Include(cand => cand.CandidateExams).Include(cand => cand.IdentityUser)

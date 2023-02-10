@@ -7,7 +7,7 @@ namespace TeamAssignment4A.Services
     internal interface ICandidateExamService
     {
         Task<IEnumerable<CandidateExam>?> GetAll(IdentityUser user );
-        Task<IEnumerable<CandidateExamStem>?> GetByExam(CandidateExam canExam);
-        Task<MyDTO> SubmitAnswers(IEnumerable<CandidateExamStem> cExStems);
+        Task<CandidateExam?> GetByExam(CandidateExam canExam);
+        Task<MyDTO> SubmitAnswers(int id, CandidateExam candidateExam);
     }
 }
