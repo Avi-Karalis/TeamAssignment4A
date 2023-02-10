@@ -16,6 +16,7 @@ using TeamAssignment4A.Models.JointTables;
 using TeamAssignment4A.Services;
 
 namespace TeamAssignment4A.Controllers {
+
     [Authorize(Roles = "Admin, Candidate")]
     public class EshopController : Controller 
     {
