@@ -1,4 +1,5 @@
-﻿@model IEnumerable<TeamAssignment4A.Models.JointTables.CandidateExam>
+﻿@using TeamAssignment4A.Models.JointTables;
+@model TeamAssignment4A.Models.JointTables.CandidateExam
 
 @{
     ViewData["Title"] = "SitForExam";
@@ -14,9 +15,19 @@
 <div class="row custom-font fadein center-adjust">
     <form asp-action="SubmitExam" class="col-sm-2 text-center">
         
-        @{int i = 0;}
-        
-        @foreach (var item in Model)
+        @{
+            List<CandidateExamStem> ces = new List<CandidateExamStem>(); 
+            foreach(var item in Model.CandidateExamStems)
+            {
+                ces.Add(item);
+            }
+            int i = 0;
+            
+        }
+        <div>
+            <input type="hidden" asp-for="Id" />
+        </div>
+        @foreach (var item in Model.Exam.ExamStems)
         {
             <div>
                 <input type="hidden" asp-for="@item.Id" />
@@ -25,56 +36,67 @@
                 <div class="text-nowrap text-center navbar-dark bg-primary" style="border-top-right-radius: 100px; 
                                             border-bottom-right-radius: 100px; border-top-left-radius: 100px; 
                                             border-bottom-left-radius: 100px">
-                    @Html.DisplayNameFor(modelItem => item.Exam.ExamStems.ToList()[i].Stem.Question)
+                    @Html.DisplayNameFor(modelItem => item.Stem.Question)
                     <br>
-                    @Html.Raw(item.Exam.ExamStems.ToList()[i].Stem.Question)
-                    <input type="hidden" asp-for="@item.Exam.ExamStems.ToList()[i].Stem.Question" />
+                    @Html.Raw(item.Stem.Question)
+                    <input type="hidden" asp-for="@item.Stem.Question" />
                     @*@Html.HiddenFor(modelItem => item.ExamStem.Stem.Question)*@
                 </div> <br />
                 <div class="text-nowrap text-center" style="border-top-right-radius: 100px; 
                                             border-bottom-right-radius: 100px; border-top-left-radius: 100px; 
                                             border-bottom-left-radius: 100px">
-                    @Html.DisplayNameFor(modelItem => item.Exam.ExamStems.ToList()[i].Stem.OptionA)
+                    @Html.DisplayNameFor(modelItem => item.Stem.OptionA)
                     <br>
-                    @Html.Raw(item.Exam.ExamStems.ToList()[i].Stem.OptionA)
-                    <input type="hidden" asp-for="@item.Exam.ExamStems.ToList()[i].Stem.OptionA" />
+                    @Html.Raw(item.Stem.OptionA)
+                    <input type="hidden" asp-for="@item.Stem.OptionA" />
                     @*@Html.HiddenFor(modelItem => item.ExamStem.Stem.OptionA)*@
                 </div> <br />
                 <div class="text-nowrap text-center" style="border-top-right-radius: 100px; 
                                             border-bottom-right-radius: 100px; border-top-left-radius: 100px; 
                                             border-bottom-left-radius: 100px">
-                    @Html.DisplayNameFor(modelItem => item.Exam.ExamStems.ToList()[i].Stem.OptionB)
+                    @Html.DisplayNameFor(modelItem => item.Stem.OptionB)
                     <br>
-                    @Html.Raw(item.Exam.ExamStems.ToList()[i].Stem.OptionB)
-                    <input type="hidden" asp-for="@item.Exam.ExamStems.ToList()[i].Stem.OptionB" />
+                    @Html.Raw(item.Stem.OptionB)
+                    <input type="hidden" asp-for="@item.Stem.OptionB" />
                     @*@Html.HiddenFor(modelItem => item.ExamStem.Stem.OptionB)*@
                 </div> <br />
                 <div class="text-nowrap text-center" style="border-top-right-radius: 100px; 
                                             border-bottom-right-radius: 100px; border-top-left-radius: 100px; 
                                             border-bottom-left-radius: 100px">
-                    @Html.DisplayNameFor(modelItem => item.Exam.ExamStems.ToList()[i].Stem.OptionC)
+                    @Html.DisplayNameFor(modelItem => item.Stem.OptionC)
                     <br>
-                    @Html.Raw(item.Exam.ExamStems.ToList()[i].Stem.OptionC)
-                    <input type="hidden" asp-for="@item.Exam.ExamStems.ToList()[i].Stem.OptionC" />
+                    @Html.Raw(item.Stem.OptionC)
+                    <input type="hidden" asp-for="@item.Stem.OptionC" />
                     @*@Html.HiddenFor(modelItem => item.ExamStem.Stem.OptionC)*@
                 </div> <br />
                 <div class="text-nowrap text-center" style="border-top-right-radius: 100px; 
                                             border-bottom-right-radius: 100px; border-top-left-radius: 100px; 
                                             border-bottom-left-radius: 100px">
-                    @Html.DisplayNameFor(modelItem => item.Exam.ExamStems.ToList()[i].Stem.OptionD)
+                    @Html.DisplayNameFor(modelItem => item.Stem.OptionD)
                     <br>
-                    @Html.Raw(item.Exam.ExamStems.ToList()[i].Stem.OptionD)
-                    <input type="hidden" asp-for="@item.Exam.ExamStems.ToList()[i].Stem.OptionD" />
+                    @Html.Raw(item.Stem.OptionD)
+                    <input type="hidden" asp-for="@item.Stem.OptionD" />
                     @*@Html.HiddenFor(modelItem => item.ExamStem.Stem.OptionD)*@
                 </div> <br />
                 <div class="form-group" style="text-decoration: underline;" >
-                    <label asp-for="@item.CandidateExamStems.ToList()[i].SubmittedAnswer" class="control-label"></label> <br /> 
-                    <select asp-for="@item.CandidateExamStems.ToList()[i].SubmittedAnswer" class="form-control" asp-items="@ViewBag.Selections"></select>
-                    <span asp-validation-for="@item.CandidateExamStems.ToList()[i].SubmittedAnswer" class="text-danger"></span>
+                    <label asp-for="CandidateExamStems.ToList()[i].SubmittedAnswer" class="control-label"></label> <br />
+                    <input asp-for="CandidateExamStems.ToList()[i].SubmittedAnswer" class="form-control" /> @*asp-items="@ViewBag.Selections"></input>*@
+                    <span asp-validation-for="CandidateExamStems.ToList()[i].SubmittedAnswer" class="text-danger"></span>
+                    @*<input type="hidden" asp-for="CandidateExamStems.ToList()[i].SubmittedAnswer" />*@
                 </div>                
+            </div>
+            <div>
+                <input type="hidden" asp-for="CandidateExamStems.ToList()[i].Id" />
             </div>
             i++;
         }
+        
+        <div>
+            <input type="hidden" asp-for="Exam.Id" />
+        </div>
+        <div>
+            <input type="hidden" asp-for="Candidate.Id" />
+        </div>
         <input type="submit" value="Submit" class="btn btn-warning" />
     </form>
 </div>
