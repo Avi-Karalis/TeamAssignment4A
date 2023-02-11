@@ -14,7 +14,7 @@ namespace TeamAssignment4A.Data.Repositories
         }
         public async Task<Candidate?> GetAsync(int id)
         {
-            return await _db.Candidates.Include(cand => cand.CandidateExams).Include(cand => cand.IdentityUser)
+            return await _db.Candidates.AsNoTracking().Include(cand => cand.CandidateExams).Include(cand => cand.IdentityUser)
                 .Include(cand => cand.CandidateExamStems).FirstOrDefaultAsync(x => x.Id == id);
         }
 
@@ -28,13 +28,13 @@ namespace TeamAssignment4A.Data.Repositories
 
         public async Task<Candidate?> GetByUser(IdentityUser user)
         {
-            return await _db.Candidates.Include(cand => cand.CandidateExams).Include(cand => cand.IdentityUser)
+            return await _db.Candidates.AsNoTracking().Include(cand => cand.CandidateExams).Include(cand => cand.IdentityUser)
                 .Include(cand => cand.CandidateExamStems).FirstOrDefaultAsync(x => x.IdentityUser == user);
         }
 
         public async Task<IEnumerable<Candidate>?> GetAllAsync()
         {
-            return await _db.Candidates.Include(cand => cand.CandidateExams).Include(cand => cand.IdentityUser)
+            return await _db.Candidates.AsNoTracking().Include(cand => cand.CandidateExams).Include(cand => cand.IdentityUser)
                 .Include(cand => cand.CandidateExamStems).ToListAsync<Candidate>();
         }
 

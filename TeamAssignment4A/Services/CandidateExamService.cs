@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace TeamAssignment4A.Services
 {
-    public class CandidateExamService : ControllerBase, ICandidateExamService
+    public class CandidateExamService : ControllerBase//, ICandidateExamService
     {
         private UnitOfWork _unit;
         private readonly IMapper _mapper;
@@ -26,39 +26,71 @@ namespace TeamAssignment4A.Services
             return await _unit.CandidateExam.GetBooked(candidate.Id);
         }
 
+        // Get CandidateExam by providing User and ExamId
+        public async Task<CandidateExam?> GetCanExamForInput(IdentityUser user, int id)
+        {
+            Candidate? candidate = await _unit.Candidate.GetByUser(user);
+            CandidateExam? canEx = await _unit.CandidateExam.GetCanExamStemsForInput(candidate, id);
+            return canEx;
+        }
         public async Task<CandidateExam>? GetById(int id)
         {
             return await _unit.CandidateExam.GetAsync(id);
         }
 
         // Get all Candidate Exam Stems that belong to a specific Candidate Exam
-        public async Task<CandidateExam?> GetByExam(CandidateExam canExam)
+        public async Task<List<CandidateExamStem>?> GetExamStems(int id)
         {
-            IEnumerable<ExamStem> exStems = await _unit.ExamStem.GetExamStemsByExam(canExam.Exam);
-            IEnumerable<CandidateExamStem> cExStems = _mapper.Map<List<CandidateExamStem>>(exStems);
-            canExam.CandidateExamStems = cExStems;
-            return canExam;
+            CandidateExam? canExam = await _unit.CandidateExam.GetAsync(id);
+            List<ExamStem>? exStems = await _unit.ExamStem.GetExamStemsByExam(canExam.Exam) as List<ExamStem>;
+            List<CandidateExamStem> cExStems = new List<CandidateExamStem>()
+            {
+                new CandidateExamStem(),
+                new CandidateExamStem(),
+                new CandidateExamStem(),
+                new CandidateExamStem()
+            }; //new List<CandidateExamStem>(4);
+            for(int i = 0; i < exStems.Count(); i++)
+            {
+                cExStems.ElementAt(i).ExamStem = exStems[i];
+            }
+            //canExam.CandidateExamStems = cExStems;
+            return cExStems;
         }
 
         
         // Submit a Candidate's Exam
-        public async Task<MyDTO> SubmitAnswers(int id, [Bind("Id,AssessmentTestCode,ExaminationDate,ScoreReportDate," +
+        public async Task<MyDTO> SubmitAnswers([Bind("Id,AssessmentTestCode,ExaminationDate,ScoreReportDate," +
                 "CandidateScore,PercentageScore,AssessmentResultLabel,MarkerUserName," +
-                "Candidate,Exam,CandidateExamStems")] CandidateExam candidateExam)
+                "Candidate,Exam,CandidateExamStems")] CandidateExam candidateExam, List<CandidateExamStem> canExStems)
         {
-            if (id != candidateExam.Id)
-            {
-                _myDTO.View = "SitForExam";
-                _myDTO.Message = "The exam Id was compromised. The request could\nnot " +
-                    "be completed due to security reasons.\nPlease try again later.";
-                _myDTO.CandidateExam = candidateExam;
-                return _myDTO;
-            }
-
             if (ModelState.IsValid)
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "Your Exam has been submitted successfully.";
+                //_unit.CandidateExam.AddOrUpdate(candidateExam);
+                candidateExam.CandidateExamStems = new List<CandidateExamStem>()
+                    {
+                        new CandidateExamStem(),
+                        new CandidateExamStem(),
+                        new CandidateExamStem(),
+                        new CandidateExamStem()
+                    };
+                _unit.CandidateExam.AddOrUpdate(candidateExam);
+                for (int i =0; i < canExStems.Count(); i++)
+                {
+                    canExStems[i].ExamStem.Stem = await _unit.Stem.GetAsync(canExStems[i].ExamStem.Stem.Id);
+                    //canExStems[i].ExamStem.Stem.Topic = await _unit.Topic.GetAsync(canExStems[i].ExamStem.Stem.Topic.Id);
+                    canExStems[i].ExamStem.Exam = await _unit.Exam.GetAsync(canExStems[i].ExamStem.Exam.Id);
+                    //_unit.CandidateExamStem.AddOrUpdate(canExStems[i]);
+                    canExStems[i].ExamStem = await _unit.ExamStem.GetAsync(canExStems[i].ExamStem.Id);
+                    candidateExam.CandidateExamStems.ElementAt(i).ExamStem = canExStems[i].ExamStem;
+                    candidateExam.CandidateExamStems.ElementAt(i).CandidateExam = candidateExam;
+
+                    //canExStems[i].CandidateExam = candidateExam;
+                    await _unit.SaveAsync();
+                }
+                
                 if (candidateExam.CandidateExamStems == null)
                 {
                     _myDTO.View = "SitForExam";
@@ -66,18 +98,27 @@ namespace TeamAssignment4A.Services
                     _myDTO.CandidateExam = candidateExam;
                     return _myDTO;
                 }
-                if (await _unit.CandidateExam.AlreadySubmitted(candidateExam.Id))
+
+                if (candidateExam.CandidateExamStems.Count() != 0)
                 {
                     _myDTO.Message = "You tried to submit an already submitted exam. The operation failed.";
                     return _myDTO;
                 }
+
+                for (int i = 0; i < canExStems.Count(); i++)
+                {
+                    //_unit.CandidateExamStem.AddOrUpdate(canExStems[i]);
+                    canExStems[i].CandidateExam = candidateExam;
+                }
+
                 if (!await _unit.CandidateExam.Exists(candidateExam.Id))
                 {
                     _myDTO.Message = "You tried to submit a non existing exam.";
                     return _myDTO;
                 }
-                _unit.CandidateExam.AddOrUpdate(candidateExam);
-                await _unit.SaveAsync();
+
+                
+                
                 
             }
             return _myDTO;
