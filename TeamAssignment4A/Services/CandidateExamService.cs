@@ -26,57 +26,61 @@ namespace TeamAssignment4A.Services
             return await _unit.CandidateExam.GetBooked(candidate.Id);
         }
 
+        public async Task<CandidateExam>? GetById(int id)
+        {
+            return await _unit.CandidateExam.GetAsync(id);
+        }
+
         // Get all Candidate Exam Stems that belong to a specific Candidate Exam
-        public async Task<IEnumerable<CandidateExamStem>?> GetByExam(CandidateExam canExam)
+        public async Task<CandidateExam?> GetByExam(CandidateExam canExam)
         {
             IEnumerable<ExamStem> exStems = await _unit.ExamStem.GetExamStemsByExam(canExam.Exam);
             IEnumerable<CandidateExamStem> cExStems = _mapper.Map<List<CandidateExamStem>>(exStems);
-            return cExStems;
+            canExam.CandidateExamStems = cExStems;
+            return canExam;
         }
 
         
         // Submit a Candidate's Exam
-        public async Task<MyDTO> SubmitAnswers([Bind("Id,SubmittedAnswer," +
-                "Score,Candidate,ExamStem,CandidateExam")] IEnumerable<CandidateExamStem> cExStems)
+        public async Task<MyDTO> SubmitAnswers(int id, [Bind("Id,AssessmentTestCode,ExaminationDate,ScoreReportDate," +
+                "CandidateScore,PercentageScore,AssessmentResultLabel,MarkerUserName," +
+                "Candidate,Exam,CandidateExamStems")] CandidateExam candidateExam)
         {
-            if(cExStems == null)
+            if (id != candidateExam.Id)
             {
                 _myDTO.View = "SitForExam";
-                _myDTO.Message = "Your answers failed to submit. Please try again later.";
-                _myDTO.CandidateExamStems = cExStems;
+                _myDTO.Message = "The exam Id was compromised. The request could\nnot " +
+                    "be completed due to security reasons.\nPlease try again later.";
+                _myDTO.CandidateExam = candidateExam;
                 return _myDTO;
             }
 
-            _myDTO.View = "Index";
-            _myDTO.Message = "Your Exam has been submitted successfully.";
-            
-            foreach (var cExStem in cExStems)
-            {
-                if (!ModelState.IsValid)
-                {
-                    _myDTO.View = "SitForExam";
-                    _myDTO.Message = "A question was left unanswered." +
-                        "\nPlease check your exam for unfilled answers.";
-                    _myDTO.CandidateExamStems = cExStems;
-                    return _myDTO;
-                }
-                else
-                {
-                    _unit.CandidateExamStem.AddOrUpdate(cExStem);
-                }
-            }
-            if (await _unit.CandidateExam.AlreadySubmitted(cExStems.First().CandidateExam.Id))
+            if (ModelState.IsValid)
             {
                 _myDTO.View = "Index";
-                _myDTO.Message = "The Exam you tried to submit is already submitted. The operation failed.";
-                return _myDTO;
+                _myDTO.Message = "Your Exam has been submitted successfully.";
+                if (candidateExam.CandidateExamStems == null)
+                {
+                    _myDTO.View = "SitForExam";
+                    _myDTO.Message = "Your answers failed to submit. Please try again later.";
+                    _myDTO.CandidateExam = candidateExam;
+                    return _myDTO;
+                }
+                if (await _unit.CandidateExam.AlreadySubmitted(candidateExam.Id))
+                {
+                    _myDTO.Message = "You tried to submit an already submitted exam. The operation failed.";
+                    return _myDTO;
+                }
+                if (!await _unit.CandidateExam.Exists(candidateExam.Id))
+                {
+                    _myDTO.Message = "You tried to submit a non existing exam.";
+                    return _myDTO;
+                }
+                _unit.CandidateExam.AddOrUpdate(candidateExam);
+                await _unit.SaveAsync();
+                
             }
-
-            _unit.CandidateExam.AddOrUpdate(cExStems.First().CandidateExam);
-            await _unit.SaveAsync();
-            return _myDTO;            
+            return _myDTO;
         }
-
-
     }
 }

@@ -50,7 +50,7 @@ namespace TeamAssignment4A.Controllers {
         }
 
         // GET: EShop/CertificatesList/Details/5
-        [AllowAnonymous]
+        
         [HttpGet]
         [ProducesResponseType(typeof(Certificate), 200)]
         public async Task<IActionResult> Details(int id) 
@@ -64,11 +64,12 @@ namespace TeamAssignment4A.Controllers {
             return View($"{_myDTO.View}", _myDTO.Certificate);
         }
 
-        // GET: EShop/BuyExamVoucher
-        [AllowAnonymous]
+        // This is a get to bridge the Actions ListOfCertificates/Details with
+        // the Action BuyExamVoucher
+
         [HttpGet]
         [ProducesResponseType(typeof(CandidateExam), 200)]
-        public async Task<IActionResult> BuyExamVoucher(int id) 
+        public async Task<IActionResult> Bridge(int id)
         {
             IdentityUser? user = await _userManager.GetUserAsync(User);
             _myDTO = await _service.GetExam(id, user);
@@ -77,12 +78,22 @@ namespace TeamAssignment4A.Controllers {
             {
                 return View($"{_myDTO.View}");
             }
-            else if(_myDTO.View == "ListOfCertificates")
+            else if (_myDTO.View == "ListOfCertificates")
             {
                 return View($"{_myDTO.View}", _myDTO.Certificates);
             }
             // Last return has _myDTO.View = "BuyExamVoucher"
-            return View($"{_myDTO.View}", _myDTO.CandidateExam);
+            return RedirectToAction($"{_myDTO.View}", _myDTO.CandidateExam);
+        }
+
+        // GET: EShop/BuyExamVoucher
+        
+        [HttpGet]
+        [ProducesResponseType(typeof(CandidateExam), 200)]
+        public async Task<IActionResult> BuyExamVoucher(CandidateExam candidateExam) 
+        {
+            var ex = await _service.Get(candidateExam.Id);
+            return View(ex);
         }
 
 
@@ -105,7 +116,7 @@ namespace TeamAssignment4A.Controllers {
         }
 
         // GET: EShop/BookedExams
-        [AllowAnonymous]
+        
         [HttpGet]
         [ProducesResponseType(typeof(CandidateExam), 200)]
         public async Task<IActionResult> BookedExams()
@@ -115,7 +126,7 @@ namespace TeamAssignment4A.Controllers {
         }
 
         // GET: EShop/ChangeDate/5
-        [AllowAnonymous]
+        
         [HttpGet]
         [ProducesResponseType(typeof(CandidateExam), 200)]
         public async Task<IActionResult> ChangeDate(int id) 
@@ -156,7 +167,7 @@ namespace TeamAssignment4A.Controllers {
         }
 
         // GET: EShop/Delete/5
-        [AllowAnonymous]
+        
         [HttpGet]
         [ProducesResponseType(typeof(CandidateExam), 200)]
         public async Task<IActionResult> Delete(int id)
@@ -186,7 +197,7 @@ namespace TeamAssignment4A.Controllers {
         }
 
         // GET: EShop/MarkedCertifications
-        [AllowAnonymous]
+        
         [HttpGet]
         [ProducesResponseType(typeof(CandidateExam), 200)]
         public async Task<IActionResult> MarkedCertifications()
@@ -198,7 +209,7 @@ namespace TeamAssignment4A.Controllers {
         }
 
         // GET: EShop/MarkedCertifications/Details/5
-        [AllowAnonymous]
+        
         [HttpGet]
         [ProducesResponseType(typeof(CandidateExam), 200)]
         public async Task<IActionResult> ExamDetails(int id)

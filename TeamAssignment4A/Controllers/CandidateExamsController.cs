@@ -36,25 +36,27 @@ namespace TeamAssignment4A.Controllers
 
         [Authorize(Roles = "Admin, Candidate")]
         [HttpGet, ActionName("SitForExam")]
-        [ProducesResponseType(typeof(CandidateExamStem), 200)]
-        public async Task<IActionResult> SitForExam(CandidateExam candExam)
+        [ProducesResponseType(typeof(CandidateExam), 200)]
+        public async Task<IActionResult> SitForExam(int id)
         {
             List<string> selections = new List<string> { "A", "B", "C", "D" };
             ViewBag.Selections = new SelectList(selections);
-            return View(await _service.GetByExam(candExam));
+            var exam = await _service.GetById(id);
+            return View(await _service.GetByExam(exam));
         }
 
         [Authorize(Roles = "Admin, Candidate")]
         [HttpPost, ActionName("SubmitExam")]
         [ProducesResponseType(typeof(CandidateExam), 200)]
-        public async Task<IActionResult> SubmitExam([Bind("Id,SubmittedAnswer," +
-                "Score,Candidate,ExamStem,CandidateExam")] IEnumerable<CandidateExamStem> cExStems)
+        public async Task<IActionResult> SubmitExam(int id, [Bind("Id,AssessmentTestCode,ExaminationDate,ScoreReportDate," +
+                "CandidateScore,PercentageScore,AssessmentResultLabel,MarkerUserName," +
+                "Candidate,Exam,CandidateExamStems")] CandidateExam candidateExam)
         {
-            MyDTO myDTO = await _service.SubmitAnswers(cExStems);
+            MyDTO myDTO = await _service.SubmitAnswers(id, candidateExam);
             ViewBag.Message = myDTO.Message;
-            if (myDTO.View == "sitforexam")
+            if (myDTO.View == "SitForExam")
             {
-                return RedirectToAction($"{myDTO.View}", myDTO.CandidateExamStems);
+                return RedirectToAction($"{myDTO.View}", myDTO.CandidateExam);
                 
             }
             return RedirectToAction($"{myDTO.View}", "Home");

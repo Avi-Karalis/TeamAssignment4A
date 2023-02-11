@@ -21,7 +21,13 @@ namespace TeamAssignment4A.Services
             _myDTO = new MyDTO();
         }
 
-        // Get Certificate by its Id
+        // Get Candidate Exam by its Id
+        public async Task<CandidateExam?> Get(int id)
+        {
+            return await _unit.CandidateExam.GetAsync(id);
+        }
+
+        // Get Certificate by its Certificate Id
         public async Task<MyDTO> GetCert(int id)
         {
             if (id == null || _db.Certificates == null || await _unit.Certificate.GetAsync(id) == null)
@@ -78,6 +84,8 @@ namespace TeamAssignment4A.Services
                 _myDTO.View = "BuyExamVoucher";
                 _myDTO.Message = "Please select the preferred date and time for your exam.";
                 _myDTO.CandidateExam = candidateExam;
+                _unit.CandidateExam.AddOrUpdate(candidateExam);
+                await _unit.SaveAsync();
             }
             
             return _myDTO;
@@ -115,11 +123,23 @@ namespace TeamAssignment4A.Services
                 _myDTO.CandidateExam = candidateExam;
                 return _myDTO;
             }
+            
             if (ModelState.IsValid)
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The purchase was completed successfully." +
                     "\nYour exam voucher has been sent to your email.";
+                candidateExam.Candidate = await _unit.Candidate.GetCandForExam(candidateExam.Candidate.Id); 
+                candidateExam.Exam = await _unit.Exam.GetAsync(candidateExam.Exam.Id);
+               
+                int i = 0;
+                foreach(var examStem in candidateExam.Exam.ExamStems)
+                {
+                    candidateExam.Exam.ExamStems.ToList()[i]
+                    = await _unit.ExamStem.GetAsync(examStem.Id);
+                    i++;
+                }
+                
                 _unit.CandidateExam.AddOrUpdate(candidateExam);
                 await _unit.SaveAsync();
                 return _myDTO;
