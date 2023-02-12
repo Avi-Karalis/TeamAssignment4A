@@ -416,6 +416,67 @@ input:checked + .slider:after {
         transform: scale(.98);
     }
 
+
+.btn-black {
+    --color: black;
+    --color2: white;
+    padding: 0.8em 1.75em;
+    background-color: transparent;
+    border-radius: 6px;
+    border: 3px solid var(--color);
+    transition: .5s;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 1;
+    font-weight: 700;
+    font-size: 10px;
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    text-transform: uppercase;
+    color: var(--color);
+}
+
+    .btn-black::after, .btn-black::before {
+        content: '';
+        display: block;
+        height: 100%;
+        width: 100%;
+        transform: skew(90deg) translate(-50%, -50%);
+        position: absolute;
+        inset: 50%;
+        left: 25%;
+        z-index: -1;
+        transition: .5s ease-out;
+        background-color: var(--color);
+    }
+
+    .btn-black::before {
+        top: -50%;
+        left: -25%;
+        transform: skew(90deg) rotate(180deg) translate(-50%, -50%);
+    }
+
+    .btn-black:hover::before {
+        transform: skew(45deg) rotate(180deg) translate(-50%, -50%);
+    }
+
+    .btn-black:hover::after {
+        transform: skew(45deg) translate(-50%, -50%);
+    }
+
+    .btn-black:hover {
+        font-weight: 700;
+        color: var(--color2);
+    }
+
+    .btn-black:active {
+        filter: brightness(.7);
+        transform: scale(.98);
+    }
+
+
+
+
 /*dark mode*/
 .dark-mode .btn-edit {
     font-weight: bolder;
