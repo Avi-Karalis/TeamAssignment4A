@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RandomDataGenerator.FieldOptions;
 using RandomDataGenerator.Randomizers;
 using TeamAssignment4A.Data;
@@ -126,12 +127,15 @@ namespace TeamAssignment4A.Services
             
             if (ModelState.IsValid)
             {
+                var candidate = await _unit.Candidate.GetCandForExam(candidateExam.Candidate.Id);
+                var exam = await _unit.Exam.GetAsync(candidateExam.Exam.Id);
+                
+                
                 _myDTO.View = "Index";
                 _myDTO.Message = "The purchase was completed successfully." +
                     "\nYour exam voucher has been sent to your email.";
-                candidateExam.Candidate = await _unit.Candidate.GetCandForExam(candidateExam.Candidate.Id); 
-                candidateExam.Exam = await _unit.Exam.GetAsync(candidateExam.Exam.Id);
-               
+                candidateExam.Candidate = candidate;
+                candidateExam.Exam = exam;
                 int i = 0;
                 foreach(var examStem in candidateExam.Exam.ExamStems)
                 {
@@ -139,7 +143,8 @@ namespace TeamAssignment4A.Services
                     = await _unit.ExamStem.GetAsync(examStem.Id);
                     i++;
                 }
-                
+                _db.Entry(candidateExam.Candidate).State = EntityState.Unchanged;
+                _db.Entry(candidateExam.Exam).State = EntityState.Unchanged;
                 _unit.CandidateExam.AddOrUpdate(candidateExam);
                 await _unit.SaveAsync();
                 return _myDTO;

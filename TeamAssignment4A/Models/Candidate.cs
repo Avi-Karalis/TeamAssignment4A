@@ -90,7 +90,6 @@ namespace TeamAssignment4A.Models
         // Navigation Properties       
         public virtual IdentityUser IdentityUser { get; set; }
         public virtual IEnumerable<CandidateExam>? CandidateExams { get; set; }
-        public virtual IEnumerable<CandidateExamStem>? CandidateExamStems { get; set; }
     }
 
 }

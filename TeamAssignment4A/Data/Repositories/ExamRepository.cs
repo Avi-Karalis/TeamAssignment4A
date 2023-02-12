@@ -12,15 +12,22 @@ namespace TeamAssignment4A.Data.Repositories
         }
         public async Task<Exam?> GetAsync(int id)
         {
-            return await _db.Exams.AsNoTracking().Include(exam => exam.Certificate)
-                .AsNoTracking().Include(exam => exam.ExamStems)
+            return await _db.Exams.Include(exam => exam.Certificate)
+                .Include(exam => exam.ExamStems)
                 .AsNoTracking().Include(exam => exam.CandidateExams).FirstOrDefaultAsync(x => x.Id == id);
         }
-        
+
+        public async Task<Exam?> GetForSitExam(int id)
+        {
+            return await _db.Exams.Include(exam => exam.Certificate)
+                .Include(exam => exam.ExamStems)
+                .Include(exam => exam.CandidateExams).FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         public async Task<Exam?> GetExam(int id)
         {
             return await _db.Exams.Include(exam => exam.Certificate).Include(exam => exam.ExamStems)
-                .AsNoTracking().Include(exam => exam.CandidateExams).FirstOrDefaultAsync(x => x.Id == id);
+                .Include(exam => exam.CandidateExams).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Exam?> GetByCertId(int certificateId)

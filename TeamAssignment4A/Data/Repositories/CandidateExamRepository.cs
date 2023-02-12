@@ -16,19 +16,19 @@ namespace TeamAssignment4A.Data.Repositories
         // Get Examination by Id
         public async Task<CandidateExam?> GetAsync(int id)
         {
-            return await _db.CandidateExams.AsNoTracking().Include(ce => ce.Exam).AsNoTracking()
-                .Include(ce => ce.Exam.ExamStems).AsNoTracking()
+            return await _db.CandidateExams.Include(ce => ce.Exam)
+                .Include(ce => ce.Exam.ExamStems)
                 .Include(ce => ce.Exam.Certificate).Include(ce => ce.Candidate)
-                .AsNoTracking().Include(ce => ce.CandidateExamStems).FirstOrDefaultAsync(ce => ce.Id == id);
+                .Include(ce => ce.CandidateExamStems).FirstOrDefaultAsync(ce => ce.Id == id);
         }
 
         // Get Candidate Exam by providing User and CandidateExam Id in order to fill
         // the CandidateExamStems correspoding to this Candidate Exam
         public async Task<CandidateExam?> GetCanExamStemsForInput(Candidate candidate, int id)
         {
-            return await _db.CandidateExams.AsNoTracking().Include(ce => ce.Exam).AsNoTracking().Include(ce => ce.Exam.ExamStems)
-                .AsNoTracking().Include(ce => ce.Exam.Certificate).Include(ce => ce.Candidate)
-                .AsNoTracking().Include(ce => ce.CandidateExamStems)
+            return await _db.CandidateExams.Include(ce => ce.Exam).Include(ce => ce.Exam.ExamStems)
+                .Include(ce => ce.Exam.Certificate).Include(ce => ce.Candidate)
+                .Include(ce => ce.CandidateExamStems)
                 .FirstOrDefaultAsync(ce => ce.Candidate == candidate && ce.Exam.Id == id);
         }
 
@@ -37,8 +37,8 @@ namespace TeamAssignment4A.Data.Repositories
         {
             return await _db.CandidateExams
                 .Where(ce => (ce.Candidate.Id == candidateId && ce.ExaminationDate != null) && ce.CandidateScore == null)
-                .AsNoTracking().Include(ce => ce.Exam).Include(ce => ce.Candidate).AsNoTracking().Include(ce => ce.Exam.ExamStems)
-                .AsNoTracking().Include(ce => ce.CandidateExamStems).ToListAsync<CandidateExam>();
+                .Include(ce => ce.Exam).Include(ce => ce.Candidate).Include(ce => ce.Exam.ExamStems)
+                .Include(ce => ce.CandidateExamStems).ToListAsync<CandidateExam>();
         }
 
         // Get all Examinations that a specific Candidate has sat for
@@ -47,8 +47,8 @@ namespace TeamAssignment4A.Data.Repositories
         {
             return await _db.CandidateExams
                 .Where(ce => ce.Candidate == candidate && ce.CandidateScore != null)
-                .AsNoTracking().Include(ce => ce.Exam).Include(ce => ce.Candidate)
-                .AsNoTracking().Include(ce => ce.CandidateExamStems).ToListAsync<CandidateExam>();
+                .Include(ce => ce.Exam).Include(ce => ce.Candidate)
+                .Include(ce => ce.CandidateExamStems).ToListAsync<CandidateExam>();
         }
 
         public EntityState AddOrUpdate(CandidateExam candidateExam)

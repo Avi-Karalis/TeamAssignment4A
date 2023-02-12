@@ -13,7 +13,7 @@ namespace TeamAssignment4A.Data.Repositories
         }
         public async Task<CandidateExamStem?> GetAsync(int id)
         {
-            return await _db.CandidateExamStems.AsNoTracking().Include(ces => ces.CandidateExam)
+            return await _db.CandidateExamStems.Include(ces => ces.CandidateExam)
                 .Include(ces => ces.ExamStem).FirstOrDefaultAsync(x => x.Id == id);
         }
 

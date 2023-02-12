@@ -1,0 +1,60 @@
+﻿@using TeamAssignment4A.Models.JointTables;
+@model List<TeamAssignment4A.Models.JointTables.CandidateExamStem>
+
+@{
+    ViewData["Title"] = "ExamGrading";
+}
+
+<h1>Exam Grading</h1>
+
+<h4>CandidateExamStem</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ExamGrading">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            @for(int i = 0; i < 4; i++)
+            {
+                <div class="form-group">
+                    @Html.DisplayNameFor(modelItem => @Model[i].ExamStem.Stem.Question)
+                    <br>
+                    @Html.Raw(@Model[i].ExamStem.Stem.Question)
+                    <input type="hidden" asp-for="@Model[i].ExamStem.Stem.Question" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="@Model[i].SubmittedAnswer" class="control-label"></label>
+                    <input readonly asp-for="@Model[i].SubmittedAnswer" class="form-control" />
+                    <span asp-validation-for="@Model[i].SubmittedAnswer" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    
+                    <input type="hidden" asp-for="Score" class="form-control" />
+                    
+                </div>
+                <div class="form-group">
+
+                    <input type="hidden" asp-for="@Model[i].ExamStem.Id" class="form-control" />
+
+                </div>
+                
+            }
+            <div class="form-group">
+
+                <input type="hidden" asp-for="@Model[0].Exam.Id" class="form-control" />
+
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Confirm Grading" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
