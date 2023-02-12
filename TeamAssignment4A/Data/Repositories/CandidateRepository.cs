@@ -14,8 +14,8 @@ namespace TeamAssignment4A.Data.Repositories
         }
         public async Task<Candidate?> GetAsync(int id)
         {
-            return await _db.Candidates.AsNoTracking().Include(cand => cand.CandidateExams).Include(cand => cand.IdentityUser)
-                .Include(cand => cand.CandidateExamStems).FirstOrDefaultAsync(x => x.Id == id);
+            return await _db.Candidates.Include(cand => cand.CandidateExams)
+                .Include(cand => cand.IdentityUser).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         // Get Candidate without including the CandidateExam entity
@@ -23,19 +23,19 @@ namespace TeamAssignment4A.Data.Repositories
         public async Task<Candidate?> GetCandForExam(int id)
         {
             return await _db.Candidates.Include(cand => cand.IdentityUser)
-                .Include(cand => cand.CandidateExamStems).FirstOrDefaultAsync(x => x.Id == id);
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Candidate?> GetByUser(IdentityUser user)
         {
-            return await _db.Candidates.AsNoTracking().Include(cand => cand.CandidateExams).Include(cand => cand.IdentityUser)
-                .Include(cand => cand.CandidateExamStems).FirstOrDefaultAsync(x => x.IdentityUser == user);
+            return await _db.Candidates.Include(cand => cand.CandidateExams).Include(cand => cand.IdentityUser)
+                .FirstOrDefaultAsync(x => x.IdentityUser == user);
         }
 
         public async Task<IEnumerable<Candidate>?> GetAllAsync()
         {
-            return await _db.Candidates.AsNoTracking().Include(cand => cand.CandidateExams).Include(cand => cand.IdentityUser)
-                .Include(cand => cand.CandidateExamStems).ToListAsync<Candidate>();
+            return await _db.Candidates.Include(cand => cand.CandidateExams).Include(cand => cand.IdentityUser)
+                .ToListAsync<Candidate>();
         }
 
         public EntityState AddOrUpdate(Candidate candidate)

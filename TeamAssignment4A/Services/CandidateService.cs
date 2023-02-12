@@ -156,7 +156,6 @@ namespace TeamAssignment4A.Services
             candidate.PhotoIdDate = candidateDto.PhotoIdDate;
             candidate.IdentityUser = candidateDto.User;
             candidate.CandidateExams = candidateDto.CandidateExams;
-            candidate.CandidateExamStems = candidateDto.CandidateExamStems;
 
             _unit.Candidate.AddOrUpdate(candidate);
 

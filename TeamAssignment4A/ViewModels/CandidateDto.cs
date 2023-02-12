@@ -87,6 +87,6 @@ namespace TeamAssignment4A.Dtos
 
         public IdentityUser User { get; set; }
         public List<CandidateExam>? CandidateExams { get; set; }
-        public List<CandidateExamStem>? CandidateExamStems { get; set; }
+        
     }
 }

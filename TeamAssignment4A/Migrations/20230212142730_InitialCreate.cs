@@ -395,8 +395,7 @@ namespace TeamAssignment4A.Migrations
                     SubmittedAnswer = table.Column<string>(type: "nvarchar(1)", nullable: false),
                     Score = table.Column<int>(type: "int", nullable: false),
                     ExamStemId = table.Column<int>(type: "int", nullable: false),
-                    CandidateExamId = table.Column<int>(type: "int", nullable: false),
-                    CandidateId = table.Column<int>(type: "int", nullable: true)
+                    CandidateExamId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -407,11 +406,6 @@ namespace TeamAssignment4A.Migrations
                         principalTable: "CandidateExams",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CandidateExamStems_Candidates_CandidateId",
-                        column: x => x.CandidateId,
-                        principalTable: "Candidates",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_CandidateExamStems_ExamStems_ExamStemId",
                         column: x => x.ExamStemId,
@@ -473,11 +467,6 @@ namespace TeamAssignment4A.Migrations
                 name: "IX_CandidateExamStems_CandidateExamId",
                 table: "CandidateExamStems",
                 column: "CandidateExamId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CandidateExamStems_CandidateId",
-                table: "CandidateExamStems",
-                column: "CandidateId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CandidateExamStems_ExamStemId",

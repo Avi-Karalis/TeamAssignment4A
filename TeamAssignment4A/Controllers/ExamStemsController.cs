@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,20 +14,25 @@ using TeamAssignment4A.Models.JointTables;
 
 namespace TeamAssignment4A.Controllers
 {
-    [Authorize(Roles = "Admin, Candidate, QA")]
+    [Authorize(Roles = "Admin, Marker")]
     public class ExamStemsController : Controller
     {
         private readonly WebAppDbContext _context;
-
-        public ExamStemsController(WebAppDbContext context)
+        private readonly UserManager<IdentityUser> _userManager;
+        public ExamStemsController(WebAppDbContext context, UserManager<IdentityUser> userManager)
         {
+            _userManager = userManager;
             _context = context;
         }
 
         // GET: ExamStems
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        [ProducesResponseType(typeof(CandidateExam), 200)]
+        public async Task<IActionResult> CandidateExamsForMarking()
         {
-            return View(await _context.ExamStems.ToListAsync());
+            IdentityUser? user = await _userManager.GetUserAsync(User);
+            return View(await _context.CandidateExams
+                .Where(ce => ce.MarkerUserName == user.UserName).ToListAsync<CandidateExam>());
         }
 
         //Take an candidateExam
@@ -47,9 +53,18 @@ namespace TeamAssignment4A.Controllers
             return View(examSubmissionDTO);
         }
 
+        [HttpGet]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ExamGrading(int id)
+        {
+            var candidateExam = await _context.CandidateExams.FirstOrDefaultAsync(x => x.Id == id);
+            List<CandidateExamStem>? ces = candidateExam.CandidateExamStems as List<CandidateExamStem>;
+            return View(ces);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ExamSubmit(ExamSubmissionDTO examSubmissionDTO) {
+        public async Task<IActionResult> ExamGrading(List<CandidateExamStem> ces, int examId, int examStemId) {
 
             if (ModelState.IsValid) {
                 CandidateExam candidateExam = _context.CandidateExams.Find(examSubmissionDTO.ExamQuestions.FirstOrDefault().CandidateExamId);
@@ -79,137 +94,9 @@ namespace TeamAssignment4A.Controllers
                 _context.Update(candidateExam);
                 _context.SaveChanges();
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("CandidateExamsForMarking");
             }
-            return View();
-        }
-
-        // GET: ExamStems/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.ExamStems == null)
-            {
-                return NotFound();
-            }
-
-            var examStem = await _context.ExamStems
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (examStem == null)
-            {
-                return NotFound();
-            }
-
-            return View(examStem);
-        }
-
-        // GET: ExamStems/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: ExamStems/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,SubmittedAnswer,Score")] ExamStem examStem)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(examStem);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(examStem);
-        }
-
-        // GET: ExamStems/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.ExamStems == null)
-            {
-                return NotFound();
-            }
-
-            var examStem = await _context.ExamStems.FindAsync(id);
-            if (examStem == null)
-            {
-                return NotFound();
-            }
-            return View(examStem);
-        }
-
-        // POST: ExamStems/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,SubmittedAnswer,Score")] ExamStem examStem)
-        {
-            if (id != examStem.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(examStem);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ExamStemExists(examStem.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(examStem);
-        }
-
-        // GET: ExamStems/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.ExamStems == null)
-            {
-                return NotFound();
-            }
-
-            var examStem = await _context.ExamStems
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (examStem == null)
-            {
-                return NotFound();
-            }
-
-            return View(examStem);
-        }
-
-        // POST: ExamStems/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.ExamStems == null)
-            {
-                return Problem("Entity set 'WebAppDbContext.ExamStems'  is null.");
-            }
-            var examStem = await _context.ExamStems.FindAsync(id);
-            if (examStem != null)
-            {
-                _context.ExamStems.Remove(examStem);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Home");
         }
 
         private bool ExamStemExists(int id)

@@ -12,7 +12,7 @@ namespace TeamAssignment4A.Data.Repositories
         }
         public async Task<Stem?> GetAsync(int id)
         {
-            return await _db.Stems.AsNoTracking().Include(stem => stem.Topic)
+            return await _db.Stems.Include(stem => stem.Topic)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 

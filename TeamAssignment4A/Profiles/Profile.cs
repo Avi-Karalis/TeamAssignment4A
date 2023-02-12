@@ -32,7 +32,6 @@ namespace TeamAssignment4A.Profiles
                 .ForMember(dest => dest.PhotoIdDate, opt => opt.MapFrom(src => src.PhotoIdDate))
                 .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.IdentityUser))
                 .ForMember(dest => dest.CandidateExams, opt => opt.MapFrom(src => src.CandidateExams))
-                .ForMember(dest => dest.CandidateExamStems, opt => opt.MapFrom(src => src.CandidateExamStems))
                 .ReverseMap();
 
 

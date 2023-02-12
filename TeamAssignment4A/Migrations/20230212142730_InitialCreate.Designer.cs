@@ -12,7 +12,7 @@ using TeamAssignment4A.Data;
 namespace TeamAssignment4A.Migrations
 {
     [DbContext(typeof(WebAppDbContext))]
-    [Migration("20230208221028_InitialCreate")]
+    [Migration("20230212142730_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -550,9 +550,6 @@ namespace TeamAssignment4A.Migrations
                     b.Property<int>("CandidateExamId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CandidateId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ExamStemId")
                         .HasColumnType("int");
 
@@ -566,8 +563,6 @@ namespace TeamAssignment4A.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CandidateExamId");
-
-                    b.HasIndex("CandidateId");
 
                     b.HasIndex("ExamStemId");
 
@@ -763,10 +758,6 @@ namespace TeamAssignment4A.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TeamAssignment4A.Models.Candidate", null)
-                        .WithMany("CandidateExamStems")
-                        .HasForeignKey("CandidateId");
-
                     b.HasOne("TeamAssignment4A.Models.JointTables.ExamStem", "ExamStem")
                         .WithMany("CandidateExamStems")
                         .HasForeignKey("ExamStemId")
@@ -821,8 +812,6 @@ namespace TeamAssignment4A.Migrations
 
             modelBuilder.Entity("TeamAssignment4A.Models.Candidate", b =>
                 {
-                    b.Navigation("CandidateExamStems");
-
                     b.Navigation("CandidateExams");
                 });
 
