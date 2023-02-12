@@ -175,6 +175,13 @@ button > a {
     color: white;
     background-image: url(../Themes/websitebg.png);
 }
+
+.valentines-mode-toggle {
+    background-color: hotpink;
+    color: black;
+    background-image: url(../Themes/websitevalentine.png);
+}
+
 /*drop shadow on hover on navbar-brand*/
 .navbar-brand:hover {
     text-shadow: 0 0 20px #3498db, 0 0 30px #3498db, 0 0 40px #FFFFFF;
@@ -301,8 +308,7 @@ input:checked + .slider:after {
 
 
 /*Light mode*/
-.btn-dtl {
-    font-weight: bold;
+.btn-blue {
     --color: #375a7f;
     --color2: rgb(10, 25, 30);
     padding: 0.8em 1.75em;
@@ -314,14 +320,14 @@ input:checked + .slider:after {
     overflow: hidden;
     cursor: pointer;
     z-index: 1;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 10px;
     font-family: 'Roboto', 'Segoe UI', sans-serif;
     text-transform: uppercase;
     color: var(--color);
 }
-    
-    .btn-dtl::after, .btn-dtl::before {
+
+    .btn-blue::after, .btn-blue::before {
         content: '';
         display: block;
         height: 100%;
@@ -335,33 +341,32 @@ input:checked + .slider:after {
         background-color: var(--color);
     }
 
-    .btn-dtl::before {
+    .btn-blue::before {
         top: -50%;
         left: -25%;
         transform: skew(90deg) rotate(180deg) translate(-50%, -50%);
     }
 
-    .btn-dtl:hover::before {
+    .btn-blue:hover::before {
         transform: skew(45deg) rotate(180deg) translate(-50%, -50%);
     }
 
-    .btn-dtl:hover::after {
+    .btn-blue:hover::after {
         transform: skew(45deg) translate(-50%, -50%);
     }
 
-    .btn-dtl:hover {
-        font-weight: bold;
+    .btn-blue:hover {
+        font-weight: 700;
         color: var(--color2);
     }
 
-    .btn-dtl:active {
+    .btn-blue:active {
         filter: brightness(.7);
         transform: scale(.98);
     }
 
     /*Light mode*/
-.btn-buyExam {
-    font-weight: bold;
+.btn-yellow {
     --color: yellow;
     --color2: rgb(10, 25, 30);
     padding: 0.8em 1.75em;
@@ -373,14 +378,14 @@ input:checked + .slider:after {
     overflow: hidden;
     cursor: pointer;
     z-index: 1;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 10px;
     font-family: 'Roboto', 'Segoe UI', sans-serif;
     text-transform: uppercase;
     color: var(--color);
 }
 
-    .btn-buyExam::after, .btn-buyExam::before {
+    .btn-yellow::after, .btn-yellow::before {
         content: '';
         display: block;
         height: 100%;
@@ -394,33 +399,33 @@ input:checked + .slider:after {
         background-color: var(--color);
     }
 
-    .btn-buyExam::before {
+    .btn-yellow::before {
         top: -50%;
         left: -25%;
         transform: skew(90deg) rotate(180deg) translate(-50%, -50%);
     }
 
-    .btn-buyExam:hover::before {
+    .btn-yellow:hover::before {
         transform: skew(45deg) rotate(180deg) translate(-50%, -50%);
     }
 
-    .btn-buyExam:hover::after {
+    .btn-yellow:hover::after {
         transform: skew(45deg) translate(-50%, -50%);
     }
 
-    .btn-buyExam:hover {
-        font-weight: bold;
+    .btn-yellow:hover {
+        font-weight: 700;
         color: var(--color2);
     }
 
-    .btn-buyExam:active {
+    .btn-yellow:active {
         filter: brightness(.7);
         transform: scale(.98);
     }
 
 /*dark mode*/
 .dark-mode .btn-edit {
-    font-weight: bold;
+    font-weight: bolder;
     background-color: darkgreen;
     color: white;
 }
@@ -883,6 +888,86 @@ input:checked + .slider:after {
 }
 
 
+.Center-Div{
+    text-align:center;
+}
+
+
+.btn-valentine {
+    
+    margin-top:300px;
+    text-align:center;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 10px 30px;
+    transition: 0.5s;
+    position: relative;
+    font-size: 10px;
+    background: #333;
+    border: none;
+    color: #fff;
+}
+
+    .btn-valentine:hover {
+        letter-spacing: 0.25em;
+        background: #ff1867;
+        color: #ff1867;
+        box-shadow: 0 0 45px #ff1867;
+    }
+
+    .btn-valentine::before {
+        content: '';
+        position: absolute;
+        inset: 2px;
+        background: #222222;
+    }
+
+    .btn-valentine span {
+        position: relative;
+        z-index: 1;
+    }
+
+    .btn-valentine i {
+        position: absolute;
+        inset: 0;
+        display: block;
+    }
+
+        .btn-valentine i::before {
+            content: '';
+            position: absolute;
+            border: 2px solid #ff1867;
+            width: 7px;
+            height: 4px;
+            top: -3.5px;
+            left: 80%;
+            background: #222222;
+            transform: translateX(-50%);
+            transition: 0.5s;
+        }
+
+    .btn-valentine:hover i::before {
+        width: 20px;
+        left: 20%;
+    }
+
+    .btn-valentine i::after {
+        content: '';
+        position: absolute;
+        border: 2px solid #ff1867;
+        width: 7px;
+        height: 4px;
+        bottom: -3.5px;
+        left: 20%;
+        background: #222222;
+        transform: translateX(-50%);
+        transition: 0.5s;
+    }
+
+    .btn-valentine:hover i::after {
+        width: 20px;
+        left: 80%;
+    }
 
 
 /*fade in animation rules*/
