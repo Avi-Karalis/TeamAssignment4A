@@ -1,0 +1,75 @@
+﻿@model List<TeamAssignment4A.Dtos.ManualGradingExamDTO>
+
+@{
+    ViewData["Title"] = "SitForExam";
+}
+
+<h3 class="custom-font fadein center-adjust">Examination</h3>
+<div class="sticky-header go-to-top hide-on-load text-nowrap my-round-button text-center navbar-dark bg-info"
+    onclick="scrollToTop()">
+    Go to top
+</div>
+<hr />
+
+<div class="row custom-font fadein center-adjust">
+    <form asp-action="ManualExamGrading" class="col-sm-2 text-center">
+        
+   
+            @for (int i = 0; i < Model.Count(); i++){    
+            <div>   
+                <div class="text-nowrap text-center navbar-dark bg-primary" style="border-top-right-radius: 100px; 
+                                            border-bottom-right-radius: 100px; border-top-left-radius: 100px; 
+                                            border-bottom-left-radius: 100px">
+                    @Html.DisplayNameFor(modelItem => @Model[i].Question)
+                    <br>
+                    @Html.Raw(@Model[i].Question)
+                    <input type="hidden" asp-for="@Model[i].Question" />
+                    
+                </div> <br />
+                <div class="text-nowrap text-center" style="border-top-right-radius: 100px; 
+                                            border-bottom-right-radius: 100px; border-top-left-radius: 100px; 
+                                            border-bottom-left-radius: 100px">
+                    @Html.DisplayNameFor(modelItem => @Model[i].SubmittedAnswer)
+                    <br>
+                    @Html.Raw(@Model[i].SubmittedAnswer)
+                    <input type="hidden" asp-for="@Model[i].SubmittedAnswer" />
+                    
+                </div> <br />
+                <div class="text-nowrap text-center" style="border-top-right-radius: 100px; 
+                                            border-bottom-right-radius: 100px; border-top-left-radius: 100px; 
+                                            border-bottom-left-radius: 100px">
+                    @Html.DisplayNameFor(modelItem => @Model[i].CorrectAnswer)
+                    <br>
+                    @Html.Raw(@Model[i].CorrectAnswer)
+                    <input type="hidden" asp-for="@Model[i].CorrectAnswer" />
+                    
+                </div> <br />
+
+                <div class="form-group" style="text-decoration: underline;" >
+                    <label asp-for="@Model[i].Result" class="control-label"></label> <br />
+                    <select asp-for="@Model[i].Result" class="form-control" asp-items="@ViewBag.Selections"></select>
+                    <span asp-validation-for="@Model[i].Result" class="text-danger"></span>
+                    
+                </div>
+                <div>
+                    <input type="hidden" asp-for="@Model[i].CandidateExamStemId" />
+                </div>
+
+            </div>
+            
+        }
+  
+        <input type="submit" value="Submit" class="btn btn-warning" />
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+

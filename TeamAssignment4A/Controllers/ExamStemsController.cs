@@ -31,9 +31,10 @@ namespace TeamAssignment4A.Controllers
         public async Task<IActionResult> CandidateExamsForMarking()
         {
             IdentityUser? user = await _userManager.GetUserAsync(User);
-            var list = await _context.CandidateExams
-                .Where(ce => ce.MarkerUserName == user.UserName).ToListAsync<CandidateExam>();
-            return View(list);
+
+            return View(await _context.CandidateExams
+                .Where(ce => ce.MarkerUserName == user.UserName && ce.CandidateScore == null).ToListAsync<CandidateExam>());
+
         }
 
         //Take an candidateExam
@@ -70,6 +71,60 @@ namespace TeamAssignment4A.Controllers
             }
             List<CandidateExamStem>? ces = candidateExam.CandidateExamStems.ToList<CandidateExamStem>();
             return View(ces);
+        }
+
+        [HttpGet]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> ManualExamGrading(int id) {
+            var candidateExam = await _context.CandidateExams.Include(ce => ce.CandidateExamStems).ThenInclude(ces => ces.ExamStem).ThenInclude(es=> es.Stem).FirstOrDefaultAsync(x => x.Id == id);            
+            List<ManualGradingExamDTO> manualGradingExamDTOs = new List<ManualGradingExamDTO>();
+            foreach (CandidateExamStem candidateExamStem in candidateExam.CandidateExamStems) {
+                ManualGradingExamDTO manualGradingExamDTO = new ManualGradingExamDTO();
+                manualGradingExamDTO.CandidateExamStemId = candidateExamStem.Id;
+                manualGradingExamDTO.Question = candidateExamStem.ExamStem.Stem.Question;
+                manualGradingExamDTO.SubmittedAnswer = candidateExamStem.SubmittedAnswer;
+                manualGradingExamDTO.CorrectAnswer = candidateExamStem.ExamStem.Stem.CorrectAnswer;
+                manualGradingExamDTOs.Add(manualGradingExamDTO);
+            }
+            List<string> selections = new List<string> { "Correct", "Incorrect" };
+            ViewBag.Selections = new SelectList(selections);
+            return View(manualGradingExamDTOs);
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ManualExamGrading(List<ManualGradingExamDTO> manualGradingExamDTOs) {
+
+            foreach (ManualGradingExamDTO manualGradingExamDTO in manualGradingExamDTOs) {
+                CandidateExamStem candidateExamStem = _context.CandidateExamStems.Where(ces => ces.Id == manualGradingExamDTO.CandidateExamStemId).Include(ce => ce.CandidateExam).First();
+
+                if (candidateExamStem.CandidateExam.CandidateScore == null) {
+
+                    candidateExamStem.CandidateExam.CandidateScore = 0;
+                }
+                if (manualGradingExamDTO.Result == "Correct") {
+                    candidateExamStem.Score = 25;
+                    candidateExamStem.CandidateExam.CandidateScore += 25;
+                } else {
+                    candidateExamStem.Score = 0;
+                }
+                _context.Update(candidateExamStem);
+            }
+
+            CandidateExam candidateExam = _context.CandidateExamStems.Where(ces => ces.Id == manualGradingExamDTOs.First().CandidateExamStemId).Include(ces => ces.CandidateExam).ThenInclude(ce => ce.Exam).ThenInclude(e=>e.Certificate).First().CandidateExam;
+            if (candidateExam.CandidateScore >= candidateExam.Exam.Certificate.PassingGrade) {
+                candidateExam.AssessmentResultLabel = "Pass";
+            } else {
+                candidateExam.AssessmentResultLabel = "Fail";
+            }
+            candidateExam.ScoreReportDate = DateTime.Now;
+            candidateExam.PercentageScore = Convert.ToString(candidateExam.CandidateScore) + "%";
+            _context.Update(candidateExam);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
