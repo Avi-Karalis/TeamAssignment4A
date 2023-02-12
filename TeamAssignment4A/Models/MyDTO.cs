@@ -7,8 +7,8 @@ namespace TeamAssignment4A.Models
     {
         public string? View { get; set; }
         public string? Message { get; set; }
-        public Candidate? Candidate { get; set; }
-        public IEnumerable<Candidate>? Candidates { get; set;}
+        public CandidateDto? Candidate { get; set; }
+        public IEnumerable<CandidateDto>? Candidates { get; set;}
         public Certificate? Certificate { get; set; }
         public IEnumerable<Certificate>? Certificates { get; set;}
         public StemDto? StemDto { get; set; }
@@ -21,6 +21,7 @@ namespace TeamAssignment4A.Models
         public IEnumerable<ExamStem>? ExamStems { get; set; }
         public CandidateExam? CandidateExam { get; set; }
         public IEnumerable<CandidateExam>? CandidateExams { get; set; }
+        public List<CandidateExamStem>? CandidateExamStems { get; set; }
 
     }
 }

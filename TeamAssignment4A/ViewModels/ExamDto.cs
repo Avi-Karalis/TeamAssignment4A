@@ -14,6 +14,7 @@ namespace TeamAssignment4A.Dtos
         public string TitleOfCertificate { get; set; }
         public Certificate Certificate { get; set; }
 
+        [Required]
         [NotMapped]
         [Display(Name = "Stem Id")]
         public List<int> StemIds { get; set; }

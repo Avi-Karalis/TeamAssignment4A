@@ -12,10 +12,29 @@ namespace TeamAssignment4A.Data.Repositories
         }
         public async Task<Exam?> GetAsync(int id)
         {
-            return await _db.Exams.AsNoTracking().Include(exam => exam.Certificate)
-                .Include(exam => exam.ExamStems).FirstOrDefaultAsync(x => x.Id == id);
+            return await _db.Exams.Include(exam => exam.Certificate)
+                .Include(exam => exam.ExamStems)
+                .AsNoTracking().Include(exam => exam.CandidateExams).FirstOrDefaultAsync(x => x.Id == id);
         }
-        
+
+        public async Task<Exam?> GetForSitExam(int id)
+        {
+            return await _db.Exams.Include(exam => exam.Certificate)
+                .Include(exam => exam.ExamStems)
+                .Include(exam => exam.CandidateExams).FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<Exam?> GetExam(int id)
+        {
+            return await _db.Exams.Include(exam => exam.Certificate).Include(exam => exam.ExamStems)
+                .Include(exam => exam.CandidateExams).FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<Exam?> GetByCertId(int certificateId)
+        {
+            return await _db.Exams.Include(exam => exam.Certificate).Include(exam => exam.ExamStems)
+                .FirstOrDefaultAsync(x => x.Certificate.Id == certificateId);
+        }
 
         public async Task<IEnumerable<Exam>?> GetAllAsync()
         {
@@ -25,7 +44,6 @@ namespace TeamAssignment4A.Data.Repositories
 
         public EntityState AddOrUpdate(Exam exam)
         {
-            var state = _db.Entry(exam).State;
             _db.Exams.Update(exam);
             return _db.Entry(exam).State;
         }

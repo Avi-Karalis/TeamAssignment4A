@@ -1,0 +1,52 @@
+﻿@model IEnumerable<TeamAssignment4A.Models.JointTables.CandidateExam>
+
+@{
+    ViewData["Title"] = "CandidateExamsForMarking";
+}
+
+<h1>CandidateExamsForMarking</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AssessmentTestCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExaminationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AssessmentResultLabel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MarkerUserName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssessmentTestCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExaminationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssessmentResultLabel)
+            </td>            
+            <td>
+                @Html.DisplayFor(modelItem => item.MarkerUserName)
+            </td>
+            <td>
+
+                    <a class="custom-font btn btn-primary" asp-action="ExamGrading" asp-route-id="@item.Id">Grade</a> |
+                    <a class="custom-font btn btn-secondary" asp-action="ManualExamGrading" asp-route-id="@item.Id">Grade Manually</a>
+
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

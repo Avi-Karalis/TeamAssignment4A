@@ -1,12 +1,11 @@
-﻿@model TeamAssignment4A.Models.Candidate
+﻿@model TeamAssignment4A.Dtos.CandidateDto
 
 @{
     ViewData["Title"] = "Create";
 }
 <h3 class=" custom-font fadein center-adjust">Creating a new Candidate</h3>
 <hr />
-<div class="row custom-font fadein center-adjust" style="background-color:#0006">
-    @* <div class="col-md-4">*@
+<div class="row custom-font fadein center-adjust">
     <form asp-action="Create" class="row g-12">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="col-md-4 ">
@@ -98,7 +97,7 @@
             <div>
                 <select asp-for="PhotoIdType" class="form-control  text-secondary">
                     <option value="" disabled selected>--Select Id Type--</option>
-                    <option value="NationalIDCard">NationalIDCard</option>
+                    <option value="NationalIDCard">National ID Card</option>
                     <option value="Passport">Passport</option>
                     <option value="Other">Other</option>
                 </select>
@@ -116,9 +115,16 @@
                 <input asp-for="PhotoIdDate" class="form-control" type="date" placeholder="Enter PhotoId date" />
                 <span asp-validation-for="PhotoIdDate" class="text-danger"></span>
             </div>
+            <div class="col-md-4">
+                <div>
+                    <label asp-for="UserEmail" class="control-label"></label>
+                    <select asp-for="UserEmail" class="form-control" asp-items="@ViewBag.UserEmails"></select>
+                    <span asp-validation-for="UserEmail" class="text-danger"></span>
+                </div>
+            </div>
         </div>
         <p>
-            <div class="form-group">
+            <div class="center-adjust">
                 <div class=" button">
                     <input type="submit" value="Create" class="custom-font btn btn-info" /> |
                     <a asp-action="Index" class="custom-font btn btn-primary">Back to List</a>
@@ -126,8 +132,8 @@
             </div>
         </p>
     </form>
-    @*  </div>*@
 </div>
+
 
 @section Scripts {
     @{

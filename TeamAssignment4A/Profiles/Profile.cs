@@ -8,7 +8,33 @@ namespace TeamAssignment4A.Profiles
     public class Profile: AutoMapper.Profile
     {        
         public Profile()
-        {  
+        {
+            CreateMap<Candidate, CandidateDto>();
+
+            CreateMap<Candidate, CandidateDto>()
+
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
+                .ForMember(dest => dest.MiddleName, opt => opt.MapFrom(src => src.MiddleName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender))
+                .ForMember(dest => dest.CountryOfResidence, opt => opt.MapFrom(src => src.CountryOfResidence))
+                .ForMember(dest => dest.Birthdate, opt => opt.MapFrom(src => src.Birthdate))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.LandlineNumber, opt => opt.MapFrom(src => src.LandlineNumber))
+                .ForMember(dest => dest.MobileNumber, opt => opt.MapFrom(src => src.MobileNumber))
+                .ForMember(dest => dest.Address1, opt => opt.MapFrom(src => src.Address1))
+                .ForMember(dest => dest.Address2, opt => opt.MapFrom(src => src.Address2))
+                .ForMember(dest => dest.PostalCode, opt => opt.MapFrom(src => src.PostalCode))
+                .ForMember(dest => dest.Town, opt => opt.MapFrom(src => src.Town))
+                .ForMember(dest => dest.Province, opt => opt.MapFrom(src => src.Province))
+                .ForMember(dest => dest.PhotoIdType, opt => opt.MapFrom(src => src.PhotoIdType))
+                .ForMember(dest => dest.PhotoIdNumber, opt => opt.MapFrom(src => src.PhotoIdNumber))
+                .ForMember(dest => dest.PhotoIdDate, opt => opt.MapFrom(src => src.PhotoIdDate))
+                .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.IdentityUser))
+                .ForMember(dest => dest.CandidateExams, opt => opt.MapFrom(src => src.CandidateExams))
+                .ReverseMap();
+
+
             CreateMap<Topic,TopicDto>();
 
             CreateMap<Topic, TopicDto>()
@@ -35,14 +61,6 @@ namespace TeamAssignment4A.Profiles
                 .ForMember(dest => dest.Topic, opt => opt.MapFrom(src => src.Topic))
                 .ReverseMap();
 
-            CreateMap<ExamStem, ExamStemDto>();
-
-            CreateMap<ExamStem, ExamStemDto>()
-                .ForMember(dest => dest.StemId, opt => opt.MapFrom(src => src.Stem.Id))
-                .ForMember(dest => dest.Stem, opt => opt.MapFrom(src => src.Stem))
-                .ForMember(dest => dest.ExamId, opt => opt.MapFrom(src => src.Exam.Id))
-                .ForMember(dest => dest.Exam, opt => opt.MapFrom(src => src.Exam))
-                .ReverseMap();
 
             CreateMap<Exam, ExamDto>();
 
@@ -63,7 +81,18 @@ namespace TeamAssignment4A.Profiles
                 .ForPath(dest => dest.Stem.OptionD, opt => opt.MapFrom(src => src.OptionD))
                 .ForPath(dest => dest.Stem.CorrectAnswer, opt => opt.MapFrom(src => src.CorrectAnswer))
                 .ForPath(dest => dest.Stem.Topic, opt => opt.MapFrom(src => src.Topic))
-                .ReverseMap();            
+                .ReverseMap();
+            
+            CreateMap<ExamStem, CandidateExamStem>();
+
+            CreateMap<ExamStem, CandidateExamStem>()
+                .ForPath(dest => dest.ExamStem.Stem.Question, opt => opt.MapFrom(src => src.Stem.Question))
+                .ForPath(dest => dest.ExamStem.Stem.OptionA, opt => opt.MapFrom(src => src.Stem.OptionA))
+                .ForPath(dest => dest.ExamStem.Stem.OptionB, opt => opt.MapFrom(src => src.Stem.OptionB))
+                .ForPath(dest => dest.ExamStem.Stem.OptionC, opt => opt.MapFrom(src => src.Stem.OptionC))
+                .ForPath(dest => dest.ExamStem.Stem.OptionD, opt => opt.MapFrom(src => src.Stem.OptionD))
+                .ForPath(dest => dest.ExamStem.Stem.CorrectAnswer, opt => opt.MapFrom(src => src.Stem.CorrectAnswer))
+                .ReverseMap();
         }
     }
 }

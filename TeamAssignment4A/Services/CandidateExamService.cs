@@ -1,197 +1,206 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TeamAssignment4A.Data;
-using TeamAssignment4A.Dtos;
 using TeamAssignment4A.Models.JointTables;
 using TeamAssignment4A.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace TeamAssignment4A.Services
 {
-    public class CandidateExamService : ControllerBase
+    public class CandidateExamService : ControllerBase//, ICandidateExamService
     {
-        private WebAppDbContext _db;
         private UnitOfWork _unit;
-        private readonly IMapper _mapper;
         private MyDTO _myDTO;
-        public CandidateExamService(WebAppDbContext db, UnitOfWork unit, IMapper mapper)
+        private WebAppDbContext _db;
+        public CandidateExamService(WebAppDbContext db, UnitOfWork unit)
         {
-            _db = db;
             _unit = unit;
-            _mapper = mapper;
             _myDTO = new MyDTO();
+            _db = db;
         }
-        public async Task<MyDTO> Get(int id)
+
+        // Get all Exams that a specific Candidate has not sat for yet
+        public async Task<IEnumerable<CandidateExam>?> GetAll(IdentityUser user)
         {
-            if (id == null || _db.CandidateExams == null || await _unit.CandidateExam.GetAsync(id) == null)
-            {
-                _myDTO.View = "Index";
-                _myDTO.Message = "The requested Candidate Exam could not be found. Please try again later."; 
-                _myDTO.CandidateExams = await _unit.CandidateExam.GetAllAsync();
-            }
-            else
-            {
-                _myDTO.View = "Details";
-                _myDTO.CandidateExam = await _unit.CandidateExam.GetAsync(id);                
-            }
-            return _myDTO;
+            Candidate? candidate = await _unit.Candidate.GetByUser(user);
+            return await _unit.CandidateExam.GetBooked(candidate.Id);
         }
 
-
-
-        public async Task<IEnumerable<CandidateExam>?> GetAll()
-        { 
-            _myDTO.CandidateExams = await _unit.CandidateExam.GetAllAsync();
-            return _myDTO.CandidateExams;
-        }
-
-
-        public async Task<MyDTO> GetForUpdate(int id)
+        // Get CandidateExam by providing User and ExamId
+        public async Task<CandidateExam?> GetCanExamForInput(IdentityUser user, int id)
         {
-            _myDTO.View = "Edit";
-            if (id == null || _db.CandidateExams == null)
-            {
-                _myDTO.View = "Index";
-                _myDTO.Message = "The requested Candidate Exam could not be found. Please try again later.";
-                return _myDTO;
-            } 
-            _myDTO.CandidateExam = await _unit.CandidateExam.GetAsync(id);
-            if (_myDTO.CandidateExam == null)
-            {
-                _myDTO.View = "Index";
-                _myDTO.Message = "The requested exam could not be found. Please try again later.";
-                _myDTO.CandidateExams = await _unit.CandidateExam.GetAllAsync();
-            }
-            return _myDTO;
+            Candidate? candidate = await _unit.Candidate.GetByUser(user);
+            CandidateExam? canEx = await _unit.CandidateExam.GetCanExamStemsForInput(candidate, id);
+            return canEx;
+        }
+        public async Task<CandidateExam>? GetById(int id)
+        {
+            return await _unit.CandidateExam.GetAsync(id);
         }
 
-
-        public async Task<MyDTO> AddCandidateExam(int id, [Bind("Id,AssessmentTestCode,ExaminationDate," +
-            "ScoreReportDate,CandidateScore,PercentageScore,AssessmentResultLabel,Candidate,Exam," +
-            "CandidateExamStem")] CandidateExam candidateExam)
+        // Get all Candidate Exam Stems that belong to a specific Candidate Exam
+        public async Task<List<CandidateExamStem>?> GetExamStems(int id)
         {
-            //examDto.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
-            //Exam exam = _mapper.Map<Exam>(examDto);
-            //_unit.Exam.AddOrUpdate(exam);
-
-            //foreach (var stemId in examDto.StemIds)
-            //{
-            //    Stem stem = await _unit.Stem.GetAsync(stemId);
-            //    ExamStem examStem = new ExamStem(exam, stem);
-            //    _unit.ExamStem.AddOrUpdate(examStem);
-            //    await _unit.SaveAsync();
-            //}            
-            //exam.ExamStems = await _unit.ExamStem.GetStemsByExam(exam);
-
-            if (id != candidateExam.Id)
+            CandidateExam? canExam = await _unit.CandidateExam.GetAsync(id);
+            List<ExamStem>? exStems = await _unit.ExamStem.GetExamStemsByExam(canExam.Exam) as List<ExamStem>;
+            List<CandidateExamStem> cExStems = new List<CandidateExamStem>()
             {
-                // I have to change this!!! --------------------------
-                _myDTO.View = "Create"; 
-                _myDTO.Message = "The Candidate Exam Id was compromised. The request could not be completed due to security reasons. Please try again later.";
-                _myDTO.CandidateExam = candidateExam;
+                new CandidateExamStem(),
+                new CandidateExamStem(),
+                new CandidateExamStem(),
+                new CandidateExamStem()
+            }; 
+            for(int i = 0; i < 4; i++)
+            {
+                cExStems.ElementAt(i).ExamStem = exStems[i];
+            }
+            
+            return cExStems;
+        }
+
+        public async Task<MyDTO> InsertCanExStems([Bind("Id,AssessmentTestCode,ExaminationDate,ScoreReportDate," +
+                "CandidateScore,PercentageScore,AssessmentResultLabel,MarkerUserName," +
+                "Candidate,Exam,CandidateExamStems")] CandidateExam candidateExam, List<CandidateExamStem> canExStems)
+        {
+            //_unit.CandidateExam.AddOrUpdate(candidateExam);
+            bool answers = true;
+            foreach(var ces in canExStems)
+            {
+                if(ces.SubmittedAnswer == null)
+                {
+                    answers= false;
+                }
+            }
+
+            if(!answers)
+            {
+                _myDTO.View = "SitForExam";
+                _myDTO.Message = "One or more questions were left unanswered." +
+                    "\nPlease try again later.";
+                _myDTO.CandidateExamStems = canExStems;
                 return _myDTO;
             }
+            if (candidateExam.CandidateExamStems.Count() != 0)
+            {
+                _myDTO.Message = "You tried to submit an already submitted exam." +
+                    "\nThe operation failed.";
+                return _myDTO;
+            }
+
             if (ModelState.IsValid)
             {
-                _myDTO.Message = "The requested Candidate Exam has been added successfully.";
-                if (!await _unit.CandidateExam.Exists(candidateExam.Id))
+                //candidateExam.CandidateExamStems = new List<CandidateExamStem>()
+                //{
+                //    new CandidateExamStem(),
+                //    new CandidateExamStem(),
+                //    new CandidateExamStem(),
+                //    new CandidateExamStem()
+                //};
+                var exam = await _unit.Exam.GetForSitExam(canExStems[0].ExamStem.Exam.Id);
+                List<ExamStem> examStems = new List<ExamStem>()
                 {
-                    _myDTO.Message = "The requested Candidate Exam could not be found. Please try again later.";
+                    new  ExamStem { Exam = exam },
+                    new  ExamStem { Exam = exam },
+                    new  ExamStem { Exam = exam },
+                    new  ExamStem { Exam = exam }
+                };
+                for (int i = 0; i < canExStems.Count(); i++)
+                {
+                    //_unit.CandidateExamStem.AddOrUpdate(canExStems[i]);
+                    //canExStems[i].CandidateExam = candidateExam;
+                    var stem = await _unit.Stem.GetAsync(canExStems[i].ExamStem.Stem.Id);
+
+                    examStems[i].Stem = stem;
+                    //var cExStem = new CandidateExamStem()
+                    //{
+                    //    ExamStem = examStems[i],
+                    //    CandidateExam = candidateExam
+                    //};
+                    //canExStems[i] = cExStem;
+                    
                 }
-                await _unit.SaveAsync();
-                _myDTO.View = "Index";
-                _myDTO.CandidateExams = await _unit.CandidateExam.GetAllAsync();
-                return _myDTO;
+                var cExStems = new List<CandidateExamStem>()
+                {
+                    new CandidateExamStem { ExamStem = examStems[0], CandidateExam = candidateExam, SubmittedAnswer = canExStems[0].SubmittedAnswer },
+                    new CandidateExamStem { ExamStem = examStems[1], CandidateExam = candidateExam, SubmittedAnswer = canExStems[1].SubmittedAnswer },
+                    new CandidateExamStem { ExamStem = examStems[2], CandidateExam = candidateExam, SubmittedAnswer = canExStems[2].SubmittedAnswer },
+                    new CandidateExamStem { ExamStem = examStems[3], CandidateExam = candidateExam, SubmittedAnswer = canExStems[3].SubmittedAnswer }
+                };
+                //candidateExam.CandidateExamStems = cExStems;
+                foreach(var canExStem in cExStems)
+                {
+                    //_db.Entry(exam).State = EntityState.Unchanged;
+                    _db.Entry(canExStem.ExamStem.Exam).State = EntityState.Unchanged;
+                    _unit.CandidateExamStem.AddOrUpdate(canExStem);
+                    await _unit.SaveAsync();
+                }
             }
-            else
-            {
-                // I have to change this!!! --------------------------
-                _myDTO.View = "Create";
-                _myDTO.Message = "Invalid entries. Please try again later.";
-                _myDTO.CandidateExam = candidateExam;
-            }
+            _myDTO.CandidateExam = candidateExam;
             return _myDTO;
         }
 
-        public async Task<MyDTO> Update(int id, [Bind("Id,AssessmentTestCode,ExaminationDate," +
-            "ScoreReportDate,CandidateScore,PercentageScore,AssessmentResultLabel,Candidate,Exam," +
-            "CandidateExamStem")] CandidateExam candidateExam)
+        // Submit a Candidate's Exam
+        public async Task<MyDTO> SubmitAnswers([Bind("Id,AssessmentTestCode,ExaminationDate,ScoreReportDate," +
+                "CandidateScore,PercentageScore,AssessmentResultLabel,MarkerUserName," +
+                "Candidate,Exam,CandidateExamStems")] CandidateExam candidateExam, List<CandidateExamStem> canExStems)
         {
-            //examDto.Certificate = await _unit.Certificate.GetAsyncByTilteOfCert(examDto.TitleOfCertificate);
-            //Exam exam = await _unit.Exam.GetByCert(examDto.Certificate);
-            //exam.ExamStems = await _unit.ExamStem.GetStemsByExam(exam);
+            _myDTO = await InsertCanExStems(candidateExam, canExStems);
 
-            //List<int> stemIds = examDto.StemIds;
-            //examDto = _mapper.Map<ExamDto>(exam);
-            //for (int i = 0; i < examDto.ExamStems.Count(); i++)
-            //{
-            //    Stem stem = await _unit.Stem.GetAsync(stemIds[i]);
-            //    examDto.ExamStems[i].Stem = stem;
-            //    exam = _mapper.Map<Exam>(examDto);
-            //    _unit.ExamStem.AddOrUpdate(exam.ExamStems.FirstOrDefault(x => x == examDto.ExamStems[i]));
-            //}
-            //await _unit.SaveAsync();
-
-            if (id != candidateExam.Id)
-            {
-                _myDTO.View = "Edit";
-                _myDTO.Message = "The Candidate Exam Id was compromised. The request could not be completed due to security reasons. Please try again later.";
-                _myDTO.CandidateExam = candidateExam;
-                return _myDTO;
-            }
             if (ModelState.IsValid)
             {
-                _myDTO.Message = "The requested Candidate Exam has been updated successfully.";
+                _myDTO.View = "Index";
+                _myDTO.Message = "Your Exam has been submitted successfully.";
+                //_unit.CandidateExam.AddOrUpdate(candidateExam);
+                //candidateExam.CandidateExamStems = new List<CandidateExamStem>()
+                //    {
+                //        new CandidateExamStem(),
+                //        new CandidateExamStem(),
+                //        new CandidateExamStem(),
+                //        new CandidateExamStem()
+                //    };
+                
+                //for (int i =0; i < canExStems.Count(); i++)
+                //{
+                //    //_unit.CandidateExamStem.AddOrUpdate(canExStems[i]);
+                //    canExStems[i].CandidateExam = candidateExam;
+                //    canExStems[i].ExamStem.Stem = await _unit.Stem.GetAsync(canExStems[i].ExamStem.Stem.Id);
+                //    //canExStems[i].ExamStem.Stem.Topic = await _unit.Topic.GetAsync(canExStems[i].ExamStem.Stem.Topic.Id);
+                //    canExStems[i].ExamStem.Exam = await _unit.Exam.GetAsync(canExStems[i].ExamStem.Exam.Id);
+                //    //canExStems[i].ExamStem = await _unit.ExamStem.GetAsync(canExStems[i].ExamStem.Id);
+                //    //candidateExam.CandidateExamStems.ElementAt(i).CandidateExam = candidateExam;
+
+                //    //canExStems[i].CandidateExam = candidateExam;
+                //}
                 if (!await _unit.CandidateExam.Exists(candidateExam.Id))
                 {
-                    _myDTO.Message = "The requested Candidate Exam could not be found. Please try again later.";
+                    _myDTO.Message = "You tried to submit a non existing exam.";
+                    return _myDTO;
                 }
                 await _unit.SaveAsync();
-                _myDTO.View = "Index";
-                _myDTO.CandidateExams = await _unit.CandidateExam.GetAllAsync();
-                return _myDTO;
-            }
-            else
-            {
-                _myDTO.View = "Edit";
-                _myDTO.Message = "Invalid entries. Please try again later.";
-                _myDTO.CandidateExam = candidateExam;
-            }
-            return _myDTO;
-        }
+                
+                //if (candidateExam.CandidateExamStems == null)
+                //{
+                //    _myDTO.View = "SitForExam";
+                //    _myDTO.Message = "Your answers failed to submit. Please try again later.";
+                //    _myDTO.CandidateExam = candidateExam;
+                //    return _myDTO;
+                //}
 
-        public async Task<MyDTO> GetForDelete(int id)
-        {
-            _myDTO.View = "Delete";
-            if (id == null || _db.CandidateExams == null)
-            {
-                _myDTO.View = "Index";
-                _myDTO.Message = "The requested Candidate Exam could not be found. Please try again later."; 
-                _myDTO.CandidateExams = await _unit.CandidateExam.GetAllAsync();
-                return _myDTO;
-            }
-            _myDTO.CandidateExam = await _unit.CandidateExam.GetAsync(id);
-            if (_myDTO.CandidateExam == null)
-            {
-                _myDTO.View = "Index";
-                _myDTO.Message = "The requested Candidate Exam could not be found. Please try again later.";
-                _myDTO.CandidateExams = await _unit.CandidateExam.GetAllAsync();
-            }
-            return _myDTO;
-        }
+                
 
-        public async Task<MyDTO> Delete(int id)
-        {
-            _myDTO.View = "Index";
-            _myDTO.Message = "The requested exam has been deleted successfully.";
-            if (!await _unit.CandidateExam.Exists(id))
-            {
-                _myDTO.Message = "The requested Candidate Exam could not be found. Please try again later.";
-                return _myDTO;
+                //for (int i = 0; i < canExStems.Count(); i++)
+                //{
+                //    //_unit.CandidateExamStem.AddOrUpdate(canExStems[i]);
+                //    canExStems[i].CandidateExam = candidateExam;
+                //}
+
+                
+
+                
+                
+                
             }
-            CandidateExam candidateExam = await _unit.CandidateExam.GetAsync(id);
-            _unit.CandidateExam.Delete(candidateExam);
-            await _unit.SaveAsync();
-            _myDTO.CandidateExams = await _unit.CandidateExam.GetAllAsync();
             return _myDTO;
         }
     }

@@ -1,13 +1,12 @@
-﻿@model TeamAssignment4A.Models.Candidate
+﻿@model TeamAssignment4A.Dtos.CandidateDto
 
 @{
     ViewData["Title"] = "Details";
 }
 <h3 class="custom-font fadein center-adjust">Candidate Details</h3>
 <hr />
-<div class="custom-font fadein" style="background-color:#0006">
+<div class="custom-font fadein" >
     <dl class="row">
-
         <dt class="col-sm-6 rightalign">
             @Html.DisplayNameFor(model => model.FirstName)
         </dt>

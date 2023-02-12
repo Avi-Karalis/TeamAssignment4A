@@ -1,13 +1,17 @@
+/*basic rules for html*/
 html {
     font-size: 14px;
+    position: relative;
+    min-height: 100%;
+    margin-top:10px;
 }
-
+/*adaptation with screen size changing*/
 @media (max-width: 500px) {
     .container {
         width: 40%;
     }
 }
-
+/*adaptation with screen size changing*/
 @media only screen and (max-width: 767px) {
     .table {
         display: block;
@@ -15,9 +19,8 @@ html {
     }
 }
 
-html {
-    position: relative;
-    min-height: 100%;
+.h2{
+    margin-left:40px;
 }
 
 body {
@@ -68,12 +71,9 @@ button > a {
 
 .custom-font {
     font-family: Arial, Helvetica, sans-serif;
+    color: black;
+   
 }
-
-.table {
-    animation: fadein 1.5s;
-}
-
 
 .btn:hover {
     box-shadow: 0px 0px 10px #ddd;
@@ -90,7 +90,6 @@ button > a {
         filter: brightness(115%) blur(0px);
         box-shadow: 0px 0px 0px #ddd;
     }
-
 
 .btn-primary {
     animation: fadein 1.5s;
@@ -111,15 +110,19 @@ button > a {
 .btn-warning {
     animation: fadein 1s;
 }
-
-
+/*Position rules*/
 .center-adjust {
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
-
+/*Position rules*/
+.left-adjust{
+   position:relative;
+   top:5px;
+   left:242px;
+}
+/*Position rules*/
 .rightalign {
     text-align: right;
     text-decoration: underline;
@@ -128,8 +131,6 @@ button > a {
 .typing-text {
     white-space: nowrap;
 }
-
-
 
 .col-md-4 text:hover {
     color: #fdec6e;
@@ -140,55 +141,45 @@ button > a {
     transition: all 0.2s ease-in;
 }
 
-
-
-
 .button {
     text-align: center;
 }
 
 .table {
+    animation: fadein 1.5s;
     table-layout: fixed;
     word-wrap: break-word;
     border-radius: 30px;
-    background-color: #0009;
+    font-weight: bold;
     width: 900px;
     margin-left: 200px;
+    color: black;
 }
 
-/*select*/
-/*.form-control:focus {
-    box-shadow: 0 0 6px 3px #48abe0,0 0 6px 2px #48abe0 inset;
-}
-
-.form-control:hover {
-    box-shadow:  0 0 6px 3px #48abe0 ,0 0 6px 2px #48abe0 inset;
-}
-*/
-
+/*drop shadow on select on form*/
 .form-control:focus {
     box-shadow: 0 0 3px #48abe0 inset, 0 0 6px 2px #48abe0 inset, 0 0 9px 4px #48abe0 inset, 5px 5px 5px rgba(0,0,0,0.2);
 }
-
+/*drop shadow on hover on form*/
 .form-control:hover {
     box-shadow: 0 0 3px #48abe0 inset, 0 0 6px 2px #48abe0 inset, 0 0 9px 4px #48abe0 inset, 5px 5px 5px rgba(0,0,0,0.2);
 }
-
+/*drop shadow on hover on nav-link*/
 .nav-link:hover {
     text-shadow: 0 0 20px #3498db, 0 0 30px #3498db, 0 0 40px #FFFFFF;
 }
 
-
+/*dark mode*/
 .dark-mode {
     background-color: white;
     color: white;
     background-image: url(../Themes/websitebg.png);
 }
-
+/*drop shadow on hover on navbar-brand*/
 .navbar-brand:hover {
     text-shadow: 0 0 20px #3498db, 0 0 30px #3498db, 0 0 40px #FFFFFF;
 }
-
+/* dark mode button switch*/
 .switch {
     position: relative;
     display: flex;
@@ -197,11 +188,11 @@ button > a {
     height: 34px;
     margin-left: 40px;
 }
-
-    .switch input {
-        display: none;
-    }
-
+/* dark mode button switch*/
+.switch input {
+     display: none;
+}
+/* dark mode button switch*/
 .slider {
     position: absolute;
     cursor: pointer;
@@ -214,35 +205,35 @@ button > a {
     transition: .4s;
     border-radius: 34px;
 }
-
-    .slider:before {
-        position: absolute;
-        content: "";
-        height: 25px;
-        width: 25px;
-        left: 4px;
-        bottom: 4px;
-        background-color: lightgrey;
-        -webkit-transition: .4s;
-        transition: .4s;
-        border-radius: 50%;
+/* dark mode button switch*/
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 25px;
+    width: 25px;
+    left: 4px;
+    bottom: 4px;
+    background-color: lightgrey;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%;
     }
-
+/* dark mode button switch*/
 input:checked + .slider {
     background-color: cornflowerblue;
 }
-
+/* dark mode button switch*/
 input:focus + .slider {
     box-shadow: 0 0 1px #2196F3;
 }
-
+/* dark mode button switch*/
 input:checked + .slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
 }
 
-/*------ ADDED CSS ---------*/
+/* dark mode button switch*/
 .slider:after {
     content: "\1F31E";
     color: white;
@@ -254,7 +245,7 @@ input:checked + .slider:before {
     font-size: 26px;
     font-family: Verdana, sans-serif;
 }
-
+/* dark mode button switch*/
 input:checked + .slider:after {
     content: '\1F312';
     transform: translate(-50%-50%);
@@ -266,54 +257,347 @@ input:checked + .slider:after {
 
 
 
-@keyframes fadein {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+.custom-font-black{
+    color:black;
 }
 
+.privacyButton{
+    color:blue;
+}
 
-
+/*light mode*/
 .btn-edit {
-    background-color: #5cb85c;
-    color: white;
+    font-weight:bold;
+    background-color: green;
+    color: black;
 }
 
+.btn-edit:hover{
+    background-color:green;
+}
+
+/*light mode*/
 .btn-details {
+    font-weight: bold;
     background-color: #0275d8;
-    color: white;
+    color: black;
 }
 
+    .btn-details:hover {
+        background-color: #0275d8;
+    }
+
+
+/*light mode*/
 .btn-delete {
+    font-weight: bold;
     background-color: #d9534f;
-    color: white;
+    color: black;
 }
 
+    .btn-delete:hover {
+        background-color: #d9534f;
+    }
+
+
+/*Light mode*/
+.btn-blue {
+    --color: #375a7f;
+    --color2: rgb(10, 25, 30);
+    padding: 0.8em 1.75em;
+    background-color: transparent;
+    border-radius: 6px;
+    border: 3px solid var(--color);
+    transition: .5s;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 1;
+    font-weight: 700;
+    font-size: 10px;
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    text-transform: uppercase;
+    color: var(--color);
+}
+
+    .btn-blue::after, .btn-blue::before {
+        content: '';
+        display: block;
+        height: 100%;
+        width: 100%;
+        transform: skew(90deg) translate(-50%, -50%);
+        position: absolute;
+        inset: 50%;
+        left: 25%;
+        z-index: -1;
+        transition: .5s ease-out;
+        background-color: var(--color);
+    }
+
+    .btn-blue::before {
+        top: -50%;
+        left: -25%;
+        transform: skew(90deg) rotate(180deg) translate(-50%, -50%);
+    }
+
+    .btn-blue:hover::before {
+        transform: skew(45deg) rotate(180deg) translate(-50%, -50%);
+    }
+
+    .btn-blue:hover::after {
+        transform: skew(45deg) translate(-50%, -50%);
+    }
+
+    .btn-blue:hover {
+        font-weight: 700;
+        color: var(--color2);
+    }
+
+    .btn-blue:active {
+        filter: brightness(.7);
+        transform: scale(.98);
+    }
+
+    /*Light mode*/
+.btn-yellow {
+    --color: yellow;
+    --color2: rgb(10, 25, 30);
+    padding: 0.8em 1.75em;
+    background-color: transparent;
+    border-radius: 6px;
+    border: 3px solid var(--color);
+    transition: .5s;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 1;
+    font-weight: 700;
+    font-size: 10px;
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    text-transform: uppercase;
+    color: var(--color);
+}
+
+    .btn-yellow::after, .btn-yellow::before {
+        content: '';
+        display: block;
+        height: 100%;
+        width: 100%;
+        transform: skew(90deg) translate(-50%, -50%);
+        position: absolute;
+        inset: 50%;
+        left: 25%;
+        z-index: -1;
+        transition: .5s ease-out;
+        background-color: var(--color);
+    }
+
+    .btn-yellow::before {
+        top: -50%;
+        left: -25%;
+        transform: skew(90deg) rotate(180deg) translate(-50%, -50%);
+    }
+
+    .btn-yellow:hover::before {
+        transform: skew(45deg) rotate(180deg) translate(-50%, -50%);
+    }
+
+    .btn-yellow:hover::after {
+        transform: skew(45deg) translate(-50%, -50%);
+    }
+
+    .btn-yellow:hover {
+        font-weight: 700;
+        color: var(--color2);
+    }
+
+    .btn-yellow:active {
+        filter: brightness(.7);
+        transform: scale(.98);
+    }
+
+
+.btn-black {
+    --color: black;
+    --color2: white;
+    padding: 0.8em 1.75em;
+    background-color: transparent;
+    border-radius: 6px;
+    border: 3px solid var(--color);
+    transition: .5s;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 1;
+    font-weight: 700;
+    font-size: 10px;
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    text-transform: uppercase;
+    color: var(--color);
+}
+
+    .btn-black::after, .btn-black::before {
+        content: '';
+        display: block;
+        height: 100%;
+        width: 100%;
+        transform: skew(90deg) translate(-50%, -50%);
+        position: absolute;
+        inset: 50%;
+        left: 25%;
+        z-index: -1;
+        transition: .5s ease-out;
+        background-color: var(--color);
+    }
+
+    .btn-black::before {
+        top: -50%;
+        left: -25%;
+        transform: skew(90deg) rotate(180deg) translate(-50%, -50%);
+    }
+
+    .btn-black:hover::before {
+        transform: skew(45deg) rotate(180deg) translate(-50%, -50%);
+    }
+
+    .btn-black:hover::after {
+        transform: skew(45deg) translate(-50%, -50%);
+    }
+
+    .btn-black:hover {
+        font-weight: 700;
+        color: var(--color2);
+    }
+
+    .btn-black:active {
+        filter: brightness(.7);
+        transform: scale(.98);
+    }
+
+
+
+.dark-mode .btn-black {
+    --color: white;
+    --color2: black;
+    padding: 0.8em 1.75em;
+    background-color: transparent;
+    border-radius: 6px;
+    border: 3px solid var(--color);
+    transition: .5s;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 1;
+    font-weight: 700;
+    font-size: 10px;
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    text-transform: uppercase;
+    color: var(--color);
+}
+
+    .dark-mode .btn-black::after, dark-mode .btn-black::before {
+        content: '';
+        display: block;
+        height: 100%;
+        width: 100%;
+        transform: skew(90deg) translate(-50%, -50%);
+        position: absolute;
+        inset: 50%;
+        left: 25%;
+        z-index: -1;
+        transition: .5s ease-out;
+        background-color: var(--color);
+    }
+
+    .dark-mode .btn-black::before {
+        top: -50%;
+        left: -25%;
+        transform: skew(90deg) rotate(180deg) translate(-50%, -50%);
+    }
+
+.dark-mode .btn-black:hover::before {
+    transform: skew(45deg) rotate(180deg) translate(-50%, -50%);
+}
+
+.dark-mode .btn-black:hover::after {
+    transform: skew(45deg) translate(-50%, -50%);
+}
+
+.dark-mode .btn-black:hover {
+    font-weight: 700;
+    color: var(--color2);
+}
+
+.dark-mode .btn-black:active {
+    filter: brightness(.7);
+    transform: scale(.98);
+}
+
+
+/*dark mode*/
 .dark-mode .btn-edit {
+    font-weight: bolder;
     background-color: darkgreen;
     color: white;
 }
-
+/*dark mode*/
 .dark-mode .btn-details {
+    font-weight: bold;
     background-color: darkblue;
     color: white;
 }
-
+/*dark mode*/
 .dark-mode .btn-delete {
+    font-weight: bold;
     background-color: darkred;
     color: white;
 }
 
 
+.dark-mode .textLogin{
+    color:white;
+}
 
+
+.dark-mode .containerFooter{
+    color:white;
+}
+
+.dark-mode .typing-text{
+    color:white;
+}
+
+.dark-mode .buttonLogin{
+    color:white;
+}
+
+.dark-mode .buttonLogin:hover:before{
+    background-color:white;
+}
+
+.dark-mode .custom-font {
+    color: white;
+}
+
+.dark-mode .custom-font-black{
+    color:black;
+}
+
+.dark-mode .custom-font-black .control-label{
+    color:white;
+}
+
+.dark-mode .table{
+    font-weight:bold;
+    color:white;
+}
+
+.dark-mode .privacyButton{
+    color:lightblue;
+}
 /*
     button-nav. is sidenav button
 */
-
 .button-nav {
     z-index: 1;
     position: fixed;
@@ -332,38 +616,403 @@ input:checked + .slider:after {
     background: #040f16;
     color: #f5f5f5;
 }
+/*side nav button*/
+.button-nav:hover {
+    box-shadow: 0 0 20px 0px #03436b;
+}
+/*side nav button*/
+.button-nav .icon {
+     position: absolute;
+     height: 40px;
+     width: 70px;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     transition: all 0.5s;
+ }
+/*side nav button*/
+.button-nav .text {
+     transform: translateX(55px);
+ }
 
-    .button-nav:hover {
-        box-shadow: 0 0 20px 0px #03436b;
+/*side nav button*/
+.button-nav:focus {
+     outline: none;
+}
+
+/*side nav container*/
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+/*side nav*/
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #222222;
+    overflow-x: hidden;
+    transition: 0.1s;
+    padding-top: 60px;
+    border-radius: 0 5px 5px 0;
+}
+/*side nav*/
+.sidenav a {
+    padding: 8px 8px 8px 0px;
+    text-decoration: none;
+    font-size: 16px;
+    color: white;
+    transition: 0.3s;
+    text-align: left;
+    margin-left: 18px;
+}
+/*side nav*/
+.sidenav a:hover {
+     color: white;
+}
+
+/*side nav*/
+#main {
+    transition: margin-left .5s;
+    padding: 16px;
+}
+
+.divLogout {
+    position: absolute;
+    top: 0;
+    right: 10px;
+}
+    .divLogout a {
+        font-weight: bold;
     }
 
-    .button-nav .icon {
+
+.textLogin {
+    color: black;
+}
+
+.containerFooter{
+    text-align:center;
+    color:black;
+}
+
+.btnLogout {
+    position:absolute;
+    top:26px;
+    right:26px;
+    padding: 1.3em 3em;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #000;
+    background-color: #fff;
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    outline: none;
+}
+
+    .btnLogout:hover {
+        background-color: darkred;
+        box-shadow: 0px 10px 20px rgb(141, 118, 118);
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .btnLogout:active {
+        transform: translateY(-1px);
+    }
+
+    .login-box .buttonLogin{
+        color:white;
+    }
+
+    .login-box .buttonLogin:hover:before{
+        background-color:white;
+    }
+
+.buttonLogin {
+    align-items: center;
+    background-color: transparent;
+    color: black;
+    cursor: pointer;
+    display: flex;
+    font-family: ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.5;
+    text-decoration: none;
+    text-transform: uppercase;
+    outline: 0;
+    border: 0;
+    padding: 1rem;
+}
+ /*log in button rules*/
+.buttonLogin:before {
+    background-color: #fff;
+    content: "";
+    display: inline-block;
+    height: 1px;
+    margin-right: 10px;
+    transition: all .42s cubic-bezier(.25,.8,.25,1);
+    width: 0;
+}
+ /*log in button rules*/
+.buttonLogin:hover:before {
+    background-color: black;
+    width: 3rem;
+}
+
+.login-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 400px;
+    padding: 40px;
+    margin: 20px auto;
+    transform: translate(-50%, -55%);
+    background: rgba(0,0,0,.9);
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0,0,0,.6);
+    border-radius: 10px;
+}
+
+    .login-box p:first-child {
+        margin: 0 0 30px;
+        padding: 0;
+        color: #fff;
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    .login-box .user-box {
+        position: relative;
+    }
+
+        .login-box .user-box input {
+            width: 100%;
+            padding: 10px 0;
+            font-size: 16px;
+            color: #fff;
+            margin-bottom: 30px;
+            border: none;
+            border-bottom: 1px solid #fff;
+            outline: none;
+            background: transparent;
+        }
+
+        .login-box .user-box label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 10px 0;
+            font-size: 16px;
+            color: #fff;
+            pointer-events: none;
+            transition: .5s;
+        }
+
+        .login-box .user-box input:focus ~ label,
+        .login-box .user-box input:not(:focus):not(:placeholder-shown) ~ label.on-top {
+            top: -20px;
+            left: 0;
+            color: #fff;
+            font-size: 12px;
+        }
+
+
+        .login-box form button {
+            position: relative;
+            display: inline-block;
+            padding: 10px 20px;
+            font-weight: bold;
+            color: #fff;
+            font-size: 16px;
+            text-decoration: none;
+            text-transform: uppercase;
+            overflow: hidden;
+            transition: .5s;
+            margin-top: 40px;
+            letter-spacing: 3px;
+            background-color:transparent
+        }
+
+    .login-box button:hover {
+        background: #fff;
+        color: #272727;
+        border-radius: 5px;
+    }
+
+    .login-box button span {
         position: absolute;
-        height: 40px;
-        width: 70px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: all 0.5s;
+        display: block;
     }
 
-    .button-nav .text {
-        transform: translateX(55px);
+        .login-box button span:nth-child(1) {
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #fff);
+            animation: btn-anim1 1.5s linear infinite;
+        }
+
+@keyframes btn-anim1 {
+    0% {
+        left: -100%;
     }
 
-    /*.button-nav:hover .icon {
-        width: 175px;
+    50%,100% {
+        left: 100%;
     }
-*/
-    /*.button-nav:hover .text {
-        transition: all 0.5s;
+}
+
+.login-box button span:nth-child(2) {
+    top: -100%;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, #fff);
+    animation: btn-anim2 1.5s linear infinite;
+    animation-delay: .375s
+}
+
+@keyframes btn-anim2 {
+    0% {
+        top: -100%;
+    }
+
+    50%,100% {
+        top: 100%;
+    }
+}
+
+.login-box button span:nth-child(3) {
+    bottom: 0;
+    right: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(270deg, transparent, #fff);
+    animation: btn-anim3 1.5s linear infinite;
+    animation-delay: .75s
+}
+
+@keyframes btn-anim3 {
+    0% {
+        right: -100%;
+    }
+
+    50%,100% {
+        right: 100%;
+    }
+}
+
+.login-box button span:nth-child(4) {
+    bottom: -100%;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(360deg, transparent, #fff);
+    animation: btn-anim4 1.5s linear infinite;
+    animation-delay: 1.125s
+}
+.account-headers{
+    text-align:center;
+}
+
+@keyframes btn-anim4 {
+    0% {
+        bottom: -100%;
+    }
+
+    50%,100% {
+        bottom: 100%;
+    }
+}
+
+.login-box p:last-child {
+    color: #aaa;
+    font-size: 14px;
+}
+
+.login-box button.buttonLogin {
+    color: #fff;
+    text-decoration: none;
+}
+
+    .login-box button.buttonLogin:hover {
+        background: transparent;
+        color: #aaa;
+        border-radius: 5px;
+    }
+
+/*PeopleCert Operations Menu drop shadow*/
+.typing-text {
+    color:grey;
+    text-shadow: 2px 2px 2px black;
+}
+
+/*rounding left side rule*/
+.left-side-rounding {
+    border-top-left-radius: 100px;
+    border-bottom-left-radius: 100px;
+}
+/*rounding left side rule*/
+.right-side-rounding {
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+}
+
+/*dark background form some views*/
+.bg-dark-for-light-mode {
+    background-color: #0006;
+}
+/*create button positioning*/
+.create-btn-pst {
+    margin-right: 700px;
+}
+
+.center-middle-text {
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20vh;
+}
+
+
+.center-middle-text1 {
+    margin-top:10px;
+    display: flex;
+    align-items: center;
+    height: 30vh;
+    flex-direction: column;
+    animation: fadein 3.5;
+}
+
+
+.Center-Div{
+    text-align:center;
+}
+
+
+
+
+/*fade in animation rules*/
+@keyframes fadein {
+    from {
         opacity: 0;
-    }*/
-
-    .button-nav:focus {
-        outline: none;
     }
 
-   /* .button-nav:active .icon {
-        transform: scale(0.85);
-    }*/
+    to {
+        opacity: 1;
+    }
+}

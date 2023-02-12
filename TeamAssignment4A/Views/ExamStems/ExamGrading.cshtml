@@ -1,0 +1,67 @@
+﻿@using TeamAssignment4A.Models.JointTables;
+@model List<TeamAssignment4A.Models.JointTables.CandidateExamStem>
+
+@{
+    ViewData["Title"] = "ExamGrading";
+}
+
+<h1>Exam Grading</h1>
+
+<h4>CandidateExamStem</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ExamGrading">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            @for(int i = 0; i < 4; i++)
+            {
+                <input type="hidden" asp-for="@Model[i].Id" class="form-control" />
+                <div class="form-group">
+                    @Html.DisplayNameFor(modelItem => @Model[i].ExamStem.Stem.Question)
+                    <br>
+                    @Html.Raw(@Model[i].ExamStem.Stem.Question)
+                    <input type="hidden" asp-for="@Model[i].ExamStem.Stem.Question" />
+                </div>
+                <input type="hidden" asp-for="@Model[i].ExamStem.Exam.Id " />
+                <input type="hidden" asp-for="@Model[i].ExamStem.Exam.Certificate.Id" />
+                <input type="hidden" asp-for="@Model[i].CandidateExam.Id" class="form-control" />
+
+                <input type="hidden" asp-for="@Model[i].ExamStem.Id" />
+                <input type="hidden" asp-for="@Model[i].ExamStem.Stem.Id" />
+                <input type="hidden" asp-for="@Model[i].ExamStem.Stem.OptionA" />
+                <input type="hidden" asp-for="@Model[i].ExamStem.Stem.OptionB" />
+                <input type="hidden" asp-for="@Model[i].ExamStem.Stem.OptionC" />
+                <input type="hidden" asp-for="@Model[i].ExamStem.Stem.OptionD" />
+                <input type="hidden" asp-for="@Model[i].ExamStem.Stem.CorrectAnswer" />
+                <div class="form-group">
+                    <label asp-for="@Model[i].SubmittedAnswer" class="control-label"></label>
+                    <input readonly asp-for="@Model[i].SubmittedAnswer" class="form-control" />
+                    <span asp-validation-for="@Model[i].SubmittedAnswer" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+
+                    <input type="hidden" asp-for="@Model[i].Score" class="form-control" />
+                    
+                </div>
+                <div class="form-group">
+
+                    <input type="hidden" asp-for="@Model[i].ExamStem.Id" class="form-control" />
+
+                </div>
+                
+            }
+            
+            
+            <div class="form-group">
+                <input type="submit" value="Confirm Grading" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

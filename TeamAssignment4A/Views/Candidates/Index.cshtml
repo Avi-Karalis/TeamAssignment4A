@@ -1,11 +1,11 @@
-﻿@model IEnumerable<TeamAssignment4A.Models.Candidate>
+﻿@model IEnumerable<TeamAssignment4A.Dtos.CandidateDto>
 
 @{
     ViewData["Title"] = "Index";
 }
 <h2 class="custom-font fadein center-adjust">Candidate List</h2>
 
-<p class="center-adjust" style="margin-right:700px">
+<p class="left-adjust" >
     <a asp-action="Create" class=" custom-font btn btn-info">Create New</a>
 </p>
 <table class="table">
@@ -13,62 +13,23 @@
            onclick="scrollToTop()" style="cursor:pointer;"
            data-toggle="tooltip" data-placement="top" title="click to scroll to top">
         <tr style="border-style:hidden;">
-            <th style="border-top-left-radius: 100px; border-bottom-left-radius: 100px;">
+            <th class="left-side-rounding">
 
                 @Html.DisplayNameFor(model => model.FirstName)
             </th>
-            @* <th>
-            @Html.DisplayNameFor(model => model.MiddleName)
-            </th>*@
+           
             <th>
                 @Html.DisplayNameFor(model => model.LastName)
             </th>
-            @* <th>
-            @Html.DisplayNameFor(model => model.Gender)
-            </th>*@
+          
             <th>
                 @Html.DisplayNameFor(model => model.NativeLanguage)
             </th>
-            @* <th>
-            @Html.DisplayNameFor(model => model.CountryOfResidence)
-            </th>*@
-            @*  <th>
-            @Html.DisplayNameFor(model => model.Birthdate)
-            </th>*@
+           
             <th>
                 @Html.DisplayNameFor(model => model.Email)
             </th>
-            @* <th>
-            @Html.DisplayNameFor(model => model.LandlineNumber)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.MobileNumber)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.Address1)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.Address2)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.PostalCode)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.Town)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.Province)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.PhotoIdType)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.PhotoIdNumber)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.PhotoIdDate)
-            </th>*@
-            <th style="border-top-right-radius: 100px; border-bottom-right-radius: 100px;">Options</th>
+            <th class="right-side-rounding">Options</th>
         </tr>
     </thead>
     <tbody>
@@ -79,57 +40,18 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.FirstName)
                 </td>
-                @*<td>
-            @Html.DisplayFor(modelItem => item.MiddleName)
-            </td>*@
+                
                 <td>
                     @Html.DisplayFor(modelItem => item.LastName)
                 </td>
-                @* <td>
-            @Html.DisplayFor(modelItem => item.Gender)
-            </td>*@
+                
                 <td>
                     @Html.DisplayFor(modelItem => item.NativeLanguage)
                 </td>
-                @* <td>
-            @Html.DisplayFor(modelItem => item.CountryOfResidence)
-            </td>*@
-                @* <td>
-            @Html.DisplayFor(modelItem => item.Birthdate)
-            </td>*@
+                
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
-                @*<td>
-            @Html.DisplayFor(modelItem => item.LandlineNumber)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.MobileNumber)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.Address1)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.Address2)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.PostalCode)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.Town)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.Province)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.PhotoIdType)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.PhotoIdNumber)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.PhotoIdDate)
-            </td>*@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-edit w-100 mb-2">Edit</a>
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-details w-100 mb-2">Details</a>

@@ -1,4 +1,4 @@
-﻿@model TeamAssignment4A.Models.Candidate
+﻿@model TeamAssignment4A.Dtos.CandidateDto
 
 @{
     ViewData["Title"] = "Delete";
@@ -117,6 +117,9 @@
             @Html.DisplayFor(model => model.PhotoIdDate)
         </dd>
     </dl>
+  
+</div>
+<p>
     <div class="center-adjust">
         <form asp-action="Delete">
             <input type="hidden" asp-for="Id" />
@@ -124,4 +127,4 @@
             <a asp-action="Index" style="width:110px;" class="btn btn-primary col-sm-6">Back to List</a>
         </form>
     </div>
-</div>
+</p>

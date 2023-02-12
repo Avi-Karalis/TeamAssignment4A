@@ -6,7 +6,7 @@
 
 <h2 class="custom-font fadein center-adjust">Stem List</h2>
 
-<p class="center-adjust">
+<p class="left-adjust">
     <a asp-action="Create" class="custom-font btn btn-info">Create New</a>
 </p>
 <table class="table">
@@ -14,7 +14,7 @@
            onclick="scrollToTop()" style="cursor:pointer;"
            data-toggle="tooltip" data-placement="top" title="click to scroll to top">
         <tr style="border-style:hidden;">
-            <th style="border-top-left-radius: 100px; border-bottom-left-radius: 100px;">
+            <th class="left-side-rounding">
                 @Html.DisplayNameFor(model => model.Question)
             </th>
             <th>
@@ -35,7 +35,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.TopicDescription)
             </th>
-            <th style="border-top-right-radius: 100px; border-bottom-right-radius: 100px;">Options</th>
+            <th class="right-side-rounding">Options</th>
         </tr>
     </thead>
     <tbody>
@@ -65,9 +65,9 @@
                     @Html.DisplayFor(modelItem => item.TopicDescription)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary w-100 mb-2">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-success w-100 mb-2">Details</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger w-100 mb-2">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-edit w-100 mb-2">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-details w-100 mb-2">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-delete w-100 mb-2">Delete</a>
                 </td>
             </tr>
         }
