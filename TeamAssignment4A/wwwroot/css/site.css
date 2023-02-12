@@ -690,6 +690,9 @@ input:checked + .slider:after {
     animation: btn-anim4 1.5s linear infinite;
     animation-delay: 1.125s
 }
+.account-headers{
+    text-align:center;
+}
 
 @keyframes btn-anim4 {
     0% {
