@@ -13,26 +13,29 @@ namespace TeamAssignment4A.Data.Repositories
         }
         public async Task<ExamStem?> GetAsync(int id)
         {
-            return await _db.ExamStems.Include(exs => exs.Exam)
+            return await _db.ExamStems.AsNoTracking().Include(exs => exs.Exam)
                 .Include(exs => exs.Stem).FirstOrDefaultAsync(x => x.Id == id);
         }
 
 
         public async Task<IEnumerable<ExamStem>?> GetAllAsync()
         {
-            return await _db.ExamStems.Include(exs => exs.Exam)
+            return await _db.ExamStems.AsNoTracking().Include(exs => exs.Exam)
                 .Include(exs => exs.Stem).ToListAsync<ExamStem>();
         }
 
         // Get all Exam Stems for a specific exam
         public async Task<IEnumerable<ExamStem>?> GetExamStemsByExam(Exam exam)
         {
-            return await _db.ExamStems.Where(exs => exs.Exam == exam).
-                Include(exs => exs.Exam).Include(exs => exs.Stem).ToListAsync<ExamStem>();
+            return await _db.ExamStems.AsNoTracking().Where(exs => exs.Exam == exam)
+                .AsNoTracking().Include(exs => exs.Exam.Certificate)
+                .AsNoTracking().Include(exs => exs.Exam.CandidateExams)
+                .AsNoTracking().Include(exs => exs.Exam).AsNoTracking().Include(exs => exs.Stem)
+                .AsNoTracking().Include(exs => exs.Stem.Topic).ToListAsync<ExamStem>();
         }
         public async Task<IEnumerable<int>?> GetStemIdsByExam(Exam exam)
         {
-            return await _db.ExamStems.Where(exs => exs.Exam == exam)
+            return await _db.ExamStems.AsNoTracking().Where(exs => exs.Exam == exam)
                 .Select(exs => exs.Id).ToListAsync();
         }
 

@@ -36,28 +36,29 @@ namespace TeamAssignment4A.Controllers
 
         [Authorize(Roles = "Admin, Candidate")]
         [HttpGet, ActionName("SitForExam")]
-        [ProducesResponseType(typeof(CandidateExam), 200)]
+        [ProducesResponseType(typeof(CandidateExamStem), 200)]
         public async Task<IActionResult> SitForExam(int id)
         {
             List<string> selections = new List<string> { "A", "B", "C", "D" };
             ViewBag.Selections = new SelectList(selections);
-            var exam = await _service.GetById(id);
-            return View(await _service.GetByExam(exam));
+            return View(await _service.GetExamStems(id));
         }
 
         [Authorize(Roles = "Admin, Candidate")]
         [HttpPost, ActionName("SubmitExam")]
-        [ProducesResponseType(typeof(CandidateExam), 200)]
-        public async Task<IActionResult> SubmitExam(int id, [Bind("Id,AssessmentTestCode,ExaminationDate,ScoreReportDate," +
-                "CandidateScore,PercentageScore,AssessmentResultLabel,MarkerUserName," +
-                "Candidate,Exam,CandidateExamStems")] CandidateExam candidateExam)
+        [ProducesResponseType(typeof(CandidateExamStem), 200)]
+        public async Task<IActionResult> SubmitExam([Bind("Id,SubmittedAnswer,Score,ExamStem," +
+            "CandidateExam")] List<CandidateExamStem> ces)
         {
-            MyDTO myDTO = await _service.SubmitAnswers(id, candidateExam);
+            IdentityUser? user = await _userManager.GetUserAsync(User);
+            CandidateExam? canExam = 
+                await _service.GetCanExamForInput(user, ces.ElementAt(1).ExamStem.Exam.Id);
+            MyDTO myDTO = await _service.SubmitAnswers(canExam, ces);
             ViewBag.Message = myDTO.Message;
             if (myDTO.View == "SitForExam")
             {
                 return RedirectToAction($"{myDTO.View}", myDTO.CandidateExam);
-                
+
             }
             return RedirectToAction($"{myDTO.View}", "Home");
         }
