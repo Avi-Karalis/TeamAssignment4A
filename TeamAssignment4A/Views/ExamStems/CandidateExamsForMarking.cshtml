@@ -6,9 +6,7 @@
 
 <h1>CandidateExamsForMarking</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
@@ -43,8 +41,10 @@
                 @Html.DisplayFor(modelItem => item.MarkerUserName)
             </td>
             <td>
-                    <a class="custom-font btn btn-primary" asp-action="ExamSubmit" asp-route-id="@item.Id">Grade</a> |
+
+                    <a class="custom-font btn btn-primary" asp-action="ExamGrading" asp-route-id="@item.Id">Grade</a> |
                     <a class="custom-font btn btn-secondary" asp-action="ManualExamGrading" asp-route-id="@item.Id">Grade Manually</a>
+
             </td>
         </tr>
 }

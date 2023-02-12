@@ -8,6 +8,7 @@
 
 <p class="left-adjust">
     <a asp-action="Create" class="custom-font btn btn-info">Create New</a>
+    <a asp-area="" asp-controller="AdminExams" asp-action="AssignJob" class="custom-font btn btn-warning">AssignJob To Marker</a>
 </p>
 <table class="table">
     <thead class=" sticky-header text-nowrap  text-center navbar-dark bg-primary"
@@ -25,24 +26,7 @@
     <tbody>
 @foreach (var item in Model) {
         <tr class="text-center">
-            @*<td>
-                @Html.DisplayFor(modelItem => item.AssessmentTestCode)
-            </td>*@
-            @*<td>
-                @Html.DisplayFor(modelItem => item.ExaminationDate)
-            </td>*@
-            @*<td>
-                @Html.DisplayFor(modelItem => item.ScoreReportDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CandidateScore)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PercentageScore)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AssessmentResultLabel)
-            </td>*@
+            
             <td>
                 @Html.DisplayFor(modelItem => item.TitleOfCertificate)
             </td>

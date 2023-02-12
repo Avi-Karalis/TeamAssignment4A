@@ -300,9 +300,243 @@ input:checked + .slider:after {
     }
 
 
+/*Light mode*/
+.btn-blue {
+    --color: #375a7f;
+    --color2: rgb(10, 25, 30);
+    padding: 0.8em 1.75em;
+    background-color: transparent;
+    border-radius: 6px;
+    border: 3px solid var(--color);
+    transition: .5s;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 1;
+    font-weight: 700;
+    font-size: 10px;
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    text-transform: uppercase;
+    color: var(--color);
+}
+
+    .btn-blue::after, .btn-blue::before {
+        content: '';
+        display: block;
+        height: 100%;
+        width: 100%;
+        transform: skew(90deg) translate(-50%, -50%);
+        position: absolute;
+        inset: 50%;
+        left: 25%;
+        z-index: -1;
+        transition: .5s ease-out;
+        background-color: var(--color);
+    }
+
+    .btn-blue::before {
+        top: -50%;
+        left: -25%;
+        transform: skew(90deg) rotate(180deg) translate(-50%, -50%);
+    }
+
+    .btn-blue:hover::before {
+        transform: skew(45deg) rotate(180deg) translate(-50%, -50%);
+    }
+
+    .btn-blue:hover::after {
+        transform: skew(45deg) translate(-50%, -50%);
+    }
+
+    .btn-blue:hover {
+        font-weight: 700;
+        color: var(--color2);
+    }
+
+    .btn-blue:active {
+        filter: brightness(.7);
+        transform: scale(.98);
+    }
+
+    /*Light mode*/
+.btn-yellow {
+    --color: yellow;
+    --color2: rgb(10, 25, 30);
+    padding: 0.8em 1.75em;
+    background-color: transparent;
+    border-radius: 6px;
+    border: 3px solid var(--color);
+    transition: .5s;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 1;
+    font-weight: 700;
+    font-size: 10px;
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    text-transform: uppercase;
+    color: var(--color);
+}
+
+    .btn-yellow::after, .btn-yellow::before {
+        content: '';
+        display: block;
+        height: 100%;
+        width: 100%;
+        transform: skew(90deg) translate(-50%, -50%);
+        position: absolute;
+        inset: 50%;
+        left: 25%;
+        z-index: -1;
+        transition: .5s ease-out;
+        background-color: var(--color);
+    }
+
+    .btn-yellow::before {
+        top: -50%;
+        left: -25%;
+        transform: skew(90deg) rotate(180deg) translate(-50%, -50%);
+    }
+
+    .btn-yellow:hover::before {
+        transform: skew(45deg) rotate(180deg) translate(-50%, -50%);
+    }
+
+    .btn-yellow:hover::after {
+        transform: skew(45deg) translate(-50%, -50%);
+    }
+
+    .btn-yellow:hover {
+        font-weight: 700;
+        color: var(--color2);
+    }
+
+    .btn-yellow:active {
+        filter: brightness(.7);
+        transform: scale(.98);
+    }
+
+
+.btn-black {
+    --color: black;
+    --color2: white;
+    padding: 0.8em 1.75em;
+    background-color: transparent;
+    border-radius: 6px;
+    border: 3px solid var(--color);
+    transition: .5s;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 1;
+    font-weight: 700;
+    font-size: 10px;
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    text-transform: uppercase;
+    color: var(--color);
+}
+
+    .btn-black::after, .btn-black::before {
+        content: '';
+        display: block;
+        height: 100%;
+        width: 100%;
+        transform: skew(90deg) translate(-50%, -50%);
+        position: absolute;
+        inset: 50%;
+        left: 25%;
+        z-index: -1;
+        transition: .5s ease-out;
+        background-color: var(--color);
+    }
+
+    .btn-black::before {
+        top: -50%;
+        left: -25%;
+        transform: skew(90deg) rotate(180deg) translate(-50%, -50%);
+    }
+
+    .btn-black:hover::before {
+        transform: skew(45deg) rotate(180deg) translate(-50%, -50%);
+    }
+
+    .btn-black:hover::after {
+        transform: skew(45deg) translate(-50%, -50%);
+    }
+
+    .btn-black:hover {
+        font-weight: 700;
+        color: var(--color2);
+    }
+
+    .btn-black:active {
+        filter: brightness(.7);
+        transform: scale(.98);
+    }
+
+
+
+.dark-mode .btn-black {
+    --color: white;
+    --color2: black;
+    padding: 0.8em 1.75em;
+    background-color: transparent;
+    border-radius: 6px;
+    border: 3px solid var(--color);
+    transition: .5s;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 1;
+    font-weight: 700;
+    font-size: 10px;
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    text-transform: uppercase;
+    color: var(--color);
+}
+
+    .dark-mode .btn-black::after, dark-mode .btn-black::before {
+        content: '';
+        display: block;
+        height: 100%;
+        width: 100%;
+        transform: skew(90deg) translate(-50%, -50%);
+        position: absolute;
+        inset: 50%;
+        left: 25%;
+        z-index: -1;
+        transition: .5s ease-out;
+        background-color: var(--color);
+    }
+
+    .dark-mode .btn-black::before {
+        top: -50%;
+        left: -25%;
+        transform: skew(90deg) rotate(180deg) translate(-50%, -50%);
+    }
+
+.dark-mode .btn-black:hover::before {
+    transform: skew(45deg) rotate(180deg) translate(-50%, -50%);
+}
+
+.dark-mode .btn-black:hover::after {
+    transform: skew(45deg) translate(-50%, -50%);
+}
+
+.dark-mode .btn-black:hover {
+    font-weight: 700;
+    color: var(--color2);
+}
+
+.dark-mode .btn-black:active {
+    filter: brightness(.7);
+    transform: scale(.98);
+}
+
+
 /*dark mode*/
 .dark-mode .btn-edit {
-    font-weight: bold;
+    font-weight: bolder;
     background-color: darkgreen;
     color: white;
 }
@@ -690,6 +924,9 @@ input:checked + .slider:after {
     animation: btn-anim4 1.5s linear infinite;
     animation-delay: 1.125s
 }
+.account-headers{
+    text-align:center;
+}
 
 @keyframes btn-anim4 {
     0% {
@@ -760,6 +997,14 @@ input:checked + .slider:after {
     flex-direction: column;
     animation: fadein 3.5;
 }
+
+
+.Center-Div{
+    text-align:center;
+}
+
+
+
 
 /*fade in animation rules*/
 @keyframes fadein {
