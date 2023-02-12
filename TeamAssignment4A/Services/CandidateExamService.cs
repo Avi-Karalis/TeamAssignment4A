@@ -79,17 +79,18 @@ namespace TeamAssignment4A.Services
                 _unit.CandidateExam.AddOrUpdate(candidateExam);
                 for (int i =0; i < canExStems.Count(); i++)
                 {
+                    //_unit.CandidateExamStem.AddOrUpdate(canExStems[i]);
+                    canExStems[i].CandidateExam = candidateExam;
                     canExStems[i].ExamStem.Stem = await _unit.Stem.GetAsync(canExStems[i].ExamStem.Stem.Id);
                     //canExStems[i].ExamStem.Stem.Topic = await _unit.Topic.GetAsync(canExStems[i].ExamStem.Stem.Topic.Id);
                     canExStems[i].ExamStem.Exam = await _unit.Exam.GetAsync(canExStems[i].ExamStem.Exam.Id);
-                    //_unit.CandidateExamStem.AddOrUpdate(canExStems[i]);
-                    canExStems[i].ExamStem = await _unit.ExamStem.GetAsync(canExStems[i].ExamStem.Id);
-                    candidateExam.CandidateExamStems.ElementAt(i).ExamStem = canExStems[i].ExamStem;
-                    candidateExam.CandidateExamStems.ElementAt(i).CandidateExam = candidateExam;
+                    //canExStems[i].ExamStem = await _unit.ExamStem.GetAsync(canExStems[i].ExamStem.Id);
+                    //candidateExam.CandidateExamStems.ElementAt(i).CandidateExam = candidateExam;
 
                     //canExStems[i].CandidateExam = candidateExam;
-                    await _unit.SaveAsync();
                 }
+                    candidateExam.CandidateExamStems = canExStems;
+                    await _unit.SaveAsync();
                 
                 if (candidateExam.CandidateExamStems == null)
                 {
