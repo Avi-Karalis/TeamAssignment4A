@@ -15,6 +15,7 @@ using TeamAssignment4A.Services;
 using Duende.IdentityServer.Stores;
 using TeamAssignment4A.Authorization;
 using System.Security.Cryptography.X509Certificates;
+using SignalRChat.Hubs;
 
 
 namespace TeamAssignment4A {
@@ -30,6 +31,7 @@ namespace TeamAssignment4A {
             builder.Services.AddDbContext<WebAppDbContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+            builder.Services.AddSignalR();
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
@@ -124,6 +126,7 @@ namespace TeamAssignment4A {
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
+            app.MapHub<ChatHub>("/chatHub");
 
             app.Run();
         
