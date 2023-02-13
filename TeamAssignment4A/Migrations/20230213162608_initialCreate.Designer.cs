@@ -12,13 +12,8 @@ using TeamAssignment4A.Data;
 namespace TeamAssignment4A.Migrations
 {
     [DbContext(typeof(WebAppDbContext))]
-<<<<<<<< HEAD:TeamAssignment4A/Migrations/20230213152608_PresentationTest.Designer.cs
-    [Migration("20230213152608_PresentationTest")]
-    partial class PresentationTest
-========
-    [Migration("20230213152155_InitialCreate")]
-    partial class InitialCreate
->>>>>>>> 66b0f1af8a83c5962af9811073e92a7b5c93bdb1:TeamAssignment4A/Migrations/20230213152155_InitialCreate.Designer.cs
+    [Migration("20230213162608_initialCreate")]
+    partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
