@@ -47,7 +47,7 @@ namespace TeamAssignment4A.Data.Repositories
         {
             return await _db.CandidateExams
                 .Where(ce => ce.Candidate == candidate && ce.CandidateScore != null)
-                .Include(ce => ce.Exam).Include(ce => ce.Candidate)
+                .Include(ce => ce.Exam).Include(ce => ce.Exam.Certificate).Include(ce => ce.Candidate)
                 .Include(ce => ce.CandidateExamStems).ToListAsync<CandidateExam>();
         }
 

@@ -45,7 +45,7 @@ namespace TeamAssignment4A.Models
 
         [Required]
         [Display(Name = "E-mail Address")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
 
         [Display(Name = "Landline Phone Number")]

@@ -81,6 +81,7 @@ namespace TeamAssignment4A.Services
         {
             IdentityUser user = await _unit.User.GetByEmail(candidateDto.UserEmail);
             candidateDto.User = user;
+            candidateDto.Email = user.UserName;
             
             Candidate candidate = _mapper.Map<Candidate>(candidateDto);
             _unit.Candidate.AddOrUpdate(candidate);
@@ -147,7 +148,7 @@ namespace TeamAssignment4A.Services
             candidate.NativeLanguage = candidateDto.NativeLanguage;
             candidate.CountryOfResidence = candidateDto.CountryOfResidence;
             candidate.Birthdate = candidateDto.Birthdate;
-            candidate.Email = candidateDto.Email;
+            candidate.Email = candidateDto.User.UserName;
             candidate.LandlineNumber = candidateDto.LandlineNumber;
             candidate.MobileNumber = candidateDto.MobileNumber;
             candidate.Address1 = candidateDto.Address1;
