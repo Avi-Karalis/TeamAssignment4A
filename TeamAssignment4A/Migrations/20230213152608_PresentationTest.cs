@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TeamAssignment4A.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class PresentationTest : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
