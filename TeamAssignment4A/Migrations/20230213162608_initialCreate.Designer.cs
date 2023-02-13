@@ -12,8 +12,8 @@ using TeamAssignment4A.Data;
 namespace TeamAssignment4A.Migrations
 {
     [DbContext(typeof(WebAppDbContext))]
-    [Migration("20230212142730_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230213162608_initialCreate")]
+    partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

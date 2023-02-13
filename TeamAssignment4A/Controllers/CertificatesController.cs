@@ -12,7 +12,7 @@ using TeamAssignment4A.Services;
 
 namespace TeamAssignment4A.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, QA")]
     public class CertificatesController : Controller
     {       
         private readonly CertificateService _service;
@@ -42,6 +42,7 @@ namespace TeamAssignment4A.Controllers
         }
 
         // GET: Certificates/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -49,6 +50,7 @@ namespace TeamAssignment4A.Controllers
 
         // POST: Certificates/Create        
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int id, [Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
         {
@@ -62,6 +64,7 @@ namespace TeamAssignment4A.Controllers
         }
 
         // GET: Certificates/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
             _myDTO = await _service.GetForUpdate(id);
@@ -75,6 +78,7 @@ namespace TeamAssignment4A.Controllers
 
         // POST: Certificates/Edit/5        
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,TitleOfCertificate,PassingGrade,MaximumScore")] Certificate certificate)
         {
@@ -88,6 +92,7 @@ namespace TeamAssignment4A.Controllers
         }
 
         // GET: Certificates/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             _myDTO = await _service.GetForDelete(id);
@@ -100,6 +105,7 @@ namespace TeamAssignment4A.Controllers
         }
 
         // POST: Certificates/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

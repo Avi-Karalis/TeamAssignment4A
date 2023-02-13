@@ -4,26 +4,27 @@
     ViewData["Title"] = "BookedExams";
 }
 
-<h1>Booked Exams</h1>
+<h1 class="custom-font fadein center-adjust">Booked Exams</h1>
 
-
+<hr />
 
 <table class="table">
-    <thead>
-        <tr>
-            <th>
+    <thead >
+        <tr class="text-center">
+            <th class="text-nowrap col-4">
                 @Html.DisplayNameFor(model => model.AssessmentTestCode)
             </th>
-            <th>
+            <th class="text-nowrap  col-4">
                 @Html.DisplayNameFor(model => model.ExaminationDate)
             </th>
             
-            <th></th>
+            <th class="col-4">Options</th>
+            
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr class="text-center">
             <td>
                 @Html.DisplayFor(modelItem => item.AssessmentTestCode)
             </td>
@@ -32,18 +33,18 @@
             </td>
             
             <td>
-                <a asp-action="ChangeDate" asp-route-id="@item.Id">Change Date</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Refund</a>
+                <a class="btn btn-primary" asp-action="ChangeDate" asp-route-id="@item.Id">Change Date</a> |
+                <a class="btn btn-warning" asp-action="Delete" asp-route-id="@item.Id">Refund</a>
             </td>
         </tr>
             
 }
     </tbody>
 </table>
-<div>
+<div class="Center-Div">
     <a asp-action="ListOfCertificates" style="width:160px;"
-        class="custom-font btn btn-info col-sm-7">Back to Certificates</a>
+        class="btn btn-yellow col-sm-5">Back to Certificates</a>
 
     <a asp-action="Index" style="width:140px;"
-        class="text-nowrap custom-font btn btn-primary col-sm-5">Back to e-Shop</a>
+       class="text-nowrap  btn btn-black col-sm-">Back to e-Shop</a>
 </div>

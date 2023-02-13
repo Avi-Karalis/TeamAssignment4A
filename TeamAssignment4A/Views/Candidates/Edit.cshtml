@@ -55,10 +55,13 @@
                 <span asp-validation-for="Birthdate" class="text-danger"></span>
             </div>
         </div>
+       
         <div class="col-md-4">
-            <label asp-for="Email" class="control-label"></label>
-            <input asp-for="Email" class="form-control" />
-            <span asp-validation-for="Email" class="text-danger"></span>
+            <div>
+                <label asp-for="UserEmail" class="control-label">E-mail</label>
+                <input asp-for="UserEmail" class="form-control" placeholder="Enter User Email" />
+                <span asp-validation-for="UserEmail" class="text-danger"></span>
+            </div>
         </div>
         <div class="col-md-4">
             <label asp-for="LandlineNumber" class="control-label"></label>
@@ -120,11 +123,9 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div>
-                <label asp-for="UserEmail" class="control-label"></label>
-                <input asp-for="UserEmail" class="form-control" placeholder="Enter User Email" />
-                <span asp-validation-for="UserEmail" class="text-danger"></span>
-            </div>
+
+            <input type="hidden" asp-for="Email" class="form-control" />
+
         </div>
         <p>
             <div class="form-group center-adjust">

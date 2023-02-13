@@ -4,25 +4,25 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Exams List</h1>
+<h1 class="custom-font fadein center-adjust">Exams List</h1>
 
 
 <table class="table">
     <thead>
-        <tr>
-            <th>
+        <tr class="text-center">
+            <th class="col-4">
                 @Html.DisplayNameFor(model => model.AssessmentTestCode)
             </th>
-            <th>
+            <th class="col-4">
                 @Html.DisplayNameFor(model => model.ExaminationDate)
             </th>
             
-            <th></th>
+            <th class="col-4">Options</th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr class="text-center">
             <td>
                 @Html.DisplayFor(modelItem => item.AssessmentTestCode)
             </td>
@@ -31,7 +31,7 @@
             </td>
             
             <td>
-                <a asp-action="SitForExam" asp-route-id="@item.Id">Begin Examination</a>
+                <a class="btn btn-warning" asp-action="SitForExam" asp-route-id="@item.Id">Begin Examination</a>
             </td>
         </tr>
 }

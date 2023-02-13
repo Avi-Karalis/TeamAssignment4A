@@ -32,46 +32,47 @@
             @for (int i = 0; i < Model.Count(); i++){    
             <div>
                 @*<input type="hidden" asp-for="@Model[i].Id" />*@
-                
-                <div class="text-nowrap text-center navbar-dark bg-primary" style="border-top-right-radius: 100px; 
-                                            border-bottom-right-radius: 100px; border-top-left-radius: 100px; 
-                                            border-bottom-left-radius: 100px">
+
+                <div class=" text-center navbar-dark bg-primary" style="border-top-right-radius: 5px;
+                                            border-bottom-right-radius: 5px; border-top-left-radius: 5px;
+                                            border-bottom-left-radius: 5px; display:flex; flex-wrap:nowrap">
+                                            
                     @Html.DisplayNameFor(modelItem => @Model[i].ExamStem.Stem.Question)
                     <br>
                     @Html.Raw(@Model[i].ExamStem.Stem.Question)
                     <input type="hidden" asp-for="@Model[i].ExamStem.Stem.Question" />
                     
                 </div> <br />
-                <div class="text-nowrap text-center" style="border-top-right-radius: 100px; 
-                                            border-bottom-right-radius: 100px; border-top-left-radius: 100px; 
-                                            border-bottom-left-radius: 100px">
+                <div class=" text-center" style="border-top-right-radius: 5px;
+                                            border-bottom-right-radius: 5px; border-top-left-radius: 5px;
+                                            border-bottom-left-radius: 5px; display: flex; flex-wrap: nowrap">
                     @Html.DisplayNameFor(modelItem => @Model[i].ExamStem.Stem.OptionA)
                     <br>
                     @Html.Raw(@Model[i].ExamStem.Stem.OptionA)
                     <input type="hidden" asp-for="@Model[i].ExamStem.Stem.OptionA" />
                     
                 </div> <br />
-                <div class="text-nowrap text-center" style="border-top-right-radius: 100px; 
-                                            border-bottom-right-radius: 100px; border-top-left-radius: 100px; 
-                                            border-bottom-left-radius: 100px">
+                <div class=" text-center" style="border-top-right-radius: 5px; 
+                                            border-bottom-right-radius: 5px; border-top-left-radius: 5px;
+                                            border-bottom-left-radius: 5px; display: flex; flex-wrap: nowrap">
                     @Html.DisplayNameFor(modelItem => @Model[i].ExamStem.Stem.OptionB)
                     <br>
                     @Html.Raw(@Model[i].ExamStem.Stem.OptionB)
                     <input type="hidden" asp-for="@Model[i].ExamStem.Stem.OptionB" />
                     
                 </div> <br />
-                <div class="text-nowrap text-center" style="border-top-right-radius: 100px; 
-                                            border-bottom-right-radius: 100px; border-top-left-radius: 100px; 
-                                            border-bottom-left-radius: 100px">
+                <div class=" text-center" style="border-top-right-radius: 5px; 
+                                            border-bottom-right-radius: 5px; border-top-left-radius: 5px;
+                                            border-bottom-left-radius: 5px; display: flex; flex-wrap: nowrap">
                     @Html.DisplayNameFor(modelItem => @Model[i].ExamStem.Stem.OptionC)
                     <br>
                     @Html.Raw(@Model[i].ExamStem.Stem.OptionC)
                     <input type="hidden" asp-for="@Model[i].ExamStem.Stem.OptionC" />
                     
                 </div> <br />
-                <div class="text-nowrap text-center" style="border-top-right-radius: 100px; 
-                                            border-bottom-right-radius: 100px; border-top-left-radius: 100px; 
-                                            border-bottom-left-radius: 100px">
+                <div class=" text-center" style="border-top-right-radius: 5px;
+                                            border-bottom-right-radius: 5px; border-top-left-radius: 5px;
+                                            border-bottom-left-radius: 5px; display: flex; flex-wrap: nowrap">
                     @Html.DisplayNameFor(modelItem => @Model[i].ExamStem.Stem.OptionD)
                     <br>
                     @Html.Raw(@Model[i].ExamStem.Stem.OptionD)

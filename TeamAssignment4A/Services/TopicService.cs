@@ -55,6 +55,8 @@ namespace TeamAssignment4A.Services
             if (id == null || _db.Topics == null)
             {
                 _myDTO.View = "Index";
+                var topics = await _unit.Topic.GetAllAsync();
+                _myDTO.TopicDtos = _mapper.Map<List<TopicDto>>(topics);
                 _myDTO.Message = "The requested topic could not be found. Please try again later.";
                 return _myDTO;
             }
@@ -128,10 +130,14 @@ namespace TeamAssignment4A.Services
             }
             if (ModelState.IsValid)
             {
+                _myDTO.View = "Index";
                 _myDTO.Message = "The requested topic has been updated successfully.";
+                IEnumerable<Topic> topics = await _unit.Topic.GetAllAsync();
                 if (!await _unit.Topic.Exists(topic.Id))
                 {
+                    _myDTO.TopicDtos = _mapper.Map<List<TopicDto>>(topics);
                     _myDTO.Message = "The requested topic could not be found. Please try again later.";
+                    return _myDTO;
                 }
                 if (await _unit.Topic.DescriptionExists(topic.Id, topic.Description))
                 {
@@ -141,10 +147,10 @@ namespace TeamAssignment4A.Services
                     return _myDTO;
                 }
                 await _unit.SaveAsync();
-                _myDTO.View = "Index";
-                IEnumerable<Topic> topics = await _unit.Topic.GetAllAsync();
+                
+                topics = await _unit.Topic.GetAllAsync();
                 _myDTO.TopicDtos = _mapper.Map<List<TopicDto>>(topics);
-                return _myDTO;
+                
             }
             else
             {
@@ -182,15 +188,17 @@ namespace TeamAssignment4A.Services
         {
             _myDTO.View = "Index";
             _myDTO.Message = "The requested topic has been deleted successfully.";
+            IEnumerable<Topic> topics = await _unit.Topic.GetAllAsync();
             if (!await _unit.Topic.Exists(id))
             {
+                _myDTO.TopicDtos = _mapper.Map<List<TopicDto>>(topics);
                 _myDTO.Message = "The requested topic could not be found. Please try again later.";
                 return _myDTO;
             }
             Topic topic = await _unit.Topic.GetAsync(id);
             _unit.Topic.Delete(topic);
             await _unit.SaveAsync();
-            IEnumerable<Topic> topics = await _unit.Topic.GetAllAsync();
+            topics = await _unit.Topic.GetAllAsync();
             _myDTO.TopicDtos = _mapper.Map<List<TopicDto>>(topics);
             return _myDTO;
         }

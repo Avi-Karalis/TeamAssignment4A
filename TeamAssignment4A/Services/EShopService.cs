@@ -262,16 +262,17 @@ namespace TeamAssignment4A.Services
         {
             _myDTO.View = "BookedExams";
             _myDTO.Message = "The requested exam has been refunded successfully.";
-            if (!await _unit.Exam.Exists(id))
+            Candidate? candidate = await _unit.Candidate.GetByUser(user);
+            if (!await _unit.CandidateExam.Exists(id))
             {
                 _myDTO.Message = "The requested exam could not be found." +
                     "\nPlease try again later.";
+                _myDTO.CandidateExams = await _unit.CandidateExam.GetBooked(candidate.Id);
                 return _myDTO;
             }
             CandidateExam candidateExam = await _unit.CandidateExam.GetAsync(id);
             _unit.CandidateExam.Delete(candidateExam);
             await _unit.SaveAsync();
-            Candidate? candidate = await _unit.Candidate.GetByUser(user);
             _myDTO.CandidateExams = await _unit.CandidateExam.GetBooked(candidate.Id);
             return _myDTO;
         }

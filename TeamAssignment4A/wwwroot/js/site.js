@@ -41,7 +41,7 @@ $(function () {
 });
 
 
-const text = "PeopleCert Certifications";
+const text = "2558 Certifications";
 const typingDelay = 100; // delay between each character
 const newTextDelay = 12000; // delay between current and next text
 let index = 0;

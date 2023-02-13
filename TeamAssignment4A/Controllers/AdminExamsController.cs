@@ -17,7 +17,7 @@ using TeamAssignment4A.Models.JointTables;
 using TeamAssignment4A.Services;
 
 namespace TeamAssignment4A.Controllers {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, QA")]
     public class AdminExamsController : Controller {
         private readonly ExamService _service;
         private readonly WebAppDbContext _db;
