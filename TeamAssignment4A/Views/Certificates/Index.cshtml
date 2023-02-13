@@ -6,9 +6,16 @@
 
 <h2 class="custom-font fadein center-adjust">Certificate List</h2>
 
-<p class="left-adjust btn-lg">
-    <a asp-action="Create" class=" custom-font btn btn-info">Create New</a>
-</p>
+@if (User.IsInRole("QA"))
+{
+
+}
+else
+{
+    <p class="left-adjust btn-lg">
+        <a asp-action="Create" class=" custom-font btn btn-info">Create New</a>
+    </p>
+}
 <table class="table">
     <thead class=" sticky-header text-nowrap  text-center navbar-dark bg-primary"
            onclick="scrollToTop()" style="cursor:pointer;"
@@ -41,9 +48,17 @@
                     @Html.DisplayFor(modelItem => item.MaximumScore)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-edit w-50 mb-2">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-details w-50 mb-2">Details</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-delete w-50 mb-2">Delete</a>
+                     @if (User.IsInRole("QA"))
+                    {
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-details w-100 mb-2">Details</a>
+                    }
+                    else
+                    {
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-edit w-100 mb-2">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-details w-100 mb-2">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-delete w-100 mb-2">Delete</a>  
+                    }
+                    
                 </td>
             </tr>
         }

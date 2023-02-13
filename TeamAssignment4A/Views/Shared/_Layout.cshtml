@@ -41,42 +41,101 @@
                                 <span class="text">MENU</span>
                             </button>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><span style="font-size:22px">&#x2302</span> Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Candidates" asp-action="Index"> Candidates</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Certificates" asp-action="Index">Certificates</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Topics" asp-action="Index">Topics</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Stems" asp-action="Index">Stems</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="CandidateExams" asp-action="Index">Exams(Candidate)</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="AdminExams" asp-action="Index">Exams(Admin)</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Exams" asp-action="Create">Exams(Create)</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="ExamStems" asp-action="CandidateExamsForMarking">UnMarkedExams</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" style="color:yellow" asp-area="" asp-controller="Eshop" asp-action="Index">E-Shop</a>
-                        </li>
-                        <li>
-                            <label class="switch">
-                                <input type="checkbox" id="togBtn" onclick="myFunction()">
-                                <div class="slider round"></div>
-                            </label>
-                        </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><span style="font-size:22px">&#x2302</span> Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Candidates" asp-action="Index"> Candidates</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Certificates" asp-action="Index">Certificates</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Topics" asp-action="Index">Topics</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Stems" asp-action="Index">Stems</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="AdminExams" asp-action="Index">View Exams</a>
+                            </li>
+
+
+                            <li>
+                                <label class="switch">
+                                    <input type="checkbox" id="togBtn" onclick="myFunction()">
+                                    <div class="slider round"></div>
+                                </label>
+                            </li>
+                        } else if (User.IsInRole("Marker"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="ExamStems" asp-action="CandidateExamsForMarking">Unmarked Exams</a>
+                            </li>
+                            <li>
+                                <label class="switch">
+                                    <input type="checkbox" id="togBtn" onclick="myFunction()">
+                                    <div class="slider round"></div>
+                                </label>
+                            </li>
+                        } else if (User.IsInRole("QA"))
+                        {
+                             <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Candidates" asp-action="Index">View Candidates</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Certificates" asp-action="Index">View Certificates</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="AdminExams" asp-action="Index">View Exams</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Topics" asp-action="Index">View Topics</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Stems" asp-action="Index">View Stems</a>
+                            </li>
+                            <li>
+                                <label class="switch">
+                                    <input type="checkbox" id="togBtn" onclick="myFunction()">
+                                    <div class="slider round"></div>
+                                </label>
+                            </li>
+                        }else if (User.IsInRole("Candidate"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="CandidateExams" asp-action="Index">My Exams</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" style="color:yellow" asp-area="" asp-controller="Eshop" asp-action="Index">E-Shop</a>
+                            </li>
+                            <li>
+                                <label class="switch">
+                                    <input type="checkbox" id="togBtn" onclick="myFunction()">
+                                    <div class="slider round"></div>
+                                </label>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><span style="font-size:22px">&#x2302</span> Home</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" style="color:yellow" asp-area="" asp-controller="Eshop" asp-action="Index">E-Shop</a>
+                            </li>
+                            <li>
+                                <label class="switch">
+                                    <input type="checkbox" id="togBtn" onclick="myFunction()">
+                                    <div class="slider round"></div>
+                                </label>
+                            </li>
+
+                        }
+                        
                     </ul>
         </div>
             </nav>
