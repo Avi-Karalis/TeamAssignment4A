@@ -383,7 +383,7 @@ input:checked + .slider:after {
 
     /*Light mode*/
 .btn-yellow {
-    --color: yellow;
+    --color: #990000;
     --color2: rgb(10, 25, 30);
     padding: 0.8em 1.75em;
     background-color: transparent;
@@ -498,6 +498,121 @@ input:checked + .slider:after {
     }
 
 
+
+.dark-mode .btn-blue {
+    --color: lightblue;
+    --color2: rgb(10, 25, 30);
+    padding: 0.8em 1.75em;
+    background-color: transparent;
+    border-radius: 6px;
+    border: 3px solid var(--color);
+    transition: .5s;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 1;
+    font-weight: 700;
+    font-size: 10px;
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    text-transform: uppercase;
+    color: var(--color);
+}
+
+    .dark-mode .btn-blue::after, .dark-mode .btn-blue::before {
+        content: '';
+        display: block;
+        height: 100%;
+        width: 100%;
+        transform: skew(90deg) translate(-50%, -50%);
+        position: absolute;
+        inset: 50%;
+        left: 25%;
+        z-index: -1;
+        transition: .5s ease-out;
+        background-color: var(--color);
+    }
+
+    .dark-mode .btn-blue::before {
+        top: -50%;
+        left: -25%;
+        transform: skew(90deg) rotate(180deg) translate(-50%, -50%);
+    }
+
+    .dark-mode .btn-blue:hover::before {
+        transform: skew(45deg) rotate(180deg) translate(-50%, -50%);
+    }
+
+    .dark-mode .btn-blue:hover::after {
+        transform: skew(45deg) translate(-50%, -50%);
+    }
+
+    .dark-mode .btn-blue:hover {
+        font-weight: 700;
+        color: var(--color2);
+    }
+
+    .dark-mode .btn-blue:active {
+        filter: brightness(.7);
+        transform: scale(.98);
+    }
+
+
+.dark-mode .btn-yellow {
+    --color: #FFBF00;
+    --color2: rgb(10, 25, 30);
+    padding: 0.8em 1.75em;
+    background-color: transparent;
+    border-radius: 6px;
+    border: 3px solid var(--color);
+    transition: .5s;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 1;
+    font-weight: 700;
+    font-size: 10px;
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    text-transform: uppercase;
+    color: var(--color);
+}
+
+    .dark-mode .btn-yellow::after, .dark-mode .btn-yellow::before {
+        content: '';
+        display: block;
+        height: 100%;
+        width: 100%;
+        transform: skew(90deg) translate(-50%, -50%);
+        position: absolute;
+        inset: 50%;
+        left: 25%;
+        z-index: -1;
+        transition: .5s ease-out;
+        background-color: var(--color);
+    }
+
+    .dark-mode .btn-yellow::before {
+        top: -50%;
+        left: -25%;
+        transform: skew(90deg) rotate(180deg) translate(-50%, -50%);
+    }
+
+    .dark-mode .btn-yellow:hover::before {
+        transform: skew(45deg) rotate(180deg) translate(-50%, -50%);
+    }
+
+    .dark-mode .btn-yellow:hover::after {
+        transform: skew(45deg) translate(-50%, -50%);
+    }
+
+    .dark-mode .btn-yellow:hover {
+        font-weight: 700;
+        color: var(--color2);
+    }
+
+    .dark-mode .btn-yellow:active {
+        filter: brightness(.7);
+        transform: scale(.98);
+    }
 
 .dark-mode .btn-black {
     --color: white;
@@ -1033,10 +1148,36 @@ input:checked + .slider:after {
     animation: fadein 3.5;
 }
 
+/*Light mode*/
+.alert-dismissible {
+    margin-left:150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight:bolder;
+    color: black;
 
-.Center-Div{
-    text-align:center;
 }
+
+
+/*dark mode*/
+.dark-mode .alert-dismissible {
+    color:white;
+  
+    
+}
+
+
+.Center-Div {
+    text-align: center;
+}
+
+
+
+
+
+
+
 
 
 
