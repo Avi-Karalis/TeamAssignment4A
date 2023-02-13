@@ -6,9 +6,10 @@ html {
     margin-top:10px;
 }
 /*adaptation with screen size changing*/
-@media (max-width: 500px) {
-    .container {
-        width: 40%;
+@media (max-width: 767px) {
+    html {
+        font-size: 12px;
+        margin-top: 5px;
     }
 }
 /*adaptation with screen size changing*/
@@ -23,6 +24,8 @@ html {
     margin-left:40px;
 }
 
+
+
 body {
     color: white;
     margin-bottom: 60px;
@@ -33,6 +36,12 @@ body {
     background-attachment: fixed;
     background-size: cover;
     background-color: #222222;
+}
+@media (max-width: 767px) {
+    body {
+        margin-bottom: 30px;
+        font-size: 12px;
+    }
 }
 
 .linknolineandwhite > button > a {
@@ -154,6 +163,20 @@ button > a {
     width: 900px;
     margin-left: 200px;
     color: black;
+}
+@media (max-width: 992px) {
+    .table {
+        width: 700px;
+        margin-left: 100px;
+    }
+}
+
+@media (max-width: 767px) {
+    .table {
+        width: 100%;
+        margin-left: 0;
+        border-radius: 0;
+    }
 }
 
 /*drop shadow on select on form*/
@@ -616,6 +639,18 @@ input:checked + .slider:after {
     background: #040f16;
     color: #f5f5f5;
 }
+
+.btn-lg {
+    font-size: 0.8em;
+    top: 5px;
+}
+
+@media (max-width: 767px) {
+    .btn-lg {
+        margin-left: -80px;
+    }
+}
+
 /*side nav button*/
 .button-nav:hover {
     box-shadow: 0 0 20px 0px #03436b;
