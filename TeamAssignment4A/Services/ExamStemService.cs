@@ -144,6 +144,7 @@ namespace TeamAssignment4A.Services
             _myDTO.Message = "The requested exam stem has been deleted successfully.";
             if (!await _unit.ExamStem.Exists(id))
             {
+                _myDTO.ExamStems = await _unit.ExamStem.GetAllAsync();
                 _myDTO.Message = "The requested exam stem could not be found. Please try again later.";
                 return _myDTO;
             }

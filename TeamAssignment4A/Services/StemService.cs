@@ -193,15 +193,17 @@ namespace TeamAssignment4A.Services
         {
             _myDTO.View = "Index";
             _myDTO.Message = "The requested stem has been deleted successfully.";
+            IEnumerable<Stem> stems = await _unit.Stem.GetAllAsync();
             if (!await _unit.Stem.Exists(id))
             {
+                _myDTO.StemDtos = _mapper.Map<List<StemDto>>(stems);
                 _myDTO.Message = "The requested stem could not be found. Please try again later.";
                 return _myDTO;
             }
             Stem stem = await _unit.Stem.GetAsync(id);
             _unit.Stem.Delete(stem);
             await _unit.SaveAsync();
-            IEnumerable<Stem> stems = await _unit.Stem.GetAllAsync();
+            stems = await _unit.Stem.GetAllAsync();
             _myDTO.StemDtos = _mapper.Map<List<StemDto>>(stems);
             return _myDTO;
         }

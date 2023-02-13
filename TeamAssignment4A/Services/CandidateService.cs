@@ -57,6 +57,8 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested candidate could not be found. Please try again later.";
+                _myDTO.Candidates = _mapper.Map<List<CandidateDto>>
+                                    (await _unit.Candidate.GetAllAsync());
                 return _myDTO;
             }
             Candidate candidate = await _unit.Candidate.GetAsync(id);
@@ -65,6 +67,8 @@ namespace TeamAssignment4A.Services
             if (_myDTO.Candidate == null)
             {
                 _myDTO.View = "Index";
+                _myDTO.Candidates = _mapper.Map<List<CandidateDto>>
+                                    (await _unit.Candidate.GetAllAsync());
                 _myDTO.Message = "The requested candidate could not be found. Please try again later.";
             }
             return _myDTO;
@@ -94,7 +98,7 @@ namespace TeamAssignment4A.Services
                 _myDTO.Message = "The requested candidate has been added successfully.";
                 _myDTO.View = "Index";
 
-                if (await _unit.User.EmailExists(candidate.IdentityUser.Id, candidate.IdentityUser.Email))
+                if (await _unit.User.EmailExistsForCreate(candidate.IdentityUser.UserName))
                 {
                     _myDTO.View = "Create";
                     _myDTO.Message = "This email address has already been claimed. " +
@@ -176,9 +180,11 @@ namespace TeamAssignment4A.Services
                 {
                     _myDTO.Message = "The requested candidate could not be found. " +
                         "Please try again later.";
+                    _myDTO.Candidates = _mapper.Map<List<CandidateDto>>
+                                    (await _unit.Candidate.GetAllAsync());
                     return _myDTO;
                 }
-                if (await _unit.User.EmailExists(candidate.IdentityUser.Id, candidate.IdentityUser.Email))
+                if (await _unit.User.EmailExists(candidate.IdentityUser.Id, candidate.IdentityUser.UserName))
                 {
                     _myDTO.View = "Edit";
                     _myDTO.Message = "This email address has already been claimed. " +
@@ -233,6 +239,7 @@ namespace TeamAssignment4A.Services
             _myDTO.Message = "The requested candidate has been deleted successfully.";
             if (!await _unit.Candidate.Exists(id))
             {
+                _myDTO.Candidates = _mapper.Map<List<CandidateDto>>(await _unit.Candidate.GetAllAsync());
                 _myDTO.Message = "The requested candidate could not be found. Please try again later.";
                 return _myDTO;
             }

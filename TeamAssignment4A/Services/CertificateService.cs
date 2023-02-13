@@ -47,12 +47,14 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "The requested certificate could not be found. Please try again later.";
+                _myDTO.Certificates = await _unit.Certificate.GetAllAsync();
                 return _myDTO;
             }
             _myDTO.Certificate = await _unit.Certificate.GetAsync(id);
             if (_myDTO.Certificate == null)
             {
                 _myDTO.View = "Index";
+                _myDTO.Certificates = await _unit.Certificate.GetAllAsync();
                 _myDTO.Message = "The requested certificate could not be found. Please try again later.";
             }
             return _myDTO;
@@ -146,7 +148,8 @@ namespace TeamAssignment4A.Services
             _myDTO.View = "Index";
             _myDTO.Message = "The requested certificate has been deleted successfully.";
             if (!await _unit.Certificate.Exists(id))
-            {                
+            {
+                _myDTO.Certificates = await _unit.Certificate.GetAllAsync();
                 _myDTO.Message = "The requested certificate could not be found. Please try again later.";
                 return _myDTO;
             }            
