@@ -118,6 +118,15 @@
     </dl>
 </div>
 <div class="center-adjust">
-    <a asp-action="Edit" asp-route-id="@Model?.Id" style="width:100px;" class="custom-font btn btn-info col-sm-7">Edit</a> |
+    @if (User.IsInRole("QA"))
+    {
+        <a asp-action="Index" style="width:110px;" class="text-nowrap custom-font btn btn-primary col-sm-7">Back to List</a>
+    }
+    else
+    {
+        
+    <a asp-action="Edit" asp-route-id=@Model?.Id style="width:100px;" class="custom-font btn btn-info col-sm-7">Edit</a> 
     <a asp-action="Index" style="width:110px;" class="text-nowrap custom-font btn btn-primary col-sm-7">Back to List</a>
+    }
+    
 </div>

@@ -14,7 +14,7 @@ using TeamAssignment4A.Services;
 
 namespace TeamAssignment4A.Controllers
 {
-    [Authorize(Roles = "Admin, Marker")]
+    [Authorize(Roles = "Admin, QA")]
     public class CandidatesController : Controller
     {
         private readonly CandidateService _service;
@@ -26,7 +26,7 @@ namespace TeamAssignment4A.Controllers
         }
 
         // GET: Candidates
-        [Authorize(Roles = "Admin, Marker")]
+        [Authorize(Roles = "Admin, QA")]
         [HttpGet]
         [ProducesResponseType(typeof(CandidateDto), 200)]
         public async Task<IActionResult> Index()
@@ -35,7 +35,7 @@ namespace TeamAssignment4A.Controllers
         }
 
         // GET: Candidates/Details/5
-        [Authorize(Roles = "Admin, Marker")]
+        [Authorize(Roles = "Admin, QA")]
         [HttpGet]
         [ProducesResponseType(typeof(CandidateDto), 200)]
         public async Task<IActionResult> Details(int id)
