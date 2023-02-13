@@ -15,7 +15,13 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.0/classic/ckeditor.js"></script>
 
 
-   
+    @if (@ViewBag.Message != null)
+    {
+        <div class="alert alert-dismissible alert-info col-sm-9 center-adjust">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <strong>Attention!</strong> @ViewBag.Message
+        </div>
+    }
 </head>
 <body>
     <header>
@@ -60,6 +66,9 @@
                             <a class="nav-link" asp-area="" asp-controller="Exams" asp-action="Create">Exams(Create)</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="ExamStems" asp-action="CandidateExamsForMarking">UnMarkedExams</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" style="color:yellow" asp-area="" asp-controller="Eshop" asp-action="Index">E-Shop</a>
                         </li>
                         <li>
@@ -80,13 +89,13 @@
             </div>
         
     </div>
-    @if (@ViewBag.Message != null)
+   @* @if (@ViewBag.Message != null)
     {
         <div class="alert alert-dismissible alert-info">
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             <strong>Attention!</strong> @ViewBag.Message
         </div>
-    }
+    }*@
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -94,8 +103,10 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="containerFooter">
-            &copy; 2023 - Team 2558 - <a asp-area="" asp-controller="Home" asp-action="Privacy"><span class="privacyButton">Privacy</span></a>
+        <div class="d-flex justify-content-end">
+            <a asp-area="" asp-controller="Home" asp-action="Chat">
+                <span class="btn btn-primary ml-auto" style="margin-right: 30px;">Live Chat</span>
+            </a>
         </div>
     </footer>
    

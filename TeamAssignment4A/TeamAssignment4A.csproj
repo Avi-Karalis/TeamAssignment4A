@@ -16,7 +16,6 @@
     <EmbeddedResource Remove="wwwroot\uploader\**" />
     <None Remove="Data\Migrations\**" />
     <None Remove="wwwroot\uploader\**" />
-    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
