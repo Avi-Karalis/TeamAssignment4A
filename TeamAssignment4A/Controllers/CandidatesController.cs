@@ -14,7 +14,7 @@ using TeamAssignment4A.Services;
 
 namespace TeamAssignment4A.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Marker")]
     public class CandidatesController : Controller
     {
         private readonly CandidateService _service;
@@ -26,6 +26,7 @@ namespace TeamAssignment4A.Controllers
         }
 
         // GET: Candidates
+        [Authorize(Roles = "Admin, Marker")]
         [HttpGet]
         [ProducesResponseType(typeof(CandidateDto), 200)]
         public async Task<IActionResult> Index()
@@ -34,6 +35,7 @@ namespace TeamAssignment4A.Controllers
         }
 
         // GET: Candidates/Details/5
+        [Authorize(Roles = "Admin, Marker")]
         [HttpGet]
         [ProducesResponseType(typeof(CandidateDto), 200)]
         public async Task<IActionResult> Details(int id)
@@ -48,6 +50,7 @@ namespace TeamAssignment4A.Controllers
         }
 
         // GET: Candidates/Create
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         [ProducesResponseType(typeof(CandidateDto), 200)]
         public async Task<IActionResult> Create()
@@ -57,7 +60,7 @@ namespace TeamAssignment4A.Controllers
         }
 
         // POST: Candidates/Create
-        
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ProducesResponseType(typeof(CandidateDto), 200)]
@@ -76,6 +79,7 @@ namespace TeamAssignment4A.Controllers
         }
 
         // GET: Candidates/Edit/5
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         [ProducesResponseType(typeof(CandidateDto), 200)]
         public async Task<IActionResult> Edit(int id)
@@ -90,7 +94,7 @@ namespace TeamAssignment4A.Controllers
         }
 
         // POST: Candidates/Edit/5
-        
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ProducesResponseType(typeof(CandidateDto), 200)]
@@ -109,6 +113,7 @@ namespace TeamAssignment4A.Controllers
         }
 
         // GET: Candidates/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         [ProducesResponseType(typeof(CandidateDto), 200)]
         public async Task<IActionResult> Delete(int id)
@@ -123,6 +128,7 @@ namespace TeamAssignment4A.Controllers
         }
 
         // POST: Candidates/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [ProducesResponseType(typeof(CandidateDto), 200)]

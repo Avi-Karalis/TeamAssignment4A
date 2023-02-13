@@ -13,7 +13,7 @@ using TeamAssignment4A.Models;
 using TeamAssignment4A.Services;
 
 namespace TeamAssignment4A.Controllers {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, QA")]
     public class StemsController : Controller 
     {
         private readonly StemService _service;
@@ -29,6 +29,7 @@ namespace TeamAssignment4A.Controllers {
 
         // GET: Stems
         [HttpGet]
+        [Authorize(Roles = "Admin, QA")]
         [ProducesResponseType(typeof(StemDto), 200)]
         public async Task<IActionResult> Index()
         {            
@@ -37,6 +38,7 @@ namespace TeamAssignment4A.Controllers {
 
         // GET: Stems/Details/5
         [HttpGet]
+        [Authorize(Roles = "Admin, QA")]
         [ProducesResponseType(typeof(StemDto), 200)]
         public async Task<IActionResult> Details(int id)
         {
@@ -51,6 +53,7 @@ namespace TeamAssignment4A.Controllers {
 
         // GET: Stems/Create
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(StemDto), 200)]
         public async Task<IActionResult> Create() 
         {
@@ -67,6 +70,7 @@ namespace TeamAssignment4A.Controllers {
         // POST: Stems/Create
         
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(StemDto), 200)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int id, [Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,TopicDescription,Topic")] StemDto stemDto) 
@@ -89,6 +93,7 @@ namespace TeamAssignment4A.Controllers {
 
         // GET: Stems/Edit/5
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(StemDto), 200)]
         public async Task<IActionResult> Edit(int id) 
         {
@@ -113,6 +118,7 @@ namespace TeamAssignment4A.Controllers {
         // POST: Stems/Edit/5
         
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         [ProducesResponseType(typeof(StemDto), 200)]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,TopicDescription,Topic")] StemDto stemDto) 
@@ -135,6 +141,7 @@ namespace TeamAssignment4A.Controllers {
 
         // GET: Stems/Delete/5
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(StemDto), 200)]
         public async Task<IActionResult> Delete(int id) 
         {
@@ -149,6 +156,7 @@ namespace TeamAssignment4A.Controllers {
 
         // POST: Stems/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         [ProducesResponseType(typeof(StemDto), 200)]
         public async Task<IActionResult> DeleteConfirmed(int id) 
