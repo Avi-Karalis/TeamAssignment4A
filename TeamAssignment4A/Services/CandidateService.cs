@@ -98,7 +98,7 @@ namespace TeamAssignment4A.Services
                 _myDTO.Message = "The requested candidate has been added successfully.";
                 _myDTO.View = "Index";
 
-                if (await _unit.User.EmailExistsForCreate(candidate.IdentityUser.UserName))
+                if (await _unit.User.EmailExists(candidate.IdentityUser.Id, candidate.IdentityUser.UserName))
                 {
                     _myDTO.View = "Create";
                     _myDTO.Message = "This email address has already been claimed. " +
