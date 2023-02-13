@@ -29,9 +29,16 @@ namespace TeamAssignment4A.Data.Repositories
         {
             _db.Users.Remove(user);
         }
-        public async Task<bool> EmailExists(string id, string email)
+        public async Task<bool> EmailExists(string id, string userName)
         {
-            return await _db.Users.AnyAsync(e => e.Email == email && e.Id != id);
+            var x = await _db.Users.AnyAsync(e => e.UserName == userName && e.Id != id);
+            return x;
+        }
+
+        public async Task<bool> EmailExistsForCreate(string userName)
+        {
+            var x = await _db.Users.AnyAsync(e => e.UserName == userName);
+            return x;
         }
     }
 }

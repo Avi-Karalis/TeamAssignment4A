@@ -83,6 +83,7 @@ namespace TeamAssignment4A.Services
             }
             if (candidateExam.CandidateExamStems.Count() != 0)
             {
+                _myDTO.View = "Index";
                 _myDTO.Message = "You tried to submit an already submitted exam." +
                     "\nThe operation failed.";
                 return _myDTO;
@@ -90,13 +91,7 @@ namespace TeamAssignment4A.Services
 
             if (ModelState.IsValid)
             {
-                //candidateExam.CandidateExamStems = new List<CandidateExamStem>()
-                //{
-                //    new CandidateExamStem(),
-                //    new CandidateExamStem(),
-                //    new CandidateExamStem(),
-                //    new CandidateExamStem()
-                //};
+                
                 var exam = await _unit.Exam.GetForSitExam(canExStems[0].ExamStem.Exam.Id);
                 List<ExamStem> examStems = new List<ExamStem>()
                 {
@@ -107,17 +102,11 @@ namespace TeamAssignment4A.Services
                 };
                 for (int i = 0; i < canExStems.Count(); i++)
                 {
-                    //_unit.CandidateExamStem.AddOrUpdate(canExStems[i]);
-                    //canExStems[i].CandidateExam = candidateExam;
+                    
                     var stem = await _unit.Stem.GetAsync(canExStems[i].ExamStem.Stem.Id);
 
                     examStems[i].Stem = stem;
-                    //var cExStem = new CandidateExamStem()
-                    //{
-                    //    ExamStem = examStems[i],
-                    //    CandidateExam = candidateExam
-                    //};
-                    //canExStems[i] = cExStem;
+                   
                     
                 }
                 var cExStems = new List<CandidateExamStem>()
@@ -127,10 +116,10 @@ namespace TeamAssignment4A.Services
                     new CandidateExamStem { ExamStem = examStems[2], CandidateExam = candidateExam, SubmittedAnswer = canExStems[2].SubmittedAnswer },
                     new CandidateExamStem { ExamStem = examStems[3], CandidateExam = candidateExam, SubmittedAnswer = canExStems[3].SubmittedAnswer }
                 };
-                //candidateExam.CandidateExamStems = cExStems;
+                
                 foreach(var canExStem in cExStems)
                 {
-                    //_db.Entry(exam).State = EntityState.Unchanged;
+                    
                     _db.Entry(canExStem.ExamStem.Exam).State = EntityState.Unchanged;
                     _unit.CandidateExamStem.AddOrUpdate(canExStem);
                     await _unit.SaveAsync();
@@ -151,52 +140,13 @@ namespace TeamAssignment4A.Services
             {
                 _myDTO.View = "Index";
                 _myDTO.Message = "Your Exam has been submitted successfully.";
-                //_unit.CandidateExam.AddOrUpdate(candidateExam);
-                //candidateExam.CandidateExamStems = new List<CandidateExamStem>()
-                //    {
-                //        new CandidateExamStem(),
-                //        new CandidateExamStem(),
-                //        new CandidateExamStem(),
-                //        new CandidateExamStem()
-                //    };
                 
-                //for (int i =0; i < canExStems.Count(); i++)
-                //{
-                //    //_unit.CandidateExamStem.AddOrUpdate(canExStems[i]);
-                //    canExStems[i].CandidateExam = candidateExam;
-                //    canExStems[i].ExamStem.Stem = await _unit.Stem.GetAsync(canExStems[i].ExamStem.Stem.Id);
-                //    //canExStems[i].ExamStem.Stem.Topic = await _unit.Topic.GetAsync(canExStems[i].ExamStem.Stem.Topic.Id);
-                //    canExStems[i].ExamStem.Exam = await _unit.Exam.GetAsync(canExStems[i].ExamStem.Exam.Id);
-                //    //canExStems[i].ExamStem = await _unit.ExamStem.GetAsync(canExStems[i].ExamStem.Id);
-                //    //candidateExam.CandidateExamStems.ElementAt(i).CandidateExam = candidateExam;
-
-                //    //canExStems[i].CandidateExam = candidateExam;
-                //}
                 if (!await _unit.CandidateExam.Exists(candidateExam.Id))
                 {
                     _myDTO.Message = "You tried to submit a non existing exam.";
                     return _myDTO;
                 }
                 await _unit.SaveAsync();
-                
-                //if (candidateExam.CandidateExamStems == null)
-                //{
-                //    _myDTO.View = "SitForExam";
-                //    _myDTO.Message = "Your answers failed to submit. Please try again later.";
-                //    _myDTO.CandidateExam = candidateExam;
-                //    return _myDTO;
-                //}
-
-                
-
-                //for (int i = 0; i < canExStems.Count(); i++)
-                //{
-                //    //_unit.CandidateExamStem.AddOrUpdate(canExStems[i]);
-                //    canExStems[i].CandidateExam = candidateExam;
-                //}
-
-                
-
                 
                 
                 
